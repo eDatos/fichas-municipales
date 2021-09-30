@@ -469,11 +469,6 @@ h4, h5 {
     text-align: center;
     color: #666;
 }
-.piechart {
-  float: left;
-  width: 50%;
-  padding: 10px;
-}
 .piechart_P {
   float: left;
   width: 46%;
@@ -484,4 +479,156 @@ h4, h5 {
   float: right;
   width: 52%;
   padding: 10px;
+}
+.indicator4s {
+  /*display: inline-flex;*/
+  align-items: center;
+  margin: 0 auto;
+}
+.indicator4s .title {
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.indicator4s .value {
+    font-size: 24px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.indicator4s .label {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 0;
+    padding: 0;
+    text-align: center;
+    display: block;
+}
+.indicator4s .label2 {
+    color: #999;
+    font-size: 10px;
+    padding: -5px;
+    margin-top: 0;
+    text-align: center;
+    display: block;
+}
+.indicator4s .indicator-content {
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    width: calc(100% - 50px);
+    padding-left: 10px;
+    display: grid;
+}
+
+.highlight h3 {
+    font-size: 20px;
+    margin: 0px;
+    text-align: center;
+    color: #666;
+}
+
+.column h3 {
+    font-size: 20px;
+    margin: 0px;
+    text-align: center;
+    color: #666;
+}
+
+.progress-bar-1-C {
+  background-color: #59656E;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.progress-bar-3-C {
+  background-color: #BBC8D0;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.indicator2b {
+  display: inline-flex;
+  align-items: center;
+  height: 75px;
+  margin: 0 auto;
+}
+.indicator2b img {
+  max-height: 60px;
+  padding-right: 10px;
+  padding-left: -20px;
+}
+.indicator2b .value {
+    font-size: 28px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-right: -5px;
+    text-align: center;
+}
+.indicator2b .label {
+    color: #666;
+    font-size: 18px;
+    padding: 0;
+    text-align: center;
+}
+.indicator2b .label2{
+    color: #666;
+} 
+.indicator2b span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.indicator2b .image {
+    height: 60px;
+}
+.indicator2b .indicator-content {
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    width: calc(100% - 60px);
+    padding-left: 20px;
+    display: grid;
+}
+
+.indicator-map h3 {
+    font-size: 20px;
+    margin: 5px;
+    text-align: center;
+    color: #666;
+}
+.indicator-map .value2 {
+    font-size: 18px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+    margin-right: 5px;
+}
+.indicator-map .value3 {
+    font-size: 26px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: justify;
+    margin-left: 25px;
+    padding: 3px 10px;
+    vertical-align: top;
+}
+.indicator-map .label5 {
+    color: #666;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+    margin-left: 15px;
+    text-align: justify;
+    vertical-align: top;
+}
+
+.progressbar-legend > .sp-content-b {
+  margin: 2.6px 10px;
+  text-align: center;
 }
