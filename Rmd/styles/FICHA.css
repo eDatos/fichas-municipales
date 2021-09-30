@@ -476,12 +476,12 @@ h4, h5 {
 }
 .piechart_P {
   float: left;
-  width: 58%;
+  width: 46%;
   height: 250px;
   margin: 5px;
 }
 .tablechart {
   float: right;
-  width: 40%;
+  width: 52%;
   padding: 10px;
 }
