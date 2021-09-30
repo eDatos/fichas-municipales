@@ -1,0 +1,42 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<div class="row nota-metodologica">
+<div class="indicator-title">
+  <h3>Glosario de conceptos de medida</h3>
+</div>
+
+<div class="row highlight">
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos extrahoteleros", "Establecimientos turísticos de alojamiento que ofrece servicio de alojamiento acompañado o no de otros servicios complementarios como pueden ser un apartamento, villa, casa rural, casa emblemática o viviendas vacacionales.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Paquete turístico", "Reserva previa del viaje que incluye al menos alojamiento y transporte, aunque alguno de estos dos elementos puede ser reemplazado por cualquier otro servicio que suponga una cantidad significativa del precio total del viaje (visitas organizadas, alquiler de coche, etc.) y que ha sido vendida a un precio global indivisible a través de agencia de viajes o turoperador.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.")`</div>
+</div>
+
+<div class="row">
+</div>
+<div class="logo-fecam-glosario">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac-glosario"> 
+  <img src="img/logo_istac.png" />
+</div>
+

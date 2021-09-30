@@ -1,0 +1,203 @@
+---
+title: ''
+params:
+  id_municipio: 38048
+  año: 2019
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/~latest/codes
+  url.piramide: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d619ecaa-319c-4d29-a789-b7708fbaf3be
+  url.defunciones: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=6a7b1c7f-f345-485c-b9de-e4b1477fe91b
+  url.nacimientos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6879177d-dbe7-40f2-a02b-caa806cf064e/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.crec_veg: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=5012a489-2ef4-4ff2-b1bf-ebf6e4c5f2d2
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías}
+library(jsonlite)
+library(ggplot2)
+library(knitr)
+library(data.table)
+library(plotly)
+library(plyr)
+library(dplyr)
+library(scales)
+library(htmlwidgets)
+library(sf)
+library(fuzzyjoin)
+library(xml2)
+library(tidyverse)
+library(tmap)
+library(magrittr)
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  # transform(id = sub("\\_.*", "", id)) %>%
+  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Pirámide por edad y sexo}
+piramide <- fromJSON(params$url.piramide)
+df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
+colnames(df_piramide) <- c('mun', 'gredad', 'año', 'sexo', 'valor')
+df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
+df_piramide$gredad <- ordered(df_piramide$gredad, levels = piramide[["categories"]][["codes"]][[2]])
+df_piramide$año <- as.numeric(df_piramide$año)
+df_piramide$sexo <- factor(df_piramide$sexo , levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
+df_piramide$valor <- as.numeric(df_piramide$valor)
+df_piramide$mun <- recode_mun(df_piramide, 'mun')
+
+Num_Pobl_num <- df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% subset(select = "valor") %>%  as.numeric()
+```
+
+```{r Defunciones}
+data_defunciones <- fromJSON(params$url.defunciones)
+
+df_defunciones <- cbind(data.frame(do.call('rbind', data_defunciones[["data"]][["dimCodes"]])), data_defunciones[["data"]][["Valor"]])
+colnames(df_defunciones) <- c('año', 'mun', 'sexo', 'ind', 'valor')
+df_defunciones$año <- as.numeric(df_defunciones$año)
+df_defunciones$mun <- factor(df_defunciones$mun, levels=data_defunciones[["categories"]][["codes"]][[2]],
+                             labels=data_defunciones[["categories"]][["labels"]][[2]])
+df_defunciones$sexo <- factor(df_defunciones$sexo, levels=data_defunciones[["categories"]][["codes"]][[3]],
+                              labels=data_defunciones[["categories"]][["labels"]][[3]])
+df_defunciones$ind <- factor(df_defunciones$ind, levels=data_defunciones[["categories"]][["codes"]][[4]],
+                             labels=data_defunciones[["categories"]][["labels"]][[4]])
+df_defunciones$valor <- as.numeric(df_defunciones$valor)
+df_defunciones$mun <- recode_mun(df_defunciones, 'mun')
+
+tasa_año <- function(df){
+  df <- df %>% filter(año <= params$año)
+  if(max(df$año) == params$año){
+    df_mun <- df %>% filter(año == params$año & mun == municipio_actual$municipio)
+    }else{
+      df_mun <- df %>% filter(año == params$año-1 & mun == municipio_actual$municipio)
+    }
+}
+
+df_defunciones_mun <- tasa_año(df_defunciones)
+
+# Tasas por mil habitantes con un decimal:
+TBM <- df_defunciones_mun %>% filter(sexo =="AMBOS SEXOS" & ind == "Tasas brutas de mortalidad") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+emd_mujer <- df_defunciones_mun %>% filter(sexo =="Mujeres" & ind == "Edades medias de la defunción") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+emd_hombre <- df_defunciones_mun %>% filter(sexo =="Hombres" & ind == "Edades medias de la defunción") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Natalidad}
+## Tasa Bruta de Natalidad
+data_nacimientos <- fromJSON(params$url.nacimientos)
+df_nacimientos <- data.frame(
+  id = rep(names(data_nacimientos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+            each=data_nacimientos[["dimension"]][["TIME"]][["representation"]][["size"]]),
+  año = names(data_nacimientos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+  valor = as.numeric(data_nacimientos[["observation"]]))
+df_nacimientos <- df_nacimientos %>% left_join(df_CL_AREA_mun, by = "id") %>% select(mun = municipio, año, valor)
+df_nacimientos_mun <- tasa_año(df_nacimientos)
+
+# Tasa por mil habitantes con dos decimales:
+TBN <- format(round(df_nacimientos_mun$valor / Num_Pobl_num * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Crecimiento vegetativo}
+# Crecimiento vegetativo. Municipios por islas de Canarias y años. De 1999 al 2019
+data_crec_veg <- fromJSON(params$url.crec_veg)
+df_crec_veg <- cbind(data.frame(do.call('rbind', data_crec_veg[["data"]][["dimCodes"]])), data_crec_veg[["data"]][["Valor"]])
+colnames(df_crec_veg) <- c('mun', 'año', 'valor')
+df_crec_veg$mun <- factor(df_crec_veg$mun, levels=data_crec_veg[["categories"]][["codes"]][[1]],
+                                labels=data_crec_veg[["categories"]][["labels"]][[1]])
+df_crec_veg$año <- as.numeric(df_crec_veg$año)
+df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
+df_crec_veg$mun <- recode_mun(df_crec_veg, 'mun')
+df_crec_veg_mun <- tasa_año(df_crec_veg)
+
+Crec_veg <- df_crec_veg_mun$valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<div class="row nota-metodologica">
+<div class="indicator-title">
+  <h3>Glosario de conceptos de medida</h3>
+</div>
+
+<div class="row highlight" style="margin: 10px auto;">
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Crecimiento vegetativo", "Diferencia entre nacimientos y defunciones.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Índice de dependencia", "Cociente entre la población perteneciente a un determinado ámbito a 1 de enero de un año concreto menor de 16 años o mayor de 64 entre la población de 16 a 64 años, expresado en tanto por cien.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Población", "Número de personas según las cifras oficiales de población, a 1 de enero de cada año, elaboradas a partir del Padrón Municipal de Habitantes.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de mortalidad", "Número de defunciones a lo largo del año frente al total poblacional del ámbito geográfico correspondiente por cada 1.000 habitantes de ese ámbito.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Tasa de natalidad", "Total de nacimientos de madre perteneciente a un determinado ámbito en un año concreto por cada 1.000 habitantes.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto por cada 1.000 habitantes.")`</div>
+</div>
+
+
+```{r, results='asis'}
+get_año_anterior = function(año_anterior) {
+  return(sprintf("<div class='row' style='margin-left: 25px'>%s</div>", año_anterior))
+}
+
+if(max(df_defunciones_mun$año) == params$año-1 | max(df_nacimientos_mun$año) == params$año-1 | max(df_defunciones_mun$año) == params$año-1){
+  cat(paste0("<div class='row highlight style='padding-top: 10px;'><div class='row' style='margin-left: 20px'>* Todavía no hay datos disponibles para ", params$año,". Así que se tienen valores de ", params$año-1, " en:</div>"))
+}
+if(max(df_defunciones_mun$año) == params$año-1){
+  cat(get_año_anterior("- La tasa de mortalidad y las edades medias a la defunción"))
+}
+if(max(df_nacimientos_mun$año) == params$año-1){
+  cat(get_año_anterior("- La tasa de natalidad"))
+}
+if(max(df_crec_veg_mun$año) == params$año-1){
+  cat(get_año_anterior("- El crecimiento vegetativo"))
+}
+if(max(df_defunciones_mun$año) == params$año-1 | max(df_nacimientos_mun$año) == params$año-1 | max(df_defunciones_mun$año) == params$año-1){
+  cat(paste0('</div></div><div class="row" style="margin: 361px auto;"></div><div class="logo-fecam-glosario"><img src="img/fecam.jpeg" /></div><div class="logo-istac-glosario"> <img src="img/logo_istac.png" /></div>'))
+} else{
+  cat(paste0('</div><div class="row" style="margin: 423px auto;"></div><div class="logo-fecam-glosario"><img src="img/fecam.jpeg" /></div><div class="logo-istac-glosario"> <img src="img/logo_istac.png" /></div>'))
+}
+```
+

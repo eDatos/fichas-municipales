@@ -1,0 +1,44 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<div class="row nota-metodologica">
+<div class="indicator-title">
+  <h3>Glosario de conceptos de medida</h3>
+</div>
+
+<div class="row highlight">
+  <div style="padding: 5px 10px; margin-bottom: -40px;">`r get_indicator_met_("Actividad económica", "Se define como la generación de valor añadido mediante la producción de bienes y servicios.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Afiliaciones según el lugar de residencia", "Puestos de trabajo registrados en la Seguridad Social y referidos al último día del mes. El lugar de referencia es el domicilio de residencia de la empresa o del autónomo. Se contabilizan los puestos ocupados por personas en situación de alta, contemplando las afiliaciones múltiples de una misma persona.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Asalariados", "Aquellas personas que trabajan a cambio de un sueldo, salario, remuneración, comisión o cualquier otra retribución en metálico o en especie, para un empresario (persona física o jurídica).")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Autónomos", "Aquellas personas que llevan su propia empresa o ejercen por su cuenta y con autonomía una profesión liberal, para lo cual pueden a su vez contratar empleados a los que remuneran mediante un sueldo.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado por cada 1.000 habitantes.")`</div>
+  
+</div>
+
+<div class="row">
+<div class="logo-fecam-glosario">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac-glosario"> 
+  <img src="img/logo_istac.png" />
+</div>
+</div>
+
