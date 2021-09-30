@@ -117,18 +117,20 @@ mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun
 
 mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
                       tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0)
-
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
 
 mapa_isla_plot <- tm_shape(mapa_isla) + 
                   tm_borders() + 
                   tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA)
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
 
 mapa_comarca_plot <- tm_shape(mapa_comarca) + 
                      tm_borders() + 
                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA)
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Municipios relacionados}
@@ -184,14 +186,10 @@ df_u <- df_afil_ %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS
 related_mun <- df_u %>% filter(Periodo == mes_actual$code)
 related_mun <- seleccion_mun(df_localizacion, related_mun  %>% select(mun = Municipio, Valor), 'Valor')
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s&percnt;</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s&percnt;</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span>"
 
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)',
-                             'rgba(0, 139, 208, 0.8)',
-                             'rgba(140, 210, 234, 0.8)'
-                             )[1:nrow(related_mun)],
-                           related_mun$nombre)
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df_u <- df_afil_ %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & nacionalidad == "TOTAL") %>%
   select(c(Municipio, Periodo, Valor)) %>% arrange(Periodo) %>% 
@@ -237,13 +235,13 @@ g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour =
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
   scale_x_discrete(breaks = function(x){paste0(2006:2021,"-M03")}, labels = function(x){substr(x, 0, 4)}) +
-  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6)
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"), list("pan2d"), list("resetScale2d"), list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(1,nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*4), nrow(df[df$Municipio == municipio_actual$municipio, ])),
+                      range = c(max(1, nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*4), nrow(df[df$Municipio == municipio_actual$municipio, ])),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -286,7 +284,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
     }
   ") 
-
 ```
 
 ```{r Pirámide afiliaciones según residencia por edad y sexo}
@@ -294,15 +291,18 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 piramide <- fromJSON(params$url.piramide_c)
 df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_piramide) <- c('mun', 'gredad', 'periodo', 'sexo', 'valor')
-df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 # df_piramide$gredad <- ordered(df_piramide$gredad, levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
 df_piramide$periodo <- factor(df_piramide$periodo, levels = piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
 df_piramide$sexo <- factor(df_piramide$sexo, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_piramide$valor <- as.numeric(df_piramide$valor)
-df_piramide$mun <- recode_mun(df_piramide, 'mun')
-Num_Pobl_num <- df_piramide %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$Periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
+
+Num_Afil_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$Periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
                              subset(select = "valor") %>%  as.numeric()
-Num_Pobl_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & periodo == mes_actual$Periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
+df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
+df_piramide$mun <- recode_mun(df_piramide, 'mun')
+Num_Afil_num <- df_piramide %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$Periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
+                             subset(select = "valor") %>%  as.numeric()
+Num_Afil_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & periodo == mes_actual$Periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
                              subset(select = "valor") %>%  as.numeric()
 df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$Periodo & gredad != "_T" & sexo != "AMBOS SEXOS") %>%
   subset(select = c("gredad", "sexo", "valor", "mun")) %>%
@@ -313,7 +313,7 @@ df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$Periodo & greda
   arrange(desc(order))
 df_Canarias <- df_piramide_plot %>% filter(mun == "CANARIAS")
 df_mun <- df_piramide_plot %>% filter(mun == municipio_actual$municipio)
-df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Pobl_num, valor_Canarias = df_Canarias$valor, porcentaje_Canarias = df_Canarias$valor / Num_Pobl_Canarias)
+df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Afil_num, valor_Canarias = df_Canarias$valor, porcentaje_Canarias = df_Canarias$valor / Num_Afil_Canarias)
 
 g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo, group = sexo)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, aes(y = porcentaje)) + 
@@ -376,8 +376,7 @@ df_afil_mun <- df_afil_ %>%
   mutate(variacion =  valor - lag(valor, n=4), variacion_porc = round((valor / lag(valor, n=4) - 1)*100, 1)) %>%
   select(c(Periodo, valor, variacion, variacion_porc))
 
-Num_afil_num <- df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(valor)
-Num_Afil <- Num_afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
+Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 # Variacion_Afil <- df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion) %>% abs() %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 # Signo_Variacion <- signo(df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion))
 Imagen_Variacion <- ifelse(signo(df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion)) == "más", './img/up.png', './img/down.png')
@@ -387,10 +386,10 @@ df_afil_sexo_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & sexo != "AMBOS SEXOS" & Periodo == mes_actual$Periodo & nacionalidad == "TOTAL") %>%
   select(c(sexo, Periodo, valor))
 
-Num_Afil_M <- df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-Percent_Mujeres <- round(df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) / Num_afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Num_Afil_H <- df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) / Num_afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Afil_M <- df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
+Percent_Mujeres <- round(df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Afil_H <- df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
+Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Rankings}
@@ -402,19 +401,17 @@ df_Afil_ranking <- df_afil_ %>%
 
 rk_Afil_canarias <- grep(params$id_municipio, df_Afil_ranking$id)
 num_mun_canarias <- nrow(df_Afil_ranking)
-percent_canarias <- format(round(df_Afil_ranking[which(df_Afil_ranking$id==params$id_municipio),]$valor / sum(df_Afil_ranking$valor) * 100, 1),
-                           big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_canarias <- format(round(df_Afil_ranking[which(df_Afil_ranking$id==params$id_municipio),]$valor / Num_Afil_Canarias * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 rk_Afil_isla <- df_Afil_ranking %>% filter(isla == municipio_actual$isla)
 rk_isla <- grep(params$id_municipio, rk_Afil_isla$id)
 num_mun_isla <- nrow(rk_Afil_isla)
-percent_isla <- format(round(rk_Afil_isla[which(rk_Afil_isla$id==params$id_municipio),]$valor / sum(rk_Afil_isla$valor) * 100, 1), big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_isla <- format(round(rk_Afil_isla[which(rk_Afil_isla$id==params$id_municipio),]$valor / Num_Afil_Isla * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 rk_Afil_comarca <- df_Afil_ranking %>% filter(comarca == municipio_actual$comarca)
 rk_comarca <- grep(params$id_municipio, rk_Afil_comarca$id)
 num_mun_comarca <- nrow(rk_Afil_comarca)
-percent_comarca <- format(round(rk_Afil_comarca[which(rk_Afil_comarca$id==params$id_municipio),]$valor / sum(rk_Afil_comarca$valor) * 100, 1),
-                          big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_comarca <- format(round(rk_Afil_comarca[which(rk_Afil_comarca$id==params$id_municipio),]$valor / sum(rk_Afil_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Indicadores afiliación por nacionalidad}
@@ -422,10 +419,12 @@ df_afil_extr_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & Periodo == mes_actual$Periodo &
          nacionalidad %in% c(" ESPAÑOLA", " EXTRANJERA", " APÁTRIDA O SIN ESPECIFICAR")) %>%
   select(c(nacionalidad, Periodo, valor))
-df_afil_extr_mun <- df_afil_extr_mun %>% mutate(peso = round(df_afil_extr_mun$valor / sum(df_afil_extr_mun$valor) * 100, 1))
+df_afil_extr_mun <- df_afil_extr_mun %>% mutate(peso = round(df_afil_extr_mun$valor / Num_Afil_num * 100, 1))
 
 Peso_afil_esp <- df_afil_extr_mun %>% filter(nacionalidad == " ESPAÑOLA") %>% select(peso) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+# Num_afil_ext <- df_afil_extr_mun %>% filter(nacionalidad == " EXTRANJERA") %>% select(valor) %>% as.numeric()
 Peso_afil_ext <- df_afil_extr_mun %>% filter(nacionalidad == " EXTRANJERA") %>% select(peso) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+# Num_afil_apat <- df_afil_extr_mun %>% filter(nacionalidad == " APÁTRIDA O SIN ESPECIFICAR") %>% select(peso) %>% as.numeric()
 Peso_afil_apat <- df_afil_extr_mun %>% filter(nacionalidad == " APÁTRIDA O SIN ESPECIFICAR") %>% select(peso) %>% as.numeric()
 ```
 
@@ -436,7 +435,9 @@ df_afil_sl_mun <- df_afil_ %>%
 df_afil_sl_mun <- df_afil_sl_mun %>% mutate(peso = round(df_afil_sl_mun$valor / df_afil_sl_mun$valor[which(df_afil_sl_mun$sl == "TOTAL DE AFILIACIONES")] * 100, 1))
 
 Peso_afil_asal <- df_afil_sl_mun %>% filter(sl == " Empleos asalariados") %>% select(peso) %>% as.numeric()
+# Num_afil_asal <- df_afil_sl_mun %>% filter(sl == " Empleos asalariados") %>% select(valor) %>% as.numeric()
 Peso_afil_auton <- df_afil_sl_mun %>% filter(sl == " Empleos autónomos") %>% select(peso) %>% as.numeric()
+# Num_afil_auton <- df_afil_sl_mun %>% filter(sl == " Empleos autónomos") %>% select(valor) %>% as.numeric()
 ```
 
 ```{r Barras afiliaciones actividades económicas por sexo}
@@ -474,11 +475,11 @@ df_afil_Canarias <- df_afil_Canarias %>%
 colnames(df_afil_Canarias) <- c("ae", "sexo", "valor")
 
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% 
-  mutate(porcentaje = df_afil_ae_sexo_mun$valor / sum(df_afil_ae_sexo_mun$valor) * 100,
+  mutate(porcentaje = df_afil_ae_sexo_mun$valor / Num_Afil_num * 100,
          valor_Canarias = df_afil_Canarias$valor, 
-         porcentaje_Canarias = df_afil_Canarias$valor / sum(df_afil_Canarias$valor) * 100) %>%
-   transform(porcentaje = if_else(sexo == " Hombres", -porcentaje, porcentaje),
-             porcentaje_Canarias = if_else(sexo == " Hombres", -porcentaje_Canarias, porcentaje_Canarias))
+         porcentaje_Canarias = df_afil_Canarias$valor / Num_Afil_Canarias * 100) %>%
+  transform(porcentaje = if_else(sexo == " Hombres", -porcentaje, porcentaje),
+            porcentaje_Canarias = if_else(sexo == " Hombres", -porcentaje_Canarias, porcentaje_Canarias))
 
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% transform(hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(sector), "</b><br>"), ""),
@@ -493,8 +494,8 @@ df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% transform(hovertext = paste0(
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br>servicios"))
 
 g_afil_ae_sexo_mun <- ggplot(df_afil_ae_sexo_mun, aes(y = ae, fill = sexo, group = sexo, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
-  geom_bar(stat = "identity", color = "#59656E", alpha = 0, size = 0.4, aes(x = porcentaje_Canarias, text = "")) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
+  geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +
@@ -517,13 +518,8 @@ g_afil_ae_sexo_mun <- ggplotly(g_afil_ae_sexo_mun, tooltip = c("text")) %>%
 ```
 
 ```{r Generación HTML, results="asis"}
-
 get_indicator2 = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
-}
-
-get_indicator3 = function(label, value, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
 ```
 
@@ -540,7 +536,7 @@ get_indicator3 = function(label, value, image) {
 </div>
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
-template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s&percnt;</span></div></div>"
+template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span></div></div>"
 
 for (i in 1:nrow(leyenda_poblacion)) {
   cat(sprintf(template, i, leyenda_poblacion$color[i], leyenda_poblacion$Municipio[i], leyenda_poblacion$Valor[i], leyenda_poblacion$Tasa[i]))
@@ -557,7 +553,7 @@ if(Variacion_Porcentual_Afil == "NA"){
     '</div><div class="column-3">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-3">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de</br>...", paste0(Variacion_Porcentual_Afil, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_Afil, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
@@ -652,8 +648,8 @@ mapa_comarca_plot
 </div>
 
 <div class="column highlight" style="padding-top: 14px;">
-  <div class="column-2">`r get_indicator3("Española", paste0(Peso_afil_esp, "%"),"./img/spain2.png")`</div> 
-  <div class="column-2">`r get_indicator3("Extranjera", paste0(Peso_afil_ext, "%"),"./img/world.png")`</div>
+  <div class="column-2">`r get_indicator2("Española", paste0(Peso_afil_esp, "%"),"./img/spain2.png")`</div> 
+  <div class="column-2">`r get_indicator2("Extranjero", paste0(Peso_afil_ext, "%"),"./img/world.png")`</div>
 </div>
 <div class="column highlight">
 <div class="progress-bar-container">
@@ -662,8 +658,8 @@ mapa_comarca_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Asalariados (`r format(Peso_afil_asal, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Autónomos (`r format(Peso_afil_auton, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Asalariados</br>`r format(Peso_afil_asal, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Autónomos</br>`r format(Peso_afil_auton, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 </div>
@@ -674,28 +670,5 @@ mapa_comarca_plot
 <div class="logo-istac"> 
   <img src="img/logo_istac.png" />
 </div>
-</div>
-
-
-```{r}
-get_indicator_met = function(label, description, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", image, label, description))
-}
-get_indicator_met_ = function(label, description) {
-  return(sprintf("<div class='indicator5'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
-}
-```
-
-<div class="row nota-metodologica">
-<div class="indicator-title">
-  <h3>Glosario de conceptos de medida</h3>
-</div>
-
-<div class="row highlight">
-  <div class ="column-2">`r get_indicator_met("Tasa de ", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado por cada 1.000 habitantes.","./img/crecimiento.png")`</div>
-  <div class ="column-2">`r get_indicator_met("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.","./img/family2.png")`</div>
-  <div class ="column-2">`r get_indicator_met_("Asalariados", "Aquellas personas que trabajan a cambio de un sueldo, salario, remuneración, comisión o cualquier otra retribución en metálico o en especie, para un empresario (persona física o jurídica).")`</div>
-  <div class ="column-2">`r get_indicator_met_("Autónomos", "Aquellas personas que llevan su propia empresa o ejercen por su cuenta y con autonomía una profesión liberal, para lo cual pueden a su vez contratar empleados a los que remuneran mediante un sueldo.")`</div>
-  
 </div>
 
