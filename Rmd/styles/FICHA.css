@@ -392,20 +392,6 @@ div.level3 {
 .linechart .hoverlayer .legend {
 display: none;
 }
-.column-map {
-    width: 80px;
-    height: 110px;
-}
-.piechart {
-  float: left;
-  width: 50%;
-  padding: 0;
-  height: 245px;
-}
-.piechart h5 {
-  text-align: center;
-  color: #666;
-}
 .piramide {
   margin-right: 20px;
   height: 350px;
