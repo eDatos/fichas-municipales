@@ -1,0 +1,501 @@
+body {
+  /*padding-bottom: 60px;*/
+}
+.plotly {
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: 100%;
+}
+table {
+  table-layout: fixed ;
+  width: 100%;
+  margin-bottom: 40px;
+}
+td {
+  width: 50%;
+}
+#por-sexos {
+  height: 160px;
+}
+div.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+.highlight {
+  border: 2px solid #D5EDFA;
+  border-radius: 20px;
+  margin: 0 5px;
+  width: calc(50% - 10px) !important;
+}
+div.level3 {
+  background-color: #e8e7e7;
+  margin: 20px 5px 0px 5px;
+  padding: 5px 10px;
+  color: #008BD0;
+  line-height: 2em;
+  width: calc(50% - 10px);
+}
+.column-3 {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+  display: inline-flex;
+  margin: 10px 0;
+}
+.column-2 {
+  float: left;
+  width: 50%;
+  padding: 5px;
+  display: inline-flex;
+  margin: 0;
+}
+.progress-bar-1 {
+  background-color: #005980;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.progress-bar-2 {
+  background-color: #008BD0;
+}
+.progress-bar-3 {
+  background-color: #8CD2EA;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.progress-bar-4 {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border: 1px solid #59656E;
+}
+.progress-bar-5 {
+  background-color: #0072A2;
+}
+.progress-bar-6 {
+  background-color: #00A6DC;
+}
+.progress-bar-7 {
+  background-color: #2CBCE2;
+}
+
+.progress-bar-container {
+  border-radius: 20px;
+  margin: 10px;
+  float: left;
+  width: calc(100% - 20px);
+  display: flex;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  line-height: 30px;
+  font-weight: bold;
+  height: 30px;
+  opacity: 0.8;
+}
+.progressbar-legend-container {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.progressbar-legend {
+  display: flex;
+  align-items: center;
+}
+.progressbar-legend > [class^="progress-bar-"] {
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+.progressbar-legend > .sp-content {
+  margin: 0px 10px;
+  text-align: center;
+}
+.legend-vertical-container {
+  margin-top: 15px;
+}
+.legend-vertical-container > .progressbar-legend  {
+    margin: 5px 20px;
+    align-items: initial;
+}
+.legend-vertical-container > .progressbar-legend > .sp-content {
+    text-align: left;
+}
+.legend-vertical-container > .progressbar-legend > [class^="progress-bar-"] {
+    margin-top: 3px;
+}
+.column-4 {
+  /*float: left;*/
+  width: 24%;
+  padding: 5px;
+  height: 75px;
+  display: inline-flex;
+  margin: 0;
+}
+.indicator2 {
+  display: inline-flex;
+  align-items: center;
+  height: 75px;
+  margin: 0 auto;
+}
+.indicator2 img {
+  max-height: 60px;
+}
+.indicator2 .value {
+    font-size: 28px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.indicator2 .label {
+    color: #666;
+    font-size: 18px;
+    padding: 0;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.indicator2 .label2{
+    color: #666;
+} 
+.indicator2 span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.indicator2 .image {
+    height: 60px;
+}
+.indicator2 .indicator-content {
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    width: calc(100% - 60px);
+    padding-left: 10px;
+    display: grid;
+}
+
+.indicator3 {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 auto;
+}
+.indicator3 img {
+  max-height: 50px;
+}
+.indicator3 .value {
+    font-size: 24px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.indicator3 .label {
+    color: #666;
+    font-size: 13px;
+    padding: 0;
+    text-align: center;
+}
+.indicator3 .label2{
+    color: #666;
+} 
+.indicator3 span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.indicator3 .image {
+    height: 50px;
+}
+.indicator3 .indicator-content {
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    width: calc(100% - 50px);
+    padding-left: 10px;
+    display: grid;
+}
+.indicator4 {
+  /*display: inline-flex;*/
+  align-items: center;
+  margin: 0 auto;
+}
+.indicator4 .title {
+    font-size: 22px;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.indicator4 .value {
+    font-size: 28px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.indicator4 .label {
+    color: #999;
+    font-size: 20px;
+    padding: 0;
+    text-align: center;
+    display: block;
+}
+.indicator4 .indicator-content {
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    width: calc(100% - 50px);
+    padding-left: 10px;
+    display: grid;
+}
+
+.indicator-map {
+  border: 2px solid #D5EDFA;/*#008BD0;*/
+  border-radius: 20px;
+  padding: 10px 0px;
+  width: 100%;
+}
+.indicator-map .plotly {
+  width: calc(100% + 20px) !important;
+  max-width: calc(100% + 20px) !important;
+  height: 180px;
+  max-height: 180px;
+  margin-bottom: 0;
+}
+.indicator-map img {
+  max-height: 130px;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+.map-canarias img {
+  max-height: 180px;
+  margin-top: -25px;
+  margin-bottom: -22px;
+}    
+.indicator-map .value {
+    font-size: 32px;
+    color: #008BD0;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+    margin-right: 5px;
+}
+.indicator-map .label {
+    color: #666;
+    font-size: 18px;
+    padding: 0;
+    text-align: center;
+    margin: 0;
+    vertical-align: bottom;
+}
+.indicator-map .label2 {
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+} 
+.indicator-map .label3 {
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 5px;
+}
+.indicator-map span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.indicator-map .image {
+    height: 140px;
+    margin: 0 auto;
+    display: table;
+    width: 100%;
+    margin-bottom: -15px;
+    overflow: hidden;
+}
+.indicator-map .indicator-content {
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    margin-top: 12px;
+}
+.indicator-title {
+    border: 2px solid #008BD0;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: calc(50% - 10px) !important;
+}
+.indicator-title h3 {
+    font-size: 20px;
+    margin: 0px;
+    text-align: center;
+    color: #666;
+}
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.linechart {
+    height: 270px; 
+    float: left;
+    width: 66%;
+}
+.linechart-placeholder {
+  display: table;
+  width: 100%;
+  margin-bottom: 15px;
+}
+#ranking-del-municipio {
+    margin-top: -25px;
+}
+.serie-placeholder {
+  font-size: 12px;
+  width: 350px;
+  margin: 15px 0;
+}
+#hover-event-placeholder {
+  height: 250px;
+  display: inline-grid;
+}
+.sp-municipio {
+  color: #666;
+  font-size: 15px;
+  font-weight: 700;
+}
+.sp-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  margin-top: 8px;
+}
+.sp-content {
+  margin-left: 18px;
+}
+.serie-placeholder-1 {
+  font-size: 14px;
+}
+.serie-placeholder-1 .sp-municipio {
+  font-size: 22px;
+}
+.legend rect, .legend {
+  border-radius: 20px;
+}
+.linechart .hoverlayer .legend {
+display: none;
+}
+.column-map {
+    width: 80px;
+    height: 110px;
+}
+.piechart {
+  float: left;
+  width: 50%;
+  padding: 0;
+  height: 245px;
+}
+.piechart h5 {
+  text-align: center;
+  color: #666;
+}
+.piramide {
+  margin-right: 20px;
+  height: 350px;
+}
+.silueta-municipio img {
+  max-height: 200px;
+  position: relative;
+  top: 50px;
+  float: right;
+  right: 50px;
+  opacity: 0.5;
+}
+.logo-istac {
+  padding-left: 20px;
+}
+.logo-istac img {
+  height: 80px;
+}
+.logo-fecam {
+  position: relative;
+  float: right;
+  right: 20px;
+}
+.logo-fecam img {
+  height: 60px;
+}
+.left {
+  text-align: left !important;
+}
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.html-widget {
+  margin-bottom: 0 !important;
+}
+hr {
+    margin: 0px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+hr.separator {
+  border-top: 2px solid #eee;
+}
+.nota-metodologica .indicator-title, .nota-metodologica .highlight, .nota-metodologica .indicator-content {
+  width: 100% !important;
+}
+.nota-metodologica .highlight {
+  padding: 20px 0;   
+ }
+.nota-metodologica .image { 
+  text-align: center;
+  height: 70px;
+  width: 80px;
+}
+.nota-metodologica .indicator3 {
+  width: calc(100% - 20px) !important;
+  text-align: left;
+  margin-left: 10px;
+  height: 100px;
+  align-items: start;
+}
+.nota-metodologica .indicator-content {
+  text-align: left;
+  display: inline;
+}
+.nota-metodologica .label {
+  color: #666;
+  margin-bottom: 6px;
+  text-align: left;
+  font-size: 22px;
+}
+h4, h5 {
+    margin: 10px;
+    text-align: center;
+    color: #666;
+}
+.piechart {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+.piechart_P {
+  float: left;
+  width: 58%;
+  height: 250px;
+  margin: 5px;
+}
+.tablechart {
+  float: right;
+  width: 40%;
+  padding: 10px;
+}

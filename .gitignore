@@ -1,2 +1,8 @@
 .Rhistory
+.RData
+.Rproj.user/*
 .DS_Store
+data/
+/shiny/output/*
+/shiny/print/*
+/Rmd/*.html

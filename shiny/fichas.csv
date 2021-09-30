@@ -1,0 +1,7 @@
+code;description;filename;periodicidad
+demografia;Indicadores demograficos;FICHA.Rmd;A
+paro;Paro registrado;FICHA_PARO.Rmd;M
+afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q
+afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q
+eiss;Empresas inscritas a la Seguridad Social;FICHA_EMPRESAS_SS.Rmd;Q
+presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A

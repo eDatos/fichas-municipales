@@ -1,0 +1,627 @@
+---
+title: ''
+params:
+  id_municipio: 38018
+  año: 2021
+  mes: 3
+  url.periodo: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.empresas: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.ind_empresas: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D
+  url.intervalos: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000005/2.0?lang=es
+  url.nat_jurid: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000007/2.0?lang=es
+  url.agricultura: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_AGRICULTURA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.industria: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_INDUSTRIA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.construccion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_CONSTRUCCION/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.servicios: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_SERVICIOS/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.otros: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000003/3.0?dim=ACTIVIDAD_ECONOMICA%3AA38_19%7CA38_21&lang=es
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías}
+library(jsonlite)
+library(ggplot2)
+library(knitr)
+library(data.table)
+library(plotly)
+library(plyr)
+library(dplyr)
+library(scales)
+library(htmlwidgets)
+library(sf)
+library(fuzzyjoin)
+library(xml2)
+library(XML)
+library(tidyverse)
+library(tmap)
+library(magrittr)
+library(ggpol)
+library(reshape2)
+
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Periodo}
+data_periodo <- fromJSON(params$url.periodo)
+
+periodo <- data.frame(code = data_periodo[["dimension"]][["TIME"]][["representation"]][["code"]],
+                      Periodo = data_periodo[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]]) %>%
+  filter(substring(code, 6,9) %in% c("M03", "M06", "M09", "M12")) %>% arrange(code)
+
+periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
+periodo_actual$periodo_formatted <- paste0(strsplit(periodo_actual$Periodo, " ")[[1]][2], ' ', strsplit(periodo_actual$Periodo, " ")[[1]][1])
+periodo <- periodo %>% mutate(order = order(periodo$code, decreasing = FALSE))
+periodo_anterior <- periodo$Periodo[which(substring(periodo$code, 0,4) == params$año & as.numeric(substring(periodo$code, 7,9)) == params$mes)-1]
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = sub("\\_.*", "", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0)
+
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA)
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+  
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1:3,]
+}
+```
+
+```{r Gráfico evolución del número de empresas inscritas a la SS}
+# Empresas inscritas en la Seguridad Social. 2012-2020
+# Número de empresas de alta en la Seguridad Social en el último día del mes
+data_u <- fromJSON(params$url.empresas)
+
+df_u <- data.frame(Municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                   each = data_u[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                   Periodo = names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]), 
+                   Valor = as.numeric(data_u[["observation"]]))
+df_u <- df_u %>%
+  filter(substring(Periodo, 6,9) %in% c("M03", "M06", "M09", "M12")) %>% 
+  mutate(Municipio = substring(Municipio, 0,5))
+df_u <- df_u[with(df_u, order(Periodo)), ]
+
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Número de empresas: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s&percnt;</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Número de empresas: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s&percnt;</span>"
+
+related_mun <- df_u %>% filter(Periodo == periodo_actual$code)
+related_mun <- seleccion_mun(df_localizacion, related_mun  %>% select(mun = Municipio, Valor), 'Valor')
+
+df <- related_mun %>%
+  select(Municipio = "mun") %>%
+  left_join(df_u, by = "Municipio") %>%
+  select(id = Municipio, Periodo, Valor) %>%
+  left_join(df_CL_AREA_mun, by="id") %>%
+  select(code = Periodo, Valor, Municipio = municipio) %>%
+  left_join(periodo, by = "code") %>%
+  transform(Tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((Valor / lag(Valor, n = 4)) - 1), 1), NA)) %>%
+  filter(!is.na(Tasa) & code <= periodo_actual$code)
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
+leyenda_poblacion <- df %>% filter(Periodo == periodo_actual$Periodo) %>%
+  mutate(Valor = format(Valor, big.mark = ".", decimal.mark = ",")) %>%
+  mutate(Tasa = format(Tasa, big.mark = ".", decimal.mark = ",")) %>%
+  left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
+
+df <- df %>% mutate(Periodo = strsplit(Periodo, " ")) %>% 
+  unnest_wider('Periodo') %>% 
+  mutate(
+    Periodo = paste0(...2, ' ', ...1),
+    tooltip = ifelse(Periodo == periodo_actual$periodo_formatted, 
+                     sprintf(leyenda.content, Municipio, Valor, Tasa),
+                     sprintf(leyenda.content, Municipio, paste0(Valor, ' (',Periodo,')'), Tasa)
+              )
+  )
+
+g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour = Municipio,
+                                text = paste0(format(Tasa, big.mark = ".", decimal.mark = ","), "% (", Periodo, ")"))) +
+  geom_line(size = 0.7)+
+  theme_minimal()+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1))+
+  scale_x_discrete(breaks = function(x){paste0(2006:2021,"-M03")}, labels = function(x){substr(x, 0, 4)}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6) #+
+  # labs(colour = " ", caption = paste0("<b>Municipio: ", df$Municipio, "<br>Gasto por habitante: ", format(df$Valor, big.mark = ".", decimal.mark = ","), "</b>"))
+
+g_line <- ggplotly(g_line, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(1, nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*4), nrow(df[df$Municipio == municipio_actual$municipio, ])),
+                      rangeselector = list(buttons = list(list(count = 3,
+                                                               label = "3 mo",
+                                                               step = "month",
+                                                               stepmode = "backward"),
+                                                          list(count = 6,
+                                                               label = "6 mo",
+                                                               step = "month",
+                                                               stepmode = "backward"),
+                                                          list(step = "all"))),
+                      rangeslider = list(type = "date", thickness=0.04))) %>%
+  onRender("
+    function(el) {
+      var municipios = document.getElementsByClassName('sp-municipio');
+      var tasas =  document.getElementsByClassName('sp-tasa');
+      var poblaciones = document.getElementsByClassName('sp-habitantes');
+
+      el.on('plotly_hover', function(d) {
+        console.log(d);
+        highlight(d);
+      });
+      
+      el.on('plotly_unhover', function(d) {
+        reset(d);
+      });
+      
+      el.on('plotly_click', function(d) {
+        highlight(d);
+      });
+      
+      function highlight(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x = d.points[point].x;
+              poblaciones[i].textContent = d.points[point].y.toLocaleString('es-ES');
+              tasas[i].textContent = d.points[point].text;
+            }
+          }
+        }
+      }
+      
+      function reset(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x_data = d.points[point].data.x;
+              var y_data = d.points[point].data.y;
+              var text_data = d.points[point].data.text;
+              poblaciones[i].textContent = y_data[y_data.length - 1].toLocaleString('es-ES');
+              tasas[i].textContent = text_data[text_data.length - 1];
+            }
+          }
+        }
+      }
+    }
+  ") 
+```
+
+```{r Indicador evolución de las empresas}
+# Empresas inscritas en la Seguridad Social
+ind_empresas <- fromJSON(params$url.ind_empresas)
+
+df_lv <- data.frame(
+  municipio = rep(names(ind_empresas[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each = ind_empresas[["dimension"]][["TIME"]][["representation"]][["size"]] * ind_empresas[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  periodo = rep(names(ind_empresas[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each = ind_empresas[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(ind_empresas[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = ind_empresas[["observation"]]) %>% 
+  mutate(municipio = substring(municipio, 0,5)) %>%
+  filter(periodo == periodo_actual$code & municipio == params$id_municipio)
+
+df_lv$valor <- as.numeric(df_lv$valor)
+
+Num_empresas <-  format(df_lv[df_lv$medida == 'ABSOLUTE', ]$valor, big.mark = ".", decimal.mark = ",")
+Variacion_empresas <- format(abs(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor), big.mark = ".", decimal.mark = ",")
+Signo_Variacion <- signo(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor)
+Imagen_Variacion <- ifelse(Signo_Variacion == "más", './img/up.png', './img/down.png')
+Variacion_Porcentual_empresas <- format(round(df_lv[df_lv$medida == 'ANNUAL_PERCENTAGE_RATE', ]$valor, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+Num_empresas_num <-  df_lv[df_lv$medida == 'ABSOLUTE', ]$valor
+```
+
+```{r Rankings}
+data_empresas_ranking <- data_u
+
+df_empresas_ranking <- data.frame(id = rep(names(data_empresas_ranking[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                           each=data_empresas_ranking[["dimension"]][["TIME"]][["representation"]]$size),
+                                  periodo = names(data_empresas_ranking[["dimension"]][["TIME"]][["representation"]]$index),
+                                  valor = as.numeric(data_empresas_ranking[["observation"]])) %>% 
+  mutate(id = substring(id, 0,5)) %>%
+  filter(periodo == periodo_actual$code) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(valor))
+
+rk_empresas_canarias <- grep(params$id_municipio, df_empresas_ranking$id)
+num_mun_canarias <- nrow(df_empresas_ranking)
+percent_canarias <- format(round(df_empresas_ranking[which(df_empresas_ranking$id==params$id_municipio),]$valor / sum(df_empresas_ranking$valor) * 100, 1),
+                           big.mark=".",decimal.mark = ",", nsmall = 1)
+
+rk_empresas_isla <- df_empresas_ranking %>% filter(isla == municipio_actual$isla)
+rk_isla <- grep(params$id_municipio, rk_empresas_isla$id)
+num_mun_isla <- nrow(rk_empresas_isla)
+percent_isla <- format(round(rk_empresas_isla[which(rk_empresas_isla$id==params$id_municipio),]$valor / sum(rk_empresas_isla$valor) * 100, 1), big.mark=".",decimal.mark = ",", nsmall = 1)
+
+rk_empresas_comarca <- df_empresas_ranking %>% filter(comarca == municipio_actual$comarca)
+rk_comarca <- grep(params$id_municipio, rk_empresas_comarca$id)
+num_mun_comarca <- nrow(rk_empresas_comarca)
+percent_comarca <- format(round(rk_empresas_comarca[which(rk_empresas_comarca$id == params$id_municipio),]$valor / sum(rk_empresas_comarca$valor) * 100, 1),
+                          big.mark = ".",decimal.mark = ",", nsmall = 1)
+```
+
+```{r Naturaleza jurídica}
+# Empresas inscritas en la Seguridad Social según naturaleza jurídica. Canarias, islas y municipios por periodos. (Metodología 2015)
+data_nat_jurid <- fromJSON(params$url.nat_jurid)
+
+df_nat_jurid <- data.frame(
+  periodo = rep(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  naturaleza_j = rep(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                     each = length(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_municipio = rep(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                     times = length(data_nat_jurid[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  valor = unlist(strsplit(data_nat_jurid[["data"]][["observations"]], split = " | ", fixed = TRUE))) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5)) %>%
+  filter(periodo == periodo_actual$code & id_municipio == params$id_municipio)
+df_nat_jurid$valor <- as.numeric(df_nat_jurid$valor)
+
+Num_emp_fisica <- df_nat_jurid$valor[which(df_nat_jurid$naturaleza_j == "PERSONA_FISICA")] %>% format(big.mark = ".", decimal.mark = ",")
+Percent_emp_fisica <- round(df_nat_jurid$valor[which(df_nat_jurid$naturaleza_j == "PERSONA_FISICA")] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_emp_juridica <- df_nat_jurid$valor[which(df_nat_jurid$naturaleza_j == "PERSONA_JURIDICA_ENTIDAD")] %>% format(big.mark = ".", decimal.mark = ",")
+Percent_emp_juridica <- round(df_nat_jurid$valor[which(df_nat_jurid$naturaleza_j == "PERSONA_JURIDICA_ENTIDAD")] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Intervalos de asalariados}
+# Empresas inscritas en la Seguridad Social según intervalos de asalariados. Islas y municipios de Canarias por periodos. (Metodología 2015)
+data_intervalos <- fromJSON(params$url.intervalos)
+
+df_intervalos <- data.frame(
+  intervalo = rep(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                  each = length(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  periodo = rep(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  id_municipio = rep(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                     times = length(data_intervalos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(data_intervalos[["data"]][["observations"]], split = " | ", fixed = TRUE))) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+df_intervalos$intervalo <- ordered(
+  df_intervalos$intervalo,
+  levels = data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+  labels = c(data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[1]][["value"]],
+             data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[2]][["value"]],
+             data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[3]][["value"]],
+             data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[4]][["value"]],
+             data_intervalos[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[5]][["value"]]))
+df_intervalos$valor <- as.numeric(df_intervalos$valor)
+
+df_intervalos_mun <- df_intervalos %>% filter(id_municipio == params$id_municipio & intervalo != "Total" & periodo == periodo_actual$code) %>% 
+  select(c(intervalo, valor)) %>% arrange(-intervalo)
+df_intervalos_mun$intervalo <- ordered(df_intervalos_mun$intervalo, levels = levels(df_intervalos$intervalo)[5:1])
+df_intervalos_mun <- df_intervalos_mun %>% mutate(
+  porcentaje = round(df_intervalos_mun$valor / sum(df_intervalos_mun$valor) * 100, 1)
+)
+
+#df_intervalos_mun$intervalo =  mapvalues(trimws(df_intervalos_mun$intervalo), from = c("De 1 a 9" , "De 10 a 49", "De 50 a 249", "250 o más"), to = c("1-9", "10-49", "50-249", ">249"))
+
+g_intervalos <- ggplot(data = df_intervalos_mun, aes(y = intervalo, x = valor, fill = intervalo, name = NULL,
+                                               text = paste0("Intervalo de asalariados: ", intervalo,
+                                                             "<br>Nº de empresas: ", format(valor, big.mark = ".", decimal.mark = ","),
+                                                             "<br>(", format(porcentaje, big.mark = ".", decimal.mark = ","), " % del total de empresas)"))) +
+  geom_bar(stat = "identity", alpha = 0.65, width = 0.99) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  scale_fill_manual(values = c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","))})
+
+g_intervalos <- ggplotly(g_intervalos, tooltip = c("text")) %>%
+  layout(legend = list(orientation = 'h', xanchor = 'middle', x = 0.2, y = -0.15)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+```
+
+```{r Actividad económica}
+# Empresas inscritas en la Seguridad Social. Agricultura
+data_agricultura <- fromJSON(params$url.agricultura)
+
+df_agricultura <- data.frame(id_municipio = rep(names(data_agricultura[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                                each=data_agricultura[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                             periodo = names(data_agricultura[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                             valor = as.numeric(data_agricultura[["observation"]])) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+
+tasa.agricultura <- round(df_agricultura$valor[which(df_agricultura$id_municipio == params$id_municipio & df_agricultura$periodo == periodo_actual$code)] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+# Empresas inscritas en la Seguridad Social. Industria
+data_industria <- fromJSON(params$url.industria)
+
+df_industria <- data.frame(id_municipio = rep(names(data_industria[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                                each=data_industria[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                             periodo = names(data_industria[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                             valor = as.numeric(data_industria[["observation"]])) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+
+tasa.industria <- round(df_industria$valor[which(df_industria$id_municipio == params$id_municipio & df_industria$periodo == periodo_actual$code)] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+# Empresas inscritas en la Seguridad Social. Construcción
+data_construccion <- fromJSON(params$url.construccion)
+
+df_construccion <- data.frame(id_municipio = rep(names(data_construccion[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                                each=data_construccion[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                             periodo = names(data_construccion[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                             valor = as.numeric(data_construccion[["observation"]])) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+
+tasa.construccion <- round(df_construccion$valor[which(df_construccion$id_municipio == params$id_municipio & df_construccion$periodo == periodo_actual$code)] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+# Empresas inscritas en la Seguridad Social. Servicios
+data_servicios <- fromJSON(params$url.servicios)
+
+df_servicios <- data.frame(id_municipio = rep(names(data_servicios[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                                each=data_servicios[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                             periodo = names(data_servicios[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                             valor = as.numeric(data_servicios[["observation"]])) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+
+tasa.servicios <- round(df_servicios$valor[which(df_servicios$id_municipio == params$id_municipio & df_servicios$periodo == periodo_actual$code)] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+# Empresas inscritas en la Seguridad Social según agregaciones de actividad económica. Islas y municipios de Canarias por periodos. (Metodología 2015)
+# Comercio y Hostelería
+data_otros <- fromJSON(params$url.otros)
+
+df_otros <- data.frame(
+  periodo = rep(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                  each = length(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_municipio = rep(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  ae = rep(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                     times = length(data_otros[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  valor = unlist(strsplit(data_otros[["data"]][["observations"]], split = " | ", fixed = TRUE))) %>% 
+  mutate(id_municipio = substring(id_municipio, 0,5))
+df_otros$valor <- as.numeric(df_otros$valor)
+
+df_servicios_mun <- cbind(data.frame(
+  act_ec = c("total", "comercio", "hostelería"),
+  valor = as.numeric(c(df_servicios$valor[which(df_servicios$periodo == periodo_actual$code & df_servicios$id_municipio == params$id_municipio)],
+                       df_otros$valor[which(df_otros$periodo == periodo_actual$code & df_otros$id_municipio == params$id_municipio & df_otros$ae == "A38_19")],
+                       df_otros$valor[which(df_otros$periodo == periodo_actual$code & df_otros$id_municipio == params$id_municipio & df_otros$ae == "A38_21")]))))
+
+df_servicios_mun <- rbind(
+  df_servicios_mun,
+  c("otros servicios", df_servicios_mun$valor[which(df_servicios_mun$act_ec == "total")] - df_servicios_mun$valor[which(df_servicios_mun$act_ec == "comercio")] - df_servicios_mun$valor[which(df_servicios_mun$act_ec == "hostelería")]))
+df_servicios_mun$valor <- as.numeric(df_servicios_mun$valor)
+
+tasa.comercio <- round(df_servicios_mun$valor[which(df_servicios_mun$act_ec == "comercio")] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+tasa.hosteleria <- round(df_servicios_mun$valor[which(df_servicios_mun$act_ec == "hostelería")] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+tasa.resto_servicios <- round(df_servicios_mun$valor[which(df_servicios_mun$act_ec == "otros servicios")] / Num_empresas_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+
+get_indicator3 = function(label, value, image) {
+  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r periodo_actual$periodo_formatted`</h3>
+<h2 style="color: #666; margin: 0;">Empresas inscritas a la Seguridad Social</h2>
+<hr>
+
+<div class="linechart-placeholder">
+<h2 style="color: #005980; margin-bottom: 0;">`r Num_empresas` empresas</h2>
+<div class="linechart">
+  `r g_line`
+</div>
+<div id="hover-event-placeholder" class="column-4">
+```{r leyendas, results = "asis"}
+for (i in 1:nrow(leyenda_poblacion)) {
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$Municipio[i], leyenda_poblacion$Valor[i], leyenda_poblacion$Tasa[i]))
+}
+```
+</div>
+</div>
+
+<div class="row">
+<div class="column-3">`r get_indicator2(paste0(Variacion_empresas, " ", Signo_Variacion, " que en</br>el último trimestre"), paste0(Variacion_Porcentual_empresas, "%"), Imagen_Variacion)`</div>
+<div class="column-3">`r get_indicator2(paste0("Personas físicas</p><p class='label' style='color: #999;'>", Num_emp_fisica), paste0(Percent_emp_fisica, "%"), "./img/persona-fisica.png")`</div>
+<div class="column-3">`r get_indicator2(paste0("Personas jurídicas</p><p class='label' style='color: #999;'>", Num_emp_juridica), paste0(Percent_emp_juridica, "%"), "./img/persona-juridica.png")`</div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+<div class="column-3">
+  <div class="indicator-map">
+  <div class="image map-canarias">
+```{r} 
+mapa_Canarias_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_empresas_canarias`º </span>en Canarias</p>
+  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_isla_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
+  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_comarca_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_comarca`º </span>en la comarca</p>
+  <p class="label2">de `r num_mun_comarca` municipios (`r percent_comarca`%)</p>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="column indicator-title">
+  <h3>Nº de asalariados</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Actividad económica</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight">
+
+<div class="piramide" style="height: 214px;">
+  `r g_intervalos`
+</div>
+
+
+</div>
+
+<div class="column highlight">
+
+<div class="column-2">`r get_indicator3("Agricultura", paste0(tasa.agricultura, '%'), "./img/agricultura.png")`</div>
+<div class="column-2">`r get_indicator3("Industria", paste0(tasa.industria, '%'), "./img/industria.png")`</div>
+<div class="column-2">`r get_indicator3("Construcción", paste0(tasa.construccion, '%'), "./img/construccion.png")`</div>
+<div class="column-2">`r get_indicator3("Hostelería", paste0(tasa.hosteleria, '%'), "./img/hosteleria.png")`</div>
+<div class="column-2">`r get_indicator3("Comercio", paste0(tasa.comercio, '%'), "./img/comercio.png")`</div>
+<div class="column-2" style="margin-bottom: 0;">`r get_indicator3("Resto de<br>servicios", paste0(tasa.resto_servicios, '%'), "./img/resto-servicios-2.png")`</div>
+
+</div>
+</div>
+
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
