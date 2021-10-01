@@ -725,7 +725,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row" style="margin: 15px 0;">
+<div class="row" style="margin: 25px 0;">
 ```{r, results='asis'}
 if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
     cat(paste0(
