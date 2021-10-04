@@ -125,13 +125,15 @@ mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id
 
 mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
                       tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0)
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
 
 
 mapa_isla_plot <- tm_shape(mapa_isla) + 
                   tm_borders() + 
                   tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA)
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Municipios relacionados}
@@ -189,8 +191,8 @@ df_u <- df_u[with(df_u, order(Periodo)), ]
 related_mun <- df_u %>% filter(Periodo == periodo_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de crecimiento: <span class='sp-tasa'>%s</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 df <- related_mun %>%
   select(Municipio = "mun", nombre) %>%
@@ -234,7 +236,7 @@ g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour =
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
   scale_x_discrete(breaks = function(x){paste0(2018:2021,"Q1")}, labels = function(x){substr(x, 0, 4)}) +
-  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5)
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
@@ -425,7 +427,7 @@ df_GMd_ni_0 <- df_GMd_ni_plot %>%
 df_GMd_ni_plot <- rbind(df_GMd_ni_plot, df_GMd_ni_0)
 
 g_GMd_ni <- ggplot(df_GMd_ni_plot, aes(y = nivel, fill = nivel, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.4, aes(x = valor)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
   geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
   scale_fill_manual(values = c("> 74.999 €" = "#005980", "50.000 € - 74.999 €" = "#008BD0", "25.000 € - 49.999 €" = "#2CBCE2", "< 25.000 €" = "#8CD2EA")) +
   theme_minimal() +
@@ -467,7 +469,7 @@ df_GMd_ne_Canarias <- df_GM_ne %>%
   filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
   select(c(estudios, valor))
 df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
-df_GMd_ne_mun$estudios <- ordered(df_GMd_ne_mun$estudios, levels = df_GMd_ne_mun$estudios[4:1])
+# df_GMd_ne_mun$estudios <- ordered(df_GMd_ne_mun$estudios, levels = df_GMd_ne_mun$estudios[4:1])
 
 df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
@@ -478,7 +480,7 @@ df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
 
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
   mutate(label = "|")
-df_GMd_ne_plot$estudios <- ordered(df_GMd_ne_plot$estudios, levels = df_GMd_ne_plot$estudios[4:1])
+# df_GMd_ne_plot$estudios <- ordered(df_GMd_ne_plot$estudios, levels = df_GMd_ne_plot$estudios[4:1])
 
 df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
@@ -495,9 +497,9 @@ df_GMd_ne_0 <- df_GMd_ne_plot %>%
 df_GMd_ne_plot <- rbind(df_GMd_ne_plot, df_GMd_ne_0)
 
 g_GMd_ne <- ggplot(df_GMd_ne_plot, aes(y = estudios, fill = estudios, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.4, aes(x = valor)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
   geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
-  scale_fill_manual(values = c("Sin estudios o primarios" = "#005980", "Secundarios" = "#008BD0", "Superiores" = "#8CD2EA")) +
+  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -559,7 +561,7 @@ df_GMd_np_Canarias <- df_GM_np %>%
   filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
   select(c(noches, valor))
 df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
-df_GMd_np_mun$noches <- ordered(df_GMd_np_mun$noches, levels = df_GMd_np_mun$noches[4:1])
+# df_GMd_np_mun$noches <- ordered(df_GMd_np_mun$noches, levels = df_GMd_np_mun$noches[4:1])
 
 df_GMd_np_mun <- df_GMd_np_mun %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
@@ -570,7 +572,7 @@ df_GMd_np_mun <- df_GMd_np_mun %>% transform(hovertext = paste0(
 
 df_GMd_np_plot <- df_GMd_np_mun %>%
   mutate(label = "|")
-df_GMd_np_plot$noches <- ordered(df_GMd_np_plot$noches, levels = df_GMd_np_plot$noches[4:1])
+# df_GMd_np_plot$noches <- ordered(df_GMd_np_plot$noches, levels = df_GMd_np_plot$noches[4:1])
 
 df_GMd_np_plot <- df_GMd_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
@@ -587,9 +589,9 @@ df_GMd_np_0 <- df_GMd_np_plot %>%
 df_GMd_np_plot <- rbind(df_GMd_np_plot, df_GMd_np_0)
 
 g_GMd_np <- ggplot(df_GMd_np_plot, aes(y = noches, fill = noches, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.4, aes(x = valor)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
   geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
-  scale_fill_manual(values = c("1 - 7" = "#005980", "8 - 15" = "#008BD0", "&gt; 15" = "#8CD2EA")) +
+  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -624,26 +626,32 @@ df_GM_pais$valor[is.na(df_GM_pais$valor)] <- 0
 df_GM_pais$mun <- recode_mun(df_GM_pais, 'mun')
 df_GM_pais <- df_GM_pais %>% transform(pais = gsub("Otros países", "Otros", pais))
 
-df_GM_pais_d_mun <- df_GM_pais %>%
-  filter(ind != "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>%
+rk_GMd_pais_mun <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% arrange(valor) %>%
   select(c(pais, valor))
-df_GM_pais_d_Canarias <- df_GM_pais %>%
-  filter(ind != "Gasto por turista y día" & pais != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
-  select(c(pais, valor))
-df_GM_pais_d_mun <- df_GM_pais_d_mun %>% mutate(valor_Canarias = df_GM_pais_d_Canarias$valor)
-df_GM_pais_d_mun$pais <- ordered(df_GM_pais_d_mun$pais, levels = df_GM_pais_d_mun$pais[4:1])
+rk_GMd_pais_mun$pais <- ordered(rk_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
 
-df_GM_pais_d_mun <- df_GM_pais_d_mun %>% transform(hovertext = paste0(
+df_GMd_pais_mun <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>%
+  select(c(pais, valor))
+df_GMd_pais_Canarias <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día" & pais != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
+  select(c(pais, valor))
+df_GMd_pais_mun <- df_GMd_pais_mun %>% mutate(valor_Canarias = df_GMd_pais_Canarias$valor)
+df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
+# df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = df_GMd_pais_mun$pais[4:1])
+
+df_GMd_pais_mun <- df_GMd_pais_mun %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
     "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
     )
   )
 
-df_GMd_pais_plot <- df_GM_pais_d_mun %>%
-  mutate(valor_Canarias = df_GM_pais_d_Canarias$valor,
+df_GMd_pais_plot <- df_GMd_pais_mun %>%
+  mutate(valor_Canarias = df_GMd_pais_Canarias$valor,
          label = "|")
-df_GMd_pais_plot$pais <- ordered(df_GMd_pais_plot$pais, levels = df_GMd_pais_plot$pais[4:1])
+# df_GMd_pais_plot$pais <- ordered(df_GMd_pais_plot$pais, levels = df_GMd_pais_plot$pais[4:1])
 
 df_GMd_pais_plot <- df_GMd_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
@@ -659,10 +667,10 @@ df_GMd_pais_0 <- df_GMd_pais_plot %>%
 
 df_GMd_pais_plot <- rbind(df_GMd_pais_plot, df_GMd_pais_0)
 
-g_GM_pais_d <- ggplot(df_GMd_pais_plot, aes(y = pais, fill = pais, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.4, aes(x = valor)) +
+g_GMd_pais <- ggplot(df_GMd_pais_plot, aes(y = pais, fill = pais, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
   geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
-  scale_fill_manual(values = c("Alemania" = "#005980", "España" = "#008BD0", "Reino Unido" = "#2CBCE2", "Otros" = "#8CD2EA")) +
+  scale_fill_manual(values = c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -676,7 +684,7 @@ g_GM_pais_d <- ggplot(df_GMd_pais_plot, aes(y = pais, fill = pais, label = label
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')})
 
-g_GM_pais_d <- ggplotly(g_GM_pais_d, tooltip = c("text")) %>%
+g_GMd_pais <- ggplotly(g_GMd_pais, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified') %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(5:8))
@@ -719,7 +727,7 @@ if(Variacion_Porcentual_GM == "NA"){
     '<div class="column-2">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3">', get_indicator2("Tasa de</br>...", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
@@ -728,7 +736,7 @@ if(Variacion_Porcentual_GM == "NA"){
 <div class="column-3">
   <div class="indicator-map map-canarias">
   <div class="image">
-```{r} 
+```{r}
 mapa_Canarias_plot
 ```
 </div>
@@ -741,7 +749,7 @@ mapa_Canarias_plot
 <div class="column-3">
 <div class="indicator-map">
   <div class="image">
-```{r} 
+```{r}
 mapa_isla_plot
 ```
 </div>
@@ -775,26 +783,26 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight">
-<div class="piramide" style="height: 220px">
-`r g_GM_pais_d`
+<div class="column highlight" style="margin-bottom: -18px;">
+<div class="piramide" style="height: 190px">
+`r g_GMd_pais`
 </div>
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
 </div>
 
-<div class="column highlight">
-<div class="piramide" style="height: 220px">
+<div class="column highlight" style="margin-bottom: -18px;">
+<div class="piramide" style="height: 190px">
 `r g_GMd_ni`
 </div>
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
 </div>
@@ -806,34 +814,35 @@ mapa_isla_plot
 <div class="indicator-title" style="width: 100% !important; padding: 5px;">
   <h3>Grupos de edad</h3>
 </div>
-<div class="row highlight" style="width: 100% !important; padding: 6px;">
+<div class="row highlight" style="width: 100% !important; padding-bottom: -10px; margin-bottom: -8px;">
   <div class="column-2">`r get_indicator4s("16 - 44", paste0(Gasto_por_turista_d_menor_C, " €"), paste0(Gasto_por_turista_d_menor, " €"))`</div>
   <div class="column-2">`r get_indicator4s("&gt; 44", paste0(Gasto_por_turista_d_mayor_C, " €"), paste0(Gasto_por_turista_d_mayor, " €"))`</div>
 </div>
 <div class="indicator-title" style="width: 100% !important; padding: 5px;">
   <h3>Situaciones laborales</h3>
 </div>
-<div class="row highlight" style="width: 100% !important; padding: 6px">
+<div class="row highlight" style="width: 100% !important; padding: 0;">
   <div class="column-2">`r get_indicator4s("Activos", paste0(Gasto_tur_sl_d_Act_C, " €"), paste0(Gasto_tur_sl_d_Act, " €"))`</div>
   <div class="column-2">`r get_indicator4s("No activos", paste0(Gasto_tur_sl_d_NAct_C, " €"), paste0(Gasto_tur_sl_d_NAct, " €"))`</div>
 </div>
 </div>
 </div>
+
 <div class="column-3">
 <div class="column" style="width: 100% !important;">
 <div class="indicator-title" style="width: 100% !important; padding: 5px;">
   <h3>Niveles educativos</h3>
 </div>
-<div class="indicator-map">
-  <div class="barras">
+<div class="column highlight" style="width: 100% !important; padding: 9px;">
+  <div class="piramide" style="height: 152px;">
   `r g_GMd_ne`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r df_GMd_ne_plot$estudios[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r df_GMd_ne_plot$estudios[3]`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>`r df_GMd_ne_plot$estudios[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r df_GMd_ne_plot$estudios[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r df_GMd_ne_plot$estudios[1]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -1px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -843,16 +852,16 @@ mapa_isla_plot
 <div class="indicator-title" style="width: 100% !important; padding: 5px;">
   <h3>Noches pernoctadas</h3>
 </div>
-<div class="indicator-map">
-  <div class="barras">
+<div class="column highlight" style="width: 100% !important; padding: 9px;">
+  <div class="piramide" style="height: 152px;">
   `r g_GMd_np`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r df_GMd_np_plot$noches[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r df_GMd_np_plot$noches[3]`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>`r df_GMd_np_plot$noches[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r df_GMd_np_plot$noches[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r df_GMd_np_plot$noches[1]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -1px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -867,26 +876,5 @@ mapa_isla_plot
 </div>
 <div class="logo-istac"> 
   <img src="img/logo_istac.png" />
-</div>
-
-
-```{r}
-get_indicator_met = function(label, description, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", image, label, description))
-}
-get_indicator_met_ = function(label, description) {
-  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
-}
-```
-
-<div class="row nota-metodologica">
-<div class="indicator-title">
-  <h3>Glosario de conceptos de medida</h3>
-</div>
-
-<div class="row highlight">
-  <div style="padding: 10px;">`r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`</div>
-  <div style="padding: 0 10px;">`r get_indicator_met_("Gasto medio diario por persona", "Gasto que resulta al dividir el gasto total entre el número de pernoctaciones del viaje.")`</div>
-  <div style="padding: 0 10px;">`r get_indicator_met("Tasa de ", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.","./img/crecimiento.png")`</div>
 </div>
 
