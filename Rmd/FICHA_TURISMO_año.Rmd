@@ -157,17 +157,15 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población turística}
-## Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 piramide <- fromJSON(params$url.piramide_t)
 df_u_ <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_u_) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'Valor')
 df_u_$gredad <- ordered(df_u_$gredad, levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 df_u_$sexo <- factor(df_u_$sexo, levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
 df_u_$pais <- factor(df_u_$pais, levels=piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
-# df_u_$mun <- factor(df_u_$mun, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_u_$año <- as.integer(df_u_$año)
 df_u_$Valor <- as.numeric(df_u_$Valor)
-# df_u_$mun <- recode_mun(df_u_, 'mun')
 
 num_Canarias_total <- df_u_ %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
   select(Valor) %>% as.numeric()
@@ -278,11 +276,6 @@ ind_turistas <- df %>% filter(municipio == municipio_actual$municipio & año %in
 
 Num_Turistas_num <- ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año) %>% select(Valor) %>% as.numeric()
 Num_Turistas <- Num_Turistas_num %>% format(big.mark = ".", decimal.mark = ",")
-# Variacion_Turistas <- abs((ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año) %>% select(Valor) %>% as.numeric()) -
-#                       (ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año-1) %>% select(Valor) %>% as.numeric())) %>%
-#                       format(big.mark = ".", decimal.mark = ",")
-# Signo_Variacion <- signo((ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año) %>% select(Valor) %>% as.numeric()) -
-#                          (ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año-1) %>% select(Valor) %>% as.numeric()))
 Imagen_Variacion <- ifelse(is.na(ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año-1) %>% select(Valor) %>% as.numeric()),
                            "NA",
                            ifelse(signo(ind_turistas %>% filter(municipio == municipio_actual$municipio & año == params$año) %>% select(Tasa) %>% as.numeric()) == "más",
@@ -312,26 +305,22 @@ Num_estancia_media <- df_turismo_estancia %>%
 df_ranking <- df_u %>%
   select(id = mun, año, Valor) %>%
   filter(año == params$año) %>%
-  # left_join(df_CL_AREA_mun_tur, by = "id") %>% 
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(Valor))
 
 df_tur_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
 num_mun_canarias <- nrow(df_ranking)
-# percent_canarias <- format(round(df_tur_mun$Valor / sum(df_ranking$Valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_canarias <- format(round(df_tur_mun$Valor / num_Canarias_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_tur_isla <- df_ranking %>% filter(isla == df_tur_mun$isla)
 rk_isla <- grep(params$id_municipio, df_tur_isla$id)
 num_mun_isla <- nrow(df_tur_isla)
-# percent_isla <- format(round(df_tur_mun$Valor / sum(df_tur_isla$Valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_isla <- format(round(df_tur_mun$Valor / num_Isla_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Grupos de edad}
-# ## Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-# piramide <- fromJSON(params$url.piramide)
+# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_piramide) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
 df_piramide$gredad <- ordered(df_piramide$gredad, levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
@@ -347,8 +336,6 @@ df_turismo_gedad <- df_piramide %>%
   select(c(gredad, valor))
 df_turismo_gedad <- df_turismo_gedad %>% mutate(porcentaje = df_turismo_gedad$valor/ Num_Turistas_num * 100)
 
-# Turistas_menos44 <- df_turismo_gedad$valor[which(df_turismo_gedad$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
-# Turistas_mas44 <- df_turismo_gedad$valor[which(df_turismo_gedad$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
 Percent_Turistas_menos44 <- df_turismo_gedad$porcentaje[which(df_turismo_gedad$gredad == "De 16 a 44 años")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Percent_Turistas_mas44 <- (100 - df_turismo_gedad$porcentaje[which(df_turismo_gedad$gredad == "De 16 a 44 años")] %>% round(1)) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
@@ -381,7 +368,6 @@ Num_Hombres <- df_piramide %>%
 
 ```{r Barras países por sexo}
 # Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-# turismo_pais <- fromJSON(params$url.piramide)
 df_turismo_pais <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_turismo_pais) <- c('ge', 'sexo', 'pais', 'mun', 'periodo', 'valor')
 df_turismo_pais$ge <- factor(df_turismo_pais$ge, levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
@@ -410,7 +396,6 @@ df_turismo_pais_mun <- df_turismo_pais_mun %>%
   mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100,
          valor_Canarias = df_turismo_pais_Canarias$valor, porcentaje_Canarias = df_turismo_pais_Canarias$valor / num_Canarias_total * 100)
 df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
-# df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = df_turismo_pais_mun$pais[4:1])
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br>"), ""),
@@ -424,7 +409,6 @@ df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
 
 g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", width = 0.6, alpha = 0.8, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
-  # geom_bar(stat = "identity", color = "#59656E", alpha = 0, size = 0.4, position = position_stack(reverse = TRUE), aes(x = porcentaje_Canarias, text = "")) +
   scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
@@ -471,7 +455,6 @@ df_turismo_aloj_mun <- df_turismo_aloj_mun %>%
 df_turismo_aloj_plot <- df_turismo_aloj_mun %>%
   mutate(label = "|")
 df_turismo_aloj_plot$tipo <- ordered(df_turismo_aloj_plot$tipo, levels = df_turismo_aloj_plot$tipo[5:1])
-# df_turismo_aloj_plot$tipo <- as.character(df_turismo_aloj_plot$tipo)
 df_turismo_aloj_plot <- df_turismo_aloj_plot %>% mutate(tipo = recode(tipo, "Vivienda privada propia o de terceros" = "Vivienda<br>privada"),
                                                         tipo = recode(tipo, "Otros alojamientos colectivos" = "Otros"))
 
@@ -531,9 +514,6 @@ df_turismo_ingresos_C <- df_turismo_ingresos %>%
   select(c(nivel, valor))
 df_turismo_ingresos_C <- df_turismo_ingresos_C %>% mutate(porcentaje = df_turismo_ingresos_C$valor/ num_Canarias_total * 100)
 
-# Percent_Turistas_menos50_C <- df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Percent_Turistas_mas50_C <- (100 - df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")] %>% round(1)) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
 porc_Turistas_menos50_C <- df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
 porc_Turistas_mas50_C <- 100 - df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
 porc_Turistas_menos50_C_l <- round(porc_Turistas_menos50_C, 1) %>% as.numeric
@@ -543,11 +523,6 @@ df_turismo_ingresos <- df_turismo_ingresos %>%
   filter(nivel != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
   select(c(nivel, valor))
 df_turismo_ingresos <- df_turismo_ingresos %>% mutate(porcentaje = df_turismo_ingresos$valor/ Num_Turistas_num * 100)
-
-# Turistas_menos50 <- df_turismo_ingresos$valor[which(df_turismo_ingresos$nivel == "Menos de 50.000€")] %>% format(big.mark = ".", decimal.mark = ",")
-# Turistas_mas50 <- df_turismo_ingresos$valor[which(df_turismo_ingresos$nivel == "50.000€ o más")] %>% format(big.mark = ".", decimal.mark = ",")
-# Percent_Turistas_menos50 <- df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Percent_Turistas_mas50 <- (100 - df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")] %>% round(1)) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 porc_Turistas_menos50 <- df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
 porc_Turistas_mas50 <- 100 - df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
@@ -568,27 +543,12 @@ df_turismo_proposito$periodo <- as.numeric(df_turismo_proposito$periodo)
 df_turismo_proposito$valor <- as.numeric(df_turismo_proposito$valor)
 df_turismo_proposito$mun <- recode_mun(df_turismo_proposito, 'mun')
 
-# df_turismo_proposito_C <- df_turismo_proposito %>%
-#   filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
-#   select(c(proposito, valor))
-# df_turismo_proposito_C <- df_turismo_proposito_C %>% mutate(porcentaje = df_turismo_proposito_C$valor/ num_Canarias_total * 100)
-# 
-# Percent_Vacaciones_C <- df_turismo_proposito_C$porcentaje[which(df_turismo_proposito_C$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
 df_turismo_proposito <- df_turismo_proposito %>%
   filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
   select(c(proposito, valor))
 df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_proposito$valor/ Num_Turistas_num * 100)
 
-# Num_Vacaciones <- df_turismo_proposito$valor[which(df_turismo_proposito$proposito == "Vacaciones")] %>% format(big.mark = ".", decimal.mark = ",")
-# Num_Otros_P <- df_turismo_proposito$valor[which(df_turismo_proposito$proposito == "Otros motivos")] %>% format(big.mark = ".", decimal.mark = ",")
 Percent_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Percent_Otros_P <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Otros motivos")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-# porc_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")]
-# porc_Otros_P <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Otros motivos")]
-# porc_Vacaciones_l <- porc_Vacaciones %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# porc_Otros_P_l <- (100 - porc_Vacaciones) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Visitas previas}
@@ -616,8 +576,6 @@ df_turismo_visitas_mun <- df_turismo_visitas_mun %>%
 
 df_turismo_visitas_plot <- df_turismo_visitas_mun %>%
   mutate(label = "|")
-# df_turismo_visitas_plot$N_visitas <- ordered(df_turismo_visitas_plot$N_visitas, levels = df_turismo_visitas_plot$N_visitas[4:1])
-# df_turismo_visitas_plot$N_visitas <- as.character(df_turismo_visitas_plot$N_visitas)
 df_turismo_visitas_plot <- df_turismo_visitas_plot %>% 
   mutate(N_visitas = recode(N_visitas, "Ninguna" = "0"),
          N_visitas = recode(N_visitas, "Una o dos visitas" = "1 - 2"),
@@ -735,9 +693,9 @@ mapa_isla_plot
 </div>
 <div class="column-3">
 <div class="column" style="width: 100% !important;">
-<div class="row highlight" style="width: 100% !important; margin-top: -5px; padding: 6px; padding-bottom: 0;">
+<div class="row highlight" style="width: 100% !important; margin-top: -5px; padding: 3px; padding-bottom: 0;">
   <h3>Grupos de edad</h3>
-  <hr class='separator' style="margin: 6px;">
+  <hr class='separator'>
   <div class="column-2">`r get_indicator4s("16 - 44", paste0(Percent_Turistas_menos44_C, "%"), paste0(Percent_Turistas_menos44, "%"))`</div>
   <div class="column-2">`r get_indicator4s("&gt; 44", paste0(Percent_Turistas_mas44_C, "%"), paste0(Percent_Turistas_mas44, "%"))`</div>
 </div>
@@ -774,10 +732,6 @@ mapa_isla_plot
   `r g_turismo_aloj`
 </div>
 <div class="progressbar-legend-container">
-  <!-- <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Hoteleros</div></div> -->
-  <!-- <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Extrahoteleros</div></div> -->
-  <!-- <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content'>Vivienda privada</div></div> -->
-  <!-- <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros</div></div> -->
 <div class='progressbar-legend'>
 <div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
 </div>
@@ -806,7 +760,6 @@ mapa_isla_plot
 </div>
 </div>
 
-<!-- <div class="column" style="width: 100% !important;"> -->
 <div class="column highlight" style="padding: 5px;">
 <div class="progress-bar-container">
   <div class="progress-bar-1" style="width:`r porc_Turistas_menos50`%"></div>

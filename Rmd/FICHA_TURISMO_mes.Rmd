@@ -10,7 +10,6 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
   url.viajeros_lugar: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48
-  # url.viajeros: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.estancia_m: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY]
   url.tasa_ocupacion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ac286c1a-f70a-4888-9679-bd973250c824/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.ADR: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d17b4953-73fe-4dcb-91e2-b63890eecd9f
@@ -177,21 +176,8 @@ viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
 df_u_ <- cbind(data.frame(do.call('rbind', viajeros_lugar[["data"]][["dimCodes"]])), viajeros_lugar[["data"]][["Valor"]])
 colnames(df_u_) <- c('Ind', 'lugar', 'mun', 'Periodo', 'Valor')
 df_u_$Ind <- factor(df_u_$Ind, levels=viajeros_lugar[["categories"]][["codes"]][[1]], labels=viajeros_lugar[["categories"]][["labels"]][[1]])
-# df_viajeros_lugar$mun <- factor(df_viajeros_lugar$mun, levels=viajeros_lugar[["categories"]][["codes"]][[2]], labels=viajeros_lugar[["categories"]][["labels"]][[2]])
 df_u_$Periodo <- paste0(substring(df_u_$Periodo, 0,4), "-", substring(df_u_$Periodo, 5,7))
 df_u_$Valor <- as.numeric(df_u_$Valor)
-# df_viajeros_lugar$mun <- recode_mun(df_viajeros_lugar, 'mun')
-
-# # Viajeros entrados en alojamientos turísticos. 2009-M01
-# data_u <- fromJSON(params$url.viajeros)
-# df_u <- data.frame(
-#   mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-#                      each=length(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]) * length(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
-#   Periodo = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
-#              each=length(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
-#   Ind = rep(names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-#             times = length(data_u[["dimension"]][["TIME"]][["representation"]][["index"]])),
-#   Valor = round(as.numeric(data_u[["observation"]]), 1))
 
 num_Canarias_total <- df_u_ %>% filter(mun == "ES70" & Ind == "Viajeros alojados" & lugar == "T" & substring(Periodo, 6,6) == "M" & Periodo == mes_actual$code) %>% 
   select(Valor) %>% as.numeric()
@@ -217,9 +203,7 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = Periodo, Valor, Municipio = municipio) %>%
   left_join(mes, by = "code") %>%
-  transform(Tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((Valor / lag(Valor, n = 12)) - 1), 1), NA)
-            # , Variacion = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), Valor - lag(Valor, n = 12), NA)
-            ) %>%
+  transform(Tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((Valor / lag(Valor, n = 12)) - 1), 1), NA)) %>%
   filter(substring(Periodo, 0,4) != min(substring(code, 0,4)) & code <= mes_actual$code)
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
@@ -314,9 +298,6 @@ ind_viaj <- df %>% filter(Municipio == municipio_actual$municipio & code %in% c(
 
 Num_Viajeros_num <- ind_viaj %>% filter(Municipio == municipio_actual$municipio & code == mes_actual$code) %>% select(Valor) %>% as.numeric()
 Num_Viajeros <- Num_Viajeros_num %>% format(big.mark = ".", decimal.mark = ",")
-# Variacion_Viajeros <- abs(ind_viaj %>% filter(Municipio == municipio_actual$municipio & code == mes_actual$code) %>% select(Variacion) %>% as.numeric()) %>%
-#                       format(big.mark = ".", decimal.mark = ",")
-# Signo_Variacion <- signo(ind_viaj %>% filter(Municipio == municipio_actual$municipio & code == mes_actual$code) %>% select(Variacion) %>% as.numeric())
 Imagen_Variacion <- ifelse(is.na(ind_viaj$Valor[which(ind_viaj$...1 == params$año-1)]),
                            "NA",
                            ifelse(signo(ind_viaj %>% filter(Municipio == municipio_actual$municipio & code == mes_actual$code) %>% select(Tasa) %>% as.numeric()) == "más",
@@ -384,13 +365,11 @@ df_ranking <- df_u %>%
 df_tur_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
 num_mun_canarias <- nrow(df_ranking)
-# percent_canarias <- format(round(df_tur_mun$valor / sum(df_ranking$valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",")
 percent_canarias <- format(round(df_tur_mun$Valor / num_Canarias_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_tur_isla <- df_ranking %>% filter(isla == df_tur_mun$isla)
 rk_isla <- grep(params$id_municipio, df_tur_isla$id)
 num_mun_isla <- nrow(df_tur_isla)
-# percent_isla <- format(round(df_tur_mun$valor / sum(df_tur_isla$valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",")
 percent_isla <- format(round(df_tur_mun$Valor / num_Isla_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
@@ -429,7 +408,6 @@ df_viajeros_lugar_mun <- df_viajeros_lugar_mun %>%
 df_viajeros_lugar_plot <- df_viajeros_lugar_mun %>%
   mutate(label = "|")
 df_viajeros_lugar_plot$lugar <- ordered(df_viajeros_lugar_plot$lugar, levels = rk_viajeros_lugar_mun$lugar)
-# df_viajeros_lugar_plot$lugar <- ordered(df_viajeros_lugar_plot$lugar, levels = df_viajeros_lugar_plot$lugar[12:1])
 
 df_viajeros_lugar_plot <- df_viajeros_lugar_plot %>% transform(hovertext = paste0(
   "<b>", trimws(lugar), "</b><br>",
@@ -477,8 +455,6 @@ df_viajeros_nacionalidad_mun <- df_viajeros_lugar %>%
 df_viajeros_nacionalidad_mun <- df_viajeros_nacionalidad_mun %>%
   mutate(porcentaje = df_viajeros_nacionalidad_mun$valor / Num_Viajeros_num * 100)
 
-# Num_española <- df_viajeros_nacionalidad_mun$valor[which(df_viajeros_nacionalidad_mun$lugar == "España")] %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-# Num_extranjera <- df_viajeros_nacionalidad_mun$valor[which(df_viajeros_nacionalidad_mun$lugar == " TOTAL RESIDENTES EN EL EXTRANJERO")] %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 peso_española <- df_viajeros_nacionalidad_mun$porcentaje[which(df_viajeros_nacionalidad_mun$lugar == "España")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 peso_extranjera <- df_viajeros_nacionalidad_mun$porcentaje[which(df_viajeros_nacionalidad_mun$lugar == " TOTAL RESIDENTES EN EL EXTRANJERO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 
@@ -489,8 +465,6 @@ df_viajeros_canarios_mun <- df_viajeros_lugar %>%
 df_viajeros_canarios_mun <- df_viajeros_canarios_mun %>%
   mutate(porcentaje = df_viajeros_canarios_mun$valor[which(df_viajeros_canarios_mun$lugar == "  Canarias")] / df_viajeros_canarios_mun$valor * 100)
 
-# Num_Canarias_Esp <- df_viajeros_canarios_mun$valor[which(df_viajeros_canarios_mun$lugar == "España")] %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-# Num_Canarias_Tot <- df_viajeros_canarios_mun$valor[which(df_viajeros_canarios_mun$lugar == "TOTAL LUGARES DE RESIDENCIA")] %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 peso_Canarias_Esp <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "España")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 peso_Canarias_Tot <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "TOTAL LUGARES DE RESIDENCIA")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
@@ -620,6 +594,9 @@ get_indicator2 = function(label, value, image) {
 get_indicator3 = function(label, value, image) {
   return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
+get_indicator3s = function(label, value) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><p class='value'>%s</p><hr class='separator'><p class='label'>%s</p></div></div>", value, label))
+}
 ```
 
 <!-- HTML -->
@@ -685,9 +662,6 @@ mapa_isla_plot
 <div class="column" style="width: 100% !important;">
 <div class="indicator-map" style="margin-top: -5px;">
   <div class="indicator-content" style="margin-top: -10px; padding: 8px;">
-  <!-- <div class="column-2" style="padding-left: 30px; margin-right: -30px;"><p class="label"><span class="value">`r Num_Hoteles` </span></p></div> -->
-  <!-- <div class="column-2" style="margin-left: -30px;"><p class="label">hoteles</p></div> -->
-  <!-- <div class="row"><p class="label"><span class="value">`r Num_Hoteles` </span> Hoteles</p></div> -->
   <div class="row"><p class="label"><span class="value">`r Num_Hoteles` </span> Hoteleros</p></div>
   <div class="row"><div class="label2" style="margin-top: 12px;"><span class="value2">`r Plazas_Hoteles` </span>plazas en <span class="value2">`r Num_Habitaciones` </span>habitaciones</div>
   </div>
@@ -695,8 +669,6 @@ mapa_isla_plot
 </div>
 <div class="indicator-map" style="margin-top: 14px;">
   <div class="indicator-content" style="margin-top: -10px; padding: 8px;">
-  <!-- <div class="column-2" style="padding-left: 30px; margin-right: -30px;"><p class="label"><span class="value">`r Num_extrahoteleros` </span></p></div> -->
-  <!-- <div class="column-2" style="margin-left: -30px; margin-right: 20px;"><p class="label">extrahoteleros</p></div> -->
   <div class="row"><p class="label"><span class="value">`r Num_extrahoteleros` </span> Extrahoteleros</p></div>
   <div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">`r Plazas_extrahoteleros` </span>plazas en <span class="value2">`r Num_Apartamentos` </span>apartamentos</p></div>
   </div>
@@ -711,8 +683,7 @@ mapa_isla_plot
   <h3>Nacionalidades</h3>
 </div>
 <div class="column indicator-title">
-  <!-- <h3>Turistas canarios por residencia</h3> -->
-  <h3>Canarios por residencia</h3>
+  <h3>Islas de residencia</h3>
 </div>
 </div>
 
@@ -729,11 +700,9 @@ mapa_isla_plot
 <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
-<div class="row" style="margin: 20px 0;">
+<div class="row" style="margin: 24px 0 20px;">
   <div class="column-2">`r get_indicator3('España', paste0(peso_española, '%'), './img/spain2.png')`</div>
   <div class="column-2">`r get_indicator3('Extranjero', paste0(peso_extranjera, '%'), './img/world.png')`</div>
-  <!-- <div class="column-2">`r get_indicator3('España', peso_española, './img/percent-black.png')`</div>  -->
-  <!-- <div class="column-2">`r get_indicator3('Extranjero', peso_extranjera, './img/percent-black.png')`</div> -->
 </div>
 
 </div>
@@ -748,9 +717,9 @@ mapa_isla_plot
 <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
-<div class="row" style="margin: 14px 0;">
-  <div class="column-2">`r get_indicator3('Canarias respecto</br>a España', peso_Canarias_Esp, './img/percent-black.png')`</div>
-  <div class="column-2">`r get_indicator3('Canarias respecto</br>al total', peso_Canarias_Tot, './img/percent-black.png')`</div>
+<div class="row" style="margin: 14px 0 6px;">
+  <div class="column-2">`r get_indicator3s('Canarias respecto</br>a España', paste0(peso_Canarias_Esp, "%"))`</div>
+  <div class="column-2">`r get_indicator3s('Canarias respecto</br>al total', paste0(peso_Canarias_Tot, "%"))`</div>
 </div>
 </div>
 
@@ -765,3 +734,4 @@ mapa_isla_plot
 <div class="logo-istac"> 
   <img src="img/logo_istac.png" />
 </div>
+
