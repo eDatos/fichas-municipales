@@ -54,7 +54,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -64,7 +64,6 @@ df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
 df_CL_AREA_mun <- df_CL_AREA %>% 
   select(id = code, municipio = value, code = parent) %>%
   filter(substring(id, 0,2) != "ES") %>% 
-  # transform(id = sub("\\_.*", "", id)) %>%
   transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
@@ -265,8 +264,6 @@ df_lv <- data.frame(
 signo <- function(value) { ifelse(value > 0, "más", "menos") }
 
 Num_Pobl <-  format(df_lv[df_lv$medida == 'ABSOLUTE', ]$valor, big.mark = ".", decimal.mark = ",")
-# Variacion_Pobl <- format(abs(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor), big.mark = ".", decimal.mark = ",")
-# Signo_Variacion <- signo(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor)
 Variacion_Pobl <- format(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor, big.mark = ".", decimal.mark = ",")
 Imagen_Variacion <- ifelse(signo(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual_Pobl <- format(round(df_lv[df_lv$medida == 'ANNUAL_PERCENTAGE_RATE', ]$valor, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)

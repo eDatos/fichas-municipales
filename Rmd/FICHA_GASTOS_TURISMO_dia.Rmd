@@ -179,10 +179,7 @@ colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'Municipio', 'Periodo', 
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
 df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categories"]][["codes"]][[2]], labels=GM_sexo_edad[["categories"]][["labels"]][[2]])
 df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
-# df_GM_sexo_edad$Municipio <- factor(df_GM_sexo_edad$Municipio, levels=GM_sexo_edad[["categories"]][["codes"]][[4]], labels=GM_sexo_edad[["categories"]][["labels"]][[4]])
-# df_GM_sexo_edad$Periodo <- factor(df_GM_sexo_edad$Periodo, levels=GM_sexo_edad[["categories"]][["codes"]][[5]]), labels=GM_sexo_edad[["categories"]][["labels"]][[5]])
 df_GM_sexo_edad$Valor <- as.numeric(df_GM_sexo_edad$Valor) %>% round(1)
-# df_GM_sexo_edad$Municipio <- recode_mun(df_GM_sexo_edad, 'Municipio')
 df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(Periodo, 5,5) == "Q") %>% 
   select(c('Municipio','Periodo', 'Valor'))
 df_u <- df_u %>% filter(substring(Municipio, 6,6) == "_") %>% transform(Municipio = substr(Municipio, 7, 12))
@@ -244,7 +241,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
          xaxis = list(autorange = FALSE,
                       range = c(max(0.8, nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*4 - 0.2), 
                                 df$order[df$code == periodo_actual$code & df$id == params$id_municipio]
-                                # nrow(df[df$Municipio == municipio_actual$municipio, ])
                                 ),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
@@ -295,11 +291,6 @@ ind_GM <- df %>% filter(Municipio == municipio_actual$municipio & code %in% c(pe
 
 Num_GM_num <- ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Valor) %>% as.numeric()
 Num_GM <- Num_GM_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Variacion_GM <- abs((ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Valor) %>% as.numeric()) -
-#                     (ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_tva$code) %>% select(Valor) %>% as.numeric())) %>%
-#                     round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Signo_Variacion <- signo((ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Valor) %>% as.numeric()) -
-#                          (ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_tva$code) %>% select(Valor) %>% as.numeric()))
 Imagen_Variacion <- ifelse(is.na(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_tva$code) %>% select(Valor) %>% as.numeric()),
                            "NA",
                            ifelse(signo(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Tasa) %>% as.numeric()) == "más",
@@ -368,7 +359,6 @@ colnames(df_GM_sl) <- c('ind', 'sl','mun', 'periodo', 'valor')
 df_GM_sl$ind <- factor(df_GM_sl$ind, levels=GM_sl[["categories"]][["codes"]][[1]], labels=GM_sl[["categories"]][["labels"]][[1]])
 df_GM_sl$sl <- factor(df_GM_sl$sl, levels=GM_sl[["categories"]][["codes"]][[2]], labels=GM_sl[["categories"]][["labels"]][[2]])
 df_GM_sl$mun <- factor(df_GM_sl$mun, levels=GM_sl[["categories"]][["codes"]][[3]], labels=GM_sl[["categories"]][["labels"]][[3]])
-# df_GM_sl$periodo <- factor(df_GM_sl$periodo, levels=GM_sl[["categories"]][["codes"]][[4]], labels=GM_sl[["categories"]][["labels"]][[4]])
 df_GM_sl$valor <- as.numeric(df_GM_sl$valor)
 df_GM_sl$mun <- recode_mun(df_GM_sl, 'mun')
 
@@ -395,7 +385,6 @@ colnames(df_GM_ni) <- c('ind', 'nivel','mun', 'periodo', 'valor')
 df_GM_ni$ind <- factor(df_GM_ni$ind, levels=GM_ni[["categories"]][["codes"]][[1]], labels=GM_ni[["categories"]][["labels"]][[1]])
 df_GM_ni$nivel <- factor(df_GM_ni$nivel, levels=GM_ni[["categories"]][["codes"]][[2]], labels=c("TOTAL", "< 25.000 €", "25.000 € - 49.999 €", "50.000 € - 74.999 €", "> 74.999 €"))
 df_GM_ni$mun <- factor(df_GM_ni$mun, levels=GM_ni[["categories"]][["codes"]][[3]], labels=GM_ni[["categories"]][["labels"]][[3]])
-# df_GM_ni$periodo <- factor(df_GM_ni$periodo, levels=GM_ni[["categories"]][["codes"]][[4]], labels=GM_ni[["categories"]][["labels"]][[4]])
 df_GM_ni$valor <- as.numeric(df_GM_ni$valor) %>% round(1)
 df_GM_ni$mun <- recode_mun(df_GM_ni, 'mun')
 
@@ -457,7 +446,6 @@ colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
 df_GM_ne$ind <- factor(df_GM_ne$ind, levels=GM_ne[["categories"]][["codes"]][[1]], labels=GM_ne[["categories"]][["labels"]][[1]])
 df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
 df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
-# df_GM_ne$periodo <- factor(df_GM_ne$periodo, levels=GM_ne[["categories"]][["codes"]][[4]], labels=GM_ne[["categories"]][["labels"]][[4]])
 df_GM_ne$valor <- as.numeric(df_GM_ne$valor)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
 
@@ -469,7 +457,6 @@ df_GMd_ne_Canarias <- df_GM_ne %>%
   filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
   select(c(estudios, valor))
 df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
-# df_GMd_ne_mun$estudios <- ordered(df_GMd_ne_mun$estudios, levels = df_GMd_ne_mun$estudios[4:1])
 
 df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
@@ -480,7 +467,6 @@ df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
 
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
   mutate(label = "|")
-# df_GMd_ne_plot$estudios <- ordered(df_GMd_ne_plot$estudios, levels = df_GMd_ne_plot$estudios[4:1])
 df_GMd_ne_plot <- df_GMd_ne_plot %>% mutate(estudios = recode(estudios, "Sin estudios o primarios" = "Sin estudios<br>o primarios"))
 
 df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
@@ -529,7 +515,6 @@ colnames(df_GM_ta) <- c('ind', 'tipo','mun', 'periodo', 'valor')
 df_GM_ta$ind <- factor(df_GM_ta$ind, levels=GM_ta[["categories"]][["codes"]][[1]], labels=GM_ta[["categories"]][["labels"]][[1]])
 df_GM_ta$tipo <- factor(df_GM_ta$tipo, levels=GM_ta[["categories"]][["codes"]][[2]], labels=GM_ta[["categories"]][["labels"]][[2]])
 df_GM_ta$mun <- factor(df_GM_ta$mun, levels=GM_ta[["categories"]][["codes"]][[3]], labels=GM_ta[["categories"]][["labels"]][[3]])
-# df_GM_ta$periodo <- factor(df_GM_ta$periodo, levels=GM_ta[["categories"]][["codes"]][[4]], labels=GM_ta[["categories"]][["labels"]][[4]])
 df_GM_ta$valor <- as.numeric(df_GM_ta$valor)
 df_GM_ta$mun <- recode_mun(df_GM_ta, 'mun')
 
@@ -550,7 +535,6 @@ colnames(df_GM_np) <- c('ind', 'noches','mun', 'periodo', 'valor')
 df_GM_np$ind <- factor(df_GM_np$ind, levels=GM_np[["categories"]][["codes"]][[1]], labels=GM_np[["categories"]][["labels"]][[1]])
 df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"]][[2]], labels=c("TOTAL", "1 - 7", "8 - 15", "&gt; 15"))
 df_GM_np$mun <- factor(df_GM_np$mun, levels=GM_np[["categories"]][["codes"]][[3]], labels=GM_np[["categories"]][["labels"]][[3]])
-# df_GM_np$periodo <- factor(df_GM_np$periodo, levels=GM_np[["categories"]][["codes"]][[4]], labels=GM_np[["categories"]][["labels"]][[4]])
 df_GM_np$valor <- as.numeric(df_GM_np$valor)
 df_GM_np$mun <- recode_mun(df_GM_np, 'mun')
 
@@ -562,7 +546,6 @@ df_GMd_np_Canarias <- df_GM_np %>%
   filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
   select(c(noches, valor))
 df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
-# df_GMd_np_mun$noches <- ordered(df_GMd_np_mun$noches, levels = df_GMd_np_mun$noches[4:1])
 
 df_GMd_np_mun <- df_GMd_np_mun %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
@@ -573,7 +556,6 @@ df_GMd_np_mun <- df_GMd_np_mun %>% transform(hovertext = paste0(
 
 df_GMd_np_plot <- df_GMd_np_mun %>%
   mutate(label = "|")
-# df_GMd_np_plot$noches <- ordered(df_GMd_np_plot$noches, levels = df_GMd_np_plot$noches[4:1])
 
 df_GMd_np_plot <- df_GMd_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
@@ -597,7 +579,6 @@ g_GMd_np <- ggplot(df_GMd_np_plot, aes(y = noches, fill = noches, label = label,
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(size = 8),
-        # axis.text.y = element_blank(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -621,7 +602,6 @@ colnames(df_GM_pais) <- c('ind', 'pais', 'mun', 'periodo', 'valor')
 df_GM_pais$ind <- factor(df_GM_pais$ind, levels=GM_pais[["categories"]][["codes"]][[1]], labels=GM_pais[["categories"]][["labels"]][[1]])
 df_GM_pais$pais <- factor(df_GM_pais$pais, levels=GM_pais[["categories"]][["codes"]][[2]], labels=GM_pais[["categories"]][["labels"]][[2]])
 df_GM_pais$mun <- factor(df_GM_pais$mun, levels=GM_pais[["categories"]][["codes"]][[3]], labels=GM_pais[["categories"]][["labels"]][[3]])
-# df_GM_pais$periodo <- factor(df_GM_pais$periodo, levels=GM_pais[["categories"]][["codes"]][[4]]), labels=GM_pais[["categories"]][["labels"]][[4]])
 df_GM_pais$valor <- as.numeric(df_GM_pais$valor) %>% round(1)
 df_GM_pais$valor[is.na(df_GM_pais$valor)] <- 0
 df_GM_pais$mun <- recode_mun(df_GM_pais, 'mun')
@@ -640,7 +620,6 @@ df_GMd_pais_Canarias <- df_GM_pais %>%
   select(c(pais, valor))
 df_GMd_pais_mun <- df_GMd_pais_mun %>% mutate(valor_Canarias = df_GMd_pais_Canarias$valor)
 df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
-# df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = df_GMd_pais_mun$pais[4:1])
 
 df_GMd_pais_mun <- df_GMd_pais_mun %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
@@ -652,7 +631,6 @@ df_GMd_pais_mun <- df_GMd_pais_mun %>% transform(hovertext = paste0(
 df_GMd_pais_plot <- df_GMd_pais_mun %>%
   mutate(valor_Canarias = df_GMd_pais_Canarias$valor,
          label = "|")
-# df_GMd_pais_plot$pais <- ordered(df_GMd_pais_plot$pais, levels = df_GMd_pais_plot$pais[4:1])
 
 df_GMd_pais_plot <- df_GMd_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",

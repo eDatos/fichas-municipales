@@ -59,7 +59,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%

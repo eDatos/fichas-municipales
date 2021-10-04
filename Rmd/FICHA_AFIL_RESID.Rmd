@@ -68,7 +68,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -291,7 +291,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 piramide <- fromJSON(params$url.piramide_r)
 df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_piramide) <- c('mun', 'gredad', 'periodo', 'sexo', 'valor')
-# df_piramide$gredad <- ordered(df_piramide$gredad, levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
 df_piramide$periodo <- factor(df_piramide$periodo, levels = piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
 df_piramide$sexo <- factor(df_piramide$sexo, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_piramide$valor <- as.numeric(df_piramide$valor)
@@ -318,7 +317,6 @@ df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Afil_num, valor_Canarias
 g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo, group = sexo)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, aes(y = porcentaje)) + 
   geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias)) +
-  #facet_share(~sexo, dir = "h", scales = "free", reverse_num = TRUE) + 
   coord_flip() +
   theme_minimal() +
   labs(x = NULL, y = NULL, colour = " ") +
@@ -332,8 +330,6 @@ g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo,
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none"
-        #axis.ticks = element_blank(),
-        #axis.text.y = element_blank()
         ) +
   scale_y_continuous(n.breaks = 8, labels = function(x){paste0(format(round(abs(x), 1), big.mark = '.', decimal.mark = ","), '%')},
                      limits = c(-1, 1)*max(abs(df_mun$porcentaje), abs(df_mun$porcentaje_Canarias)))
@@ -377,8 +373,6 @@ df_afil_mun <- df_afil_ %>%
   select(c(Periodo, valor, variacion, variacion_porc))
 
 Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-# Variacion_Afil <- df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion) %>% abs() %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-# Signo_Variacion <- signo(df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion))
 Imagen_Variacion <- ifelse(signo(df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion)) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual_Afil <- df_afil_mun %>% filter(Periodo == mes_actual$Periodo) %>% select(variacion_porc) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 
@@ -422,9 +416,7 @@ df_afil_extr_mun <- df_afil_ %>%
 df_afil_extr_mun <- df_afil_extr_mun %>% mutate(peso = round(df_afil_extr_mun$valor / Num_Afil_num * 100, 1))
 
 Peso_afil_esp <- df_afil_extr_mun %>% filter(nacionalidad == " ESPAÑOLA") %>% select(peso) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Num_afil_ext <- df_afil_extr_mun %>% filter(nacionalidad == " EXTRANJERA") %>% select(valor) %>% as.numeric()
 Peso_afil_ext <- df_afil_extr_mun %>% filter(nacionalidad == " EXTRANJERA") %>% select(peso) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Num_afil_apat <- df_afil_extr_mun %>% filter(nacionalidad == " APÁTRIDA O SIN ESPECIFICAR") %>% select(peso) %>% as.numeric()
 Peso_afil_apat <- df_afil_extr_mun %>% filter(nacionalidad == " APÁTRIDA O SIN ESPECIFICAR") %>% select(peso) %>% as.numeric()
 ```
 
@@ -435,9 +427,7 @@ df_afil_sl_mun <- df_afil_ %>%
 df_afil_sl_mun <- df_afil_sl_mun %>% mutate(peso = round(df_afil_sl_mun$valor / df_afil_sl_mun$valor[which(df_afil_sl_mun$sl == "TOTAL DE AFILIACIONES")] * 100, 1))
 
 Peso_afil_asal <- df_afil_sl_mun %>% filter(sl == " Empleos asalariados") %>% select(peso) %>% as.numeric()
-# Num_afil_asal <- df_afil_sl_mun %>% filter(sl == " Empleos asalariados") %>% select(valor) %>% as.numeric()
 Peso_afil_auton <- df_afil_sl_mun %>% filter(sl == " Empleos autónomos") %>% select(peso) %>% as.numeric()
-# Num_afil_auton <- df_afil_sl_mun %>% filter(sl == " Empleos autónomos") %>% select(valor) %>% as.numeric()
 ```
 
 ```{r Barras afiliaciones actividades económicas por sexo}

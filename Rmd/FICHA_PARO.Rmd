@@ -64,7 +64,6 @@ mes <- mes %>%
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(Periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(Periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
-# mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
 
 ```{r Municipio actual}
@@ -72,7 +71,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -207,7 +206,6 @@ df.line <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = Periodo, Valor, Municipio = municipio, Tasa) %>%
   left_join(mes, by = "code") %>%
-  #mutate(Tasa =  round(100*((Valor / lag(Valor, n=12)) - 1), 1)) %>%
   filter(code <= mes_actual$code & order > 12)
 
 leyenda_poblacion <- df.line %>% filter(Periodo == mes_actual$Periodo) %>%
@@ -288,8 +286,6 @@ Num_Paro <- format(Num_Paro_num, big.mark = ".", decimal.mark = ",")
 Num_Paro_Isla <- df_p_ %>% filter(id_municipio == municipio_actual$id_isla & code == mes_actual$code & Ind == "ABSOLUTE") %>% select(Valor) %>% as.numeric()
 Num_Paro_Canarias <- df_p_ %>% filter(id_municipio == "ES70" & code == mes_actual$code & Ind == "ABSOLUTE") %>% select(Valor) %>% as.numeric()
 
-# Variacion_Paro <- df_p %>% filter(Ind == "ANNUAL_PUNTUAL_RATE") %>% select(Valor) %>% abs() %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-# Signo_Variacion <- signo(df_p %>% filter(Ind == "ANNUAL_PUNTUAL_RATE") %>% select(Valor))
 Imagen_Variacion <- ifelse(signo(df_p %>% filter(Ind == "ANNUAL_PUNTUAL_RATE") %>% select(Valor)) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual_Paro <- df_p %>% filter(Ind == "ANNUAL_PERCENTAGE_RATE") %>% select(Valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 
@@ -359,11 +355,6 @@ df_piramide$gredad <- ordered(df_piramide$gredad, levels = piramide[["categories
 df_piramide$sexo <- factor(df_piramide$sexo , levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_piramide$valor <- as.numeric(df_piramide$valor)
 df_piramide$mun <- recode_mun(df_piramide, 'mun')
-
-# Num_Paro_num <- df_piramide %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$Periodo & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>%
-#                              subset(select = "valor") %>%  as.numeric()
-# Num_Paro_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & periodo == mes_actual$Periodo & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>%
-#                              subset(select = "valor") %>% as.numeric()
 
 df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$Periodo & gredad != "TOTAL" & sexo != "AMBOS SEXOS") %>%
   subset(select = c("gredad", "sexo", "valor", "mun")) %>%

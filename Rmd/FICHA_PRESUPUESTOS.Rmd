@@ -227,7 +227,6 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(Año, Municipio = municipio, Valor, Valor_M) %>% 
   mutate(Tasa =  round(100*((Valor / lag(Valor)) - 1), 1), Año = as.numeric(Año)) %>%
-  # left_join(rep(df_I, 3), by = "Año") %>%
   filter(Año != min(Año) & Año <= params$año)
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -322,8 +321,6 @@ df_lv <- df %>%
   filter(Municipio == municipio_actual$municipio & Año %in% c(params$año, params$año-1))
 
 Num_Presupuesto <-  format(round(df_lv$Valor_M[df_lv$Año == params$año], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-# Variacion_Presupuesto <- format(round(abs(df_lv$Valor_M[df_lv$Año == params$año] - df_lv$Valor_M[df_lv$Año == params$año-1]), 1), big.mark=".",decimal.mark = ",", nsmall = 1)
-# Signo_Variacion <- signo(df_lv$Valor_M[df_lv$Año == params$año] - df_lv$Valor_M[df_lv$Año == params$año-1])
 Imagen_Variacion <- ifelse(signo(df_lv$Valor_M[df_lv$Año == params$año] - df_lv$Valor_M[df_lv$Año == params$año-1]) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual_Presupuesto <- format(df_lv$Tasa[df_lv$Año == params$año], big.mark =".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
@@ -401,7 +398,6 @@ df_estr_partidas <- data.frame(
                      times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   valor = unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 df_estr_partidas$valor <- as.numeric(df_estr_partidas$valor)
-# df_estr_partidas$valor[is.na(df_estr_partidas$valor)] <- 0
 df_estr_partidas$id_municipio <- recode_id_Frontera(df_estr_partidas, 'id_municipio')
 
 df_estr_partidas_mun <- df_estr_partidas %>% filter(id_municipio == params$id_municipio) %>% select(!id_municipio)

@@ -73,7 +73,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -245,7 +245,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
                       range = c(max(0.8, nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*12),
-                                # df$order[df$code == mes_actual$code & df$Municipio == municipio_actual$municipio]
                                 nrow(df[df$Municipio == municipio_actual$municipio, ])
                                 ),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
@@ -505,7 +504,6 @@ df_aloj_isla_mun <- df_aloj_isla_mun %>%
  df_aloj_isla_plot <- df_aloj_isla_mun %>%
   mutate(label = "|")
 df_aloj_isla_plot$lugar <- ordered(df_aloj_isla_plot$lugar, levels = rk_aloj_isla_mun$lugar)
-# df_aloj_isla_plot$lugar <- ordered(df_aloj_isla_plot$lugar, levels = df_aloj_isla_plot$lugar[7:1])
 
 df_aloj_isla_plot <- df_aloj_isla_plot %>% transform(hovertext = paste0(
   "<b>", trimws(lugar), "</b><br>",
