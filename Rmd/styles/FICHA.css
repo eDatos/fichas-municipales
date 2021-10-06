@@ -435,6 +435,8 @@ hr {
 }
 hr.separator {
   border-top: 2px solid #eee;
+  margin-top: 3px;
+  margin-bottom: 6px;
 }
 .nota-metodologica .indicator-title, .nota-metodologica .highlight, .nota-metodologica .indicator-content {
   width: 100% !important;
@@ -478,7 +480,7 @@ h4, h5 {
 .tablechart {
   float: right;
   width: 52%;
-  padding: 10px;
+  padding: 0;
 }
 .indicator4s {
   /*display: inline-flex;*/
@@ -630,5 +632,5 @@ h4, h5 {
 
 .progressbar-legend > .sp-content-b {
   margin: 2.6px 10px;
-  text-align: center;
+  text-align: left;
 }

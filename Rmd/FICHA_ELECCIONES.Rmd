@@ -23,22 +23,12 @@ always_allow_html: yes
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
-```{r librerías}
-library(jsonlite)
-library(ggplot2)
-library(knitr)
-library(data.table)
-library(plotly)
-library(plyr)
-library(dplyr)
-library(scales)
-library(htmlwidgets)
-library(sf)
-library(fuzzyjoin)
-library(xml2)
-library(tidyverse)
-library(tmap)
-library(magrittr)
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+
 
 "%notin%" <- Negate("%in%")
 ```

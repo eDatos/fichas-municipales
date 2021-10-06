@@ -22,25 +22,11 @@ always_allow_html: true
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
-```{r librerías}
-library(jsonlite)
-library(ggplot2)
-library(knitr)
-library(data.table)
-library(plotly)
-library(plyr)
-library(dplyr)
-library(scales)
-library(htmlwidgets)
-library(sf)
-library(fuzzyjoin)
-library(xml2)
-library(XML)
-library(tidyverse)
-library(tmap)
-library(magrittr)
-library(ggpol)
-library(reshape2)
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "ggpol", "reshape2")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
 
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
@@ -637,7 +623,7 @@ mapa_comarca_plot
   <h3>Situaciones laborales</h3>
 </div>
 
-<div class="column highlight" style="padding-top: 14px;">
+<div class="column highlight" style="padding-top: 16px;">
   <div class="column-2">`r get_indicator2("Española", paste0(Peso_afil_esp, "%"),"./img/spain2.png")`</div> 
   <div class="column-2">`r get_indicator2("Extranjero", paste0(Peso_afil_ext, "%"),"./img/world.png")`</div>
 </div>
