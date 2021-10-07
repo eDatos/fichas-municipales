@@ -587,7 +587,7 @@ get_indicator3s = function(label, value) {
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
 <h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r mes_actual$periodo_formatted`</h3>
-<h2 style="color: #666; margin: 0;">Indicadores turísticos mensuales</h2>
+<h2 style="color: #666; margin: 0;">Indicadores de alojamientos turísticos</h2>
 <hr>
 
 <div class="linechart-placeholder">

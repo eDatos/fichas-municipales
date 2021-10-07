@@ -431,7 +431,7 @@ GM_ne <- fromJSON(params$url.GM_ne)
 df_GM_ne <- cbind(data.frame(do.call('rbind', GM_ne[["data"]][["dimCodes"]])), GM_ne[["data"]][["Valor"]])
 colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
 df_GM_ne$ind <- factor(df_GM_ne$ind, levels=GM_ne[["categories"]][["codes"]][[1]], labels=GM_ne[["categories"]][["labels"]][[1]])
-df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
+df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=c("TOTAL", "Sin estudios<br>o primarios", "Secundarios", "Superiores"))
 df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
 df_GM_ne$valor <- as.numeric(df_GM_ne$valor)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
@@ -454,7 +454,6 @@ df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
 
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
   mutate(label = "|")
-df_GMd_ne_plot <- df_GMd_ne_plot %>% mutate(estudios = recode(estudios, "Sin estudios o primarios" = "Sin estudios<br>o primarios"))
 
 df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
@@ -489,7 +488,7 @@ g_GMd_ne <- ggplot(df_GMd_ne_plot, aes(y = estudios, fill = estudios, label = la
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')}, n.breaks = 3)
 
 g_GMd_ne <- ggplotly(g_GMd_ne, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(4:6))
 ```
@@ -576,7 +575,7 @@ g_GMd_np <- ggplot(df_GMd_np_plot, aes(y = noches, fill = noches, label = label,
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')}, n.breaks = 3)
 
 g_GMd_np <- ggplotly(g_GMd_np, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(4:6))
 ```
@@ -801,33 +800,33 @@ mapa_isla_plot
 <div class="row">
 <div class="column-2">
 <div class="column" style="width: 100% !important;">
-<div class="indicator-title" style="width: 100% !important; padding: 5px;">
+<div class="indicator-title" style="width: 100% !important;">
   <h3>Niveles educativos</h3>
 </div>
-<div class="column highlight" style="width: 100% !important; padding: 9px;">
-  <div class="piramide" style="height: 152px;">
+<div class="column highlight" style="width: 100% !important; padding: 30px 10px 5px;">
+  <div class="piramide" style="height: 120px;">
   `r g_GMd_ne`
   </div>
 <div class="progressbar-legend-container">
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -1px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
   </div>
 </div>
 </div>
 </div>
 <div class="column-2">
 <div class="column" style="width: 100% !important;">
-<div class="indicator-title" style="width: 100% !important; padding: 5px;">
+<div class="indicator-title" style="width: 100% !important;">
   <h3>Noches pernoctadas</h3>
 </div>
-<div class="column highlight" style="width: 100% !important; padding: 9px;">
-  <div class="piramide" style="height: 152px;">
+<div class="column highlight" style="width: 100% !important; padding: 30px 10px 5px;">
+  <div class="piramide" style="height: 120px;">
   `r g_GMd_np`
   </div>
 <div class="progressbar-legend-container">
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -1px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-  </div>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+</div>
 </div>
 </div>
 </div>

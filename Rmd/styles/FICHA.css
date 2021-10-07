@@ -545,6 +545,9 @@ h4, h5 {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
+.progress-bar-2-C {
+  background-color: #8C9BA3;
+}
 .progress-bar-3-C {
   background-color: #BBC8D0;
   border-top-right-radius: 20px;
