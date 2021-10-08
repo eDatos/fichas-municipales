@@ -478,7 +478,7 @@ g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label 
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(5:8))
 ```
@@ -645,7 +645,7 @@ g_turismo_educacion <- ggplotly(g_turismo_educacion, tooltip = c("text")) %>%
 turismo_motiv <- fromJSON(params$url.motivacion)
 df_turismo_motiv <- cbind(data.frame(do.call('rbind', turismo_motiv[["data"]][["dimCodes"]])), turismo_motiv[["data"]][["Valor"]])
 colnames(df_turismo_motiv) <- c('motiv', 'tipo', 'mun', 'periodo', 'valor')
-df_turismo_motiv$motiv <- factor(df_turismo_motiv$motiv, levels=turismo_motiv[["categories"]][["codes"]][[1]], labels=c("TOTAL", "Descansar", "Explorar o<br>conocer las islas", "Otros motivos"))
+df_turismo_motiv$motiv <- factor(df_turismo_motiv$motiv, levels=turismo_motiv[["categories"]][["codes"]][[1]], labels=turismo_motiv[["categories"]][["labels"]][[1]])
 df_turismo_motiv$tipo <- factor(df_turismo_motiv$tipo, levels=turismo_motiv[["categories"]][["codes"]][[2]], labels=turismo_motiv[["categories"]][["labels"]][[2]])
 df_turismo_motiv$mun <- factor(df_turismo_motiv$mun, levels=turismo_motiv[["categories"]][["codes"]][[3]], labels=turismo_motiv[["categories"]][["labels"]][[3]])
 df_turismo_motiv$periodo <- as.numeric(df_turismo_motiv$periodo)
@@ -658,8 +658,8 @@ df_turismo_motiv_C <- df_turismo_motiv %>%
 df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ num_Canarias_total * 100)
 
 porc_Turistas_descansar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")]
-porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o<br>conocer las islas")]
-porc_Turistas_otros_C <- 100 - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")] - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o<br>conocer las islas")]
+porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros_C <- 100 - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")] - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
 porc_Turistas_descansar_C_l <- round(porc_Turistas_descansar_C, 1) %>% as.numeric
 porc_Turistas_explorar_C_l <- round(porc_Turistas_explorar_C, 1) %>% as.numeric
 porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
@@ -670,8 +670,8 @@ df_turismo_motiv <- df_turismo_motiv %>%
 df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ Num_Turistas_num * 100)
 
 porc_Turistas_descansar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")]
-porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o<br>conocer las islas")]
-porc_Turistas_otros <- 100 - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")] - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o<br>conocer las islas")]
+porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros <- 100 - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")] - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
 porc_Turistas_descansar_l <- round(porc_Turistas_descansar, 1) %>% as.numeric
 porc_Turistas_explorar_l <- round(porc_Turistas_explorar, 1) %>% as.numeric
 porc_Turistas_otros_l <- round(porc_Turistas_otros, 1) %>% as.numeric
@@ -776,7 +776,7 @@ mapa_isla_plot
 
 <div class="row">
 <div class="column highlight">
-<div class="piramide" style="height: 190px">
+<div class="piramide" style="height: 190px;">
   `r g_turismo_pais`
 </div>
 <div class="progressbar-legend-container">
@@ -785,7 +785,7 @@ mapa_isla_plot
 </div>
 </div>
 
-<div class="column highlight" style="padding: 15px">
+<div class="column highlight" style="padding: 10px;">
 <div class="progress-bar-container">
   <div class="progress-bar-1" style="width:`r porc_Turistas_menos50`%"></div>
   <div class="progress-bar-3" style="width:`r porc_Turistas_mas50`%"></div>
@@ -797,7 +797,7 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<p style="margin: 9px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-1-C" style="width:`r porc_Turistas_menos50_C`%"></div>
@@ -823,8 +823,8 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding: 25px 10px;">
-<div class="piramide" style="height: 190px">
+<div class="column highlight">
+<div class="piramide" style="height: 160px; margin-bottom: 20px;">
   `r g_turismo_aloj`
 </div>
 <div class="progressbar-legend-container">
@@ -833,7 +833,7 @@ mapa_isla_plot
 </div>
 </div>
 
-<div class="column highlight" style="padding: 15px">
+<div class="column highlight" style="padding: 10px;">
 <div class="progress-bar-container">
   <div class="progress-bar-1" style="width:`r porc_Turistas_descansar`%"></div>
   <div class="progress-bar-2" style="width:`r porc_Turistas_explorar`%"></div>
@@ -842,12 +842,12 @@ mapa_isla_plot
 
 <div class="progressbar-legend-container">
   <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Explorar o<br>conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros motivos<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 
 <div class="row">
-<p style="margin: 15px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-1-C" style="width:`r porc_Turistas_descansar_C`%"></div>
@@ -857,8 +857,8 @@ mapa_isla_plot
 
 <div class="progressbar-legend-container">
   <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Explorar o<br>conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros motivos<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 
@@ -876,8 +876,8 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding: 35px 10px 10px;">
-<div class="piramide" style="height: 120px">
+<div class="column highlight" style="padding: 38px 10px 20px;">
+<div class="piramide" style="height: 120px; margin-bottom: 20px;">
   `r g_turismo_educacion`
 </div>
 <div class="progressbar-legend-container">
@@ -894,13 +894,13 @@ mapa_isla_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>0<br>`r format(porc_Turistas_0_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>1 - 2<br>`r format(porc_Turistas_1_2_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>&ge; 3<br>`r format(porc_Turistas_3_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 
 <div class="row">
-<p style="margin: 15px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-1-C" style="width:`r porc_Turistas_0_C`%"></div>
@@ -909,9 +909,9 @@ mapa_isla_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>0<br>`r format(porc_Turistas_0_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>1 - 2<br>`r format(porc_Turistas_1_2_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>&ge; 3<br>`r format(porc_Turistas_3_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 
