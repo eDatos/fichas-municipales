@@ -1,0 +1,44 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<div class="row nota-metodologica">
+<div class="indicator-title">
+  <h3>Glosario de conceptos de medida</h3>
+</div>
+
+<div class="row highlight" style="margin: 10px auto;">
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Ahorro bruto", "Diferencia entre los ingresos corrientes y los gastos corrientes.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Ahorro neto", "Ahorro bruto menos la amortización de préstamos.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Carga financiera", "Suma de los gastos financieros y la variación de pasivos financieros")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Gastos por habitante", "Razón entre el presupuesto liquidado de gastos y la población de derecho.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Ingresos por habitante", "Razón entre el presupuesto liquidado de ingresos y la población de derecho.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Presupuesto", "Expresión contable del plan económico del sector público para un periodo de tiempo determinado (generalmente un año). Cada entidad pública con personalidad jurídica propia tiene su presupuesto en el que se reflejan, de manera desagregada, las correspondientes previsiones de ingresos y limitaciones de gastos.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un año concreto por cada 1.000 habitantes.")`</div>
+</div>
+
+<div class="row">
+</div>
+<div class="logo-fecam-glosario">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac-glosario"> 
+  <img src="img/logo_istac.png" />
+</div>
+
