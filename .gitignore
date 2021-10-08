@@ -6,3 +6,4 @@ data/
 /shiny/output/*
 /shiny/print/*
 /Rmd/*.html
+.Rproj.user
