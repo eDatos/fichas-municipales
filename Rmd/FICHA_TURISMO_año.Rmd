@@ -410,7 +410,7 @@ g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group =
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
-  layout(hovermode = 'y unified') %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(3, 4))
 ```
@@ -478,7 +478,7 @@ g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label 
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0, b = 0)) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(5:8))
 ```
@@ -775,8 +775,8 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight">
-<div class="piramide" style="height: 190px;">
+<div class="column highlight" style="padding: 20px 10px 10px;">
+<div class="piramide" style="height: 158px; margin-bottom: 11px;">
   `r g_turismo_pais`
 </div>
 <div class="progressbar-legend-container">
@@ -823,8 +823,8 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight">
-<div class="piramide" style="height: 160px; margin-bottom: 20px;">
+<div class="column highlight" style="padding: 20px 10px 10px;">
+<div class="piramide" style="height: 158px; margin-bottom: 11px;">
   `r g_turismo_aloj`
 </div>
 <div class="progressbar-legend-container">
