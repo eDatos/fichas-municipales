@@ -160,11 +160,18 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución del presupuesto}
 # Presupuesto inicial
 data_I <- fromJSON(params$url.presupuesto_1_inicial)
+dI <- length(rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_I <- data.frame(Año = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
                    Municipio = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                                    times = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   Valor = unlist(c(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE), NA)))
+                   Valor = c(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dI)))
 df_I$Valor <- as.numeric(df_I$Valor)
 df_I <- recode_Frontera(df_I)
 df_I$Municipio <- recode_id_Frontera(df_I, 'Municipio')
@@ -177,11 +184,17 @@ df_I <- df_I[with(df_I, order(Año)), ] %>%
 # Liquidación del presupuesto consolidado de ingresos y gastos de las Entidades Locales según capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años 2002-2019 [tabla1]
 data_u <- fromJSON(params$url.presupuesto_1)
 
+du <- length(rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]))) -
+      length(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_u <- data.frame(Año = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
                    Municipio = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                                    times = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   Valor = unlist(c(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE), NA)))
+                   Valor = c(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, du)))
 df_u$Valor <- as.numeric(df_u$Valor)
 df_u <- recode_Frontera(df_u)
 df_u$Municipio <- recode_id_Frontera(df_u, 'Municipio')
@@ -360,13 +373,18 @@ GAP <- format(round(((df_lv$Valor_M[df_lv$Año == params$año]) - (df_lv$Valor_i
 
 ```{r Estructura según partidas}
 data_estr_partidas <- fromJSON(url)
+dp <- length( rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                     each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]))) -
+      length(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_estr_partidas <- data.frame(
-  id_partida = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
-                each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   id_municipio = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                     times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  valor = unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+                     each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_partida = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+                   times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = c(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dp)))
 df_estr_partidas$valor <- as.numeric(df_estr_partidas$valor)
 df_estr_partidas$id_municipio <- recode_id_Frontera(df_estr_partidas, 'id_municipio')
 
@@ -546,6 +564,12 @@ df_programa <- data.frame(
                "Producción de<br>bienes públicos de<br>carácter preferente", "Actuaciones de<br>carácter económico", "Actuaciones de<br>carácter general"),
   id_programa = c("PG", "DP", "SPB", "APPS", "PBPCP", "ACE", "ACG"))
 
+dg <- length(rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                 each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
+                        length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]]))) -
+      length(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 df_gastos_programas <- data.frame(
   id_municipio = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                      each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
@@ -553,7 +577,7 @@ df_gastos_programas <- data.frame(
   name_programa = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                       each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
   año = data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]],
-  valor = unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dg)))
 df_gastos_programas$name_programa <- factor(
   df_gastos_programas$name_programa,
   levels = df_programa$id,
@@ -626,11 +650,12 @@ g_gastos_programas <- ggplotly(g_gastos_programas, tooltip = c("text")) %>%
 # Indicadores generales de la liquidación presupuestaria de las Entidades Locales de Canarias 2002-2019 [tabla3]
 data_ind_presupuestos <- fromJSON(params$url.presupuesto_3)
 
-d <- length(rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) - 
-     length(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+ds <- length(rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                   length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-###### Añadir aviso si la variable d es mayor que 0 ######
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_presupuestos <- data.frame(
   Año = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
@@ -639,7 +664,7 @@ df_presupuestos <- data.frame(
                      each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
   medida = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                times = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
-  valor = c(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, d)))
+  valor = c(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, ds)))
 df_presupuestos$valor <- df_presupuestos$valor %>% as.numeric()
 df_presupuestos <- recode_Frontera(df_presupuestos)
 df_presupuestos$Municipio <- recode_id_Frontera(df_presupuestos, 'Municipio')
