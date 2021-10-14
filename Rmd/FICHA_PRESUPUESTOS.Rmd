@@ -570,6 +570,7 @@ dg <- length(rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][
       length(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_gastos_programas <- data.frame(
   id_municipio = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                      each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
@@ -726,18 +727,18 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
     cat(paste0(
-      "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div>"))
+      "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
       if(Variacion_Porcentual_Presupuesto == "NA" & GAP != "NA"){
         cat(paste0(
-          "<div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div><div class='column-3'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario.png'), "</div>"))
+          "<div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
           if(Variacion_Porcentual_Presupuesto != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div>"))
+              "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }
