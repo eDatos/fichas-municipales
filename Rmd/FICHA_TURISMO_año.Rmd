@@ -10,9 +10,9 @@ params:
   url.piramide_t: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=1b5cca0a-e5b4-4380-b2fe-41cfa0ab55a6
   url.estancia: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=367e2066-b73c-4ce7-beac-89350e1971c2
   url.sl_aloj: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9b2e3158-2035-447e-9156-2825a6a999e4
-  # url.educacion: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=01946875-8fb5-4cc6-a1ed-0f6ebd135030
+  url.educacion: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=01946875-8fb5-4cc6-a1ed-0f6ebd135030
   url.ingresos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=75e76f79-d3c1-433b-b3ac-0bafe7a19f04
-  # url.motivacion: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=850cd29b-039e-4a55-9588-8f827c4f8333
+  url.motivacion: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=850cd29b-039e-4a55-9588-8f827c4f8333
   url.proposito: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3f1290db-cfcd-4728-b040-2ee149e3bce5
   url.visitas: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bb9d27e9-5465-40f8-99e9-25d7c700e29a
 output:
@@ -410,7 +410,7 @@ g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group =
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
-  layout(hovermode = 'y unified') %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(3, 4))
 ```
@@ -478,7 +478,7 @@ g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label 
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(5:8))
 ```
@@ -549,26 +549,60 @@ df_turismo_visitas$periodo <- as.numeric(df_turismo_visitas$periodo)
 df_turismo_visitas$valor <- as.numeric(df_turismo_visitas$valor)
 df_turismo_visitas$mun <- recode_mun(df_turismo_visitas, 'mun')
 
-df_turismo_visitas_mun <- df_turismo_visitas %>%
-  filter(N_visitas != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(N_visitas, valor))
 df_turismo_visitas_C <- df_turismo_visitas %>%
   filter(N_visitas != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
   select(c(N_visitas, valor))
-df_turismo_visitas_mun <- df_turismo_visitas_mun %>%
-  mutate(porcentaje = df_turismo_visitas_mun$valor / Num_Turistas_num * 100,
-         valor_Canarias = df_turismo_visitas_C$valor,
-         porcentaje_Canarias = df_turismo_visitas_C$valor / num_Canarias_total * 100)
+df_turismo_visitas_C <- df_turismo_visitas_C %>% mutate(porcentaje = df_turismo_visitas_C$valor/ num_Canarias_total * 100)
 
-df_turismo_visitas_plot <- df_turismo_visitas_mun %>%
+porc_Turistas_0_C <- df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Ninguna")]
+porc_Turistas_1_2_C <- df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Una o dos visitas")]
+porc_Turistas_3_C <- 100 - df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Ninguna")] - df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Una o dos visitas")]
+porc_Turistas_0_C_l <- round(porc_Turistas_0_C, 1) %>% as.numeric
+porc_Turistas_1_2_C_l <- round(porc_Turistas_1_2_C, 1) %>% as.numeric
+porc_Turistas_3_C_l <- round(porc_Turistas_3_C, 1) %>% as.numeric
+
+df_turismo_visitas <- df_turismo_visitas %>%
+  filter(N_visitas != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(N_visitas, valor))
+df_turismo_visitas <- df_turismo_visitas %>% mutate(porcentaje = df_turismo_visitas$valor/ Num_Turistas_num * 100)
+
+porc_Turistas_0 <- df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Ninguna")]
+porc_Turistas_1_2 <- df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Una o dos visitas")]
+porc_Turistas_3 <- 100 - df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Ninguna")] - df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Una o dos visitas")]
+porc_Turistas_0_l <- round(porc_Turistas_0, 1) %>% as.numeric
+porc_Turistas_1_2_l <- round(porc_Turistas_1_2, 1) %>% as.numeric
+porc_Turistas_3_l <- round(porc_Turistas_3, 1) %>% as.numeric
+```
+
+```{r Nivel educativo}
+# Turistas según nivel educativo por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_educacion <- fromJSON(params$url.educacion)
+df_turismo_educacion <- cbind(data.frame(do.call('rbind', turismo_educacion[["data"]][["dimCodes"]])), turismo_educacion[["data"]][["Valor"]])
+colnames(df_turismo_educacion) <- c('estudios', 'pais', 'mun', 'periodo', 'valor')
+df_turismo_educacion$estudios <- factor(df_turismo_educacion$estudios, levels=turismo_educacion[["categories"]][["codes"]][[1]], 
+                                        labels=c("TOTAL", "Sin estudios<br>o primarios", "Secundarios", "Superiores"))
+df_turismo_educacion$pais <- factor(df_turismo_educacion$pais, levels=turismo_educacion[["categories"]][["codes"]][[2]], labels=turismo_educacion[["categories"]][["labels"]][[2]])
+df_turismo_educacion$mun <- factor(df_turismo_educacion$mun, levels=turismo_educacion[["categories"]][["codes"]][[3]], labels=turismo_educacion[["categories"]][["labels"]][[3]])
+df_turismo_educacion$periodo <- as.numeric(df_turismo_educacion$periodo)
+df_turismo_educacion$valor <- as.numeric(df_turismo_educacion$valor)
+df_turismo_educacion$mun <- recode_mun(df_turismo_educacion, 'mun')
+
+df_turismo_educacion_mun <- df_turismo_educacion %>%
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(estudios, valor))
+df_turismo_educacion_C <- df_turismo_educacion %>%
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  select(c(estudios, valor))
+df_turismo_educacion_mun <- df_turismo_educacion_mun %>%
+  mutate(porcentaje = df_turismo_educacion_mun$valor / Num_Turistas_num * 100,
+         valor_Canarias = df_turismo_educacion_C$valor,
+         porcentaje_Canarias = df_turismo_educacion_C$valor / num_Canarias_total * 100)
+
+df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
   mutate(label = "|")
-df_turismo_visitas_plot <- df_turismo_visitas_plot %>% 
-  mutate(N_visitas = recode(N_visitas, "Ninguna" = "0"),
-         N_visitas = recode(N_visitas, "Una o dos visitas" = "1 - 2"),
-         N_visitas = recode(N_visitas, "Tres o más visitas" = "> 2"))
 
-df_turismo_visitas_plot <- df_turismo_visitas_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(N_visitas), "</b><br>",
+df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(estudios), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
@@ -576,14 +610,14 @@ df_turismo_visitas_plot <- df_turismo_visitas_plot %>% transform(hovertext = pas
   )
 )
 
-df_turismo_visitas_0 <- df_turismo_visitas_plot %>% 
+df_turismo_educacion_0 <- df_turismo_educacion_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
 
-df_turismo_visitas_plot <- rbind(df_turismo_visitas_plot, df_turismo_visitas_0)
+df_turismo_educacion_plot <- rbind(df_turismo_educacion_plot, df_turismo_educacion_0)
 
-g_turismo_visitas <- ggplot(df_turismo_visitas_plot, aes(y = N_visitas, fill = N_visitas, label = label, name = NULL, text = hovertext)) +
+g_turismo_educacion <- ggplot(df_turismo_educacion_plot, aes(y = estudios, fill = estudios, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
@@ -600,11 +634,49 @@ g_turismo_visitas <- ggplot(df_turismo_visitas_plot, aes(y = N_visitas, fill = N
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_turismo_visitas <- ggplotly(g_turismo_visitas, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified') %>%
+g_turismo_educacion <- ggplotly(g_turismo_educacion, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(4:6))
 ```
+
+```{r Motivaciones principales}
+# Motivaciones principales para sus vacaciones","Tipos de alojamiento","Municipios". Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_motiv <- fromJSON(params$url.motivacion)
+df_turismo_motiv <- cbind(data.frame(do.call('rbind', turismo_motiv[["data"]][["dimCodes"]])), turismo_motiv[["data"]][["Valor"]])
+colnames(df_turismo_motiv) <- c('motiv', 'tipo', 'mun', 'periodo', 'valor')
+df_turismo_motiv$motiv <- factor(df_turismo_motiv$motiv, levels=turismo_motiv[["categories"]][["codes"]][[1]], labels=turismo_motiv[["categories"]][["labels"]][[1]])
+df_turismo_motiv$tipo <- factor(df_turismo_motiv$tipo, levels=turismo_motiv[["categories"]][["codes"]][[2]], labels=turismo_motiv[["categories"]][["labels"]][[2]])
+df_turismo_motiv$mun <- factor(df_turismo_motiv$mun, levels=turismo_motiv[["categories"]][["codes"]][[3]], labels=turismo_motiv[["categories"]][["labels"]][[3]])
+df_turismo_motiv$periodo <- as.numeric(df_turismo_motiv$periodo)
+df_turismo_motiv$valor <- as.numeric(df_turismo_motiv$valor)
+df_turismo_motiv$mun <- recode_mun(df_turismo_motiv, 'mun')
+
+df_turismo_motiv_C <- df_turismo_motiv %>%
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  select(c(motiv, valor))
+df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ num_Canarias_total * 100)
+
+porc_Turistas_descansar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")]
+porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros_C <- 100 - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")] - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
+porc_Turistas_descansar_C_l <- round(porc_Turistas_descansar_C, 1) %>% as.numeric
+porc_Turistas_explorar_C_l <- round(porc_Turistas_explorar_C, 1) %>% as.numeric
+porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
+
+df_turismo_motiv <- df_turismo_motiv %>%
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(motiv, valor))
+df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ Num_Turistas_num * 100)
+
+porc_Turistas_descansar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")]
+porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros <- 100 - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")] - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
+porc_Turistas_descansar_l <- round(porc_Turistas_descansar, 1) %>% as.numeric
+porc_Turistas_explorar_l <- round(porc_Turistas_explorar, 1) %>% as.numeric
+porc_Turistas_otros_l <- round(porc_Turistas_otros, 1) %>% as.numeric
+```
+
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
@@ -698,13 +770,13 @@ mapa_isla_plot
   <h3>Nacionalidades y sexos</h3>
 </div>
 <div class="column indicator-title">
-  <h3>Tipos de alojamientos</h3>
+  <h3>Niveles de ingresos</h3>
 </div>
 </div>
 
 <div class="row">
-<div class="column highlight">
-<div class="piramide" style="height: 190px">
+<div class="column highlight" style="padding: 20px 10px 10px;">
+<div class="piramide" style="height: 158px; margin-bottom: 11px;">
   `r g_turismo_pais`
 </div>
 <div class="progressbar-legend-container">
@@ -713,40 +785,7 @@ mapa_isla_plot
 </div>
 </div>
 
-<div class="column highlight">
-<div class="piramide" style="height: 190px">
-  `r g_turismo_aloj`
-</div>
-<div class="progressbar-legend-container">
-<div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-</div>
-</div>
-
-</div>
-
-
-<div class="row">
-<div class="column indicator-title">
-  <h3>Visitas previas</h3>
-</div>
-<div class="column indicator-title">
-  <h3>Niveles de ingresos</h3>
-</div>
-</div>
-
-<div class="row">
 <div class="column highlight" style="padding: 10px;">
-<div class="piramide" style="height: 152px">
-  `r g_turismo_visitas`
-</div>
-<div class="progressbar-legend-container">
-<div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-</div>
-</div>
-
-<div class="column highlight" style="padding: 5px;">
 <div class="progress-bar-container">
   <div class="progress-bar-1" style="width:`r porc_Turistas_menos50`%"></div>
   <div class="progress-bar-3" style="width:`r porc_Turistas_mas50`%"></div>
@@ -758,7 +797,7 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<p style="margin: 4px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-1-C" style="width:`r porc_Turistas_menos50_C`%"></div>
@@ -772,6 +811,112 @@ mapa_isla_plot
 </div>
 
 </div>
+</div>
+
+<div class="row">
+<div class="column indicator-title">
+  <h3>Tipos de alojamientos</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Motivaciones principales</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight" style="padding: 20px 10px 10px;">
+<div class="piramide" style="height: 158px; margin-bottom: 11px;">
+  `r g_turismo_aloj`
+</div>
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+<div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+</div>
+</div>
+
+<div class="column highlight" style="padding: 10px;">
+<div class="progress-bar-container">
+  <div class="progress-bar-1" style="width:`r porc_Turistas_descansar`%"></div>
+  <div class="progress-bar-2" style="width:`r porc_Turistas_explorar`%"></div>
+  <div class="progress-bar-3" style="width:`r porc_Turistas_otros`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+
+<div class="row">
+<p style="margin: 13px 16px -10px;">Canarias</p>
+
+<div class="progress-bar-container" style="height: 20px;">
+  <div class="progress-bar-1-C" style="width:`r porc_Turistas_descansar_C`%"></div>
+  <div class="progress-bar-2-C" style="width:`r porc_Turistas_explorar_C`%"></div>
+  <div class="progress-bar-3-C" style="width:`r porc_Turistas_otros_C`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="row">
+<div class="column indicator-title">
+  <h3>Niveles educativos</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Visitas previas</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight" style="padding: 38px 10px 20px;">
+<div class="piramide" style="height: 120px; margin-bottom: 20px;">
+  `r g_turismo_educacion`
+</div>
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+<div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+</div>
+</div>
+
+<div class="column highlight" style="padding: 10px;">
+<div class="progress-bar-container">
+  <div class="progress-bar-1" style="width:`r porc_Turistas_0`%"></div>
+  <div class="progress-bar-2" style="width:`r porc_Turistas_1_2`%"></div>
+  <div class="progress-bar-3" style="width:`r porc_Turistas_3`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+
+<div class="row">
+<p style="margin: 13px 16px -10px;">Canarias</p>
+
+<div class="progress-bar-container" style="height: 20px;">
+  <div class="progress-bar-1-C" style="width:`r porc_Turistas_0_C`%"></div>
+  <div class="progress-bar-2-C" style="width:`r porc_Turistas_1_2_C`%"></div>
+  <div class="progress-bar-3-C" style="width:`r porc_Turistas_3_C`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+</div>
+
+</div>
+
 
 </div>
 
