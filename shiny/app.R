@@ -60,7 +60,8 @@ loadMunicipios <- function() {
     left_join(df_CL_AREA, by="code") %>% 
     select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
   
-  return(deframe(df_CL_AREA_mun %>% select(municipio, id)))
+  return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
+  #return(deframe(df_CL_AREA_mun %>% select(municipio, id)))
 }
 
 ui <- fluidPage(
@@ -81,11 +82,21 @@ server <- function(input, output) {
   #downloadData()
   df_fichas <- read.csv("fichas.csv", sep = ";")
   periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
-  periods_m <- reactive({
-    read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
-  })
   #periods <- get_total_periods(df_init_data, df_fichas)
+  
   municipios <- loadMunicipios()
+  
+  option_island <- reactive({
+    municipios %>% select(isla, id_isla) %>% unique %>% deframe
+  })
+  
+  option_mun <- reactive({
+    municipios %>% 
+      filter(id_isla %in% input$id_isla) %>% 
+      select(municipio, id) %>%
+      deframe
+  })
+  
   fichas <- df_fichas %>% select(description, code) %>% deframe
   
   output$periodicidad <- renderText ({
@@ -229,9 +240,6 @@ server <- function(input, output) {
         }
     )
 
-  
-  
-  
   option_year <- reactive({
     periods %>% filter(code %in% input$id_ficha) %>% select(A)
   })
@@ -264,6 +272,14 @@ server <- function(input, output) {
     #subset(periods, code %in% input$id_ficha & A %in% input$año)$M #selected_year())$M
   })
   
+  output$select_island <- renderUI({
+    selectInput("id_isla", h3("Isla"), choices = option_island(), selected = option_island()[1])
+  })
+  
+  output$select_mun <- renderUI({
+    selectInput("id_municipio", h3("Municipio"), choices = option_mun(), selected = option_mun()[1])
+  })
+  
   output$select_month <- renderUI({
     selectInput("mes", h3("Mes"), choices = option_month(), selected = option_month()[1])
   })
@@ -273,7 +289,8 @@ server <- function(input, output) {
   
   output$ficha_params <- renderUI (
     fluidRow(
-      column(3, selectInput("id_municipio", h3("Municipio"), choices = municipios)),
+      column(3, uiOutput("select_island")),
+      column(3, uiOutput("select_mun")),
       column(2, selectInput("año", h3("Año"), choices = option_year())),
       conditionalPanel(condition = 'output.periodicidad == "M"', column(3, uiOutput("select_month"))),
       conditionalPanel(condition = 'output.periodicidad == "Q"', column(3, uiOutput("select_trim"))),
