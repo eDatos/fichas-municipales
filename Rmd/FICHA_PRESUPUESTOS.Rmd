@@ -13,19 +13,6 @@ params:
   url.presupuesto_1_porcent: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000001/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO_PORCENTAJE:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_1|G_2|G_3|G_4|G_5|G_6|G_7|G_8|G_9|I_1|I_2|I_3|I_4|I_5|I_6|I_7|I_8|I_9:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901&lang=es
   url.presupuesto_2: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000002/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:GASTOS:PRESUPUESTO_PROGRAMA_GASTOS:0|1|2|3|4|9&lang=es
   url.presupuesto_3: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000003/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:MEDIDAS:AHORRO_BRUTO|AHORRO_BRUTO_PORCENTAJE|AHORRO_NETO|AHORRO_NETO_PORCENTAJE|CARGA_FINANCIERA|CARGA_FINANCIERA_PORCENTAJE&lang=es
-  
-  url.presupuesto_4_2010: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000004/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59&lang=es
-  url.presupuesto_4_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000005/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2012: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000006/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2013: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000007/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2014: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000008/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000009/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000010/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2017: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000011/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2018: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000012/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000013/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2020: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000014/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.presupuesto_4_2021: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000015/~latest.json?dim=MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
   url.partida_codes: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/~latest/codes
 
 output:
@@ -50,12 +37,16 @@ signo <- function(value) { ifelse(value > 0, "más", "menos") }
 "%notin%" <- Negate("%in%")
 ```
 
+```{r url}
+url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_",sprintf ("%06.0f", params$año - 2006), "/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59&lang=es") 
+```
+
 ```{r Municipio actual}
 CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -169,11 +160,18 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución del presupuesto}
 # Presupuesto inicial
 data_I <- fromJSON(params$url.presupuesto_1_inicial)
+dI <- length(rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_I <- data.frame(Año = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
                    Municipio = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                                    times = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   Valor = unlist(c(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE), NA)))
+                   Valor = c(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dI)))
 df_I$Valor <- as.numeric(df_I$Valor)
 df_I <- recode_Frontera(df_I)
 df_I$Municipio <- recode_id_Frontera(df_I, 'Municipio')
@@ -186,11 +184,17 @@ df_I <- df_I[with(df_I, order(Año)), ] %>%
 # Liquidación del presupuesto consolidado de ingresos y gastos de las Entidades Locales según capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años 2002-2019 [tabla1]
 data_u <- fromJSON(params$url.presupuesto_1)
 
+du <- length(rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]))) -
+      length(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_u <- data.frame(Año = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
                    Municipio = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                                    times = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   Valor = unlist(c(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE), NA)))
+                   Valor = c(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, du)))
 df_u$Valor <- as.numeric(df_u$Valor)
 df_u <- recode_Frontera(df_u)
 df_u$Municipio <- recode_id_Frontera(df_u, 'Municipio')
@@ -368,20 +372,19 @@ GAP <- format(round(((df_lv$Valor_M[df_lv$Año == params$año]) - (df_lv$Valor_i
 ```
 
 ```{r Estructura según partidas}
-url_estr_partidas <- data.frame(cbind(
-  año = c(2010:2021),
-  url = c(params$url.presupuesto_4_2010, params$url.presupuesto_4_2011, params$url.presupuesto_4_2012, params$url.presupuesto_4_2013, params$url.presupuesto_4_2014,
-          params$url.presupuesto_4_2015, params$url.presupuesto_4_2016, params$url.presupuesto_4_2017, params$url.presupuesto_4_2018, params$url.presupuesto_4_2019, 
-          params$url.presupuesto_4_2020, params$url.presupuesto_4_2021)))
-url <- url_estr_partidas$url[which(url_estr_partidas$año == params$año)]
 data_estr_partidas <- fromJSON(url)
+dp <- length( rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                     each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]))) -
+      length(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_estr_partidas <- data.frame(
-  id_partida = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
-                each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   id_municipio = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                     times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  valor = unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+                     each = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_partida = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+                   times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = c(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dp)))
 df_estr_partidas$valor <- as.numeric(df_estr_partidas$valor)
 df_estr_partidas$id_municipio <- recode_id_Frontera(df_estr_partidas, 'id_municipio')
 
@@ -561,6 +564,13 @@ df_programa <- data.frame(
                "Producción de<br>bienes públicos de<br>carácter preferente", "Actuaciones de<br>carácter económico", "Actuaciones de<br>carácter general"),
   id_programa = c("PG", "DP", "SPB", "APPS", "PBPCP", "ACE", "ACG"))
 
+dg <- length(rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                 each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
+                        length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]]))) -
+      length(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_gastos_programas <- data.frame(
   id_municipio = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                      each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
@@ -568,7 +578,7 @@ df_gastos_programas <- data.frame(
   name_programa = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                       each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
   año = data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]],
-  valor = unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dg)))
 df_gastos_programas$name_programa <- factor(
   df_gastos_programas$name_programa,
   levels = df_programa$id,
@@ -641,6 +651,13 @@ g_gastos_programas <- ggplotly(g_gastos_programas, tooltip = c("text")) %>%
 # Indicadores generales de la liquidación presupuestaria de las Entidades Locales de Canarias 2002-2019 [tabla3]
 data_ind_presupuestos <- fromJSON(params$url.presupuesto_3)
 
+ds <- length(rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                   length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_presupuestos <- data.frame(
   Año = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
@@ -648,7 +665,7 @@ df_presupuestos <- data.frame(
                      each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
   medida = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                times = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
-  valor = unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, ds)))
 df_presupuestos$valor <- df_presupuestos$valor %>% as.numeric()
 df_presupuestos <- recode_Frontera(df_presupuestos)
 df_presupuestos$Municipio <- recode_id_Frontera(df_presupuestos, 'Municipio')
@@ -706,22 +723,22 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row" style="margin: 25px 0;">
+<div class="row" style="margin: 15px 0;">
 ```{r, results='asis'}
 if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
     cat(paste0(
-      "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div>"))
+      "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
       if(Variacion_Porcentual_Presupuesto == "NA" & GAP != "NA"){
         cat(paste0(
-          "<div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div><div class='column-3'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario.png'), "</div>"))
+          "<div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
           if(Variacion_Porcentual_Presupuesto != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div>"))
+              "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }

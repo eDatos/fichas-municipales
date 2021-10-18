@@ -1,0 +1,272 @@
+---
+title: ''
+params:
+  id_municipio: 38014
+  año: 2021
+  mes: 8
+  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+  url.viajeros_lugar: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48
+  url.estancia_m: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY]
+  url.tasa_ocupacion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ac286c1a-f70a-4888-9679-bd973250c824/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.ADR: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d17b4953-73fe-4dcb-91e2-b63890eecd9f
+  url.aloj_isla: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b4de650c-10d8-4202-b678-58f597b1b040
+  url.hotel: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=2457b2ce-c6c1-46d5-9c85-59cd4b9b076d
+  url.extrahoteleros: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=76147e33-158b-4df0-ac5d-447de68ad3ef
+
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "ggpol")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Mes}
+data_mes <- fromJSON(params$url.mes)
+
+mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
+                  Periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]])
+
+mes <- mes %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(Periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(Periodo, " "), '[[', 1)))) %>% 
+  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = sub("\\_.*", "", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+# Municipios turísticos
+mun_turisticos <- fromJSON(params$url.mun_turisticos)
+df_CL_AREA_mun_tur <- df_CL_AREA_mun %>% filter(id %in% mun_turisticos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]])
+
+municipio_actual <- df_CL_AREA_mun_tur[df_CL_AREA_mun_tur$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+```
+
+
+```{r Rankings}
+viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
+df_u_ <- cbind(data.frame(do.call('rbind', viajeros_lugar[["data"]][["dimCodes"]])), viajeros_lugar[["data"]][["Valor"]])
+colnames(df_u_) <- c('Ind', 'lugar', 'mun', 'Periodo', 'Valor')
+df_u_$Ind <- factor(df_u_$Ind, levels=viajeros_lugar[["categories"]][["codes"]][[1]], labels=viajeros_lugar[["categories"]][["labels"]][[1]])
+df_u_$Periodo <- paste0(substring(df_u_$Periodo, 0,4), "-", substring(df_u_$Periodo, 5,7))
+df_u_$Valor <- as.numeric(df_u_$Valor)
+
+num_Canarias_total <- df_u_ %>% filter(mun == "ES70" & Ind == "Viajeros alojados" & lugar == "T" & substring(Periodo, 6,6) == "M" & Periodo == mes_actual$code) %>% 
+  select(Valor) %>% as.numeric()
+num_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & Ind == "Viajeros alojados" & lugar == "T" & substring(Periodo, 6,6) == "M" & Periodo == mes_actual$code) %>%
+  select(Valor) %>% as.numeric()
+
+df_u_ <- df_u_[with(df_u_, order(Periodo)), ]
+df_u <- df_u_ %>%
+  filter(substring(mun, 0,1) == "3" & Ind == "Viajeros alojados" & lugar == "T" & substring(Periodo, 6,6) == "M") %>% 
+  arrange(Periodo) %>% 
+  select('mun','Periodo', 'Valor')
+
+df_ranking <- df_u %>%
+  select(id = mun, Periodo, Valor) %>%
+  filter(Periodo == mes_actual$code) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(Valor))
+
+df_tur_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
+rk_canarias <- grep(params$id_municipio, df_ranking$id)
+num_mun_canarias <- nrow(df_ranking)
+percent_canarias <- format(round(df_tur_mun$Valor / num_Canarias_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_tur_isla <- df_ranking %>% filter(isla == df_tur_mun$isla)
+rk_isla <- grep(params$id_municipio, df_tur_isla$id)
+num_mun_isla <- nrow(df_tur_isla)
+percent_isla <- format(round(df_tur_mun$Valor / num_Isla_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+
+```{r Tipos de alojamiento}
+# Establecimientos hoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
+hoteles <- fromJSON(params$url.hotel)
+df_hoteles <- cbind(data.frame(do.call('rbind', hoteles[["data"]][["dimCodes"]])), hoteles[["data"]][["Valor"]])
+colnames(df_hoteles) <- c('ind', 'cat', 'mun', 'periodo', 'valor')
+df_hoteles$ind <- factor(df_hoteles$ind, levels=hoteles[["categories"]][["codes"]][[1]], labels=hoteles[["categories"]][["labels"]][[1]])
+df_hoteles$cat <- factor(df_hoteles$cat, levels=hoteles[["categories"]][["codes"]][[2]], labels=hoteles[["categories"]][["labels"]][[2]])
+df_hoteles$mun <- factor(df_hoteles$mun, levels=hoteles[["categories"]][["codes"]][[3]], labels=hoteles[["categories"]][["labels"]][[3]])
+df_hoteles$periodo <- factor(df_hoteles$periodo, levels=hoteles[["categories"]][["codes"]][[4]], labels=hoteles[["categories"]][["labels"]][[4]])
+df_hoteles$valor <- as.numeric(df_hoteles$valor)
+df_hoteles$mun <- recode_mun(df_hoteles, 'mun')
+
+df_hoteles_mun <- df_hoteles %>%
+  filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$Periodo) %>% 
+  select(c(ind, valor))
+
+Num_Hoteles <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Establecimientos hoteleros abiertos")] %>% format(big.mark = ".", decimal.mark = ",")
+Plazas_Hoteles <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Plazas ofertadas")] %>% format(big.mark = ".", decimal.mark = ",")
+Num_Habitaciones <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Habitaciones disponibles")] %>% format(big.mark = ".", decimal.mark = ",")
+
+# Establecimientos extrahoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
+extrahoteleros <- fromJSON(params$url.extrahoteleros)
+df_extrahoteleros <- cbind(data.frame(do.call('rbind', extrahoteleros[["data"]][["dimCodes"]])), extrahoteleros[["data"]][["Valor"]])
+colnames(df_extrahoteleros) <- c('ind', 'cat', 'mun', 'periodo', 'valor')
+df_extrahoteleros$ind <- factor(df_extrahoteleros$ind, levels=extrahoteleros[["categories"]][["codes"]][[1]], labels=extrahoteleros[["categories"]][["labels"]][[1]])
+df_extrahoteleros$cat <- factor(df_extrahoteleros$cat, levels=extrahoteleros[["categories"]][["codes"]][[2]], labels=extrahoteleros[["categories"]][["labels"]][[2]])
+df_extrahoteleros$mun <- factor(df_extrahoteleros$mun, levels=extrahoteleros[["categories"]][["codes"]][[3]], labels=extrahoteleros[["categories"]][["labels"]][[3]])
+df_extrahoteleros$periodo <- factor(df_extrahoteleros$periodo, levels=extrahoteleros[["categories"]][["codes"]][[4]], labels=extrahoteleros[["categories"]][["labels"]][[4]])
+df_extrahoteleros$valor <- as.numeric(df_extrahoteleros$valor)
+df_extrahoteleros$mun <- recode_mun(df_extrahoteleros, 'mun')
+
+df_extrahoteleros_mun <- df_extrahoteleros %>%
+  filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$Periodo) %>% 
+  select(c(ind, valor))
+
+Num_extrahoteleros <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Establecimientos abiertos")] %>% format(big.mark = ".", decimal.mark = ",")
+Plazas_extrahoteleros <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Plazas ofertadas")] %>% format(big.mark = ".", decimal.mark = ",")
+Num_Apartamentos <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Apartamentos disponibles")] %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator3 = function(label, value, image) {
+  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator3s = function(label, value) {
+  return(sprintf("<div class='indicator3'><div class='indicator-content'><p class='value'>%s</p><hr class='separator'><p class='label'>%s</p></div></div>", value, label))
+}
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r mes_actual$periodo_formatted`</h3>
+<h2 style="color: #666; margin: 0;">Indicadores de alojamientos turísticos</h2>
+<hr>
+
+
+```{r, results='asis'}
+if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros == "NA"){
+    cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-2"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-2"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, 'municipios (', percent_isla, '%)</p></div></div></div>'))
+    }else{
+      if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
+        cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-3"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-3"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, 'municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Extrahoteleros</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas en</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div>'))
+        }else{
+          if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros == "NA"){
+            cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-3"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-3"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, 'municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteleros</p></div><div class="row"><div class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_Hoteles,' </span>plazas en</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Num_Habitaciones,' </span>habitaciones</div>'))
+          }else{
+            cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-2"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-2"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, 'municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteleros</p></div><div class="row"><div class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_Hoteles,' </span>plazas en <span class="value2">', Num_Habitaciones,' </span>habitaciones</div></div></div></div><div class="indicator-map" style="margin-top: 14px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Extrahoteleros</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas en <span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div>'))
+          }
+        }
+    }
+```
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
+
