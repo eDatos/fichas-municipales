@@ -80,6 +80,11 @@ ui <- fluidPage(
 server <- function(input, output) {
   #downloadData()
   df_fichas <- read.csv("fichas.csv", sep = ";")
+  periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
+  periods_m <- reactive({
+    read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
+  })
+  #periods <- get_total_periods(df_init_data, df_fichas)
   municipios <- loadMunicipios()
   fichas <- df_fichas %>% select(description, code) %>% deframe
   
@@ -96,9 +101,27 @@ server <- function(input, output) {
     ficha_actual$periodicidad
   })
   
+  output$time_periods <- renderDataTable( {
+    time_periods()
+  })
+  
+  time_periods <- reactive({
+    periods[periods$code == input$id_ficha, ]
+  })
+
+  year_periods <- reactive({periods[periods$code == input$id_ficha, ]$A})
+  output$year_periods <- renderDataTable({ year_periods() })
+  
+  month_periods <- reactive({periods[periods$code == input$id_ficha] %>% filter(A == input$año) %>% select(M)})
+  output$month_periods <- renderDataTable({month_periods()})
+  
   periodicidad2 <- reactive({
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha_2,]
     ficha_actual$periodicidad
+  })
+  
+  selected_year <- reactive({
+    input$año
   })
   
   outputOptions(output, "periodicidad", suspendWhenHidden = FALSE)
@@ -132,7 +155,8 @@ server <- function(input, output) {
         option_params <- append(option_params, list(mes = as.numeric(input$mes)))
       }
       if(periodicidad() == "Q") {
-        option_params <- append(option_params, list(mes = as.numeric(input$trimestre)*3))
+        #option_params <- append(option_params, list(mes = as.numeric(input$trimestre)*3))
+        option_params <- append(option_params, list(mes = as.numeric(input$trimestre)))
       }
       
       params <- append(option_params, (df_init_data[df_init_data[input$id_ficha] == 1, ] %>% select(param.name, filepath) %>% deframe %>% as.list))
@@ -205,12 +229,54 @@ server <- function(input, output) {
         }
     )
 
+  
+  
+  
+  option_year <- reactive({
+    periods %>% filter(code %in% input$id_ficha) %>% select(A)
+  })
+ 
+  option_month <- reactive({
+    periods %>% 
+    filter(code %in% input$id_ficha & A %in% input$año) %>% 
+    select(M) %>%
+      left_join(
+        data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
+               id = 1:12),
+        by ='M') %>% 
+    deframe
+    
+    #subset(periods, code %in% input$id_ficha & A %in% input$año)$M #selected_year())$M
+  })
+  
+  option_trim <- reactive({
+    periods %>% 
+      filter(code %in% input$id_ficha & A %in% input$año) %>% 
+      select(mes = Q) %>%
+      left_join(
+        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
+                   id = c(3, 6, 9, 12),
+                   Q = seq(1:4)),
+        by ='mes') %>% 
+      select(Q, id) %>%
+      deframe
+    
+    #subset(periods, code %in% input$id_ficha & A %in% input$año)$M #selected_year())$M
+  })
+  
+  output$select_month <- renderUI({
+    selectInput("mes", h3("Mes"), choices = option_month(), selected = option_month()[1])
+  })
+  output$select_trim <- renderUI({
+    selectInput("trimestre", h3("Trimestre"), choices = option_trim(), selected = option_trim()[1])
+  })
+  
   output$ficha_params <- renderUI (
     fluidRow(
       column(3, selectInput("id_municipio", h3("Municipio"), choices = municipios)),
-      column(2, selectInput("año", h3("Año"), choices = get_resouces_period(df_init_data[df_init_data[input$id_ficha] == 1 & df_init_data['periodico'] == 1, ]))),
-      conditionalPanel(condition = 'output.periodicidad == "M"', column(3, selectInput("mes", h3("Mes"), choices = seq(1, 12), selected = 1))),
-      conditionalPanel(condition = 'output.periodicidad == "Q"', column(3, selectInput("trimestre", h3("Trimestre"), choices = seq(1, 4), selected = 1))),
+      column(2, selectInput("año", h3("Año"), choices = option_year())),
+      conditionalPanel(condition = 'output.periodicidad == "M"', column(3, uiOutput("select_month"))),
+      conditionalPanel(condition = 'output.periodicidad == "Q"', column(3, uiOutput("select_trim"))),
       column(1, actionButton("download", "Descargar"))
     )
   )
@@ -264,7 +330,7 @@ server <- function(input, output) {
 
 get_resource_period_list <- function(init_data_row) {
   source <- fromJSON(init_data_row$filepath) 
-  result <- ''
+  result <- NULL
   if(grepl("/api/", init_data_row$url, fixed = T)) {
     result <- names(source[["dimension"]][["TIME"]][["representation"]]$index)
     if(is.null(result)) {
@@ -280,17 +346,45 @@ get_resource_period_list <- function(init_data_row) {
     result <- data.frame(code = result) %>% 
       left_join(fromJSON(df_init_data[df_init_data$name == 'mes', ]$filepath)[["dimension"]][["TIME"]][["representation"]], by = "code") %>%
       filter(!is.na(title$es))
-    #result <- result$title$es
+    result <- result$title$es
   }
   result
 }
 
-get_resouces_period <- function(df_init_data) {
+get_resources_period <- function(df_init_data) {
   result <- get_resource_period_list(df_init_data[1, ])
   for(i in 2:nrow(df_init_data)) {
     result <- intersect(result, get_resource_period_list(df_init_data[i, ]))
   }
   result
+}
+
+get_periods_df <- function(df_init_data, df_fichas_row) {
+  periods <- get_resources_period(df_init_data[df_init_data[df_fichas_row['code']] == 1 & df_init_data['periodico'] == 1, ])
+  time_period <- df_fichas_row$periodicidad
+  if(time_period =='A') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA)
+  } else if(time_period == 'Q') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
+      mutate(A = strsplit(A, split = ' ')) %>% 
+      unnest_wider('A') %>% 
+      select(code, A = ...1, Q = ...2, M) %>%
+      filter(Q %in% c("Marzo", "Junio", "Septiembre", "Diciembre"))
+  } else if(time_period == 'M') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
+      mutate(A = strsplit(A, split = ' ')) %>% 
+      unnest_wider('A') %>% 
+      select(code, A = ...1, Q, M = ...2)
+  }
+  periods_df
+}
+
+get_total_periods <- function(df_init_data, df_fichas) {
+  total_periods <- data.frame()
+  for(i in 1:nrow(df_fichas)) {
+    total_periods <- bind_rows(total_periods, get_periods_df(df_init_data, df_fichas[i,]))
+  }
+  total_periods
 }
 
 shinyApp(ui = ui, server = server)
