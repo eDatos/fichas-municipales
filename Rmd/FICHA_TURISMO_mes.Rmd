@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
-  año: 2019
-  mes: 8
+  id_municipio: 38049
+  año: 2021
+  mes: 7
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
