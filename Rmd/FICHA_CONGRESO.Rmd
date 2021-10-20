@@ -15,7 +15,7 @@ params:
   url.congreso_2008: &lang=es
   url.congreso_2004: &lang=es
   url.congreso_2000: &lang=es
-  
+  url.congreso_electores: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a73b11d9-02c6-49dd-bed4-1b21978d003b
 output:
   html_document:
     df_print: paged
@@ -42,7 +42,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2))
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -80,14 +80,7 @@ recode_mun <- function(df, colname) {
 ```{r}
 url_años <- data.frame(cbind(
   año = c(2019_nov, 2019_abr, 2016, 2015, 2011, 2008, 2004, 2000),
-  url = c(params$url.congreso_2019_abr, params$, params$url.congreso_2015, params$url.congreso_2011, params$url.congreso_2007)))
-2019: &lang=es
-  url.congreso_2016: &lang=es
-  url.congreso_2015: &lang=es
-  url.congreso_2011: &lang=es
-  url.congreso_2008: &lang=es
-  url.congreso_2004: &lang=es
-  url.congreso_2000
+  url = c(params$url.congreso_2019_nov, params$url.congreso_2019_abr, params$url.congreso_2016, params$url.congreso_2015, params$url.congreso_2011, params$url.congreso_2008, params$url.congreso_2004, params$url.congreso_2000)))
 url <- url_años$url[which(url_años$año == params$año)]
 data_congreso <- fromJSON(url)
 

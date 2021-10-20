@@ -434,7 +434,7 @@ g_viajeros_lugar <- ggplotly(g_viajeros_lugar, tooltip = c("text")) %>%
   style(hoverinfo = "skip", traces = c(9:17))
 ```
 
-```{r Indicadores Lugar}
+```{r Indicadores Lugar/Islas}
 df_viajeros_nacionalidad_mun <- df_viajeros_lugar %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar %in% c("España", " TOTAL RESIDENTES EN EL EXTRANJERO")) %>%
   select(c(lugar, valor))

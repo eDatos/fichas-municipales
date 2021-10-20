@@ -274,7 +274,7 @@ Num_Paro_Isla <- df_p_ %>% filter(id_municipio == municipio_actual$id_isla & cod
 Num_Paro_Canarias <- df_p_ %>% filter(id_municipio == "ES70" & code == mes_actual$code & Ind == "ABSOLUTE") %>% select(Valor) %>% as.numeric()
 
 Imagen_Variacion <- ifelse(signo(df_p %>% filter(Ind == "ANNUAL_PUNTUAL_RATE") %>% select(Valor)) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Paro <- df_p %>% filter(Ind == "ANNUAL_PERCENTAGE_RATE") %>% select(Valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Variacion_Porcentual_Paro <- df_p %>% filter(Ind == "ANNUAL_PERCENTAGE_RATE") %>% select(Valor) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 
 # Paro registrado. Hombres. Mes.
 ind_paro_H <- fromJSON(params$url.ind_paro_H)
