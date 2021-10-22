@@ -72,8 +72,8 @@ ui <- fluidPage(
     }"
   )),
   htmlOutput('header'),
-  radioButtons('layout', 'Nº de fichas:', choices=c(1, 2), inline=TRUE),
-  downloadButton(outputId = "downloader", label = "Download PDF"),
+  
+  #downloadButton(outputId = "downloader", label = "Download PDF"),
   uiOutput("fichas"),
   htmlOutput('footer'),
 )
@@ -90,12 +90,8 @@ server <- function(input, output) {
     municipios %>% select(isla, id_isla) %>% unique %>% deframe
   })
   
-  option_mun <- reactive({
-    municipios %>% 
-      filter(id_isla %in% input$id_isla) %>% 
-      select(municipio, id) %>%
-      deframe
-  })
+  option_mun <- reactive({ municipios %>% filter(id_isla %in% input$id_isla) %>% select(municipio, id) %>% deframe })
+  option_mun_2 <- reactive({ municipios %>% filter(id_isla %in% input$id_isla_2) %>% select(municipio, id) %>% deframe })
   
   fichas <- df_fichas %>% select(description, code) %>% deframe
   
@@ -112,27 +108,10 @@ server <- function(input, output) {
     ficha_actual$periodicidad
   })
   
-  output$time_periods <- renderDataTable( {
-    time_periods()
-  })
-  
-  time_periods <- reactive({
-    periods[periods$code == input$id_ficha, ]
-  })
 
-  year_periods <- reactive({periods[periods$code == input$id_ficha, ]$A})
-  output$year_periods <- renderDataTable({ year_periods() })
-  
-  month_periods <- reactive({periods[periods$code == input$id_ficha] %>% filter(A == input$año) %>% select(M)})
-  output$month_periods <- renderDataTable({month_periods()})
-  
   periodicidad2 <- reactive({
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha_2,]
     ficha_actual$periodicidad
-  })
-  
-  selected_year <- reactive({
-    input$año
   })
   
   outputOptions(output, "periodicidad", suspendWhenHidden = FALSE)
@@ -240,9 +219,8 @@ server <- function(input, output) {
         }
     )
 
-  option_year <- reactive({
-    periods %>% filter(code %in% input$id_ficha) %>% select(A)
-  })
+  option_year <- reactive({  periods %>% filter(code %in% input$id_ficha) %>% select(A) %>% deframe })
+  option_year_2 <- reactive({  periods %>% filter(code %in% input$id_ficha_2) %>% select(A) %>% deframe })
  
   option_month <- reactive({
     periods %>% 
@@ -253,9 +231,20 @@ server <- function(input, output) {
                id = 1:12),
         by ='M') %>% 
     deframe
-    
-    #subset(periods, code %in% input$id_ficha & A %in% input$año)$M #selected_year())$M
   })
+  
+  option_month_2 <- reactive({
+    periods %>% 
+      filter(code %in% input$id_ficha_2 & A %in% input$año_2) %>% 
+      select(M) %>%
+      left_join(
+        data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
+                   id = 1:12),
+        by ='M') %>% 
+      deframe
+  })
+  
+  option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
     periods %>% 
@@ -264,74 +253,104 @@ server <- function(input, output) {
       left_join(
         data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
                    id = c(3, 6, 9, 12),
-                   Q = seq(1:4)),
+                   Q = paste0("Trimestre ", seq(1:4))),
         by ='mes') %>% 
       select(Q, id) %>%
       deframe
-    
-    #subset(periods, code %in% input$id_ficha & A %in% input$año)$M #selected_year())$M
   })
   
-  output$select_island <- renderUI({
-    selectInput("id_isla", h3("Isla"), choices = option_island(), selected = option_island()[1])
+  option_trim_2 <- reactive({
+    periods %>% 
+      filter(code %in% input$id_ficha_2 & A %in% input$año_2) %>% 
+      select(mes = Q) %>%
+      left_join(
+        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
+                   id = c(3, 6, 9, 12),
+                   Q = paste0("Trimestre ", seq(1:4))),
+        by ='mes') %>% 
+      select(Q, id) %>%
+      deframe
   })
   
-  output$select_mun <- renderUI({
-    selectInput("id_municipio", h3("Municipio"), choices = option_mun(), selected = option_mun()[1])
-  })
+  output$select_island <- renderUI({ selectInput("id_isla", h3("Isla"), choices = option_island()) })
+  output$select_island_2 <- renderUI({ selectInput("id_isla_2", "", choices = option_island()) })
   
-  output$select_month <- renderUI({
-    selectInput("mes", h3("Mes"), choices = option_month(), selected = option_month()[1])
-  })
-  output$select_trim <- renderUI({
-    selectInput("trimestre", h3("Trimestre"), choices = option_trim(), selected = option_trim()[1])
-  })
+  output$select_mun <- renderUI({ selectInput("id_municipio", h3("Municipio"), choices = option_mun()) })
+  output$select_mun_2 <- renderUI({ selectInput("id_municipio_2", "", choices = option_mun_2()) })
+  
+  output$select_ficha <- renderUI({ selectInput('id_ficha', h3('Ficha'), choices=option_ficha()) })
+  output$select_ficha_2 <- renderUI({ selectInput('id_ficha_2', "", choices=option_ficha()) })
+  
+  output$select_year <- renderUI({ selectInput("año", h3("Año"), choices = option_year()) })
+  output$select_year_2 <- renderUI({ selectInput("año_2", "", choices = option_year_2()) })
+  
+  output$select_month <- renderUI({ selectInput("mes", h3("Periodo"), choices = option_month()) })
+  output$select_month_2 <- renderUI({ selectInput("mes_2", "", choices = option_month_2()) })
+  
+  output$select_trim <- renderUI({ selectInput("trimestre", h3("Periodo"), choices = option_trim()) })
+  output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2()) })
+  
+  observeEvent(eventExpr = input$plus, handlerExpr = { output$fichas <- getLayout2() })
+  observeEvent(eventExpr = input$minus, handlerExpr = { output$fichas <- getLayout1() })
   
   output$ficha_params <- renderUI (
     fluidRow(
-      column(3, uiOutput("select_island")),
-      column(3, uiOutput("select_mun")),
-      column(2, selectInput("año", h3("Año"), choices = option_year())),
-      conditionalPanel(condition = 'output.periodicidad == "M"', column(3, uiOutput("select_month"))),
-      conditionalPanel(condition = 'output.periodicidad == "Q"', column(3, uiOutput("select_trim"))),
-      column(1, actionButton("download", "Descargar"))
+      column(2, uiOutput("select_island")),
+      column(2, uiOutput("select_mun")),
+      column(3, uiOutput("select_ficha")),
+      column(2, uiOutput("select_year")),
+      column(2, 
+             conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
+             conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
+      column(1, actionButton(inputId = "plus", label = "Añadir ficha"))
+      #column(1, actionButton("download", "Descargar"))
     )
   )
   
   output$ficha_params_2 <- renderUI (
     fluidRow(
-      column(3, selectInput("id_municipio_2", h3("Municipio"), choices = municipios)),
-      column(3, selectInput("año_2", h3("Año"), choices = seq(2001, 2020), selected = 2020)),
-      conditionalPanel(condition = 'output.periodicidad_2 == "M"', column(3, selectInput("mes_2", h3("Mes"), choices = seq(1, 12), selected = 1))),
-      conditionalPanel(condition = 'output.periodicidad_2 == "Q"', column(3, selectInput("trimestre_2", h3("Trimestre"), choices = seq(1, 4), selected = 1))),
-      column(1, actionButton("download_2", "Descargar"))
+      column(2, uiOutput("select_island_2")),
+      column(2, uiOutput("select_mun_2")),
+      column(3, uiOutput("select_ficha_2")),
+      column(2, uiOutput("select_year_2")),
+      column(2, 
+             conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
+             conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
+      column(1, actionButton(inputId = "minus", label = "Quitar ficha"))
+      #column(1, actionButton("download", "Descargar"))
     )
+    
+    #fluidRow(
+    #  column(3, selectInput("id_municipio_2", h3("Municipio"), choices = municipios)),
+    #  column(3, selectInput("año_2", h3("Año"), choices = seq(2001, 2020), selected = 2020)),
+    #  conditionalPanel(condition = 'output.periodicidad_2 == "M"', column(3, selectInput("mes_2", h3("Mes"), choices = seq(1, 12), selected = 1))),
+    #  conditionalPanel(condition = 'output.periodicidad_2 == "Q"', column(3, selectInput("trimestre_2", h3("Trimestre"), choices = seq(1, 4), selected = 1))),
+    #  column(1, actionButton(inputId = "minus", label = "Quitar ficha")),
+    #  column(1, actionButton("download_2", "Descargar"))
+    #)
   )
   
-  output$fichas<-renderUI(
-    if (input$layout == 1) {
+  getLayout1 <- function() {
+    renderUI (
       fluidRow(
-        #column(1),
-        column(3, selectInput('id_ficha', h3('Ficha'), choices=fichas)),
-        uiOutput("ficha_params"),
+        column(12, uiOutput("ficha_params")),
         column(12, htmlOutput('report'))
       )
-    }
-    else if (input$layout == 2) {
+    )
+  }
+   
+  getLayout2 <- function() {
+    renderUI (
       fluidRow(
-        column(6,
-          column(4, selectInput('id_ficha', 'Ficha:', choices=fichas)),
-          uiOutput("ficha_params")
-        ), 
-        column(6,
-          column(4, selectInput('id_ficha_2', 'Ficha:', choices=fichas)),
-          uiOutput("ficha_params_2")
-        ),
+        column(12, uiOutput("ficha_params")),
+        column(12, uiOutput("ficha_params_2")),
         column(6, htmlOutput('report')),
         column(6, htmlOutput('report_2'))
       )
-    }
-  )
+    ) 
+  }
+  
+  output$fichas <- getLayout1()
   
   renderFicha <- function(rmd, name, dir, param_list) {
   print(param_list)
