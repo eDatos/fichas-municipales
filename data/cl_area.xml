@@ -1,0 +1,1807 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:codes xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" kind="structuralResources#codes" total="181" selfLink="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes">
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES70</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES70</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES70"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Canary Islands</cdomain:text>
+            <cdomain:text xml:lang="es">Canarias</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES701</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES701"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Las Palmas</cdomain:text>
+            <cdomain:text xml:lang="es">Las Palmas</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES70</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuerteventura</cdomain:text>
+            <cdomain:text xml:lang="es">Fuerteventura</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704A0</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704A0"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuerteventura</cdomain:text>
+            <cdomain:text xml:lang="es">Fuerteventura</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704A01</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A01</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704A01"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuerteventura - Center</cdomain:text>
+            <cdomain:text xml:lang="es">Fuerteventura - Centro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35003</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35003</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35003"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Antigua</cdomain:text>
+            <cdomain:text xml:lang="es">Antigua</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35007</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35007</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35007"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Betancuria</cdomain:text>
+            <cdomain:text xml:lang="es">Betancuria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704A02</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A02</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704A02"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuerteventura - North</cdomain:text>
+            <cdomain:text xml:lang="es">Fuerteventura - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35014</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35014</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35014"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Oliva</cdomain:text>
+            <cdomain:text xml:lang="es">La Oliva</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35017</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35017</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35017"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Puerto del Rosario</cdomain:text>
+            <cdomain:text xml:lang="es">Puerto del Rosario</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704A03</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A03</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704A03"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuerteventura - South</cdomain:text>
+            <cdomain:text xml:lang="es">Fuerteventura - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35015</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35015</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35015"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Pájara</cdomain:text>
+            <cdomain:text xml:lang="es">Pájara</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35030</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35030</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35030"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tuineje</cdomain:text>
+            <cdomain:text xml:lang="es">Tuineje</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704A0_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704A0_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Fuerteventura (Large Counties)</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Fuerteventura (Grandes Comarcas)</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES704_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES704_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Fuerteventura</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Fuerteventura</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES704</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A10</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A10"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A1</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35006</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35006</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35006"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Arucas</cdomain:text>
+            <cdomain:text xml:lang="es">Arucas</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35016</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35016</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35016"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Las Palmas de Gran Canaria</cdomain:text>
+            <cdomain:text xml:lang="es">Las Palmas de Gran Canaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35021</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35021</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35021"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Brígida</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Brígida</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35026</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35026</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35026"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Telde</cdomain:text>
+            <cdomain:text xml:lang="es">Telde</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A10_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A10_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A2</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - North</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A21</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A21"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - Center North</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Centro Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35008</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35008</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35008"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Firgas</cdomain:text>
+            <cdomain:text xml:lang="es">Firgas</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35027</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35027</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35027"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Teror</cdomain:text>
+            <cdomain:text xml:lang="es">Teror</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35031</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35031</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35031"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Valsequillo de Gran Canaria</cdomain:text>
+            <cdomain:text xml:lang="es">Valsequillo de Gran Canaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35032</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35032</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35032"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Valleseco</cdomain:text>
+            <cdomain:text xml:lang="es">Valleseco</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35033</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35033</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35033"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Vega de San Mateo</cdomain:text>
+            <cdomain:text xml:lang="es">Vega de San Mateo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A21_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A21_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - Center North</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Centro Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A22</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A22"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - North West</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Noroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35001</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35001</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35001"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Agaete</cdomain:text>
+            <cdomain:text xml:lang="es">Agaete</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35009</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35009</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35009"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gáldar</cdomain:text>
+            <cdomain:text xml:lang="es">Gáldar</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35013</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35013</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35013"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Moya</cdomain:text>
+            <cdomain:text xml:lang="es">Moya</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35023</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35023</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35023"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa María de Guía de Gran Canaria</cdomain:text>
+            <cdomain:text xml:lang="es">Santa María de Guía de Gran Canaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A22_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A22_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - North West</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Noroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A23</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A23"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - West</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Oeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35005</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35005</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35005"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Artenara</cdomain:text>
+            <cdomain:text xml:lang="es">Artenara</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35020</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35020</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35020"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Aldea de San Nicolás</cdomain:text>
+            <cdomain:text xml:lang="es">La Aldea de San Nicolás</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35025</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35025</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35025"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tejeda</cdomain:text>
+            <cdomain:text xml:lang="es">Tejeda</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A23_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A23_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - West</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Oeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A2_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A2_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - North</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A3</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A3</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A3"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - South</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A31</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A31</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A31"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - South West</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Suroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35012</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35012</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35012"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Mogán</cdomain:text>
+            <cdomain:text xml:lang="es">Mogán</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35019</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35019</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35019"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Bartolomé de Tirajana</cdomain:text>
+            <cdomain:text xml:lang="es">San Bartolomé de Tirajana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A32</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A32"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Gran Canaria - South East</cdomain:text>
+            <cdomain:text xml:lang="es">Gran Canaria - Sureste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35002</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35002</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35002"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Agüimes</cdomain:text>
+            <cdomain:text xml:lang="es">Agüimes</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35011</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35011</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35011"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Ingenio</cdomain:text>
+            <cdomain:text xml:lang="es">Ingenio</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35022</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35022</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35022"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Lucía de Tirajana</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Lucía de Tirajana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705A32_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705A32_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria - South East</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria - Sureste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES705_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES705_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Gran Canaria</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Gran Canaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES705</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Lanzarote</cdomain:text>
+            <cdomain:text xml:lang="es">Lanzarote</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A0</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A0"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Lanzarote</cdomain:text>
+            <cdomain:text xml:lang="es">Lanzarote</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A01</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A01"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Lanzarote - East</cdomain:text>
+            <cdomain:text xml:lang="es">Lanzarote - Este</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35004</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35004</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35004"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Arrecife</cdomain:text>
+            <cdomain:text xml:lang="es">Arrecife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35018</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35018</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35018"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Bartolomé</cdomain:text>
+            <cdomain:text xml:lang="es">San Bartolomé</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35028</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35028</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35028"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tías</cdomain:text>
+            <cdomain:text xml:lang="es">Tías</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A01_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A01_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Lanzarote - East</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Lanzarote - Este</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A02</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A02</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A02"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Lanzarote - North</cdomain:text>
+            <cdomain:text xml:lang="es">Lanzarote - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35010</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35010</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35010"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Haría</cdomain:text>
+            <cdomain:text xml:lang="es">Haría</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35024</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35024</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35024"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Teguise</cdomain:text>
+            <cdomain:text xml:lang="es">Teguise</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A03</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A03</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A03"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Lanzarote - South West</cdomain:text>
+            <cdomain:text xml:lang="es">Lanzarote - Suroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35029</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35029</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35029"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tinajo</cdomain:text>
+            <cdomain:text xml:lang="es">Tinajo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>35034</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).35034</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/35034"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Yaiza</cdomain:text>
+            <cdomain:text xml:lang="es">Yaiza</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708A0_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708A0_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Lanzarote (Large Counties)</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Lanzarote (Grandes Comarcas)</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES708_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES708_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Lanzarote</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Lanzarote</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES708</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES701_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES701_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Las Palmas</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Las Palmas</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES701</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES702</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES702"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Cruz de Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Cruz de Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES70</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES703</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES703"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES703A0</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A0</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES703A0"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES703A00</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES703A00"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Hierro - El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">El Hierro - El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38013_1912</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38013_1912</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38013_1912"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Frontera (to 2007)</cdomain:text>
+            <cdomain:text xml:lang="es">Frontera (hasta 2007)</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38013_2007</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38013_2007</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38013_2007"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Frontera</cdomain:text>
+            <cdomain:text xml:lang="es">Frontera</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38048</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38048</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38048"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Valverde</cdomain:text>
+            <cdomain:text xml:lang="es">Valverde</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38901</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38901</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38901"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Pinar de El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">El Pinar de El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES703A00_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES703A00_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of El Hierro (Counties)</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de El Hierro (Comarcas)</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703A00</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES703_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES703_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES703</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706A0</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A0</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706A0"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706A01</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706A01"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera - North</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38002</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38002</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38002"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Agulo</cdomain:text>
+            <cdomain:text xml:lang="es">Agulo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38021</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38021</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38021"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Hermigua</cdomain:text>
+            <cdomain:text xml:lang="es">Hermigua</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38050</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38050</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38050"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Vallehermoso</cdomain:text>
+            <cdomain:text xml:lang="es">Vallehermoso</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706A01_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706A01_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Gomera - North</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Gomera - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706A02</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706A02"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera - South</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38003</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38003</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38003"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Alajeró</cdomain:text>
+            <cdomain:text xml:lang="es">Alajeró</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38036</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38036</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38036"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Sebastián de La Gomera</cdomain:text>
+            <cdomain:text xml:lang="es">San Sebastián de La Gomera</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38049</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38049</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38049"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Valle Gran Rey</cdomain:text>
+            <cdomain:text xml:lang="es">Valle Gran Rey</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706A02_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706A02_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Gomera - South</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Gomera - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Gomera</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Gomera</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706_ES703</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706_ES703</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706_ES703"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera and El Hierro</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera y El Hierro</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES706_ES709</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES706_ES709</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES706_ES709"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Gomera and Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">La Gomera y Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A0</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A0"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A01</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A01"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma - Capital</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma - Capitalina</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38008</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38008</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38008"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Breña Alta</cdomain:text>
+            <cdomain:text xml:lang="es">Breña Alta</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38009</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38009</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38009"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Breña Baja</cdomain:text>
+            <cdomain:text xml:lang="es">Breña Baja</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38037</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38037</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38037"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Cruz de La Palma</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Cruz de La Palma</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38053</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38053</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38053"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Villa de Mazo</cdomain:text>
+            <cdomain:text xml:lang="es">Villa de Mazo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A01_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A01_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma - Capital</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma - Capitalina</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A01</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A02</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A02"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma - North East</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma - Noreste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38007</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38007</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38007"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Barlovento</cdomain:text>
+            <cdomain:text xml:lang="es">Barlovento</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38030</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38030</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38030"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Puntallana</cdomain:text>
+            <cdomain:text xml:lang="es">Puntallana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38033</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38033</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38033"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Andrés y Sauces</cdomain:text>
+            <cdomain:text xml:lang="es">San Andrés y Sauces</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A02_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A02_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma - North East</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma - Noreste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A02</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A03</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A03"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma - North West</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma - Noroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38016</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38016</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38016"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Garafía</cdomain:text>
+            <cdomain:text xml:lang="es">Garafía</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38029</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38029</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38029"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Puntagorda</cdomain:text>
+            <cdomain:text xml:lang="es">Puntagorda</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38047</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38047</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38047"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tijarafe</cdomain:text>
+            <cdomain:text xml:lang="es">Tijarafe</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A03_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A03_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma - North West</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma - Noroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A03</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A04</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A04"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Palma - Valle de Aridane</cdomain:text>
+            <cdomain:text xml:lang="es">La Palma - Valle de Aridane</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38014</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38014</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38014"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fuencaliente de La Palma</cdomain:text>
+            <cdomain:text xml:lang="es">Fuencaliente de La Palma</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38024</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38024</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38024"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Los Llanos de Aridane</cdomain:text>
+            <cdomain:text xml:lang="es">Los Llanos de Aridane</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38027</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38027</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38027"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Paso</cdomain:text>
+            <cdomain:text xml:lang="es">El Paso</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38045</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38045</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38045"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tazacorte</cdomain:text>
+            <cdomain:text xml:lang="es">Tazacorte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A04_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A04_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma - Valle de Aridane</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma - Valle de Aridane</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A04</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707A0_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707A0_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma (Large Counties)</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma (Grandes Comarcas)</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707A0</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES707_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES707_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of La Palma</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de La Palma</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES707</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A10</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A10"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A1</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38023</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38023</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38023"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Cristóbal de La Laguna</cdomain:text>
+            <cdomain:text xml:lang="es">San Cristóbal de La Laguna</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38032</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38032</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38032"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Rosario</cdomain:text>
+            <cdomain:text xml:lang="es">El Rosario</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38038</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38038</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38038"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Cruz de Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Cruz de Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38046</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38046</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38046"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tegueste</cdomain:text>
+            <cdomain:text xml:lang="es">Tegueste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A10_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A10_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Metropolitan Area</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Área Metropolitana</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A10</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A2</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - North</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A21</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A21"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Acentejo</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Acentejo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38025</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38025</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38025"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Matanza de Acentejo</cdomain:text>
+            <cdomain:text xml:lang="es">La Matanza de Acentejo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38039</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38039</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38039"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santa Úrsula</cdomain:text>
+            <cdomain:text xml:lang="es">Santa Úrsula</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38041</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38041</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38041"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Sauzal</cdomain:text>
+            <cdomain:text xml:lang="es">El Sauzal</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38043</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38043</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38043"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tacoronte</cdomain:text>
+            <cdomain:text xml:lang="es">Tacoronte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38051</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38051</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38051"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Victoria de Acentejo</cdomain:text>
+            <cdomain:text xml:lang="es">La Victoria de Acentejo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A21_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A21_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Acentejo</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Acentejo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A21</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A22</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A22"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Daute</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Daute</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38010</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38010</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38010"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Buenavista del Norte</cdomain:text>
+            <cdomain:text xml:lang="es">Buenavista del Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38015</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38015</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38015"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Garachico</cdomain:text>
+            <cdomain:text xml:lang="es">Garachico</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38042</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38042</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38042"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Los Silos</cdomain:text>
+            <cdomain:text xml:lang="es">Los Silos</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38044</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38044</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38044"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">El Tanque</cdomain:text>
+            <cdomain:text xml:lang="es">El Tanque</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A22_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A22_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Daute</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Daute</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A22</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A23</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A23"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Icod</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Icod</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38018</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38018</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38018"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Guancha</cdomain:text>
+            <cdomain:text xml:lang="es">La Guancha</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38022</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38022</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38022"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Icod de los Vinos</cdomain:text>
+            <cdomain:text xml:lang="es">Icod de los Vinos</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38034</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38034</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38034"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Juan de la Rambla</cdomain:text>
+            <cdomain:text xml:lang="es">San Juan de la Rambla</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A23_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A23_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Icod</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Icod</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A23</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A24</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A24"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Valle de La Orotava</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Valle de La Orotava</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38026</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38026</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38026"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">La Orotava</cdomain:text>
+            <cdomain:text xml:lang="es">La Orotava</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38028</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38028</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38028"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Puerto de la Cruz</cdomain:text>
+            <cdomain:text xml:lang="es">Puerto de la Cruz</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38031</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38031</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38031"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Los Realejos</cdomain:text>
+            <cdomain:text xml:lang="es">Los Realejos</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A24_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A24_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Valle de La Orotava</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Valle de La Orotava</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A24</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A2_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A2_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - North</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Norte</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A2</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A3</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A3"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - South</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A31</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A31"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Abona</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Abona</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38005</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38005</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38005"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Arico</cdomain:text>
+            <cdomain:text xml:lang="es">Arico</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38012</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38012</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38012"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Fasnia</cdomain:text>
+            <cdomain:text xml:lang="es">Fasnia</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38017</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38017</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38017"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Granadilla de Abona</cdomain:text>
+            <cdomain:text xml:lang="es">Granadilla de Abona</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38035</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38035</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38035"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">San Miguel de Abona</cdomain:text>
+            <cdomain:text xml:lang="es">San Miguel de Abona</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38052</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38052</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38052"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Vilaflor de Chasna</cdomain:text>
+            <cdomain:text xml:lang="es">Vilaflor de Chasna</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A31_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A31_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Abona</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Abona</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A31</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A32</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A32"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Suroeste</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Suroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38001</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38001</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38001"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Adeje</cdomain:text>
+            <cdomain:text xml:lang="es">Adeje</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38006</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38006</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38006"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Arona</cdomain:text>
+            <cdomain:text xml:lang="es">Arona</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38019</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38019</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38019"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Guía de Isora</cdomain:text>
+            <cdomain:text xml:lang="es">Guía de Isora</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38040</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38040</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38040"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Santiago del Teide</cdomain:text>
+            <cdomain:text xml:lang="es">Santiago del Teide</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A32_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A32_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Suroeste</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Suroeste</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A32</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A33</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A33"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Tenerife - Valle de Güímar</cdomain:text>
+            <cdomain:text xml:lang="es">Tenerife - Valle de Güímar</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38004</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38004</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38004"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Arafo</cdomain:text>
+            <cdomain:text xml:lang="es">Arafo</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38011</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38011</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38011"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Candelaria</cdomain:text>
+            <cdomain:text xml:lang="es">Candelaria</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>38020</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).38020</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/38020"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Güímar</cdomain:text>
+            <cdomain:text xml:lang="es">Güímar</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A33_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A33_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - Valle de Güímar</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Valle de Güímar</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A33</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709A3_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709A3_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife - South</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife - Sur</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709A3</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES709_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES709_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES709</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES702_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES702_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Santa Cruz de Tenerife</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Santa Cruz de Tenerife</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES702</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>ES70_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES70_O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/ES70_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Rest of Canary</cdomain:text>
+            <cdomain:text xml:lang="es">Resto de Canarias</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000).ES70</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>_N</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000)._N</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/_N"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Non response</cdomain:text>
+            <cdomain:text xml:lang="es">Sin respuesta</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>_O</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000)._O</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/_O"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Other</cdomain:text>
+            <cdomain:text xml:lang="es">Otro</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>_U</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000)._U</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/_U"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">No data/unknown</cdomain:text>
+            <cdomain:text xml:lang="es">Dato desconocido</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>_X</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000)._X</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/_X"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Not allocated/unspecified</cdomain:text>
+            <cdomain:text xml:lang="es">No codificable</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>_Z</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_AREA_ES70_COMARCAS(01.000)._Z</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes/_Z"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">Not applicable</cdomain:text>
+            <cdomain:text xml:lang="es">No aplicable</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+</sr:codes>
