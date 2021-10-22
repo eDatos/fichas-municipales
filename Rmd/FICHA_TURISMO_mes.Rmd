@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
-  año: 2019
-  mes: 8
+  id_municipio: 35004
+  año: 2021
+  mes: 7
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
@@ -434,7 +434,7 @@ g_viajeros_lugar <- ggplotly(g_viajeros_lugar, tooltip = c("text")) %>%
   style(hoverinfo = "skip", traces = c(9:17))
 ```
 
-```{r Indicadores Lugar}
+```{r Indicadores Lugar/Islas}
 df_viajeros_nacionalidad_mun <- df_viajeros_lugar %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar %in% c("España", " TOTAL RESIDENTES EN EL EXTRANJERO")) %>%
   select(c(lugar, valor))
@@ -542,14 +542,13 @@ df_hoteles$mun <- factor(df_hoteles$mun, levels=hoteles[["categories"]][["codes"
 df_hoteles$periodo <- factor(df_hoteles$periodo, levels=hoteles[["categories"]][["codes"]][[4]], labels=hoteles[["categories"]][["labels"]][[4]])
 df_hoteles$valor <- as.numeric(df_hoteles$valor)
 df_hoteles$mun <- recode_mun(df_hoteles, 'mun')
+df_hoteles <- df_hoteles %>% mutate(ind = recode(ind, "Establecimientos hoteleros abiertos" = "Establecimientos"),
+                                    ind = recode(ind, "Plazas ofertadas" = "Plazas"),
+                                    ind = recode(ind, "Habitaciones disponibles" = "Habitaciones/Apartamentos"))
 
 df_hoteles_mun <- df_hoteles %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$Periodo) %>% 
   select(c(ind, valor))
-
-Num_Hoteles <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Establecimientos hoteleros abiertos")] %>% format(big.mark = ".", decimal.mark = ",")
-Plazas_Hoteles <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Plazas ofertadas")] %>% format(big.mark = ".", decimal.mark = ",")
-Num_Habitaciones <- df_hoteles_mun$valor[which(df_hoteles_mun$ind == "Habitaciones disponibles")] %>% format(big.mark = ".", decimal.mark = ",")
 
 # Establecimientos extrahoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
 extrahoteleros <- fromJSON(params$url.extrahoteleros)
@@ -561,14 +560,33 @@ df_extrahoteleros$mun <- factor(df_extrahoteleros$mun, levels=extrahoteleros[["c
 df_extrahoteleros$periodo <- factor(df_extrahoteleros$periodo, levels=extrahoteleros[["categories"]][["codes"]][[4]], labels=extrahoteleros[["categories"]][["labels"]][[4]])
 df_extrahoteleros$valor <- as.numeric(df_extrahoteleros$valor)
 df_extrahoteleros$mun <- recode_mun(df_extrahoteleros, 'mun')
+df_extrahoteleros <- df_extrahoteleros %>% mutate(ind = recode(ind, "Establecimientos abiertos" = "Establecimientos"),
+                                                  ind = recode(ind, "Plazas ofertadas" = "Plazas"),
+                                                  ind = recode(ind, "Apartamentos disponibles" = "Habitaciones/Apartamentos"))
 
 df_extrahoteleros_mun <- df_extrahoteleros %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$Periodo) %>% 
   select(c(ind, valor))
 
-Num_extrahoteleros <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Establecimientos abiertos")] %>% format(big.mark = ".", decimal.mark = ",")
-Plazas_extrahoteleros <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Plazas ofertadas")] %>% format(big.mark = ".", decimal.mark = ",")
-Num_Apartamentos <- df_extrahoteleros_mun$valor[which(df_extrahoteleros_mun$ind == "Apartamentos disponibles")] %>% format(big.mark = ".", decimal.mark = ",")
+df_mun_tur <- df_ADR %>% filter(ind == "Ingresos totales" & periodo == mes_actual$Periodo) %>% select(mun)
+df_establecimientos_ <- data.frame(ind = rep(levels(df_hoteles$ind), each= length(df_mun_tur$mun)),
+                                   mun = rep(df_mun_tur)
+                                   )
+
+df_establecimientos <- df_establecimientos_ %>% 
+  left_join(filter(df_hoteles, cat == "TOTAL CATEGORÍAS"), by = c("ind", "mun")) %>% 
+  select(c(ind, mun, periodo, valor_hoteles = valor)) %>% 
+  left_join(filter(df_extrahoteleros, cat == "TOTAL CATEGORÍAS"), by = c("ind", "mun", "periodo")) %>% 
+  select(c(ind, mun, periodo, valor_hoteles, valor_extrahoteleros = valor))
+
+df_establecimientos_mun <- df_establecimientos %>% filter(mun == municipio_actual$municipio, periodo == mes_actual$Periodo)
+
+Num_Hoteles <- df_establecimientos_mun$valor_hoteles[which(df_establecimientos_mun$ind == "Establecimientos")] %>% format(big.mark = ".", decimal.mark = ",")
+Plazas_Hoteles <- df_establecimientos_mun$valor_hoteles[which(df_establecimientos_mun$ind == "Plazas")] %>% format(big.mark = ".", decimal.mark = ",")
+Num_Habitaciones <- df_establecimientos_mun$valor_hoteles[which(df_establecimientos_mun$ind == "Habitaciones/Apartamentos")] %>% format(big.mark = ".", decimal.mark = ",")
+Num_extrahoteleros <- df_establecimientos_mun$valor_extrahoteleros[which(df_establecimientos_mun$ind == "Establecimientos")] %>% format(big.mark = ".", decimal.mark = ",")
+Plazas_extrahoteleros <- df_establecimientos_mun$valor_extrahoteleros[which(df_establecimientos_mun$ind == "Plazas")] %>% format(big.mark = ".", decimal.mark = ",")
+Num_Apartamentos <- df_establecimientos_mun$valor_extrahoteleros[which(df_establecimientos_mun$ind == "Habitaciones/Apartamentos")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 
@@ -616,52 +634,42 @@ if(Variacion_Porcentual_Viajeros == "NA"){
 ```
 </div>
 
-<div class="row" style="margin-top:10px;">
-<div class="column-3">
-  <div class="indicator-map map-canarias">
-  <div class="image">
-```{r} 
-mapa_Canarias_plot
+```{r, results='asis'}
+if(is_empty(Num_Hoteles) & is_empty(Num_extrahoteleros)){
+    cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-2"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-2"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, ' municipios (', percent_isla, '%)</p></div></div></div>'))
+    }else{
+      if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
+        cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-3"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-3"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, ' municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
+        }else{
+          if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros == "NA"){
+            cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-3"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-3"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, ' municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteles</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_Hoteles,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Habitaciones,' </span>habitaciones</p></div></div></div></div></div>'))
+          }else{
+            cat(paste0(
+      '<div class="row" style="margin-top:10px;"><div class="column-3"><div class="indicator-map map-canarias"><div class="image">'))
+  mapa_Canarias_plot 
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_canarias, 'º </span>en Canarias</p><p class="label2">de ', num_mun_canarias, ' municipios (', percent_canarias, '%)</p></div></div></div><div class="column-3"><div class="indicator-map"><div class="image">'))
+  mapa_isla_plot
+  cat(paste0('</div><div class="indicator-content"><p class="label"><span class="value">', rk_isla, 'º </span>en ', municipio_actual$isla, '</p><p class="label2">de ', num_mun_isla, ' municipios (', percent_isla, '%)</p></div></div></div><div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteles</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_Hoteles,' </span>plazas en <span class="value2">', Num_Habitaciones,' </span>habitaciones</p></div></div></div><div class="indicator-map" style="margin-top: 14px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas en <span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
+          }
+        }
+    }
 ```
 </div>
-  <div class="indicator-content">
-  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
-  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
-  </div>
-</div>
-</div>
-<div class="column-3">
-<div class="indicator-map">
-  <div class="image">
-```{r} 
-mapa_isla_plot
-```
-</div>
-  <div class="indicator-content">
-  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
-  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
-  </div>
-</div>
-</div>
-<div class="column-3">
-<div class="column" style="width: 100% !important;">
-<div class="indicator-map" style="margin-top: -5px;">
-  <div class="indicator-content" style="margin-top: -10px; padding: 8px;">
-  <div class="row"><p class="label"><span class="value">`r Num_Hoteles` </span> Hoteleros</p></div>
-  <div class="row"><div class="label2" style="margin-top: 12px;"><span class="value2">`r Plazas_Hoteles` </span>plazas en <span class="value2">`r Num_Habitaciones` </span>habitaciones</div>
-  </div>
-</div>
-</div>
-<div class="indicator-map" style="margin-top: 14px;">
-  <div class="indicator-content" style="margin-top: -10px; padding: 8px;">
-  <div class="row"><p class="label"><span class="value">`r Num_extrahoteleros` </span> Extrahoteleros</p></div>
-  <div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">`r Plazas_extrahoteleros` </span>plazas en <span class="value2">`r Num_Apartamentos` </span>apartamentos</p></div>
-  </div>
-</div>
-</div>
-</div>
-</div>
-
 
 <div class="row">
 <div class="column indicator-title">

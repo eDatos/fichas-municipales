@@ -600,11 +600,15 @@ df_GM_pt <- df_GM_pt %>% transform(paquete = paste0(substring(paquete, 0,1), tol
 df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Total", "Cualquier tipo", paquete))
 
 df_GM_pt_mun <- df_GM_pt %>%
-  filter(mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  filter(mun == municipio_actual$municipio & periodo == periodo_actual$code
+         & paquete != "Cualquier tipo"
+         ) %>% 
   select(c(paquete, valor))
 
 df_GM_pt_Canarias <- df_GM_pt %>%
-  filter(mun == "CANARIAS" & periodo == periodo_actual$code) %>%
+  filter(mun == "CANARIAS" & periodo == periodo_actual$code
+         & paquete != "Cualquier tipo"
+         ) %>%
   select(c(paquete, valor))
 df_GM_pt_mun <- df_GM_pt_mun %>% mutate(valor_Canarias = df_GM_pt_Canarias$valor)
 df_GM_pt_mun$paquete <- ordered(df_GM_pt_mun$paquete, levels = df_GM_pt_mun$paquete[3:1])
@@ -637,7 +641,7 @@ df_GM_pt_plot <- rbind(df_GM_pt_plot, df_GM_pt_0)
 g_GM_pt <- ggplot(df_GM_pt_plot, aes(y = paquete, fill = paquete, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
   geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
-  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
+  scale_fill_manual(values = c("#008BD0", "#005980")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -909,13 +913,13 @@ mapa_isla_plot
 </div>
 <div class="column-3">
 <div class="column highlight" style="width: 100% !important; margin-top: -30px;">
-  <div class="piramide" style="height: 152px;">
+  <div class="piramide" style="height: 112px; margin-top: 25px;">
   `r g_GM_pt`
   </div>
-  <div class="legend-vertical-container">
+  <div class="legend-vertical-container" style="padding: 18px 0;">
   <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[1]`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[3]`</div></div>
+  <!-- <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[3]`</div></div> -->
   <div class='progressbar-legend'>
   <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600; font-size: 11px;">|</div><div class='sp-content'>Canarias</div></div>
   </div>

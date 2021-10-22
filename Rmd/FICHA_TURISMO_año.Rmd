@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
+  id_municipio: 38001
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
@@ -537,43 +537,6 @@ df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_
 Percent_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Visitas previas}
-# Turistas según el número de visitas previas a Canarias por tipos de alojamiento. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_visitas <- fromJSON(params$url.visitas)
-df_turismo_visitas <- cbind(data.frame(do.call('rbind', turismo_visitas[["data"]][["dimCodes"]])), turismo_visitas[["data"]][["Valor"]])
-colnames(df_turismo_visitas) <- c('N_visitas', 'tipo', 'mun', 'periodo', 'valor')
-df_turismo_visitas$N_visitas <- factor(df_turismo_visitas$N_visitas, levels=turismo_visitas[["categories"]][["codes"]][[1]], labels=turismo_visitas[["categories"]][["labels"]][[1]])
-df_turismo_visitas$tipo <- factor(df_turismo_visitas$tipo, levels=turismo_visitas[["categories"]][["codes"]][[2]], labels=turismo_visitas[["categories"]][["labels"]][[2]])
-df_turismo_visitas$mun <- factor(df_turismo_visitas$mun, levels=turismo_visitas[["categories"]][["codes"]][[3]], labels=turismo_visitas[["categories"]][["labels"]][[3]])
-df_turismo_visitas$periodo <- as.numeric(df_turismo_visitas$periodo)
-df_turismo_visitas$valor <- as.numeric(df_turismo_visitas$valor)
-df_turismo_visitas$mun <- recode_mun(df_turismo_visitas, 'mun')
-
-df_turismo_visitas_C <- df_turismo_visitas %>%
-  filter(N_visitas != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
-  select(c(N_visitas, valor))
-df_turismo_visitas_C <- df_turismo_visitas_C %>% mutate(porcentaje = df_turismo_visitas_C$valor/ num_Canarias_total * 100)
-
-porc_Turistas_0_C <- df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Ninguna")]
-porc_Turistas_1_2_C <- df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Una o dos visitas")]
-porc_Turistas_3_C <- 100 - df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Ninguna")] - df_turismo_visitas_C$porcentaje[which(df_turismo_visitas_C$N_visitas == "Una o dos visitas")]
-porc_Turistas_0_C_l <- round(porc_Turistas_0_C, 1) %>% as.numeric
-porc_Turistas_1_2_C_l <- round(porc_Turistas_1_2_C, 1) %>% as.numeric
-porc_Turistas_3_C_l <- round(porc_Turistas_3_C, 1) %>% as.numeric
-
-df_turismo_visitas <- df_turismo_visitas %>%
-  filter(N_visitas != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(N_visitas, valor))
-df_turismo_visitas <- df_turismo_visitas %>% mutate(porcentaje = df_turismo_visitas$valor/ Num_Turistas_num * 100)
-
-porc_Turistas_0 <- df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Ninguna")]
-porc_Turistas_1_2 <- df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Una o dos visitas")]
-porc_Turistas_3 <- 100 - df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Ninguna")] - df_turismo_visitas$porcentaje[which(df_turismo_visitas$N_visitas == "Una o dos visitas")]
-porc_Turistas_0_l <- round(porc_Turistas_0, 1) %>% as.numeric
-porc_Turistas_1_2_l <- round(porc_Turistas_1_2, 1) %>% as.numeric
-porc_Turistas_3_l <- round(porc_Turistas_3, 1) %>% as.numeric
-```
-
 ```{r Nivel educativo}
 # Turistas según nivel educativo por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_educacion <- fromJSON(params$url.educacion)
@@ -870,9 +833,6 @@ mapa_isla_plot
 <div class="column indicator-title">
   <h3>Niveles educativos</h3>
 </div>
-<div class="column indicator-title">
-  <h3>Visitas previas</h3>
-</div>
 </div>
 
 <div class="row">
@@ -883,35 +843,6 @@ mapa_isla_plot
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
 <div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-</div>
-</div>
-
-<div class="column highlight" style="padding: 10px;">
-<div class="progress-bar-container">
-  <div class="progress-bar-1" style="width:`r porc_Turistas_0`%"></div>
-  <div class="progress-bar-2" style="width:`r porc_Turistas_1_2`%"></div>
-  <div class="progress-bar-3" style="width:`r porc_Turistas_3`%"></div>
-</div>
-
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-</div>
-
-<div class="row">
-<p style="margin: 13px 16px -10px;">Canarias</p>
-
-<div class="progress-bar-container" style="height: 20px;">
-  <div class="progress-bar-1-C" style="width:`r porc_Turistas_0_C`%"></div>
-  <div class="progress-bar-2-C" style="width:`r porc_Turistas_1_2_C`%"></div>
-  <div class="progress-bar-3-C" style="width:`r porc_Turistas_3_C`%"></div>
-</div>
-
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Ninguna<br>`r format(porc_Turistas_0_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>De 1 a 2<br>`r format(porc_Turistas_1_2_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Más de 3<br>`r format(porc_Turistas_3_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 

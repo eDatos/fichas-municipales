@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38001
-  año: 2009
+  año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -34,6 +34,11 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
 
 "%notin%" <- Negate("%in%")
 ```
@@ -155,16 +160,29 @@ df_u <- data.frame(Municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]]
                    Valor = as.integer(data_u[["observation"]])) %>% 
         arrange(Año)
 
+ind_pobl <- fromJSON(params$url.ind_pobl)
+
+df_lv <- data.frame(
+  municipio = rep(names(ind_pobl[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=ind_pobl[["dimension"]][["TIME"]][["representation"]][["size"]] * ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  año = rep(names(ind_pobl[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(ind_pobl[["observation"]]), 1))
+df_lv$año <- as.numeric(df_lv$año)
+
+df_u <- df_u %>% 
+  left_join((df_lv %>% filter(medida == "ANNUAL_PERCENTAGE_RATE") %>% select(Municipio = municipio, Año = año, Tasa = valor)), by = c("Municipio", "Año"))
+
 related_mun <- df_u %>% filter(Año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
 
 df <- related_mun %>%
   select(Municipio = "mun") %>%
-  left_join(df_u, by="Municipio") %>%
-  select(id = Municipio, Año, Valor) %>%
-  left_join(df_CL_AREA_mun, by="id") %>%
-  select(Año, Valor, Municipio = municipio) %>%
-  mutate(Tasa = ifelse(Año != min(Año), round(100*((Valor / lag(Valor)) - 1), 1), NA)) %>%
+  left_join(df_u, by= "Municipio") %>%
+  select(id = Municipio, Año, Valor, Tasa) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(Año, Valor, Municipio = municipio, Tasa) %>%
   filter(Año <= params$año & Año != min(Año))
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -238,24 +256,12 @@ leyenda_poblacion <- df %>% filter(Año == params$año) %>%
 ```
 
 ```{r Indicador evolución de la población}
-ind_pobl <- fromJSON(params$url.ind_pobl)
-
-df_lv <- data.frame(
-  municipio = rep(names(ind_pobl[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-      each=ind_pobl[["dimension"]][["TIME"]][["representation"]][["size"]] * 
-      ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  año = rep(names(ind_pobl[["dimension"]][["TIME"]][["representation"]][["index"]]),
-      each=ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = as.numeric(ind_pobl[["observation"]])) %>%
-  filter(año == params$año & municipio == params$id_municipio)
-
-signo <- function(value) { ifelse(value > 0, "más", "menos") }
+df_lv <- df_lv %>% filter(año == params$año & municipio == params$id_municipio)
 
 Num_Pobl <-  format(df_lv[df_lv$medida == 'ABSOLUTE', ]$valor, big.mark = ".", decimal.mark = ",")
 Variacion_Pobl <- format(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor, big.mark = ".", decimal.mark = ",")
 Imagen_Variacion <- ifelse(signo(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Pobl <- format(round(df_lv[df_lv$medida == 'ANNUAL_PERCENTAGE_RATE', ]$valor, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual_Pobl <- format(df_lv[df_lv$medida == 'ANNUAL_PERCENTAGE_RATE', ]$valor, big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Pirámide por edad y sexo}
@@ -357,7 +363,7 @@ Percent_Hombres <- round(df_piramide %>% filter(mun == municipio_actual$municipi
 data_edadm <- fromJSON(params$url.edad_media)
 df_edadm <- data.frame(
   Municipio = rep(names(data_edadm[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-      each=data_edadm[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                  each=data_edadm[["dimension"]][["TIME"]][["representation"]][["size"]]),
   Año = names(data_edadm[["dimension"]][["TIME"]][["representation"]][["index"]]),
   Valor = as.numeric(data_edadm[["observation"]]))
 
@@ -423,7 +429,7 @@ df_nacimientos <- df_nacimientos %>% left_join(df_CL_AREA_mun, by = "id") %>% se
 df_nacimientos_mun <- tasa_año(df_nacimientos)
 
 # Tasa por mil habitantes con dos decimales:
-TBN <- format(round(df_nacimientos_mun$valor / Num_Pobl_num * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+TBN <- format(round(df_nacimientos_mun$valor / Num_Pobl_num * 1000, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Crecimiento vegetativo}
