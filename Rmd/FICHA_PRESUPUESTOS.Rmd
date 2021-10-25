@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38010
+  id_municipio: 38051
   año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -38,7 +38,7 @@ signo <- function(value) { ifelse(value > 0, "más", "menos") }
 ```
 
 ```{r url}
-url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_",sprintf ("%06.0f", params$año - 2006), "/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59&lang=es") 
+url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_",sprintf ("%06.0f", params$año - 2006), "/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_80|G_81|G_82|G_83|G_84|G_85|G_86|G_87|G_90|G_91|G_92|G_93|G_94|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_80|I_81|I_82|I_83|I_84|I_85|I_86|I_87|I_90|I_91|I_93|I_94|GASTOS|INGRESOS&lang=es")
 ```
 
 ```{r Municipio actual}
@@ -388,7 +388,7 @@ df_estr_partidas <- data.frame(
 df_estr_partidas$valor <- as.numeric(df_estr_partidas$valor)
 df_estr_partidas$id_municipio <- recode_id_Frontera(df_estr_partidas, 'id_municipio')
 
-df_estr_partidas_mun <- df_estr_partidas %>% filter(id_municipio == params$id_municipio) %>% select(!id_municipio)
+df_estr_partidas_mun <- df_estr_partidas %>% filter(id_municipio == params$id_municipio & id_partida %notin% c("GASTOS", "INGRESOS")) %>% select(!id_municipio)
 
 CL_PARTIDA <- as_list(read_xml(paste0(params$url.partida_codes, "?limit=100000")))
 
@@ -414,6 +414,26 @@ df_partidas_ <- df_partidas %>% inner_join(df_CL_PARTIDA_dos, by = "id_partida")
 df_estr_partidas_mun <- df_estr_partidas_mun %>% inner_join(df_partidas_, by = "id_partida")
 ```
 
+```{r Estructura por partidas Denominador}
+df_ep_total <- df_estr_partidas %>% filter(id_municipio == params$id_municipio & id_partida %in% c("GASTOS", "INGRESOS"))
+ep_total_G <- df_ep_total %>% filter(id_partida == "GASTOS") %>% select(valor) %>% as.numeric()
+ep_total_I <- df_ep_total %>% filter(id_partida == "INGRESOS") %>% select(valor) %>% as.numeric()
+
+df_estr_partidas_C <- df_estr_partidas %>% 
+  group_by(id_partida) %>% 
+  summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
+  inner_join(df_CL_PARTIDA_dos, by = "id_partida") %>%
+  select(c(id_partida, valor_Canarias))
+
+df_ep_total_C <- df_estr_partidas %>% filter(id_partida %in% c("GASTOS", "INGRESOS")) %>% 
+  group_by(id_partida) %>% 
+  summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
+  select(c(id_partida, valor_Canarias))
+
+ep_total_G_C <- df_ep_total_C %>% filter(id_partida == "GASTOS") %>% select(valor_Canarias) %>% as.numeric()
+ep_total_I_C <- df_ep_total_C %>% filter(id_partida == "INGRESOS") %>% select(valor_Canarias) %>% as.numeric()
+```
+
 ```{r Barras Estructura Gastos por partidas}
 df_estr_part_gastos_mun <- df_estr_partidas_mun %>% filter(substring(id_partida, 0,1) == "G") %>% arrange(-valor) %>% top_n(5, valor)
 
@@ -421,12 +441,6 @@ df_otros_G <- df_estr_partidas_mun %>% filter(substring(id_partida, 0,1) == "G" 
 
 df_part_gastos_mun <- rbind(df_estr_part_gastos_mun, c("G_otros", sum(df_otros_G$valor, na.rm = NA), rep("Resto de los gastos", 2)))
 df_part_gastos_mun$valor <- as.numeric(df_part_gastos_mun$valor)
-
-df_estr_partidas_C <- df_estr_partidas %>% 
-  group_by(id_partida) %>% 
-  summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
-  inner_join(df_CL_PARTIDA_dos, by = "id_partida") %>%
-  select(c(id_partida, valor_Canarias))
 
 df_estr_part_gastos_C <- df_estr_partidas_C %>% filter(substring(id_partida, 0,1) == "G" & id_partida %in% df_estr_part_gastos_mun$id_partida)
  
@@ -439,8 +453,8 @@ df_part_gastos_mun <- df_part_gastos_mun %>%
   left_join(df_part_gastos_C, by = "id_partida")
 
 df_part_gastos_mun <- df_part_gastos_mun %>%
-  mutate(porcentaje = df_part_gastos_mun$valor / sum(df_part_gastos_mun$valor) * 100,
-         porcentaje_Canarias = df_part_gastos_mun$valor_Canarias / sum(df_part_gastos_mun$valor_Canarias) * 100,
+  mutate(porcentaje = df_part_gastos_mun$valor / ep_total_G * 100,
+         porcentaje_Canarias = df_part_gastos_mun$valor_Canarias / ep_total_G_C * 100,
          label = "|")
 
 df_part_gastos_mun$id_partida <- ordered(df_part_gastos_mun$id_partida, levels = c("G_otros", df_estr_part_gastos_mun$id_partida[5:1]))
@@ -503,8 +517,8 @@ df_part_ingresos_mun <- df_part_ingresos_mun %>%
   left_join(df_part_ingresos_C, by = "id_partida")
 
 df_part_ingresos_mun <- df_part_ingresos_mun %>%
-  mutate(porcentaje = df_part_ingresos_mun$valor / sum(df_part_ingresos_mun$valor) * 100,
-         porcentaje_Canarias = df_part_ingresos_mun$valor_Canarias / sum(df_part_ingresos_mun$valor_Canarias) * 100,
+  mutate(porcentaje = df_part_ingresos_mun$valor / ep_total_I * 100,
+         porcentaje_Canarias = df_part_ingresos_mun$valor_Canarias / ep_total_I_C * 100,
          label = "|")
 
 df_part_ingresos_mun$id_partida <- ordered(df_part_ingresos_mun$id_partida, levels = c("I_otros", df_estr_part_ingresos_mun$id_partida[5:1]))

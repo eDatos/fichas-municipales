@@ -2,19 +2,19 @@
 title: ''
 params:
   id_municipio: 38001
-  año: 2019_nov
+  convocatoria: 201911
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.congreso_2019_nov: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.congreso_2019_abr: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000026/~latest.json?&lang=es
-  url.congreso_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?&lang=es
-  url.congreso_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?&lang=es
-  url.congreso_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?&lang=es
-  url.congreso_2008: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?&lang=es
-  url.congreso_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?&lang=es
-  url.congreso_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?&lang=es
+  url.congreso_201911: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.congreso_201904: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000026/~latest.json?&lang=es
+  url.congreso_201606: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?&lang=es
+  url.congreso_201512: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?&lang=es
+  url.congreso_201111: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?&lang=es
+  url.congreso_200803: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?&lang=es
+  url.congreso_200403: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?&lang=es
+  url.congreso_200003: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?&lang=es
   url.congreso_electores: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a73b11d9-02c6-49dd-bed4-1b21978d003b
 output:
   html_document:
@@ -33,8 +33,23 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
 
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
 
 "%notin%" <- Negate("%in%")
+```
+
+```{r Convocatoria}
+# Electores en Canarias en las elecciones Generales según convocatorias. Municipios por islas de Canarias.
+data_electores <- fromJSON(params$url.congreso_electores)
+convocatoria <- data.frame(code = as.integer(data_electores[["categories"]][["codes"]][[1]]),
+                           convocatoria = data_electores[["categories"]][["labels"]][[1]],
+                           order = as.integer(order(data_electores[["categories"]][["codes"]][[1]], decreasing = FALSE)))
+
+convocatoria_actual <- convocatoria %>% filter(substring(code, 0,6) == params$convocatoria)
+convocatoria_tva <- convocatoria[convocatoria$order == convocatoria[convocatoria_actual$code == convocatoria$code, ]$order - 1, ]
 ```
 
 ```{r Municipio actual}
@@ -76,11 +91,8 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r}
-url_años <- data.frame(cbind(
-  año = c("2019_nov", "2019_abr", 2016, 2015, 2011, 2008, 2004, 2000),
-  url = c(params$url.congreso_2019_nov, params$url.congreso_2019_abr, params$url.congreso_2016, params$url.congreso_2015, params$url.congreso_2011, params$url.congreso_2008, params$url.congreso_2004, params$url.congreso_2000)))
-url <- url_años$url[which(url_años$año == params$año)]
+```{r Resultados}
+url <- paste0("params$url.congreso_", substring(convocatoria$code, 0,6))
 data_congreso <- fromJSON(url)
 
 indice <- data.frame(i = c(1:length(data_congreso[["data"]][["dimensions"]][["dimension"]][["dimensionId"]])),
@@ -102,4 +114,24 @@ df_congreso <- df_congreso %>% transform(mun = if_else(mun == "38013_2007",  "38
 # df_congreso_mun <- df_congreso_mun %>% filter(mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(c(name_partido, valor))
 
 ```
+
+```{r Electores por residencia}
+df_electores <- cbind(data.frame(do.call('rbind', data_electores[["data"]][["dimCodes"]])), data_electores[["data"]][["Valor"]])
+colnames(df_electores) <- c('convocatoria', 'mun', 'residencia', 'valor')
+df_electores$convocatoria <- factor(df_electores$convocatoria, levels=data_electores[["categories"]][["codes"]][[1]], labels=data_electores[["categories"]][["labels"]][[1]])
+df_electores$mun <- factor(df_electores$mun, levels=data_electores[["categories"]][["codes"]][[2]], labels=data_electores[["categories"]][["labels"]][[2]])
+df_electores$residencia <- factor(df_electores$residencia, levels=data_electores[["categories"]][["codes"]][[3]])
+df_electores$valor <- as.numeric(df_electores$valor)
+df_electores$mun <- recode_mun(df_electores, 'mun')
+
+df_electores_mun <- df_electores %>%
+  filter(mun == municipio_actual$municipio & convocatoria == convocatoria_actual$convocatoria) %>% 
+  select(c(residencia, valor))
+
+Num_Electores <- df_electores_mun %>% filter(residencia == "T") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Electores_Canarias <- df_electores_mun %>% filter(residencia == "ES70") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Electores_Extranjero <- df_electores_mun %>% filter(residencia == "ESZ") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+
 
