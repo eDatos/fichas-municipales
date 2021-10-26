@@ -91,30 +91,6 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r Resultados}
-url <- paste0("params$url.congreso_", substring(convocatoria$code, 0,6))
-data_congreso <- fromJSON(url)
-
-indice <- data.frame(i = c(1:length(data_congreso[["data"]][["dimensions"]][["dimension"]][["dimensionId"]])),
-                     variable = data_congreso[["data"]][["dimensions"]][["dimension"]][["dimensionId"]])
-
-df_congreso <- data.frame(
-  mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="TERRITORIO")]]][["code"]],
-            each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="CANDIDATURAS")]]][["code"]]) *
-                   length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="MEDIDAS")]]][["code"]])),
-  candidaturas = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="CANDIDATURAS")]]][["code"]],
-                     each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="MEDIDAS")]]][["code"]])),
-  medidas = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[indice$i[which(indice$variable=="MEDIDAS")]]][["code"]]),
-  valor = unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_congreso$valor <- as.numeric(df_congreso$valor)
-df_congreso <- df_congreso %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
-# 
-# df_partido <- data.frame(candidaturas = ,
-#                          name_partido = )
-# df_congreso_mun <- df_congreso_mun %>% filter(mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(c(name_partido, valor))
-
-```
-
 ```{r Electores por residencia}
 df_electores <- cbind(data.frame(do.call('rbind', data_electores[["data"]][["dimCodes"]])), data_electores[["data"]][["Valor"]])
 colnames(df_electores) <- c('convocatoria', 'mun', 'residencia', 'valor')
@@ -131,6 +107,89 @@ df_electores_mun <- df_electores %>%
 Num_Electores <- df_electores_mun %>% filter(residencia == "T") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Num_Electores_Canarias <- df_electores_mun %>% filter(residencia == "ES70") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Num_Electores_Extranjero <- df_electores_mun %>% filter(residencia == "ESZ") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+```{r Resultados}
+# data_congreso <- fromJSON(paste0("params$url.congreso_", params$convocatoria))
+data_congreso_201911 <- fromJSON(params$url.congreso_201911)
+
+df_congreso <- data.frame(
+  medida = rep(data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+               each = length(data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                      length(data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  mun = rep(data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  candidatura = data_congreso_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+  valor = unlist(strsplit(data_congreso_201911[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_congreso$valor <- as.numeric(df_congreso$valor)
+df_congreso <- df_congreso %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
+
+df_partido <- data.frame(
+  candidatura = data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+  name_partido = c(data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[1]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[2]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[3]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[4]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[5]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[6]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[7]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[8]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[9]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[10]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[11]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[12]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[13]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[14]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[15]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[16]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[17]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[18]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[19]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[20]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[21]][["value"]],
+                   data_congreso_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[22]][["value"]]))
+
+df_congreso_mun <- df_congreso %>% 
+  left_join(df_partido, by="candidatura") %>%
+  filter(mun == params$id_municipio)
+partido_mas_votado <- df_congreso_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% 
+  as.character()
+df_plot_ <- df_congreso_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
+df_plot_ <- df_plot_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA)
+df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
+df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
+df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
+df_plot <- df_plot %>% mutate(porcentaje = df_plot$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot$VOTOS_VALIDOS_CANDIDATURA) * 100) %>% arrange(VOTOS_VALIDOS_CANDIDATURA)
+
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[6:1])
+
+df_plot <- df_plot %>% transform(hovertext = paste0(
+    "<b>", name_partido, " </b>",
+    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
+    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
+  )
+)
+
+g_congreso_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise",
+          hole = 0.6, textposition = "inside", textinfo = "percent", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
+          marker = list(colors = c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#005980", "white"), line = list(color = "77848D", width = 1)),
+          rotation = 90
+          )
+
+g_congreso_mun <- ggplotly(g_congreso_mun, tooltip = c("text")) %>%
+  layout(showlegend = FALSE) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+
+
+g_congreso_mun
+
+
+cap_G_a <- df_plot$name_partido[1][[1]]
+cap_G_b <- df_plot$name_partido[2][[1]]
+cap_G_c <- df_plot$name_partido[3][[1]]
+cap_G_d <- df_plot$name_partido[4][[1]]
+cap_G_e <- df_plot$name_partido[5][[1]]
+cap_G_f <- df_plot$name_partido[6][[1]]
 ```
 
 

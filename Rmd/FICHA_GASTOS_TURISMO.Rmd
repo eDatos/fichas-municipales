@@ -279,7 +279,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ind_GM <- df %>% filter(Municipio == municipio_actual$municipio & code %in% c(periodo_actual$code, periodo_tva$code))
 
 Num_GM_num <- ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Valor) %>% as.numeric()
-Num_GM <- Num_GM_num %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",")
 Imagen_Variacion <- ifelse(is.na(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_tva$code) %>% select(Valor) %>% as.numeric()),
                            "NA",
                            ifelse(signo(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Tasa) %>% as.numeric()) == "más",
@@ -298,28 +298,28 @@ df_GM_mun <- ind_GM_sexo_edad %>%
   filter(sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
   select(c(ind, valor))
 
-Gasto_por_turista <- df_GM_mun$valor[which(df_GM_mun$ind == "Gasto por turista")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista <- df_GM_mun$valor[which(df_GM_mun$ind == "Gasto por turista")] %>% format(big.mark = ".", decimal.mark = ",")
 
 df_GM_sexo_mun <- ind_GM_sexo_edad %>%
   filter(ind == "Gasto por turista" & sexo != "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
   select(c(sexo, valor))
 
-Gasto_por_turista_M <- df_GM_sexo_mun$valor[which(df_GM_sexo_mun$sexo == "Mujeres")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Gasto_por_turista_H <- df_GM_sexo_mun$valor[which(df_GM_sexo_mun$sexo == "Hombres")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista_M <- df_GM_sexo_mun$valor[which(df_GM_sexo_mun$sexo == "Mujeres")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista_H <- df_GM_sexo_mun$valor[which(df_GM_sexo_mun$sexo == "Hombres")] %>% format(big.mark = ".", decimal.mark = ",")
 
 df_GM_edad_mun <- ind_GM_sexo_edad %>%
   filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES") %>% 
   select(c(gredad, valor))
 
-Gasto_por_turista_menor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "De 16 a 44 años")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Gasto_por_turista_mayor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "Mayor de 44 años")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista_menor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista_mayor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
 
 df_GM_sexo_edad_C <- df_GM_sexo_edad %>%
   select(ind, sexo, gredad, mun = Municipio, periodo = Periodo, valor = Valor) %>%
   filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES" & mun == "ES70" & periodo == periodo_actual$code)
 
-Gasto_por_turista_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "De 16 a 44 años")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Gasto_por_turista_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "Mayor de 44 años")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_por_turista_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_por_turista_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 ```{r Rankings}
@@ -348,15 +348,15 @@ colnames(df_GM_sl) <- c('ind', 'sl','mun', 'periodo', 'valor')
 df_GM_sl$ind <- factor(df_GM_sl$ind, levels=GM_sl[["categories"]][["codes"]][[1]], labels=GM_sl[["categories"]][["labels"]][[1]])
 df_GM_sl$sl <- factor(df_GM_sl$sl, levels=GM_sl[["categories"]][["codes"]][[2]], labels=GM_sl[["categories"]][["labels"]][[2]])
 df_GM_sl$mun <- factor(df_GM_sl$mun, levels=GM_sl[["categories"]][["codes"]][[3]], labels=GM_sl[["categories"]][["labels"]][[3]])
-df_GM_sl$valor <- as.numeric(df_GM_sl$valor)
+df_GM_sl$valor <- as.numeric(df_GM_sl$valor) %>% round(0)
 df_GM_sl$mun <- recode_mun(df_GM_sl, 'mun')
 
 df_GM_sl_mun <- df_GM_sl %>%
   filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
   select(c(sl, valor))
 
-Gasto_tur_sl_Act <- df_GM_sl_mun$valor[which(df_GM_sl_mun$sl == "Activos")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Gasto_tur_sl_NAct <- df_GM_sl_mun$valor[which(df_GM_sl_mun$sl == "Inactivos")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_sl_Act <- df_GM_sl_mun$valor[which(df_GM_sl_mun$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_sl_NAct <- df_GM_sl_mun$valor[which(df_GM_sl_mun$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",")
 
 df_GM_sl_C <- df_GM_sl %>%
   filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
@@ -366,8 +366,8 @@ df_GM_sl_C <- df_GM_sl %>%
   filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
   select(c(sl, valor))
 
-Gasto_tur_sl_Act_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Activos")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Gasto_tur_sl_NAct_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Inactivos")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_tur_sl_Act_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_sl_NAct_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 ```{r Barras Gastos Medios Niveles de ingresos}
@@ -439,7 +439,7 @@ colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
 df_GM_ne$ind <- factor(df_GM_ne$ind, levels=GM_ne[["categories"]][["codes"]][[1]], labels=GM_ne[["categories"]][["labels"]][[1]])
 df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
 df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
-df_GM_ne$valor <- as.numeric(df_GM_ne$valor)
+df_GM_ne$valor <- as.numeric(df_GM_ne$valor) %>% round(0)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
 
 df_GM_ne_mun <- df_GM_ne %>%
@@ -507,16 +507,16 @@ colnames(df_GM_ta) <- c('ind', 'tipo','mun', 'periodo', 'valor')
 df_GM_ta$ind <- factor(df_GM_ta$ind, levels=GM_ta[["categories"]][["codes"]][[1]], labels=GM_ta[["categories"]][["labels"]][[1]])
 df_GM_ta$tipo <- factor(df_GM_ta$tipo, levels=GM_ta[["categories"]][["codes"]][[2]], labels=GM_ta[["categories"]][["labels"]][[2]])
 df_GM_ta$mun <- factor(df_GM_ta$mun, levels=GM_ta[["categories"]][["codes"]][[3]], labels=GM_ta[["categories"]][["labels"]][[3]])
-df_GM_ta$valor <- as.numeric(df_GM_ta$valor)
+df_GM_ta$valor <- as.numeric(df_GM_ta$valor) %>% round(0)
 df_GM_ta$mun <- recode_mun(df_GM_ta, 'mun')
 
 df_GM_ta_mun <- df_GM_ta %>%
   filter(ind == "Gasto por turista" & tipo != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
   select(c(tipo, valor))
 
-Gasto_tur_ta_hot <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Hoteleros")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Gasto_tur_ta_extr <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Extrahoteleros")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Gasto_tur_ta_otr <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Otros alojamientos colectivos")] %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_ta_hot <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Hoteleros")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_ta_extr <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Extrahoteleros")] %>% format(big.mark = ".", decimal.mark = ",")
+Gasto_tur_ta_otr <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Otros alojamientos colectivos")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 ```{r Barras Gastos Medios Noches pernoctadas}
@@ -527,7 +527,7 @@ colnames(df_GM_np) <- c('ind', 'noches','mun', 'periodo', 'valor')
 df_GM_np$ind <- factor(df_GM_np$ind, levels=GM_np[["categories"]][["codes"]][[1]], labels=GM_np[["categories"]][["labels"]][[1]])
 df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"]][[2]], labels=c("TOTAL", "1 - 7", "8 - 15", "&gt; 15"))
 df_GM_np$mun <- factor(df_GM_np$mun, levels=GM_np[["categories"]][["codes"]][[3]], labels=GM_np[["categories"]][["labels"]][[3]])
-df_GM_np$valor <- as.numeric(df_GM_np$valor)
+df_GM_np$valor <- as.numeric(df_GM_np$valor) %>% round(0)
 df_GM_np$mun <- recode_mun(df_GM_np, 'mun')
 
 df_GM_np_mun <- df_GM_np %>%
@@ -596,8 +596,9 @@ df_GM_pt$paquete <- factor(df_GM_pt$paquete, levels=GM_pt[["categories"]][["code
 df_GM_pt$mun <- factor(df_GM_pt$mun, levels=GM_pt[["categories"]][["codes"]][[2]], labels=GM_pt[["categories"]][["labels"]][[2]])
 df_GM_pt$valor <- as.numeric(df_GM_pt$valor) %>% round(0)
 df_GM_pt$mun <- recode_mun(df_GM_pt, 'mun')
-df_GM_pt <- df_GM_pt %>% transform(paquete = paste0(substring(paquete, 0,1), tolower(substring(paquete, 2))))
-df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Total", "Cualquier tipo", paquete))
+df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("TOTAL", "Paquete turístico", paquete))
+df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Con servicios extras", "Paquete con servicios extras", paquete))
+df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Sin servicios extras", "Paquete sin servicios extras", paquete))
 
 df_GM_pt_mun <- df_GM_pt %>%
   filter(mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -769,7 +770,7 @@ if(Variacion_Porcentual_GM == "NA"){
     '<div class="column-2">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-2">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-3">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3">', get_indicator2("Tasa de</br>variación interanual", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-3">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>

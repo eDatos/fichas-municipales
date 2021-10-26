@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38001
+  id_municipio: 35034
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
@@ -618,7 +618,7 @@ df_turismo_motiv$mun <- recode_mun(df_turismo_motiv, 'mun')
 df_turismo_motiv_C <- df_turismo_motiv %>%
   filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
   select(c(motiv, valor))
-df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ num_Canarias_total * 100)
+df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ sum(df_turismo_motiv_C$valor) * 100)
 
 porc_Turistas_descansar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")]
 porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
@@ -630,7 +630,7 @@ porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
 df_turismo_motiv <- df_turismo_motiv %>%
   filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
   select(c(motiv, valor))
-df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ Num_Turistas_num * 100)
+df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ sum(df_turismo_motiv$valor) * 100)
 
 porc_Turistas_descansar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")]
 porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
@@ -849,7 +849,6 @@ mapa_isla_plot
 </div>
 
 
-</div>
 
 
 <div class="row" style="margin-top: 10px;">
