@@ -16,6 +16,7 @@ params:
   url.congreso_200403: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?&lang=es
   url.congreso_200003: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?&lang=es
   url.congreso_electores: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a73b11d9-02c6-49dd-bed4-1b21978d003b
+  url.congreso_Canarias_201911: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=TERRITORIO:ES70
 output:
   html_document:
     df_print: paged
@@ -329,6 +330,43 @@ partido_d <- df_plot$name_partido[4][[1]]
 partido_e <- df_plot$name_partido[5][[1]]
 ```
 
+```{r}
+data_congreso_201911_C <- fromJSON(params$url.congreso_Canarias_201911)
+df_congreso_2019_C <- data.frame(
+  medida = rep(data_congreso_201911_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+               each = length(data_congreso_201911_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  candidatura = data_congreso_201911_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+  valor = unlist(strsplit(data_congreso_201911_C[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_congreso_2019_C$valor <- as.numeric(df_congreso_2019_C$valor)
+df_congreso_2019_C <- df_congreso_2019_C %>% 
+  left_join(df_partido, by = "candidatura")
+partido_mas_votado <- df_congreso_2019_C %>%
+  filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
+df_plot_C_ <- df_congreso_2019_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
+df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA)
+df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
+df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
+df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
+df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100) %>% arrange(VOTOS_VALIDOS_CANDIDATURA)
+
+df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[6:1])
+
+df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
+    "<b>", name_partido, " </b>",
+    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
+    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
+  )
+)
+
+g_congreso_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
+                          textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
+                          marker = list(colors = c("#005980", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white"), line = list(width = 0)), rotation = 90
+                          )
+
+g_congreso_C <- ggplotly(g_congreso_C, tooltip = c("text")) %>%
+  layout(showlegend = FALSE) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+```
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
@@ -363,10 +401,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Elec == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/female.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/male.png'), "</div>"))
+    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/female.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/female.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/male.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/female.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
 }
 ```
 </div>
@@ -399,6 +437,7 @@ if(Variacion_Porcentual_Elec == "NA"){
 <div class="column highlight">
 
 <div class="piramide" style="height: 280px;">
+  `r g_congreso_C`
 </div>
 
 <div class="progressbar-legend-container" style="margin-bottom: 9px;">
@@ -409,7 +448,6 @@ if(Variacion_Porcentual_Elec == "NA"){
 
 </div>
 </div>
-
 
 
 <div class="row" style="margin-top: 10px;">
