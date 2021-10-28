@@ -511,16 +511,18 @@ Num_total_extr <- df_nacionalidad %>%
 df_nacionalidad_mun_sexo <- df_nacionalidad %>%
   filter(mun == municipio_actual$municipio & nacionalidad %in% ranking_nacionalidad_mun$nacionalidad & año == params$año & sexo !="AMBOS SEXOS") %>% 
   arrange(valor)
-df_nacionalidad_mun_sexo <- cbind(df_nacionalidad_mun_sexo, porcentaje = df_nacionalidad_mun_sexo$valor / Num_total_extr)
+df_nacionalidad_mun_sexo <- cbind(df_nacionalidad_mun_sexo, porcentaje = df_nacionalidad_mun_sexo$valor / Num_total_extr) %>% 
+  transform(valor = if_else(sexo == "Hombres", -valor, valor))
 ranking_nacionalidad_mun_o <- ranking_nacionalidad_mun %>% arrange(valor)
 df_nacionalidad_mun_sexo$nacionalidad <- ordered(df_nacionalidad_mun_sexo$nacionalidad, levels = ranking_nacionalidad_mun_o$nacionalidad)
 df_nacionalidad_mun_sexo <- df_nacionalidad_mun_sexo %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad), "</b><br><br>"), ""),
-    "<b>", sexo, "</b>",
-    "<br>",trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")), " habitantes", 
-    "<br>(", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
-  )
-)
+  hovertext = paste0(
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad),"</b><br>"), ""),
+    "<br><b>", sexo, "</b>",
+    "<br>", format(abs(valor), big.mark = ".", decimal.mark = ","),
+    " (", format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ","), "%)"
+    )
+  ))
 
 g_nacionalidad_mun_sexo <- ggplot(df_nacionalidad_mun_sexo, aes(x = valor, y = nacionalidad, fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, position = position_stack(reverse = TRUE)) +
@@ -535,10 +537,12 @@ g_nacionalidad_mun_sexo <- ggplot(df_nacionalidad_mun_sexo, aes(x = valor, y = n
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(n.breaks = 5, labels = function(x){format(x, big.mark='.', decimal.mark = ",")})
+  scale_x_continuous(labels = function(x){format(abs(x), big.mark = '.', decimal.mark = ",")},
+                     limits = c(-1, 1)*max(abs(df_nacionalidad_mun_sexo$valor)),
+                     n.breaks = 5)
 
 g_nacionalidad_mun_sexo <- ggplotly(g_nacionalidad_mun_sexo, tooltip = c("text")) %>%
-  layout(hoverlabel = "", margin = list(t=10), hovermode = 'y unified') %>%
+  layout(hoverlabel = "", margin = list( t = 10), hovermode = 'y unified') %>%
   config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
 ```
 
