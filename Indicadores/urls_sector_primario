@@ -1,0 +1,47 @@
+url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/2b88193e-29c3-44ae-91dd-c17bbe90124a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/e59bfde6-0aab-473f-a771-0063f9b3133d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/40e615bb-a0fb-4575-931b-c8ca0ef99b59/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cultivada_herbaceos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/682d0933-f921-46f6-94bc-fbb7d2569247/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cultivada_leñosos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/bd997d29-4bb6-402f-9086-17eee6022d73/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cabezas_bovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/0f6d7612-91b6-49d4-aa38-a6624243712d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cabezas_ovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ea920cf7-48fc-4f12-8071-75a1f336133a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cabezas_caprino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/005c5a4d-44a3-4fb3-802d-8b4ec348ccb8/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+url.cabezas_porcino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/fb761796-5971-4ed8-8550-3c7cea6ad3a5/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+
+url.superficie: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+
+OPERACIÓN: Estadística Agraria de Canarias.
+# Superficie cultivada según grupos de cultivos y sistemas de cultivo. Municipios por islas de Canarias y años.
+url.agricultura: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=996a97ac-047e-4e08-b919-743a7e492a90
+
+# Superficie cultivos herbáceos. Municipios por islas de Canarias y años:
+url.agr_herbaceos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9bd9de0e-1785-4e6c-b0e5-b139106445b9
+
+# Superficie en plantación regular y árboles diseminados de cultivos leñosos según cultivos y sistemas de cultivo. Municipios por islas de Canarias y años:
+url.agr_leñosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
+
+# Explotaciones, cabezas y unidades ganaderas según tamaños de las explotaciones y especies. Municipios por islas de Canarias. 2009.
+url.ganaderia: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b7841501-1360-4296-bad5-4b1c06e60e6a
+
+
+OPERACIÓN: Estadística sobre Efectivos de Ganado en Canarias.
+# Resumen de efectivos de ganado según especies
+
+
+# Número de explotaciones según especies
+
+
+# Efectivos de ganado según especies y categorías de animales
+
+
+# Efectivos de ganado avícola según especies y clasificación zootécnica de las explotaciones
+
+
+# Huevos en incubadora según especies
+
+
+# Efectivos de ganado apícola según sistemas productivos
+
+
+# Principales especies (bovino, ovino, caprino, porcino). Datos municipales según especies y categorías de animales. 2007-2013
+

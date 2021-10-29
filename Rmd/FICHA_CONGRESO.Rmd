@@ -317,12 +317,7 @@ g_congreso_mun <- ggplotly(g_congreso_mun, tooltip = c("text")) %>%
   layout(showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
 
-
-
-
 # g_congreso_mun
-
-
 partido_a <- df_plot$name_partido[1][[1]]
 partido_b <- df_plot$name_partido[2][[1]]
 partido_c <- df_plot$name_partido[3][[1]]
@@ -360,7 +355,7 @@ df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
 
 g_congreso_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                          marker = list(colors = c("#005980", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white"), line = list(width = 0)), rotation = 90
+                          marker = list(colors = c("#BBC8D0", "#ABBBC2", "#99A9B1", "#8C9BA3", "#59656E", "white"), line = list(width = 0)), rotation = 90
                           )
 
 g_congreso_C <- ggplotly(g_congreso_C, tooltip = c("text")) %>%
@@ -425,6 +420,10 @@ if(Variacion_Porcentual_Elec == "NA"){
   `r g_congreso_mun`
 </div>
 
+<div class="piramide" style="height: 280px;">
+  `r g_congreso_C`
+</div>
+
 <div class="legend-vertical-container" style="margin-top: 0;">
   <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content-b'>`r paste0(partido_a, ' (',format(round(df_plot[1,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content-b'>`r paste0(partido_b, ' (',format(round(df_plot[2,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
@@ -437,7 +436,7 @@ if(Variacion_Porcentual_Elec == "NA"){
 <div class="column highlight">
 
 <div class="piramide" style="height: 280px;">
-  `r g_congreso_C`
+  `r `
 </div>
 
 <div class="progressbar-legend-container" style="margin-bottom: 9px;">

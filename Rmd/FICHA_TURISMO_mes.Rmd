@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35004
+  id_municipio: 38014
   año: 2021
-  mes: 7
+  mes: 8
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
@@ -636,7 +636,7 @@ if(Variacion_Porcentual_Viajeros == "NA"){
 
 ```{r funciones mapa}
 get_map_box_before = function(column_number) {
-  return(sprintf('<div class="row" style="margin-top:10px;"><div class="column-%s"><div class="indicator-map map-canarias"><div class="image">', column_number))
+  return(sprintf('<div class="column-%s"><div class="indicator-map map-canarias"><div class="image">', column_number))
 }
 
 get_map_box_after = function(rank, territorio, n_municipios, percent) {
@@ -644,6 +644,7 @@ get_map_box_after = function(rank, territorio, n_municipios, percent) {
 }
 ```
 
+<div class="row" style="margin-top:10px;">
 `r if_else(Plazas_Hoteles == "NA" & Plazas_extrahoteleros == "NA", get_map_box_before(2), get_map_box_before(3))`
 ```{r}
 mapa_Canarias_plot
@@ -661,7 +662,7 @@ if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
   cat(paste0('<div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
 }else if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros == "NA"){
   cat(paste0('<div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteles</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_Hoteles,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Habitaciones,' </span>habitaciones</p></div></div></div></div></div>'))
-}else if (Plazas_Hoteles != "NA" & Plazas_extrahoteleros != "NA"){
+}else if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros != "NA"){
   cat(paste0('<div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_Hoteles,' </span> Hoteles</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_Hoteles,' </span>plazas en <span class="value2">', Num_Habitaciones,' </span>habitaciones</p></div></div></div><div class="indicator-map" style="margin-top: 14px;"><div class="indicator-content" style="margin-top: -10px; padding: 8px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 12px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas en <span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
 }
 ```
