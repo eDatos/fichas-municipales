@@ -39,3 +39,19 @@ http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidC
   url.congreso_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?&lang=es
   url.congreso_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?&lang=es
 
+
+ESTRUCTURA:
+
+congreso_2019n: medidas territorio candidaturas
+congreso_2016: medidas territorio candidaturas
+congreso_2004: medidas territorio candidaturas
+congreso_2000: medidas territorio candidaturas
+
+congreso_2019a: territorio medidas candidaturas
+congreso_2008: territorio medidascandidaturas
+
+congreso_2015: candidaturas medidas territorio
+
+congreso_2011: indicadores candidaturas territorio
+
+

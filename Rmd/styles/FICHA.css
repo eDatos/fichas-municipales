@@ -115,6 +115,7 @@ div.level3 {
 }
 .legend-vertical-container {
   margin-top: 15px;
+  position: relative;
 }
 .legend-vertical-container > .progressbar-legend  {
     margin: 5px 20px;
@@ -636,4 +637,26 @@ h4, h5 {
 .progressbar-legend > .sp-content-b {
   margin: 2.6px 10px;
   text-align: left;
+}
+.progress-bar-1-C {
+  background-color: #59656E;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.progress-bar-2-C {
+  background-color: #8C9BA3;
+}
+.progress-bar-3-C {
+  background-color: #BBC8D0;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.progress-bar-5-C {
+  background-color: #77848D;
+}
+.progress-bar-6-C {
+  background-color: #99A9B1;
+}
+.progress-bar-7-C {
+  background-color: #ABBBC2;
 }

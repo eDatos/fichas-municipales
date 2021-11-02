@@ -2,19 +2,19 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 201911
+  convocatoria: 200606
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
   url.congreso_201911: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.congreso_201904: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000026/~latest.json?&lang=es
-  url.congreso_201606: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?&lang=es
-  url.congreso_201512: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?&lang=es
-  url.congreso_201111: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?&lang=es
-  url.congreso_200803: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?&lang=es
-  url.congreso_200403: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?&lang=es
-  url.congreso_200003: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?&lang=es
+  url.congreso_201904: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000034/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_201606: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_201512: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_201111: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?dim=INDICADORES:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_200803: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?dim=TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.congreso_200403: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_200003: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.congreso_electores: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a73b11d9-02c6-49dd-bed4-1b21978d003b
   url.congreso_Canarias_201911: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=TERRITORIO:ES70
 output:
@@ -307,6 +307,7 @@ df_plot <- df_plot %>% transform(hovertext = paste0(
     " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
+df_plot$hovertext[which(is.na(df_plot$RATIO_VOTOS_CANDIDATURA))] <- ""
 
 g_congreso_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
@@ -338,11 +339,11 @@ df_congreso_2019_C <- df_congreso_2019_C %>%
 partido_mas_votado <- df_congreso_2019_C %>%
   filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
 df_plot_C_ <- df_congreso_2019_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA)
+df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
 df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
-df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100) %>% arrange(VOTOS_VALIDOS_CANDIDATURA)
+df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100)
 
 df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[6:1])
 
@@ -352,15 +353,32 @@ df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
     " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
+df_plot_C$hovertext[which(is.na(df_plot_C$RATIO_VOTOS_CANDIDATURA))] <- ""
 
 g_congreso_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                          marker = list(colors = c("#BBC8D0", "#ABBBC2", "#99A9B1", "#8C9BA3", "#59656E", "white"), line = list(width = 0)), rotation = 90
+                          marker = list(colors = c("#59656E", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white"), line = list(width = 0)), rotation = 90
                           )
 
 g_congreso_C <- ggplotly(g_congreso_C, tooltip = c("text")) %>%
   layout(showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+
+partido_a_C <- df_plot_C$name_partido[1][[1]]
+partido_b_C <- df_plot_C$name_partido[2][[1]]
+partido_c_C <- df_plot_C$name_partido[3][[1]]
+partido_d_C <- df_plot_C$name_partido[4][[1]]
+partido_e_C <- df_plot_C$name_partido[5][[1]]
+```
+```{r}
+data_congreso_201904 <- fromJSON(params$url.congreso_201904)
+data_congreso_201606 <- fromJSON(params$url.congreso_201606)
+data_congreso_201512 <- fromJSON(params$url.congreso_201512)
+data_congreso_201111 <- fromJSON(params$url.congreso_201111)
+data_congreso_200803 <- fromJSON(params$url.congreso_200803)
+data_congreso_200403 <- fromJSON(params$url.congreso_200403)
+data_congreso_200003 <- fromJSON(params$url.congreso_200003)
+
 ```
 
 ```{r Generación HTML, results="asis"}
@@ -396,53 +414,53 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Elec == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/female.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
+    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/world.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/female.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
 }
 ```
 </div>
 
+<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+  <h3>Resultados por grupos de partidos</h3>
+</div>
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
 <div class="row">
-<div class="column indicator-title">
-  <h3>Grupos de partidos</h3>
+<div class="column">
 </div>
-<div class="column indicator-title">
-  <h3>Tipos de votos</h3>
+<div class="column">
+<p style="margin: 13px 16px -10px;">Canarias</p>
 </div>
 </div>
-
-<div class="row">
-<div class="column highlight">
+<div class="column">
 
 <div class="piramide" style="height: 280px;">
   `r g_congreso_mun`
 </div>
 
-<div class="piramide" style="height: 280px;">
-  `r g_congreso_C`
-</div>
-
-<div class="legend-vertical-container" style="margin-top: 0;">
+<div class="legend-vertical-container" style="margin-top: -80px;">
   <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content-b'>`r paste0(partido_a, ' (',format(round(df_plot[1,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content-b'>`r paste0(partido_b, ' (',format(round(df_plot[2,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content-b'>`r paste0(partido_c, ' (',format(round(df_plot[3,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-6'></div><div class='sp-content-b'>`r paste0(partido_d, ' (',format(round(df_plot[4,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content-b'>`r paste0(partido_e, ' (',format(round(df_plot[5,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
 </div>
+
 </div>
 
-<div class="column highlight">
+<div class="column">
 
 <div class="piramide" style="height: 280px;">
-  `r `
+  `r g_congreso_C`
 </div>
 
-<div class="progressbar-legend-container" style="margin-bottom: 9px;">
-  <!-- <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div> -->
-  <!-- <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div> -->
-  <!-- <div class='progressbar-legend'><div class='progress-bar-4'></div><div class='sp-content'>Canarias</div></div> -->
+<div class="legend-vertical-container" style="margin-top: -80px;">
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content-b'>`r paste0(partido_a_C, ' (',format(round(df_plot_C[1,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-5-C'></div><div class='sp-content-b'>`r paste0(partido_b_C, ' (',format(round(df_plot_C[2,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content-b'>`r paste0(partido_c_C, ' (',format(round(df_plot_C[3,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-6-C'></div><div class='sp-content-b'>`r paste0(partido_d_C, ' (',format(round(df_plot_C[4,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-7-C'></div><div class='sp-content-b'>`r paste0(partido_e_C, ' (',format(round(df_plot_C[5,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
 </div>
 
 </div>
