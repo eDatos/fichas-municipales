@@ -328,7 +328,9 @@ df_congreso_mun <- df_congreso %>%
 partido_mas_votado <- df_congreso_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>%
   select(name_partido) %>% as.character()
 df_plot_ <- df_congreso_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_ <- df_plot_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_ <- df_plot_ %>%
+  spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
+  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
 df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
@@ -370,7 +372,9 @@ df_congreso_C <- df_congreso %>%
 partido_mas_votado_C <- df_congreso_C %>%
   filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
 df_plot_C_ <- df_congreso_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_C_ <- df_plot_C_ %>% 
+  spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
+  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
 df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)

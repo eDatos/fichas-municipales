@@ -23,13 +23,6 @@ always_allow_html: yes
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
-```{r, eval=FALSE}
-data_europeas_2019 <- fromJSON(params$url.europeas_2019)
-data_europeas_2016 <- fromJSON(params$url.europeas_2014)
-data_europeas_2008 <- fromJSON(params$url.europeas_2009)
-data_europeas_2004 <- fromJSON(params$url.europeas_2004)
-```
-
 ```{r librerías, include=FALSE}
 list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -53,8 +46,8 @@ convocatoria <- data.frame(code = as.integer(data_electores[["categories"]][["co
 
 convocatoria <- convocatoria %>% 
   transform(convocatoria_formatted = paste0(unlist(lapply(strsplit(convocatoria, " "), '[[', 2))),
-            url = paste0("url.europeas_", substring(code, 0,6)))
-convocatoria_actual <- convocatoria %>% filter(substring(code, 0,6) == params$convocatoria)
+            url = paste0("url.europeas_", substring(code, 0,4)))
+convocatoria_actual <- convocatoria %>% filter(substring(code, 0,4) == params$convocatoria)
 convocatoria_tva <- convocatoria[convocatoria$order == convocatoria[convocatoria_actual$code == convocatoria$code, ]$order - 1, ]
 min_code <- min(convocatoria$code)
 convocatoria$code <- factor(convocatoria$code, levels = convocatoria$code)
@@ -141,7 +134,7 @@ df_u$Convocatoria <- factor(df_u$Convocatoria, levels=data_electores[["categorie
 df_u$Municipio <- factor(df_u$Municipio, levels=data_electores[["categories"]][["codes"]][[2]])
 df_u$Residencia <- factor(df_u$Residencia, levels=data_electores[["categories"]][["codes"]][[3]])
 df_u$Valor <- as.numeric(df_u$Valor)
-df_u_ <- df_u %>% filter(substring(Municipio, 0,2) != "ES" & Residencia == "T") %>% arrange(Convocatoria) %>% select(!Residencia)
+df_u_ <- df_u %>% filter(substring(Municipio, 0,2) != "ES" & Residencia == "000000") %>% arrange(Convocatoria) %>% select(!Residencia)
 
 related_mun <- df_u_ %>% filter(Convocatoria == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
@@ -232,7 +225,7 @@ df_lv <- df_u %>%
   filter(Municipio == params$id_municipio & Convocatoria == convocatoria_actual$code) %>% 
   select(c(Residencia, Valor))
 
-Num_Electores <- df_lv %>% filter(Residencia == "T") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Electores <- df_lv %>% filter(Residencia == "000000") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Elec <- (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_actual$convocatoria) %>% select(Valor) %>% as.numeric()) -
                   (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_tva$convocatoria) %>% select(Valor) %>% as.numeric())
 Imagen_Variacion <- ifelse(signo(Variacion_Elec) == "más", './img/up.png', './img/down.png')
@@ -241,10 +234,10 @@ Variacion_Porcentual_Elec <- df %>% filter(Municipio == municipio_actual$municip
 ```
 
 ```{r Electores por residencia}
-Num_Electores_Canarias <- df_lv %>% filter(Residencia == "ES70") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Num_Electores_Extranjero <- df_lv %>% filter(Residencia == "ESZ") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Canarias <- df_lv %>% filter(Residencia == "000002") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Extranjero <- df_lv %>% filter(Residencia == "000003") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Canarias_UE <- df_lv %>% filter(Residencia == "000004") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 ```
-
 
 ```{r}
 data_europeas <- fromJSON(params[[convocatoria_actual$url]])
@@ -252,91 +245,61 @@ data_europeas <- fromJSON(params[[convocatoria_actual$url]])
 
 
 ```{r}
-if(params$convocatoria %in% c(201911, 201904, 201606, 200803, 200403, 200003)){
+if(params$convocatoria %in% c(2019, 2004)){
   df_europeas <- data.frame(
-    medida = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                 each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                        length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-              each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    candidatura = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+    mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+              each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                     length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+    candidatura = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                      each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+    medida = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
   
   df_partido <- data.frame(
-    candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-    name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-  for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-    df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+    candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+    name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+  for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+    df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$convocatoria == 201111){
+    if(params$convocatoria == 2014){
       df_europeas <- data.frame(
-        mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+        candidatura = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                          length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-        medida = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+        mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                      each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-        candidatura = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+        medida = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
         valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
       
       df_partido <- data.frame(
-        candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-        name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-      for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-        df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+        candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+        name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]))
+      for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
+        df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$convocatoria == 201512){
+        if(params$convocatoria == 2009){
           df_europeas <- data.frame(
-            mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            medida = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                               each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                                      length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-            candidatura = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                          each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-            medida = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            candidatura = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
             valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
           
           df_partido <- data.frame(
-            candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
-            name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
-          for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
-            df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+            candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+            name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+          for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
+            df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
           }
         }
       }
   }
 
-
-
 df_europeas$valor <- as.numeric(df_europeas$valor)
 df_europeas <- df_europeas %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
 ```
-
-
-
-```{r, eval=FALSE}
-data_europeas <- fromJSON(params[[convocatoria_actual$url]])
-```
-
-
-```{r, eval=FALSE}
-df_europeas <- data.frame(
-  medida = rep(data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-               each = length(data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                      length(data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  mun = rep(data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-            each = length(data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  candidatura = data_europeas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-  valor = unlist(strsplit(data_europeas_201911[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_europeas$valor <- as.numeric(df_europeas$valor)
-df_europeas <- df_europeas %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
-
-df_partido <- data.frame(
-  candidatura = data_europeas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-  name_partido = vector(mode = "character", length = data_europeas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-for(i in 1:data_europeas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-  df_partido$name_partido[i] <- data_europeas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
-}
-```
-
 
 ```{r Resultados}
 df_europeas_mun <- df_europeas %>% 
@@ -346,7 +309,9 @@ df_europeas_mun <- df_europeas %>%
 partido_mas_votado <- df_europeas_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>%
   select(name_partido) %>% as.character()
 df_plot_ <- df_europeas_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_ <- df_plot_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_ <- df_plot_ %>%
+  spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
+  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
 df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
@@ -374,7 +339,7 @@ if(nrow(df_plot_) == 7){
 
 g_europeas_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
                         textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
-                        marker = list(colors = c("#005980", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white"), line = list(width = 0)), rotation = 90
+                        marker = list(colors = col, line = list(width = 0)), rotation = 90
                         )
 
 g_europeas_mun <- ggplotly(g_europeas_mun, tooltip = c("text")) %>%
@@ -390,7 +355,9 @@ df_europeas_C <- df_europeas %>%
 partido_mas_votado_C <- df_europeas_C %>%
   filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
 df_plot_C_ <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_C_ <- df_plot_C_ %>% 
+  spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
+  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
 df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
@@ -418,7 +385,7 @@ if(nrow(df_plot_C_) == 7){
 
 g_europeas_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
                       textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                      marker = list(colors = c("#59656E", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white"), line = list(width = 0)), rotation = 90
+                      marker = list(colors = col, line = list(width = 0)), rotation = 90
                       )
 
 g_europeas_C <- ggplotly(g_europeas_C, tooltip = c("text")) %>%
@@ -460,10 +427,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Elec == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/world.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Residentes</br>en Canarias</p><p class="label" style="color: #999;">', Num_Residentes_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Residentes en</br>el extranjero</p><p class="label" style="color: #999;">', Num_Residentes_Extranjero, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Residentes en</br>Canarias de la UE</p><p class="label" style="color: #999;">', Num_Residentes_Canarias_UE, './img/world.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Residentes</br>en Canarias</p><p class="label" style="color: #999;">', Num_Residentes_Canarias, './img/world.png'), "</div><div class='column-4'>", get_indicator2('Residentes en</br>el extranjero</p><p class="label" style="color: #999;">', Num_Residentes_Extranjero, './img/world.png'), "</div><div class='column-4'>", get_indicator2('Residentes en</br>Canarias de la UE</p><p class="label" style="color: #999;">', Num_Residentes_Canarias_UE, './img/world.png'), "</div>"))
 }
 ```
 </div>
