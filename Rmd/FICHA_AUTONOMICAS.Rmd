@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 2019r
+  convocatoria: 2007
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -47,8 +47,8 @@ convocatoria <- data.frame(code = as.integer(data_electores[["categories"]][["co
 
 convocatoria <- convocatoria %>% 
   transform(convocatoria_formatted = paste0(unlist(lapply(strsplit(convocatoria, " "), '[[', 2))),
-            url = paste0("params$url.autonomicas_", substring(code, 0,6)))
-convocatoria_actual <- convocatoria %>% filter(substring(code, 0,6) == params$convocatoria)
+            url = paste0("url.autonomicas_", substring(code, 0,4)))
+convocatoria_actual <- convocatoria %>% filter(substring(code, 0,4) == params$convocatoria)
 convocatoria_tva <- convocatoria[convocatoria$order == convocatoria[convocatoria_actual$code == convocatoria$code, ]$order - 1, ]
 min_code <- min(convocatoria$code)
 convocatoria$code <- factor(convocatoria$code, levels = convocatoria$code)
@@ -135,7 +135,7 @@ df_u$Convocatoria <- factor(df_u$Convocatoria, levels=data_electores[["categorie
 df_u$Municipio <- factor(df_u$Municipio, levels=data_electores[["categories"]][["codes"]][[2]])
 df_u$Residencia <- factor(df_u$Residencia, levels=data_electores[["categories"]][["codes"]][[3]])
 df_u$Valor <- as.numeric(df_u$Valor)
-df_u_ <- df_u %>% filter(substring(Municipio, 0,2) != "ES" & Residencia == "T") %>% arrange(Convocatoria) %>% select(!Residencia)
+df_u_ <- df_u %>% filter(substring(Municipio, 0,2) != "ES" & Residencia == "TT") %>% arrange(Convocatoria) %>% select(!Residencia)
 
 related_mun <- df_u_ %>% filter(Convocatoria == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
@@ -226,7 +226,7 @@ df_lv <- df_u %>%
   filter(Municipio == params$id_municipio & Convocatoria == convocatoria_actual$code) %>% 
   select(c(Residencia, Valor))
 
-Num_Electores <- df_lv %>% filter(Residencia == "T") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Electores <- df_lv %>% filter(Residencia == "TT") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Elec <- (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_actual$convocatoria) %>% select(Valor) %>% as.numeric()) -
                   (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_tva$convocatoria) %>% select(Valor) %>% as.numeric())
 Imagen_Variacion <- ifelse(signo(Variacion_Elec) == "más", './img/up.png', './img/down.png')
@@ -235,19 +235,17 @@ Variacion_Porcentual_Elec <- df %>% filter(Municipio == municipio_actual$municip
 ```
 
 ```{r Electores por residencia}
-Num_Electores_Canarias <- df_lv %>% filter(Residencia == "ES70") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Num_Electores_Extranjero <- df_lv %>% filter(Residencia == "ESZ") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Canarias <- df_lv %>% filter(Residencia == "TAA") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Extranjero <- df_lv %>% filter(Residencia == "TAB") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Num_Residentes_Canarias_UE <- df_lv %>% filter(Residencia == "TB") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
-
 ```{r}
-# data_autonomicas <- fromJSON(convocatoria_actual$url)
-data_autonomicas <- fromJSON(params$url.regional_2019)
+data_autonomicas <- fromJSON(params[[convocatoria_actual$url]])
 ```
 
-
 ```{r}
-if(params$convocatoria %in% c("2019r", "2019i", "2011"q)){
+if(params$convocatoria %in% c("2019r", "2019i", 2015, 2007)){
   df_autonomicas <- data.frame(
     medida = rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -263,7 +261,7 @@ if(params$convocatoria %in% c("2019r", "2019i", "2011"q)){
   for(i in 1:data_autonomicas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
     df_partido$name_partido[i] <- data_autonomicas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$convocatoria %in% c(2015, 2007)){
+    if(params$convocatoria == 2011){
       df_autonomicas <- data.frame(
         mun = rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -281,39 +279,9 @@ if(params$convocatoria %in% c("2019r", "2019i", "2011"q)){
       }}
   }
 
-
-
 df_autonomicas$valor <- as.numeric(df_autonomicas$valor)
 df_autonomicas <- df_autonomicas %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
 ```
-
-
-
-```{r, eval=FALSE}
-data_autonomicas <- fromJSON(params$url.autonomicas_201904)
-```
-
-
-```{r, eval=FALSE}
-df_autonomicas <- data.frame(
-  medida = rep(data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-               each = length(data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                      length(data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  mun = rep(data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-            each = length(data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  candidatura = data_autonomicas_201911[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-  valor = unlist(strsplit(data_autonomicas_201911[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_autonomicas$valor <- as.numeric(df_autonomicas$valor)
-df_autonomicas <- df_autonomicas %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
-
-df_partido <- data.frame(
-  candidatura = data_autonomicas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-  name_partido = vector(mode = "character", length = data_autonomicas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-for(i in 1:data_autonomicas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-  df_partido$name_partido[i] <- data_autonomicas_201911[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
-}
-```
-
 
 ```{r Resultados}
 df_autonomicas_mun <- df_autonomicas %>% 
@@ -323,13 +291,13 @@ df_autonomicas_mun <- df_autonomicas %>%
 partido_mas_votado <- df_autonomicas_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>%
   select(name_partido) %>% as.character()
 df_plot_ <- df_autonomicas_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_ <- df_plot_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_ <- df_plot_ %>% spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
 df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
 df_plot <- df_plot %>% mutate(porcentaje = df_plot$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot$VOTOS_VALIDOS_CANDIDATURA) * 100)
 
-df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot_$name_partido[6:1])
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot_$name_partido[nrow(df_plot_):1])
 
 df_plot <- df_plot %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
@@ -339,21 +307,24 @@ df_plot <- df_plot %>% transform(hovertext = paste0(
 )
 df_plot$hovertext[which(is.na(df_plot$RATIO_VOTOS_CANDIDATURA))] <- ""
 
+if(nrow(df_plot_) == 7){
+  col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "#D5EDFA", "white")
+  }else if(nrow(df_plot_) == 6){
+      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
+      }else if(nrow(df_plot_) == 5){
+        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
+        }else if(nrow(df_plot_) == 4){
+          col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
+          }
+
 g_autonomicas_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                          textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
-                          marker = list(colors = c("#005980", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white"), line = list(width = 0)), rotation = 90
-                          )
+                             textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
+                             rotation = 90, marker = list(colors = col, line = list(width = 0))
+                             )
 
 g_autonomicas_mun <- ggplotly(g_autonomicas_mun, tooltip = c("text")) %>%
   layout(showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-
-# g_autonomicas_mun
-partido_a <- df_plot$name_partido[1][[1]]
-partido_b <- df_plot$name_partido[2][[1]]
-partido_c <- df_plot$name_partido[3][[1]]
-partido_d <- df_plot$name_partido[4][[1]]
-partido_e <- df_plot$name_partido[5][[1]]
 ```
 
 ```{r Resultados Canarias}
@@ -364,13 +335,13 @@ df_autonomicas_C <- df_autonomicas %>%
 partido_mas_votado_C <- df_autonomicas_C %>%
   filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
 df_plot_C_ <- df_autonomicas_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
+df_plot_C_ <- df_plot_C_ %>% spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
 df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
 df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
 df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
 df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100)
 
-df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[6:1])
+df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[nrow(df_plot_C_):1])
 
 df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
@@ -380,29 +351,26 @@ df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
 )
 df_plot_C$hovertext[which(is.na(df_plot_C$RATIO_VOTOS_CANDIDATURA))] <- ""
 
+if(nrow(df_plot_C_) == 7){
+  col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "#CED6E7", "white")
+  }else if(nrow(df_plot_C_) == 6){
+      col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white")
+      }else if(nrow(df_plot_C_) == 5){
+        col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "white")
+        }else if(nrow(df_plot_C_) == 4){
+          col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "white")
+          }
+
 g_autonomicas_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                          textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                          marker = list(colors = c("#59656E", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white"), line = list(width = 0)), rotation = 90
-                          )
+                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
+                           rotation = 90, marker = list(colors = col, line = list(width = 0))
+                           )
 
 g_autonomicas_C <- ggplotly(g_autonomicas_C, tooltip = c("text")) %>%
   layout(showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-
-partido_a_C <- df_plot_C$name_partido[1][[1]]
-partido_b_C <- df_plot_C$name_partido[2][[1]]
-partido_c_C <- df_plot_C$name_partido[3][[1]]
-partido_d_C <- df_plot_C$name_partido[4][[1]]
-partido_e_C <- df_plot_C$name_partido[5][[1]]
 ```
 
-```{r data, eval=FALSE}
-data_autonomicas_2019r <- fromJSON(params$url.regional_2019)
-data_autonomicas_2019i <- fromJSON(params$url.insular_2019)
-data_autonomicas_2015 <- fromJSON(params$url.autonomicas_2015)
-data_autonomicas_2011 <- fromJSON(params$url.autonomicas_2011)
-data_autonomicas_2007 <- fromJSON(params$url.autonomicas_2007)
-```
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
@@ -437,10 +405,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Elec == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/world.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Residentes</br>en Canarias</p><p class="label" style="color: #999;">', Num_Residentes_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Residentes en</br>el extranjero</p><p class="label" style="color: #999;">', Num_Residentes_Extranjero, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Residentes en</br>Canarias de la UE</p><p class="label" style="color: #999;">', Num_Residentes_Canarias_UE, './img/world.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Residentes</br>en Canarias</p><p class="label" style="color: #999;">', Num_Residentes_Canarias, './img/world.png'), "</div><div class='column-4'>", get_indicator2('Residentes en</br>el extranjero</p><p class="label" style="color: #999;">', Num_Residentes_Extranjero, './img/world.png'), "</div><div class='column-4'>", get_indicator2('Residentes en</br>Canarias de la UE</p><p class="label" style="color: #999;">', Num_Residentes_Canarias_UE, './img/world.png'), "</div>"))
 }
 ```
 </div>
@@ -463,11 +431,12 @@ if(Variacion_Porcentual_Elec == "NA"){
 </div>
 
 <div class="legend-vertical-container" style="margin-top: -80px;">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content-b'>`r paste0(partido_a, ' (',format(round(df_plot[1,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content-b'>`r paste0(partido_b, ' (',format(round(df_plot[2,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content-b'>`r paste0(partido_c, ' (',format(round(df_plot[3,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-6'></div><div class='sp-content-b'>`r paste0(partido_d, ' (',format(round(df_plot[4,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content-b'>`r paste0(partido_e, ' (',format(round(df_plot[5,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+```{r leyenda mun, results='asis'}
+for (i in 1:nrow(df_plot_)) {
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
+}
+```
 </div>
 
 </div>
@@ -479,11 +448,12 @@ if(Variacion_Porcentual_Elec == "NA"){
 </div>
 
 <div class="legend-vertical-container" style="margin-top: -80px;">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content-b'>`r paste0(partido_a_C, ' (',format(round(df_plot_C[1,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-5-C'></div><div class='sp-content-b'>`r paste0(partido_b_C, ' (',format(round(df_plot_C[2,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content-b'>`r paste0(partido_c_C, ' (',format(round(df_plot_C[3,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-6-C'></div><div class='sp-content-b'>`r paste0(partido_d_C, ' (',format(round(df_plot_C[4,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-7-C'></div><div class='sp-content-b'>`r paste0(partido_e_C, ' (',format(round(df_plot_C[5,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+```{r leyenda Canarias, results='asis'}
+for (i in 1:nrow(df_plot_C_)) {
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-grey",i,"'></div><div class='sp-content-b'>", df_plot_C[i,]$name_partido, " (", format(round(df_plot_C[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
+}
+```
 </div>
 
 </div>

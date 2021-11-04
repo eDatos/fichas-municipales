@@ -77,6 +77,9 @@ div.level3 {
 .progress-bar-7 {
   background-color: #2CBCE2;
 }
+.progress-bar-8 {
+  background-color: #D5EDFA;
+}
 
 .progress-bar-container {
   border-radius: 20px;
@@ -554,6 +557,18 @@ h4, h5 {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+.progress-bar-5-C {
+  background-color: #77848D;
+}
+.progress-bar-6-C {
+  background-color: #99A9B1;
+}
+.progress-bar-7-C {
+  background-color: #ABBBC2;
+}
+.progress-bar-8-C {
+  background-color: #CED6E7;
+}
 
 .indicator2b {
   display: inline-flex;
@@ -638,25 +653,49 @@ h4, h5 {
   margin: 2.6px 10px;
   text-align: left;
 }
-.progress-bar-1-C {
+
+
+.progress-bar-blue1 {
+  background-color: #005980;
+}
+.progress-bar-blue2 {
+  background-color: #0072A2;
+}
+.progress-bar-blue3 {
+  background-color: #008BD0;
+}
+.progress-bar-blue4 {
+  background-color: #00A6DC;
+}
+.progress-bar-blue5 {
+  background-color: #2CBCE2;
+}
+.progress-bar-blue6 {
+  background-color: #8CD2EA;
+}
+.progress-bar-blue7 {
+  background-color: #D5EDFA;
+}
+
+.progress-bar-grey1 {
   background-color: #59656E;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
 }
-.progress-bar-2-C {
-  background-color: #8C9BA3;
-}
-.progress-bar-3-C {
-  background-color: #BBC8D0;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-.progress-bar-5-C {
+.progress-bar-grey2 {
   background-color: #77848D;
 }
-.progress-bar-6-C {
+.progress-bar-grey3 {
+  background-color: #8C9BA3;
+}
+.progress-bar-grey4 {
   background-color: #99A9B1;
 }
-.progress-bar-7-C {
+.progress-bar-grey5 {
   background-color: #ABBBC2;
 }
+.progress-bar-grey6 {
+  background-color: #BBC8D0;
+}
+.progress-bar-grey7 {
+  background-color: #CED6E7;
+}
+
