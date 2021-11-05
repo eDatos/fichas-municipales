@@ -1,0 +1,41 @@
+
+## URLS PARA LA FICHA SOBRE VEHÍCULOS
+
+Definiciones:
+
+Vehículos: Se incluyen todos los vehículos de motor que sirven, normalmente, para el transporte de personas o cosas, o de ambas a la vez, o para la tracción de vehículos con aquel fin. También se incluyen los ciclomotores, los vehículos para personas de movilidad reducida, los tranvías, los vehículos especiales y los remolques y semirremolques.
+
+Turismos: Automóviles destinados al transporte de personas que tengan, por lo menos, cuatro ruedas y que tengan, además del asiento del conductor, ocho plazas como máximo.
+
+
+
+Indicators:
+
+MATRICULA_VEHICULOS
+MATRICULA_VEHICULOS_TURISMOS
+PARQUE_VEHICULOS
+PARQUE_VEHICULOS_TURISMOS
+PARQUE_VEHICULOS_HABITANTE
+PARQUE_VEHICULOS_TURISMOS_HABITANTE
+
+
+# Número de vehículos matriculados durante el periodo de referencia.
+  url.matricula: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+# Número de turismos matriculados durante el periodo de referencia.
+  url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+# 
+  url.parque:
+# 
+  url.parque_tur:
+# 
+  url.parque_hab:
+# 
+  url.parque_hab_tur:
+# 
+  
+  
+  url.:
+  url.:
+  url.:
+  url.:
+  url.:
