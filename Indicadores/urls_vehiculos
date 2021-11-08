@@ -7,6 +7,9 @@ Vehículos: Se incluyen todos los vehículos de motor que sirven, normalmente, p
 
 Turismos: Automóviles destinados al transporte de personas que tengan, por lo menos, cuatro ruedas y que tengan, además del asiento del conductor, ocho plazas como máximo.
 
+Parque de vehículos: Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes. Se incluyen todos los vehículos de motor, remolques y semirremolques que han obtenido el permiso de circulación. Los ciclomotores no se incluyen en las cifras del parque nacional de vehículos.
+
+Paque de vehículos por cada 1000 hab: Número de vehículos en circulación por cada 1.000 habitantes según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia del parque de vehículos es el último día de cada año.&nbsp;En el denominador se utilizan las Cifras Oficiales de Población del Padrón a 1 de enero de cada año.
 
 
 Indicators:
@@ -23,12 +26,12 @@ PARQUE_VEHICULOS_TURISMOS_HABITANTE
   url.matricula: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
 # Número de turismos matriculados durante el periodo de referencia.
   url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
-# 
-  url.parque:
-# 
-  url.parque_tur:
-# 
-  url.parque_hab:
+# Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+  url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+# Número de turismos en circulación según datos del parque de vehículos elaborado por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+  url.parque_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+# Parque de vehículos por cada 1.000 habitantes.
+  url.parque_hab: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_HABITANTE/data?granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
 # 
   url.parque_hab_tur:
 # 
@@ -39,3 +42,4 @@ PARQUE_VEHICULOS_TURISMOS_HABITANTE
   url.:
   url.:
   url.:
+
