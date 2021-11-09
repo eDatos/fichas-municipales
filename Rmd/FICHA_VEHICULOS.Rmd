@@ -1,0 +1,501 @@
+---
+title: ''
+params:
+  id_municipio: 38014
+  año: 2020
+  mes: 8
+  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+  url.matricula: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.parque_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.parque_hab: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_HABITANTE/data?granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.parque_hab_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS_HABITANTE/data?representation=representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9019908a-7837-4af4-bef0-b4cfa226cb15
+
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Mes}
+data_mes <- fromJSON(params$url.mes)
+
+mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
+                  Periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]],
+                  granularidad = data_mes[["dimension"]][["TIME"]][["representation"]][["granularityCode"]]) %>% 
+  filter(granularidad == "MONTHLY") %>% select(!granularidad)
+
+mes <- mes %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(Periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(Periodo, " "), '[[', 1)))) %>% 
+  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>% 
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+  
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1:3,]
+}
+```
+
+```{r Gráfico evolución de la población}
+# Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+data_u <- fromJSON(params$url.parque)
+
+df_u <- data.frame(
+  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
+  arrange(mes)
+df_u$valor <- as.numeric(df_u$valor)
+df_u_ <- df_u %>% filter(mun != "ES70") %>% spread(medida, valor) %>% select(mun, mes, valor = ABSOLUTE, Tasa = ANNUAL_PERCENTAGE_RATE)
+
+related_mun <- df_u_ %>% filter(mes == mes_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+min_code <- min(df_u_$mes)
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u_, by = "mun") %>%
+  select(id = mun, mes, nombre, valor, Tasa) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(Municipio = id, code = mes, nombre, valor, Tasa) %>%
+  left_join(mes, by = "code") %>%
+  filter(order <= mes_actual$order)
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Número de vehículos: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Número de vehículos: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+df <- df %>% mutate(
+    tooltip = ifelse(code == mes_actual$code,
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
+                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    )
+)
+
+g_line <- ggplot(data = df, 
+                 aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+  geom_line(size = 0.7) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x) {paste0(substr(min_code, 0, 4):params$año,"-M01")}, labels = function(x){substr(x, 0, 4)}) +
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+
+g_line <- ggplotly(g_line, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(0.8, nrow(df[df$nombre == municipio_actual$municipio, ]) - 5*12),
+                                nrow(df[df$nombre == municipio_actual$municipio, ])
+                                ),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
+  onRender("
+    function(el) {
+      var municipios = document.getElementsByClassName('sp-municipio');
+      var contents = document.getElementsByClassName('sp-content');
+
+      el.on('plotly_hover', function(d) { highlight(d); });
+      el.on('plotly_unhover', function(d) { reset(d); });
+      el.on('plotly_click', function(d) { highlight(d); });
+      
+      function highlight(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x = d.points[point].x;
+              contents[i].innerHTML = d.points[point].text;
+            }
+          }
+        }
+      }
+      
+      function reset(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var fullTexts = d.points[point].fullData.text;
+              contents[i].innerHTML = fullTexts[fullTexts.length - 1];
+            }
+          }
+        }
+      }
+    }
+  ") 
+
+leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         Tasa = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
+```
+
+```{r Indicadores}
+df_lv <- df_u_ %>% filter(mun == params$id_municipio & mes == mes_actual$code)
+
+Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric()
+Num_Veh_Parque <- df_lv %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Variacion_Porcentual_Veh_Parque <- df_lv %>% select(Tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Veh_Parque) == "más", './img/up.png', './img/down.png')
+
+# Número de turismos en circulación según datos del parque de vehículos elaborado por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+data_Tur_Parque <- fromJSON(params$url.parque_tur)
+
+df_Tur_Parque <- data.frame(
+  mun = rep(names(data_Tur_Parque[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_Tur_Parque[["dimension"]][["TIME"]][["representation"]][["size"]] * data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_Tur_Parque[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = as.numeric(data_Tur_Parque[["observation"]]))
+df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
+
+Num_Tur_Parque <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
+  format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+Percent_Tur_Parque <- round(Num_Tur_Parque %>% as.numeric() / Num_Veh_Parque %>% as.numeric() * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+# Parque de vehículos por cada 1.000 habitantes.
+data_Veh_Par_M <- fromJSON(params$url.parque_hab)
+
+df_Veh_Par_M <- data.frame(
+  mun = rep(names(data_Veh_Par_M[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_Veh_Par_M[["dimension"]][["TIME"]][["representation"]][["size"]] * data_Veh_Par_M[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  año = rep(names(data_Veh_Par_M[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_Veh_Par_M[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_Veh_Par_M[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = as.numeric(data_Veh_Par_M[["observation"]]))
+df_Veh_Par_M$valor <- as.numeric(df_Veh_Par_M$valor)
+
+Num_Veh_Par_M <- df_Veh_Par_M %>% filter(mun == params$id_municipio & año == params$año & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
+  format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+
+# Parque de vehículos por cada 1.000 habitantes. Turismos
+data_Tur_Par_M <- fromJSON(params$url.parque_hab_tur)
+
+df_Tur_Par_M <- data.frame(
+  mun = rep(names(data_Tur_Par_M[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_Tur_Par_M[["dimension"]][["TIME"]][["representation"]][["size"]] * data_Tur_Par_M[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  año = rep(names(data_Tur_Par_M[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_Tur_Par_M[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_Tur_Par_M[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = as.numeric(data_Tur_Par_M[["observation"]]))
+df_Tur_Par_M$valor <- as.numeric(df_Tur_Par_M$valor)
+
+Num_Tur_Par_M <- df_Tur_Par_M %>% filter(mun == params$id_municipio & año == params$año & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
+  format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+```
+
+```{r Matriculaciones}
+# Número de vehículos matriculados durante el periodo de referencia.
+data_matr <- fromJSON(params$url.matricula)
+
+df_matr <- data.frame(
+  mun = rep(names(data_matr[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_matr[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_matr[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_matr[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_matr[["observation"]]), 1))
+df_matr$valor <- as.numeric(df_matr$valor)
+
+Num_Matriculaciones <- df_matr %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
+  format(big.mark = ".", decimal.mark = ",")
+
+# Número de turismos matriculados durante el periodo de referencia.
+data_matr_turismos <- fromJSON(params$url.matricula_tur)
+
+df_matr_turismos <- data.frame(
+  mun = rep(names(data_matr_turismos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_matr_turismos[["observation"]]), 1))
+df_matr_turismos$valor <- as.numeric(df_matr_turismos$valor)
+
+Num_Matr_turismos <- df_matr_turismos %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
+  format(big.mark = ".", decimal.mark = ",")
+```
+
+```{r Tipos de vehículo y tipos de combustible}
+data_tipos <- fromJSON(params$url.tipos)
+
+df_tipos <- cbind(data.frame(do.call('rbind', data_tipos[["data"]][["dimCodes"]])), data_tipos[["data"]][["Valor"]])
+colnames(df_tipos) <- c('veh', 'combustible', 'mun', 'periodo', 'valor')
+df_tipos$veh <- factor(df_tipos$veh, levels=data_tipos[["categories"]][["codes"]][[1]], labels=data_tipos[["categories"]][["labels"]][[1]])
+df_tipos$combustible <- factor(df_tipos$combustible, levels=data_tipos[["categories"]][["codes"]][[2]], labels=data_tipos[["categories"]][["labels"]][[2]])
+df_tipos$mun <- factor(df_tipos$mun, levels=data_tipos[["categories"]][["codes"]][[3]], labels=data_tipos[["categories"]][["labels"]][[3]])
+df_tipos$periodo <- factor(df_tipos$periodo, levels=data_tipos[["categories"]][["codes"]][[4]], labels=paste0(substring(data_tipos[["categories"]][["codes"]][[4]], 0,4), "-",
+                                                                                                              substring(data_tipos[["categories"]][["codes"]][[4]], 5,7)))
+df_tipos$valor <- as.numeric(df_tipos$valor)
+df_tipos$mun <- recode_mun(df_tipos, 'mun')
+df_tipos <- df_tipos %>% mutate(veh = recode(veh, "Camiones y furgonetas" = "Camiones y</br>furgonetas"),
+                                veh = recode(veh, "Tractores industriales" = "Tractores</br>industriales"),
+                                veh = recode(veh, "Remolques y semirremolques" = "Remolques y</br>semirremolques"),
+                                veh = recode(veh, "Otros tipos de vehículo" = "Otros tipos</br>de vehículo"))
+
+Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
+```
+
+```{r Barras Tipos de vehículo}
+rk_vehiculos_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>%
+  arrange(valor) %>%
+  select(c(veh, valor))
+rk_vehiculos_mun <- rk_vehiculos_mun %>% mutate(porcentaje = rk_vehiculos_mun$valor/ Num_Vehiculos * 100)
+rk_vehiculos_mun$veh <- ordered(rk_vehiculos_mun$veh, levels = rk_vehiculos_mun$veh)
+
+df_vehiculos_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
+df_vehiculos_Canarias <- df_tipos %>%
+  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(!mun)
+df_vehiculos_mun <- df_vehiculos_mun %>%
+  mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos * 100,
+         valor_Canarias = df_vehiculos_Canarias$valor,
+         porcentaje_Canarias = df_vehiculos_Canarias$valor / Num_vehiculos_Canarias * 100)
+
+df_vehiculos_plot <- df_vehiculos_mun %>%
+  mutate(label = "|")
+df_vehiculos_plot$veh <- ordered(df_vehiculos_plot$veh, levels = rk_vehiculos_mun$veh)
+
+df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(veh), "</b><br>",
+  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
+  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
+  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  )
+)
+
+df_vehiculos_0 <- df_vehiculos_plot %>% 
+  transform(porcentaje = 0,
+            porcentaje_Canarias = 0,
+            label = "")
+
+df_vehiculos_plot <- rbind(df_vehiculos_plot, df_vehiculos_0)
+
+g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  theme_minimal() +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")) +
+  theme(axis.text.x = element_text(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+
+g_vehiculos <- ggplotly(g_vehiculos, tooltip = c("text")) %>%
+  layout(hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(8:14))
+```
+
+```{r Progress-bar Tipos de combustible}
+rk_combustibles_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
+  arrange(valor) %>%
+  select(c(combustible, valor))
+rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos * 100)
+rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
+
+df_combustibles_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
+df_combustibles_Canarias <- df_tipos %>%
+  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(!mun)
+df_combustibles_mun <- df_combustibles_mun %>%
+  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100,
+         valor_Canarias = df_combustibles_Canarias$valor,
+         porcentaje_Canarias = df_combustibles_Canarias$valor / Num_vehiculos_Canarias * 100)
+
+```
+
+
+
+
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator3 = function(label, value, image) {
+  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator4 = function(title, label, value) {
+  return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
+}
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r mes_actual$periodo_formatted`</h3>
+<h2 style="color: #666; margin: 0;">Parque de vehículos</h2>
+<hr>
+
+<div class="linechart-placeholder">
+<h2 style="color: #005980; margin-bottom: 0;">`r Num_Veh_Parque` vehículos</h2>
+<div class="linechart">
+  `r g_line`
+</div>
+<div id="hover-event-placeholder" class="column-4">
+```{r leyendas, results = "asis"}
+for (i in 1:nrow(leyenda_poblacion)) {
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$Tasa[i]))
+}
+```
+</div>
+</div>
+
+<div class="row">
+```{r indicadores principales, results='asis'}
+if(Variacion_Porcentual_Veh_Parque == "NA"){
+  cat(paste0(
+    "<div class='column-3'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3'>", get_indicator2('Vehículos por</br>mil habitantes', Num_Veh_Par_M, './img/family.png'), "</div><div class='column-3'>", get_indicator2('Turismos por</br>mil habitantes', Num_Tur_Par_M, './img/family.png'), "</div>"))
+}else{
+  cat(paste0(
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2('Vehículos por</br>mil habitantes', Num_Veh_Par_M, './img/family.png'), "</div><div class='column-4'>", get_indicator2('Turismos por</br>mil habitantes', Num_Tur_Par_M, './img/family.png'), "</div>"))
+}
+```
+</div>
+
+<div class="row">
+<div class="column indicator-title" style="margin-top: 10px;">
+  <h3>Tipos de vehículos</h3>
+</div>
+<div class="column indicator-title" style="margin-top: 10px;">
+  <h3>Tipos de combustible</h3>
+</div>
+</div>
+
+
+<div class="row">
+<div class="column highlight">
+  `r g_vehiculos`
+</div>
+<div class="column highlight">
+</div>
+</div>
+
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
+

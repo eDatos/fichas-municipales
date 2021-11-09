@@ -58,10 +58,10 @@ convocatoria_congreso <- convocatoria %>%
 convocatoria_congreso <- convocatoria_congreso %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_congreso), decreasing = TRUE)),
          convocatoria_formatted = ifelse(substring(code, 10,13) == "2019",
-                                         paste0(substring(code, 10,13), " ", tolower(substring(code, 15,23))),
+                                         paste0(substring(code, 15,15), tolower(substring(code, 16,23)), " ", substring(code, 10,13)),
                                          paste0(substring(code, 10,13))),
          convocatoria_axis = ifelse(substring(code, 10,13) == "2019",
-                                    paste0(substring(code, 10,13), " ", tolower(substring(code, 15,17))),
+                                    paste0(tolower(substring(code, 15,17)), " ", substring(code, 10,13)),
                                     paste0(substring(code, 10,13))))
 
 convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$convocatoria)
@@ -541,20 +541,20 @@ if(Variacion_Porcentual_Elec == "NA"){
   <h3>Resultados por grupos de partidos</h3>
 </div>
 <div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="row">
-<div class="column">
-</div>
-<div class="column">
-<p style="margin: 13px 16px -10px;">Canarias</p>
-</div>
-</div>
-<div class="column">
+<!-- <div class="row"> -->
+<!-- <div class="column"> -->
+<!-- </div> -->
+<!-- <div class="column"> -->
+<!-- <p style="margin: 10px 45px -10px; text-align: right;">Canarias</p> -->
+<!-- </div> -->
+<!-- </div> -->
+<div class="column" style="margin-bottom: 20px;">
 
 <div class="piramide" style="height: 280px;">
   `r g_congreso_mun`
 </div>
 
-<div class="legend-vertical-container" style="margin-top: -80px;">
+<div class="legend-vertical-container" style="margin-top: -100px;">
 ```{r leyenda mun, results='asis'}
 for (i in 1:nrow(df_plot_)) {
   cat(paste0(
@@ -565,13 +565,14 @@ for (i in 1:nrow(df_plot_)) {
 
 </div>
 
-<div class="column">
+<div class="column" style="margin-bottom: 20px;">
 
 <div class="piramide" style="height: 280px;">
   `r g_congreso_C`
 </div>
 
-<div class="legend-vertical-container" style="margin-top: -80px;">
+<p style="margin: 10px 45px -10px; text-align: right;">Canarias</p>
+<div class="legend-vertical-container" style="margin-top: -100px;">
 ```{r leyenda Canarias, results='asis'}
 for (i in 1:nrow(df_plot_C_)) {
   cat(paste0(
@@ -583,7 +584,7 @@ for (i in 1:nrow(df_plot_C_)) {
 </div>
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title" style="width: 100% !important; margin-top: 20px; margin-left: 0">
   <h3>Tipos de votos</h3>
 </div>
 <div class="row">
