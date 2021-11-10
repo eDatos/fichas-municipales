@@ -7,8 +7,8 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.senado_2019_noviembre: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000036/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.senado_2019_abril: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000027/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.senado_2019_n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000036/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.senado_2019_a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000027/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
   url.senado_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000011/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.senado_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000010/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
   url.senado_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000006/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
@@ -53,7 +53,7 @@ for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dim
 
 convocatoria_senado <- convocatoria %>% 
   filter(substring(code, 0,7) == "SENADO_") %>% 
-  transform(url = paste0("url.", tolower(code)))
+  transform(url = paste0("url.", tolower(substring(code, 0,13))))
 convocatoria_senado <- convocatoria_senado %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_senado), decreasing = TRUE)),
          convocatoria_formatted = ifelse(substring(code, 8,11) == "2019",
@@ -265,10 +265,10 @@ Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% sel
 Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Data Resultados}
@@ -358,7 +358,7 @@ df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot_$name_par
 df_plot <- df_plot %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
     "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
+    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 df_plot$hovertext[which(is.na(df_plot$RATIO_VOTOS_CANDIDATURA))] <- ""
@@ -404,7 +404,7 @@ df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$nam
 df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
     "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
+    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 df_plot_C$hovertext[which(is.na(df_plot_C$RATIO_VOTOS_CANDIDATURA))] <- ""
@@ -444,9 +444,9 @@ df_bars <- df_bars %>% mutate(label = "|")
 df_bars <- df_bars %>% transform(hovertext = paste0(
   "<b>", trimws(ind), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
   )
 )
 
@@ -487,9 +487,6 @@ g_participacion <- ggplotly(g_participacion, tooltip = c("text")) %>%
 get_indicator2 = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
-get_indicator3 = function(label, value, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
-}
 get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
@@ -497,7 +494,7 @@ get_indicator4 = function(title, label, value) {
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r convocatoria_actual$convocatoria`</h3>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r convocatoria_actual$convocatoria_formatted`</h3>
 <h2 style="color: #666; margin: 0;">Resultados de las Elecciones al Senado</h2>
 <hr>
 
@@ -554,8 +551,8 @@ for (i in 1:nrow(df_plot_)) {
   `r g_senado_C`
 </div>
 
-<p style="margin: -120px 50px 0; text-align: right; position: relative;">Canarias</p>
-<div class="legend-vertical-container" style="margin-top: 5px;">
+<p style="margin: -120px 20px 0; position: relative;">Canarias</p>
+<div class="legend-vertical-container" style="margin-top: 6px;">
 ```{r leyenda Canarias, results='asis'}
 for (i in 1:nrow(df_plot_C_)) {
   cat(paste0(
@@ -578,7 +575,6 @@ for (i in 1:nrow(df_plot_C_)) {
   <h3>Votos válidos</h3>
 </div>
 </div>
-
 
 <div class="row">
 <div class="column highlight">
