@@ -7,10 +7,10 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.municipales_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000032/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.municipales_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000015/~latest.json?dim=TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20150524_35028_D01_S001|20150524_35028_D01_S002|20150524_35028_D01_S003|20150524_35028_D01_S004|20150524_35028_D01_S005|20150524_35028_D01_S006|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.municipales_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000005/~latest.json?dim=TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20110522_35028_D01_S001|20110522_35028_D01_S002|20110522_35028_D01_S003|20110522_35028_D01_S004|20110522_35028_D01_S005|20110522_35028_D01_S006|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.municipales_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000025/~latest.json?dim=TERRITORIO:35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20070527_35028_D01_S001|20070527_35028_D01_S002|20070527_35028_D01_S003|20070527_35028_D01_S004|20070527_35028_D01_S005|20070527_35028_D01_S006|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.municipales_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000032/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.municipales_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000015/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20150524_35028_D01_S001|20150524_35028_D01_S002|20150524_35028_D01_S003|20150524_35028_D01_S004|20150524_35028_D01_S005|20150524_35028_D01_S006|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.municipales_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000005/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20110522_35028_D01_S001|20110522_35028_D01_S002|20110522_35028_D01_S003|20110522_35028_D01_S004|20110522_35028_D01_S005|20110522_35028_D01_S006|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.municipales_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000025/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|20070527_35028_D01_S001|20070527_35028_D01_S002|20070527_35028_D01_S003|20070527_35028_D01_S004|20070527_35028_D01_S005|20070527_35028_D01_S006|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
   url.municipales_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:MUNICIPALES_2019|MUNICIPALES_2015|MUNICIPALES_2011|MUNICIPALES_2007&lang=es
 output:
   html_document:
@@ -38,7 +38,7 @@ signo <- function(value) {
 ```
 
 ```{r Convocatoria}
-data_participacion <- fromJSON(params$url.congreso_participacion)
+data_participacion <- fromJSON(params$url.municipales_participacion)
 
 convocatoria <- data.frame(
     code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -47,22 +47,17 @@ for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dim
   convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
 }
 
-convocatoria_congreso <- convocatoria %>% 
-  filter(substring(code, 0,9) == "CONGRESO_") %>% 
+convocatoria_municipales <- convocatoria %>% 
+  filter(substring(code, 0,12) == "MUNICIPALES_") %>% 
   transform(url = paste0("url.", tolower(code)))
-convocatoria_congreso <- convocatoria_congreso %>% 
-  mutate(order = as.integer(order(1:nrow(convocatoria_congreso), decreasing = TRUE)),
-         convocatoria_formatted = ifelse(substring(code, 10,13) == "2019",
-                                         paste0(substring(code, 15,15), tolower(substring(code, 16,23)), " ", substring(code, 10,13)),
-                                         paste0(substring(code, 10,13))),
-         convocatoria_axis = ifelse(substring(code, 10,13) == "2019",
-                                    paste0(tolower(substring(code, 15,17)), " ", substring(code, 10,13)),
-                                    paste0(substring(code, 10,13))))
+convocatoria_municipales <- convocatoria_municipales %>% 
+  mutate(order = as.integer(order(1:nrow(convocatoria_municipales), decreasing = TRUE)),
+         convocatoria_formatted = paste0(substring(code, 13,16)))
 
-convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$convocatoria)
-convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convocatoria_congreso[convocatoria_actual$code == convocatoria_congreso$code, ]$order - 1, ]
-min_code <- min(convocatoria_congreso$code)
-convocatoria_congreso$code <- factor(convocatoria_congreso$code, levels = convocatoria_congreso$code)
+convocatoria_actual <- convocatoria_municipales %>% filter(substring(code, 13,16) == params$convocatoria)
+convocatoria_tva <- convocatoria_municipales[convocatoria_municipales$order == convocatoria_municipales[convocatoria_actual$code == convocatoria_municipales$code, ]$order - 1, ]
+min_code <- min(convocatoria_municipales$code)
+convocatoria_municipales$code <- factor(convocatoria_municipales$code, levels = convocatoria_municipales$code)
 ```
 
 ```{r Municipio actual}
@@ -140,6 +135,13 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población}
+dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_participacion <- data.frame(
     ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -161,7 +163,7 @@ df <- related_mun %>%
   select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = proceso, valor, Municipio = id, nombre) %>%
-  left_join(convocatoria_congreso, by = "code") %>%
+  left_join(convocatoria_municipales, by = "code") %>%
   transform(Tasa = ifelse(code == min_code, NA, round(100*((valor / lag(valor)) - 1), 1))) %>% 
   filter(order <= convocatoria_actual$order)
 
@@ -191,7 +193,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = c(convocatoria_congreso$order[convocatoria_actual$order:1]), labels = c(convocatoria_congreso$convocatoria_axis[convocatoria_actual$order:1])) +
+  scale_x_continuous(breaks = c(convocatoria_municipales$order[convocatoria_actual$order:1]), labels = c(convocatoria_municipales$convocatoria_formatted[convocatoria_actual$order:1])) +
   scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -244,8 +246,8 @@ Variacion_Porcentual_Elec <- df %>% filter(nombre == municipio_actual$municipio 
   as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Elec) == "más", './img/up.png', './img/down.png')
 
-Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
@@ -286,7 +288,7 @@ if(params$convocatoria == 2015){
   for(i in 1:data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
     df_partido$name_partido[i] <- data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$convocatoria %in% c(2019, 2007)){
+    if(params$convocatoria == 2011){
       df_municipales <- data.frame(
         mun = rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                      each = length(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -302,7 +304,7 @@ if(params$convocatoria == 2015){
       for(i in 1:data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
         }}else{
-          if(params$convocatoria == 2011){
+          if(params$convocatoria %in% c(2019, 2007)){
             df_municipales <- data.frame(
               mun = rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                                 each = length(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *

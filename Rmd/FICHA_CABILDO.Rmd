@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 2019
+  convocatoria: 2007
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -38,7 +38,7 @@ signo <- function(value) {
 ```
 
 ```{r Convocatoria}
-data_participacion <- fromJSON(params$url.congreso_participacion)
+data_participacion <- fromJSON(params$url.cabildo_participacion)
 
 convocatoria <- data.frame(
     code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -47,22 +47,17 @@ for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dim
   convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
 }
 
-convocatoria_congreso <- convocatoria %>% 
-  filter(substring(code, 0,9) == "CONGRESO_") %>% 
+convocatoria_cabildo <- convocatoria %>% 
+  filter(substring(code, 0,8) == "CABILDO_") %>% 
   transform(url = paste0("url.", tolower(code)))
-convocatoria_congreso <- convocatoria_congreso %>% 
-  mutate(order = as.integer(order(1:nrow(convocatoria_congreso), decreasing = TRUE)),
-         convocatoria_formatted = ifelse(substring(code, 10,13) == "2019",
-                                         paste0(substring(code, 15,15), tolower(substring(code, 16,23)), " ", substring(code, 10,13)),
-                                         paste0(substring(code, 10,13))),
-         convocatoria_axis = ifelse(substring(code, 10,13) == "2019",
-                                    paste0(tolower(substring(code, 15,17)), " ", substring(code, 10,13)),
-                                    paste0(substring(code, 10,13))))
+convocatoria_cabildo <- convocatoria_cabildo %>% 
+  mutate(order = as.integer(order(1:nrow(convocatoria_cabildo), decreasing = TRUE)),
+         convocatoria_formatted = paste0(substring(code, 9,12)))
 
-convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$convocatoria)
-convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convocatoria_congreso[convocatoria_actual$code == convocatoria_congreso$code, ]$order - 1, ]
-min_code <- min(convocatoria_congreso$code)
-convocatoria_congreso$code <- factor(convocatoria_congreso$code, levels = convocatoria_congreso$code)
+convocatoria_actual <- convocatoria_cabildo %>% filter(substring(code, 9,12) == params$convocatoria)
+convocatoria_tva <- convocatoria_cabildo[convocatoria_cabildo$order == convocatoria_cabildo[convocatoria_actual$code == convocatoria_cabildo$code, ]$order - 1, ]
+min_code <- min(convocatoria_cabildo$code)
+convocatoria_cabildo$code <- factor(convocatoria_cabildo$code, levels = convocatoria_cabildo$code)
 ```
 
 ```{r Municipio actual}
@@ -140,6 +135,13 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población}
+dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 df_participacion <- data.frame(
     ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -161,7 +163,7 @@ df <- related_mun %>%
   select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = proceso, valor, Municipio = id, nombre) %>%
-  left_join(convocatoria_congreso, by = "code") %>%
+  left_join(convocatoria_cabildo, by = "code") %>%
   transform(Tasa = ifelse(code == min_code, NA, round(100*((valor / lag(valor)) - 1), 1))) %>% 
   filter(order <= convocatoria_actual$order)
 
@@ -191,7 +193,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = c(convocatoria_congreso$order[convocatoria_actual$order:1]), labels = c(convocatoria_congreso$convocatoria_axis[convocatoria_actual$order:1])) +
+  scale_x_continuous(breaks = c(convocatoria_cabildo$order[convocatoria_actual$order:1]), labels = c(convocatoria_cabildo$convocatoria_formatted[convocatoria_actual$order:1])) +
   scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -244,8 +246,8 @@ Variacion_Porcentual_Elec <- df %>% filter(nombre == municipio_actual$municipio 
   as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Elec) == "más", './img/up.png', './img/down.png')
 
-Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")

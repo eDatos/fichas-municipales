@@ -258,6 +258,7 @@ df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
 Num_Tur_Parque <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
   format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 Percent_Tur_Parque <- round(Num_Tur_Parque %>% as.numeric() / Num_Veh_Parque %>% as.numeric() * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
 # Parque de vehículos por cada 1.000 habitantes.
 data_Veh_Par_M <- fromJSON(params$url.parque_hab)
 
@@ -351,13 +352,13 @@ rk_vehiculos_mun$veh <- ordered(rk_vehiculos_mun$veh, levels = rk_vehiculos_mun$
 
 df_vehiculos_mun <- df_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
-df_vehiculos_Canarias <- df_tipos %>%
+df_vehiculos_C <- df_tipos %>%
   filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
   select(!mun)
 df_vehiculos_mun <- df_vehiculos_mun %>%
   mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos * 100,
-         valor_Canarias = df_vehiculos_Canarias$valor,
-         porcentaje_Canarias = df_vehiculos_Canarias$valor / Num_vehiculos_Canarias * 100)
+         valor_Canarias = df_vehiculos_C$valor,
+         porcentaje_Canarias = df_vehiculos_C$valor / Num_vehiculos_Canarias * 100)
 
 df_vehiculos_plot <- df_vehiculos_mun %>%
   mutate(label = "|")
@@ -411,20 +412,31 @@ rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibl
 rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
 
 df_combustibles_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
-df_combustibles_Canarias <- df_tipos %>%
-  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>% 
-  select(!mun)
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
+  select(c(combustible, valor))
 df_combustibles_mun <- df_combustibles_mun %>%
-  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100,
-         valor_Canarias = df_combustibles_Canarias$valor,
-         porcentaje_Canarias = df_combustibles_Canarias$valor / Num_vehiculos_Canarias * 100)
+  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
 
+df_combustibles_C <- df_tipos %>%
+  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(c(combustible, valor))
+df_combustibles_C <- df_combustibles_C %>%
+  mutate(porcentaje = df_combustibles_C$valor / Num_vehiculos_Canarias * 100)
+
+porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
+porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
+porc_otros <- 100 - df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")] - df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
+porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric
+porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric
+porc_otros_l <- round(porc_otros, 1) %>% as.numeric
+
+porc_gasolina_C <- df_combustibles_C$porcentaje[which(df_combustibles_C$combustible == "Gasolina")]
+porc_diesel_C <- df_combustibles_C$porcentaje[which(df_combustibles_C$combustible == "Diésel")]
+porc_otros_C <- 100 - df_combustibles_C$porcentaje[which(df_combustibles_C$combustible == "Gasolina")] - df_combustibles_C$porcentaje[which(df_combustibles_C$combustible == "Diésel")]
+porc_gasolina_C_l <- round(porc_gasolina_C, 1) %>% as.numeric
+porc_diesel_C_l <- round(porc_diesel_C, 1) %>% as.numeric
+porc_otros_C_l <- round(porc_otros_C, 1) %>% as.numeric
 ```
-
-
-
-
 
 
 ```{r Generación HTML, results="asis"}
@@ -485,10 +497,38 @@ if(Variacion_Porcentual_Veh_Parque == "NA"){
 <div class="column highlight">
   `r g_vehiculos`
 </div>
+
 <div class="column highlight">
+<div class="progress-bar-container">
+  <div class="progress-bar-1" style="width:`r porc_gasolina`%"></div>
+  <div class="progress-bar-2" style="width:`r porc_diesel`%"></div>
+  <div class="progress-bar-3" style="width:`r porc_otros`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Gasolina<br>`r format(porc_gasolina_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Diesel<br>`r format(porc_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+
+
+<div class="row">
+<p style="margin: 13px 16px -10px;">Canarias</p>
+
+<div class="progress-bar-container" style="height: 20px;">
+  <div class="progress-bar-1-C" style="width:`r porc_gasolina_C`%"></div>
+  <div class="progress-bar-2-C" style="width:`r porc_diesel_C`%"></div>
+  <div class="progress-bar-3-C" style="width:`r porc_otros_C`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Gasolina<br>`r format(porc_gasolina_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Diesel<br>`r format(porc_diesel_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 
+</div>
 
 <div class="row" style="margin-top: 10px;">
 </div>
