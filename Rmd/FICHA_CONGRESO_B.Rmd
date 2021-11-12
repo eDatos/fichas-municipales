@@ -160,7 +160,7 @@ df_participacion <- data.frame(
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- as.numeric(df_participacion$valor)
-df_u_ <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "ELECTORES") %>% arrange(proceso) %>% select(!ind)
+df_u_ <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
 related_mun <- df_u_ %>% filter(proceso == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
@@ -250,12 +250,12 @@ leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
 ```{r Indicadores}
 df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(c(ind, valor))
 
-Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual_Elec <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(Tasa) %>%
+Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>%  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(Tasa) %>%
   as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Elec) == "más", './img/up.png', './img/down.png')
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 
-Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric() %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
@@ -505,7 +505,7 @@ get_indicator4 = function(title, label, value) {
 <hr>
 
 <div class="linechart-placeholder">
-<h2 style="color: #005980; margin-bottom: 0;">`r Num_Electores` electores</h2>
+<h2 style="color: #005980; margin-bottom: 0;">Tasa de participación: `r Tasa_participacion` %</h2>
 <div class="linechart">
   `r g_line`
 </div>
@@ -520,12 +520,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_Elec == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2'>", get_indicator2('Tasa de</br>participación', Tasa_participacion, './img/percent-blue.png'), "</div>"))
+    "<div class='column-2'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Tasa de</br>participación', Tasa_participacion, './img/percent-blue.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }
 ```
 </div>
@@ -584,12 +584,12 @@ for (i in 1:nrow(df_plot_C_)) {
 
 <div class="row">
 <div class="column highlight">
-  <div class="column-2">`r get_indicator4("Válidos", paste0(Tasa_Votos_validos, "%"), Votos_validos)`</div>
-  <div class="column-2">`r get_indicator4("Nulos", paste0(Tasa_Votos_nulos, "%"), Votos_nulos)`</div>
+  <div class="column-2">`r get_indicator4("Válidos", Votos_validos, paste0(Tasa_Votos_validos, "%"))`</div>
+  <div class="column-2">`r get_indicator4("Nulos", Votos_nulos, paste0(Tasa_Votos_nulos, "%"))`</div>
 </div>
 <div class="column highlight">
-  <div class="column-2">`r get_indicator4("A candidatura", paste0(Tasa_Votos_candidatura, "%"), Votos_candidatura)`</div>
-  <div class="column-2">`r get_indicator4("En blanco", paste0(Tasa_Votos_blanco, "%"), Votos_blanco)`</div>
+  <div class="column-2">`r get_indicator4("A candidatura", Votos_candidatura, paste0(Tasa_Votos_candidatura, "%"))`</div>
+  <div class="column-2">`r get_indicator4("En blanco", Votos_blanco, paste0(Tasa_Votos_blanco, "%"))`</div>
 </div>
 </div>
 
