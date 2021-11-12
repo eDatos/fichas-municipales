@@ -445,13 +445,6 @@ df_GMd_ne_Canarias <- df_GM_ne %>%
   select(c(estudios, valor))
 df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
 
-df_GMd_ne_mun <- df_GMd_ne_mun %>% transform(hovertext = paste0(
-    "<b>", estudios, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
-
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
   mutate(label = "|")
 
@@ -533,13 +526,6 @@ df_GMd_np_Canarias <- df_GM_np %>%
   select(c(noches, valor))
 df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
 
-df_GMd_np_mun <- df_GMd_np_mun %>% transform(hovertext = paste0(
-    "<b>", noches, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
-
 df_GMd_np_plot <- df_GMd_np_mun %>%
   mutate(label = "|")
 
@@ -606,13 +592,6 @@ df_GMd_pais_Canarias <- df_GM_pais %>%
   select(c(pais, valor))
 df_GMd_pais_mun <- df_GMd_pais_mun %>% mutate(valor_Canarias = df_GMd_pais_Canarias$valor)
 df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
-
-df_GMd_pais_mun <- df_GMd_pais_mun %>% transform(hovertext = paste0(
-    "<b>", pais, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
 
 df_GMd_pais_plot <- df_GMd_pais_mun %>%
   mutate(valor_Canarias = df_GMd_pais_Canarias$valor,

@@ -451,13 +451,6 @@ df_GM_ne_Canarias <- df_GM_ne %>%
   select(c(estudios, valor))
 df_GM_ne_mun <- df_GM_ne_mun %>% mutate(valor_Canarias = df_GM_ne_Canarias$valor)
 
-df_GM_ne_mun <- df_GM_ne_mun %>% transform(hovertext = paste0(
-    "<b>", estudios, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
-
 df_GM_ne_plot <- df_GM_ne_mun %>%
   mutate(label = "|")
 
@@ -539,13 +532,6 @@ df_GM_np_Canarias <- df_GM_np %>%
   select(c(noches, valor))
 df_GM_np_mun <- df_GM_np_mun %>% mutate(valor_Canarias = df_GM_np_Canarias$valor)
 
-df_GM_np_mun <- df_GM_np_mun %>% transform(hovertext = paste0(
-    "<b>", noches, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
-
 df_GM_np_plot <- df_GM_np_mun %>%
   mutate(label = "|")
 
@@ -609,13 +595,6 @@ df_GM_pt_Canarias <- df_GM_pt %>%
   select(c(paquete, valor))
 df_GM_pt_mun <- df_GM_pt_mun %>% mutate(valor_Canarias = df_GM_pt_Canarias$valor)
 df_GM_pt_mun$paquete <- ordered(df_GM_pt_mun$paquete, levels = df_GM_pt_mun$paquete[3:1])
-
-df_GM_pt_mun <- df_GM_pt_mun %>% transform(hovertext = paste0(
-    "<b>", paquete, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
 
 df_GM_pt_plot <- df_GM_pt_mun %>%
   mutate(label = "|")
@@ -685,13 +664,6 @@ df_GM_pais_Canarias <- df_GM_pais %>%
   select(c(pais, valor))
 df_GM_pais_mun <- df_GM_pais_mun %>% mutate(valor_Canarias = df_GM_pais_Canarias$valor)
 df_GM_pais_mun$pais <- ordered(df_GM_pais_mun$pais, levels = rk_GM_pais_mun$pais)
-
-df_GM_pais_mun <- df_GM_pais_mun %>% transform(hovertext = paste0(
-    "<b>", pais, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
-    )
-  )
 
 df_GM_pais_plot <- df_GM_pais_mun %>%
   mutate(label = "|")
