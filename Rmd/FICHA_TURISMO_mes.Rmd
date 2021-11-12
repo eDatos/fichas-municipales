@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38014
+  id_municipio: 35024
   año: 2021
   mes: 8
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
@@ -635,27 +635,26 @@ if(Variacion_Porcentual_Viajeros == "NA"){
 </div>
 
 ```{r funciones mapa}
-get_map_box_before = function(column_number) {
-  return(sprintf('<div class="column-%s"><div class="indicator-map map-canarias"><div class="image">', column_number))
+get_map_box_before = function(column_number, aditional_classes = '') {
+  return(sprintf('<div class="column-%s"><div class="indicator-map %s"><div class="image">', column_number, aditional_classes))
 }
-
 get_map_box_after = function(rank, territorio, n_municipios, percent) {
   return(sprintf('</div><div class="indicator-content"><p class="label"><span class="value">%s </span>en %s</p><p class="label2">de %s municipios (%s)</p></div></div></div>', rank, territorio, n_municipios, percent))
 }
 ```
 
 <div class="row" style="margin-top:10px;">
-`r if_else(Plazas_Hoteles == "NA" & Plazas_extrahoteleros == "NA", get_map_box_before(2), get_map_box_before(3))`
+`r if_else(Plazas_Hoteles == "NA" & Plazas_extrahoteleros == "NA", get_map_box_before(2, 'map-canarias'), get_map_box_before(3, 'map-canarias'))`
 ```{r}
 mapa_Canarias_plot
 ```
-`r get_map_box_after(paste0(rk_isla, 'º'), 'Canarias', num_mun_canarias, paste0(percent_canarias, '%'))`
+`r get_map_box_after(paste0(rk_canarias, 'º'), 'Canarias', num_mun_canarias, paste0(percent_canarias, '%'))`
 
 `r if_else(Plazas_Hoteles == "NA" & Plazas_extrahoteleros == "NA", get_map_box_before(2), get_map_box_before(3))`
 ```{r}
 mapa_isla_plot
 ```
-`r get_map_box_after(paste0(rk_canarias, 'º'),  municipio_actual$isla, num_mun_isla, paste0(percent_isla, '%'))`
+`r get_map_box_after(paste0(rk_isla, 'º'),  municipio_actual$isla, num_mun_isla, paste0(percent_isla, '%'))`
 
 ```{r, results='asis'}
 if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){

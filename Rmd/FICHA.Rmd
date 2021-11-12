@@ -399,17 +399,7 @@ df_defunciones$ind <- factor(df_defunciones$ind, levels=data_defunciones[["categ
                              labels=data_defunciones[["categories"]][["labels"]][[4]])
 df_defunciones$valor <- as.numeric(df_defunciones$valor)
 df_defunciones$mun <- recode_mun(df_defunciones, 'mun')
-
-tasa_año <- function(df){
-  df <- df %>% filter(año <= params$año)
-  if(max(df$año) == params$año){
-    df_mun <- df %>% filter(año == params$año & mun == municipio_actual$municipio)
-    }else{
-      df_mun <- df %>% filter(año == params$año-1 & mun == municipio_actual$municipio)
-    }
-}
-
-df_defunciones_mun <- tasa_año(df_defunciones)
+df_defunciones_mun <- df_defunciones %>% filter(año == params$año & mun == municipio_actual$municipio)
 
 # Tasas por mil habitantes con un decimal:
 TBM <- df_defunciones_mun %>% filter(sexo =="AMBOS SEXOS" & ind == "Tasas brutas de mortalidad") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -426,7 +416,7 @@ df_nacimientos <- data.frame(
   año = names(data_nacimientos[["dimension"]][["TIME"]][["representation"]][["index"]]),
   valor = as.numeric(data_nacimientos[["observation"]]))
 df_nacimientos <- df_nacimientos %>% left_join(df_CL_AREA_mun, by = "id") %>% select(mun = municipio, año, valor)
-df_nacimientos_mun <- tasa_año(df_nacimientos)
+df_nacimientos_mun <- df_nacimientos %>% filter(año == params$año & mun == municipio_actual$municipio)
 
 # Tasa por mil habitantes con dos decimales:
 TBN <- format(round(df_nacimientos_mun$valor / Num_Pobl_num * 1000, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -442,7 +432,7 @@ df_crec_veg$mun <- factor(df_crec_veg$mun, levels=data_crec_veg[["categories"]][
 df_crec_veg$año <- as.numeric(df_crec_veg$año)
 df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
 df_crec_veg$mun <- recode_mun(df_crec_veg, 'mun')
-df_crec_veg_mun <- tasa_año(df_crec_veg)
+df_crec_veg_mun <- df_crec_veg %>% filter(año == params$año & mun == municipio_actual$municipio)
 
 Crec_veg <- df_crec_veg_mun$valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 ```
@@ -651,18 +641,18 @@ mapa_comarca_plot
 </div>
 
 ```{r, results='asis'}
-if(max(df_nacimientos_mun$año) == params$año-1){
-  cat(paste0("<div class='column-3'>", get_indicator3('Tasa de</br>natalidad *</br>', paste0(TBN, '‰'),'./img/natalidad.png'), "</div>"))
+if(max(df_nacimientos$año) == params$año-1){
+  cat(paste0(" "))
 }else{
   cat(paste0("<div class='column-3'>", get_indicator3('Tasa de</br>natalidad</br>', paste0(TBN, '‰'),'./img/natalidad.png'), "</div>"))
 }
-if(max(df_defunciones_mun$año) == params$año-1){
-  cat(paste0("<div class='column-3'>", get_indicator3('Tasa de</br>mortalidad *</br>', paste0(TBM, '‰'),'./img/muerte.png'), "</div>"))
+if(max(df_defunciones$año) == params$año-1){
+  cat(paste0(" "))
 }else{
   cat(paste0("<div class='column-3'>", get_indicator3('Tasa de</br>mortalidad</br>', paste0(TBM, '‰'),'./img/muerte.png'), "</div>"))
 }
-if(max(df_crec_veg_mun$año) == params$año-1){
-  cat(paste0("<div class='column-3'>", get_indicator3('Crecimiento</br>vegetativo *', Crec_veg,'./img/balanza.png'), "</div>"))
+if(max(df_crec_veg$año) == params$año-1){
+  cat(paste0(" "))
 }else{
   cat(paste0("<div class='column-3'>", get_indicator3('Crecimiento</br>vegetativo', Crec_veg,'./img/balanza.png'), "</div>"))
 }
@@ -670,8 +660,8 @@ if(max(df_crec_veg_mun$año) == params$año-1){
 
 <div class="column-3">`r get_indicator3("Índice de</br>dependencia", paste0(id_dep, "%"),"./img/dependencia.png")`</div>
 ```{r, results='asis'}
-if(max(df_defunciones_mun$año) == params$año-1){
-  cat(paste0("<div class='column-3'>", get_indicator3('Edad media</br>defunción *', emd_mujer,'./img/female-black.png'), "</div><div class='column-3'>", get_indicator3('Edad media</br>defunción *', emd_hombre,'./img/male-black.png'), "</div>"))
+if(max(df_defunciones$año) == params$año-1){
+  cat(paste0(" "))
 }else{
   cat(paste0("<div class='column-3'>", get_indicator3('Edad media</br>defunción', emd_mujer,'./img/female-black.png'), "</div><div class='column-3'>", get_indicator3('Edad media</br>defunción', emd_hombre,'./img/male-black.png'), "</div>"))
 }

@@ -96,6 +96,41 @@ recode_mun <- function(df, colname) {
 }
 ```
 
+```{r Mapas}
+palette <- c('#8CD2EA', '#005980')
+
+url_mapa <- ifelse(params$año < 2007, params$url.mapa_2007, params$url.mapa)
+mapa_Canarias <- st_read(url_mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% 
+  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
+  st_sf
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
+```
+
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -255,6 +290,7 @@ df_Tur_Parque <- data.frame(
   valor = as.numeric(data_Tur_Parque[["observation"]]))
 df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
 
+Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
 Num_Tur_Parque <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
   format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 Percent_Tur_Parque <- round(Num_Tur_Parque %>% as.numeric() / Num_Veh_Parque %>% as.numeric() * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -288,6 +324,30 @@ df_Tur_Par_M$valor <- as.numeric(df_Tur_Par_M$valor)
 
 Num_Tur_Par_M <- df_Tur_Par_M %>% filter(mun == params$id_municipio & año == params$año & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
   format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+```
+
+```{r Rankings}
+df_ranking <- df_u %>%
+  select(id = mun, mes, medida, valor) %>%
+  filter(mes == mes_actual$code, id != "ES70", medida == "ABSOLUTE") %>%
+  left_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(valor))
+
+Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
+
+rk_canarias <- grep(params$id_municipio, df_ranking$id)
+num_mun_canarias <- nrow(df_ranking)
+percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / Num_vehiculos_Canarias * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_ranking_isla <- df_ranking %>% filter(isla == municipio_actual$isla)
+rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
+num_mun_isla <- nrow(df_ranking_isla)
+percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / sum(df_ranking_isla$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
+rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
+num_mun_comarca <- nrow(df_ranking_comarca)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Matriculaciones}
@@ -338,8 +398,6 @@ df_tipos <- df_tipos %>% mutate(veh = recode(veh, "Camiones y furgonetas" = "Cam
                                 veh = recode(veh, "Tractores industriales" = "Tractores</br>industriales"),
                                 veh = recode(veh, "Remolques y semirremolques" = "Remolques y</br>semirremolques"),
                                 veh = recode(veh, "Otros tipos de vehículo" = "Otros tipos</br>de vehículo"))
-
-Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
 ```
 
 ```{r Barras Tipos de vehículo}
@@ -481,6 +539,48 @@ if(Variacion_Porcentual_Veh_Parque == "NA"){
     "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2('Vehículos por</br>mil habitantes', Num_Veh_Par_M, './img/family.png'), "</div><div class='column-4'>", get_indicator2('Turismos por</br>mil habitantes', Num_Tur_Par_M, './img/family.png'), "</div>"))
 }
 ```
+</div>
+
+<div class="row" style="margin-top:10px;">
+<div class="column-3">
+  <div class="indicator-map">
+  <div class="image map-canarias">
+```{r}
+mapa_Canarias_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
+  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_isla_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
+  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_comarca_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_comarca`º </span>en la comarca</p>
+  <p class="label2">de `r num_mun_comarca` municipios (`r percent_comarca`%)</p>
+  </div>
+</div>
+</div>
 </div>
 
 <div class="row">
