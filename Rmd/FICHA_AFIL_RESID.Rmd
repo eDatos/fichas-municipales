@@ -191,6 +191,9 @@ df <- related_mun %>%
   transform(Tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((Valor / lag(Valor, n = 4)) - 1), 1), NA)) %>%
   filter(code <= mes_actual$code & order >= mes$order[which(mes$code == min(df_u$Periodo))]+12)
 
+año_min <- min(as.integer(substring(df$code, 0,4)))
+año_max <- max(as.integer(substring(df$code, 0,4)))
+
 df$order <- as.integer(df$order)
 
 leyenda_poblacion <- df %>% filter(Periodo == mes_actual$Periodo) %>%
@@ -220,7 +223,7 @@ g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour =
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(2006:2021,"-M03")}, labels = function(x){substr(x, 0, 4)}) +
+  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-M03")}, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%

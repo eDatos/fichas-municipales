@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38001
-  año: 2020
+  año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -156,7 +156,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 data_u <- fromJSON(params$url.habitantes)
 df_u <- data.frame(Municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                          each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                   Año = as.numeric(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]])), 
+                   Año = as.integer(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]])), 
                    Valor = as.integer(data_u[["observation"]])) %>% 
         arrange(Año)
 
@@ -169,7 +169,7 @@ df_lv <- data.frame(
             each=ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
   medida = names(ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
   valor = round(as.numeric(ind_pobl[["observation"]]), 1))
-df_lv$año <- as.numeric(df_lv$año)
+df_lv$año <- as.integer(df_lv$año)
 
 df_u <- df_u %>% 
   left_join((df_lv %>% filter(medida == "ANNUAL_PERCENTAGE_RATE") %>% select(Municipio = municipio, Año = año, Tasa = valor)), by = c("Municipio", "Año"))
@@ -211,11 +211,15 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+  scale_x_continuous(breaks = function(x){seq(from = min(df$Año), to = max(df$Año), by = as.integer((max(df$Año)-min(df$Año))/3))}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  layout(hoverlabel = "", hovermode = 'x unified') %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(max(df$Año) - 18, min(df$Año)), max(df$Año)),
+                      rangeslider = list(type = "date", thickness=0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');

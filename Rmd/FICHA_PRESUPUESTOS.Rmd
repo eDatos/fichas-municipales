@@ -14,7 +14,6 @@ params:
   url.presupuesto_2: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000002/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:GASTOS:PRESUPUESTO_PROGRAMA_GASTOS:0|1|2|3|4|9&lang=es
   url.presupuesto_3: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000003/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:MEDIDAS:AHORRO_BRUTO|AHORRO_BRUTO_PORCENTAJE|AHORRO_NETO|AHORRO_NETO_PORCENTAJE|CARGA_FINANCIERA|CARGA_FINANCIERA_PORCENTAJE&lang=es
   url.partida_codes: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/~latest/codes
-
 output:
   html_document:
     df_print: paged
@@ -177,7 +176,7 @@ df_I <- recode_Frontera(df_I)
 df_I$Municipio <- recode_id_Frontera(df_I, 'Municipio')
 df_I <- df_I[with(df_I, order(Año)), ] %>%
   filter(Municipio == params$id_municipio) %>%
-  mutate(Valor_M = round(Valor / 10^6, 1), Año = as.numeric(Año)) %>%
+  mutate(Valor_M = round(Valor / 10^6, 1), Año = as.integer(Año)) %>%
   transform(Municipio = paste0(municipio_actual$municipio, "_inicial")) %>%
   filter(Año <= params$año)
 
@@ -199,7 +198,7 @@ df_u$Valor <- as.numeric(df_u$Valor)
 df_u <- recode_Frontera(df_u)
 df_u$Municipio <- recode_id_Frontera(df_u, 'Municipio')
 df_u <- df_u[with(df_u, order(Año)), ] %>%
-  mutate(Valor_M = round(Valor / 10^6, 1))
+  mutate(Valor_M = round(Valor / 10^6, 1), Año = as.integer(Año))
 
 related_mun <- df_u %>% filter(Año == params$año)
 related_mun <- seleccion_mun(related_mun  %>% select(mun = Municipio, Valor), 'Valor')
@@ -215,7 +214,7 @@ df <- related_mun %>%
   select(id = Municipio, Año, Valor, Valor_M) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(Año, Municipio = municipio, Valor, Valor_M) %>% 
-  mutate(Tasa =  round(100*((Valor / lag(Valor)) - 1), 1), Año = as.numeric(Año)) %>%
+  mutate(Tasa =  round(100*((Valor / lag(Valor)) - 1), 1), Año = as.integer(Año)) %>%
   filter(Año != min(Año) & Año <= params$año)
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -257,11 +256,15 @@ g_line <- ggplot(data = df, aes(x = Año)) +
         panel.grid.minor.x = element_blank(),
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
+  scale_x_continuous(breaks = function(x){seq(from = min(df$Año), to = max(df$Año), by = as.integer((max(df$Año)-min(df$Año))/3))}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), " mill.")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  layout(hoverlabel = "", hovermode = 'x unified') %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(min(df$Año), params$año - 18), params$año),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');

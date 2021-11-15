@@ -186,7 +186,7 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas en paro: <
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
-df.line <- related_mun %>%
+df <- related_mun %>%
   select(Municipio = "mun") %>%
   left_join(df_u, by = "Municipio") %>%
   select(id = Municipio, Periodo, Valor, Tasa) %>%
@@ -195,12 +195,15 @@ df.line <- related_mun %>%
   left_join(mes, by = "code") %>%
   filter(code <= mes_actual$code & order > 12)
 
-leyenda_poblacion <- df.line %>% filter(Periodo == mes_actual$Periodo) %>%
+año_min <- min(as.integer(substring(df$code, 0,4)))
+año_max <- max(as.integer(substring(df$code, 0,4)))
+
+leyenda_poblacion <- df %>% filter(Periodo == mes_actual$Periodo) %>%
   mutate(Valor = format(Valor, big.mark = ".", decimal.mark = ",")) %>%
   mutate(Tasa = format(Tasa, big.mark = ".", decimal.mark = ",")) %>%
   left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
 
-df.line <- df.line %>% mutate(
+df <- df %>% mutate(
     Periodo = sapply(strsplit(Periodo, "\\s+"), function(x) paste(rev(x), collapse = " ")),
     tooltip = ifelse(Periodo == mes_actual$periodo_formatted, 
                      sprintf(leyenda.content, Municipio, format(Valor, big.mark = ".", decimal.mark = ","), format(Tasa, big.mark = ".", decimal.mark = ",")),
@@ -208,7 +211,7 @@ df.line <- df.line %>% mutate(
               )
   )
   
-g_line <- ggplot(data = df.line, aes(x = code, y = Valor, group = Municipio, colour = Municipio, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour = Municipio, text = tooltip)) +
   geom_line() +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -219,14 +222,14 @@ g_line <- ggplot(data = df.line, aes(x = code, y = Valor, group = Municipio, col
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1))+
-  scale_x_discrete(breaks = function(x){ paste0(2006:2021, "-M01") }, labels = function(x){substr(x, 0, 4) }) +
+  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-M01") }, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"), list("pan2d"), list("resetScale2d"), list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(max(df.line$order) - 5*12 - 12, min(df.line$order) - 12), max(df.line$order) - 12),
+                      range = c(max(max(df$order) - 5*12 - 12, min(df$order) - 12), max(df$order) - 12),
                       rangeslider = list(type = "date", thickness=0.04))) %>%
   onRender("
     function(el) {
