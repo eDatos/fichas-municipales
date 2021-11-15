@@ -28,7 +28,7 @@ get_indicator_met_ = function(label, description) {
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos extrahoteleros", "Establecimientos turísticos de alojamiento que ofrece servicio de alojamiento acompañado o no de otros servicios complementarios como pueden ser un apartamento, villa, casa rural, casa emblemática o viviendas vacacionales.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Estancia media", "Número de noches que por término medio permanece una persona alojada en un establecimiento en un periodo de referencia.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Municipio turístico", "Aquel municipio que dispone de un número de plazas alojativas turísticas, sea cual fuere la modalidad, clase y categoría de los establecimientos alojativos turísticos, igual o superior al 40% de la población del municipio.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Personas alojadas", "Todas aquellas personas que realizan una o más pernoctaciones seguidas en el mismo alojamiento. Los viajeros se clasifican por su país de residencia, y para los residentes en España, por la Comunidad Autónoma donde residen habitualmente.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Tarifa media diaria", "Ingresos medios diarios obtenidos por habitación ocupada. Los ingresos hacen referencia a aquellos percibidos por los hoteleros por la prestación del servicio de alojamiento, sin incluir otro tipo de servicios que sí pueda ofrecer el establecimiento, como pueden ser servicios de restauración, spa, gimnasio, organización de reuniones o eventos.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de ocupación", "Relación expresada en porcentaje entre el total de las pernoctaciones en un mes determinado y el producto de las plazas, excluyendo las camas supletorias, por el número de días que ese mes tiene.")`</div>
@@ -36,10 +36,10 @@ get_indicator_met_ = function(label, description) {
 </div>
 
 <div class="row">
-<div class="logo-fecam-glosario">
+<div class="logo-fecam">
   <img src="img/fecam.jpeg" />
 </div>
-<div class="logo-istac-glosario"> 
+<div class="logo-istac"> 
   <img src="img/logo_istac.png" />
 </div>
 </div>

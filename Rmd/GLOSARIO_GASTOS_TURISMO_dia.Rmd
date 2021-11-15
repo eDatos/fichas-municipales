@@ -31,15 +31,16 @@ get_indicator_met_ = function(label, description) {
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Gasto medio diario por persona", "Gasto que resulta al dividir el gasto total entre el número de pernoctaciones del viaje.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`</div>
+  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`</div>
   <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.")`</div>
 </div>
 
 <div class="row">
 </div>
-<div class="logo-fecam-glosario">
+<div class="logo-fecam">
   <img src="img/fecam.jpeg" />
 </div>
-<div class="logo-istac-glosario"> 
+<div class="logo-istac"> 
   <img src="img/logo_istac.png" />
 </div>
 
