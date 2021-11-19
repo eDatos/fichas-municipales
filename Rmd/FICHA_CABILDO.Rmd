@@ -2,16 +2,16 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 2007
+  convocatoria: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.cabildo_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000029/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
-  url.cabildo_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000012/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.cabildo_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000003/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.cabildo_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000023/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.cabildo_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:CABILDO_2019|CABILDO_2015|CABILDO_2011|CABILDO_2007&lang=es
+  url.cabildo_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000029/~latest.json?dim=TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.cabildo_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000012/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.cabildo_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000003/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.cabildo_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000023/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.cabildo_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:CABILDO_2019|CABILDO_2015|CABILDO_2011|CABILDO_2007&lang=es
 output:
   html_document:
     df_print: paged
@@ -194,7 +194,7 @@ g_line <- ggplot(data = df,
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
   scale_x_continuous(breaks = c(convocatoria_cabildo$order[convocatoria_actual$order:1]), labels = c(convocatoria_cabildo$convocatoria_formatted[convocatoria_actual$order:1])) +
-  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
@@ -322,131 +322,82 @@ df_cabildo <- df_cabildo %>% transform(mun = if_else(mun == "38013_2007",  "3801
 
 ```{r Resultados}
 df_cabildo_mun <- df_cabildo %>% 
-  left_join(df_partido, by = "candidatura") %>%
   filter(mun == params$id_municipio)
 
-partido_mas_votado <- df_cabildo_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>%
-  select(name_partido) %>% as.character()
-df_plot_ <- df_cabildo_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_ <- df_plot_ %>%
+df_plot_ <- df_cabildo_mun %>% filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot <- df_plot_ %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
-df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
-df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
-df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
-df_plot <- df_plot %>% mutate(porcentaje = df_plot$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot$VOTOS_VALIDOS_CANDIDATURA) * 100)
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA) %>%
+  arrange(desc(valor)) %>% top_n(5, valor)
+df_plot$valor <- as.numeric(df_plot$valor)
+df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot_$name_partido[nrow(df_plot_):1])
+df_otros <- df_cabildo_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_otros %>%
+  spread(medida, valor) %>%
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
 
-df_plot <- df_plot %>% transform(hovertext = paste0(
-    "<b>", name_partido, " </b>",
-    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-  )
-)
-df_plot$hovertext[which(is.na(df_plot$RATIO_VOTOS_CANDIDATURA))] <- ""
+df_plot <- rbind(df_plot, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA)))
+df_plot$valor <- as.numeric(df_plot$valor)
+df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-if(nrow(df_plot_) == 7){
-  col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "#D5EDFA", "white")
-  }else if(nrow(df_plot_) == 6){
-      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
-      }else if(nrow(df_plot_) == 5){
-        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
-        }else if(nrow(df_plot_) == 4){
-          col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
-          }
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
 
-g_cabildo_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                             textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
-                             rotation = 90, marker = list(colors = col, line = list(width = 0))
-                             )
-
-g_cabildo_mun <- ggplotly(g_cabildo_mun, tooltip = c("text")) %>%
-  layout(showlegend = FALSE) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-```
-
-```{r Resultados Canarias}
-df_cabildo_C <- df_cabildo %>% 
+df_cabildo_I <- df_cabildo %>% 
   left_join(df_partido, by = "candidatura") %>%
-  filter(mun == "ES70")
+  filter(mun == municipio_actual$id_isla)
 
-partido_mas_votado_C <- df_cabildo_C %>%
-  filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
-df_plot_C_ <- df_cabildo_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% 
+df_plot_I_ <- df_cabildo_I %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot_I <- df_plot_I_ %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
-df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
-df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
-df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
-df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100)
+  select(candidatura, valor_I = VOTOS_VALIDOS_CANDIDATURA, porcentaje_I = RATIO_VOTOS_CANDIDATURA)
+df_plot_I$valor_I <- as.numeric(df_plot_I$valor_I)
+df_plot_I$porcentaje_I <- as.numeric(df_plot_I$porcentaje_I)
 
-df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[nrow(df_plot_C_):1])
+df_otros <- df_cabildo_I %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_otros %>%
+  spread(medida, valor) %>%
+  select(candidatura, valor_I = VOTOS_VALIDOS_CANDIDATURA, porcentaje_I = RATIO_VOTOS_CANDIDATURA)
 
-df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
-    "<b>", name_partido, " </b>",
-    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-  )
-)
-df_plot_C$hovertext[which(is.na(df_plot_C$RATIO_VOTOS_CANDIDATURA))] <- ""
+df_plot_I <- rbind(df_plot_I, c("Otros", sum(df_otros$valor_I, na.rm = NA), sum(df_otros$porcentaje_I, na.rm = NA)))
+df_plot_I$valor_I <- as.numeric(df_plot_I$valor_I)
+df_plot_I$porcentaje_I <- as.numeric(df_plot_I$porcentaje_I)
 
-if(nrow(df_plot_C_) == 7){
-  col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "#CED6E7", "white")
-  }else if(nrow(df_plot_C_) == 6){
-      col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white")
-      }else if(nrow(df_plot_C_) == 5){
-        col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "white")
-        }else if(nrow(df_plot_C_) == 4){
-          col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "white")
+df_plot <- df_plot %>%
+  left_join(df_partido, by = "candidatura") %>%
+  left_join(df_plot_I, by = "candidatura") %>%
+  mutate(label = "|") %>% 
+  transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+  
+df_plot <- df_plot %>% transform(hovertext = paste0(
+  "<b>", name_partido, " </b>",
+  "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>", municipio_actual$isla,": ", format(valor_I, big.mark = ".", decimal.mark = ","), " votos",
+  " (", format(round(porcentaje_I, 1), big.mark = ".", decimal.mark = ","), "%)"
+  ))
+
+df_plot_0 <- df_plot %>% transform(porcentaje = 0,
+                                   porcentaje_I = 0,
+                                   label = "")
+df_plot <- rbind(df_plot, df_plot_0)
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot_I):1])
+
+if(nrow(df_plot)/2 == 6){
+      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+      }else if(nrow(df_plot_)/2 == 5){
+        col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+        }else if(nrow(df_plot_)/2 == 4){
+          col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
           }
 
-g_cabildo_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                           rotation = 90, marker = list(colors = col, line = list(width = 0))
-                           )
-
-g_cabildo_C <- ggplotly(g_cabildo_C, tooltip = c("text")) %>%
-  layout(showlegend = FALSE) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-```
-
-```{r Barras Participación}
-df_bars <- df_participacion_mun %>% filter(ind %in% c("VOTOS_VALIDOS_CANDIDATURA", "VOTOS_VALIDOS_BLANCO", "VOTOS_NULOS"))
-df_participacion_C <- df_participacion %>% filter(mun == "ES70" & proceso == convocatoria_actual$code & ind %in% c("VOTOS_VALIDOS_CANDIDATURA", "VOTOS_VALIDOS_BLANCO", "VOTOS_NULOS")) %>%
-  select(c(ind, valor))
-df_participacion_C <- df_participacion_C %>% mutate(porcentaje = df_participacion_C$valor / sum(df_participacion_C$valor) * 100)
-
-df_bars <- df_bars %>%
-  mutate(porcentaje = df_bars$valor / sum(df_bars$valor) * 100,
-         valor_Canarias = df_participacion_C$valor,
-         porcentaje_Canarias = df_participacion_C$valor / sum(df_participacion_C$valor) * 100)
-df_bars <- df_bars %>% mutate(label = "|")
-
-df_bars <- df_bars %>% transform(hovertext = paste0(
-  "<b>", trimws(ind), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
-  )
-)
-
-df_bars_0 <- df_bars %>% 
-  transform(porcentaje = 0,
-            porcentaje_Canarias = 0,
-            label = "")
-
-df_bars <- rbind(df_bars, df_bars_0)
-
-g_participacion <- ggplot(data = df_bars,
-                          aes(y = ind, fill = ind,  label = label, name = NULL, text = hovertext)) +
+g_cabildo_mun <- ggplot(data = df_plot,
+                         aes(y = candidatura, fill = candidatura, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_I, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
-  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
+  scale_fill_manual(values = col) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(),
         axis.text.y = element_blank(),
@@ -459,12 +410,11 @@ g_participacion <- ggplot(data = df_bars,
         legend.position = "none") +
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_participacion <- ggplotly(g_participacion, tooltip = c("text")) %>%
+g_cabildo_mun <- ggplotly(g_cabildo_mun, tooltip = c("text")) %>%
   layout(hovermode = "y unified", showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(4:6))
+  style(hoverinfo = "skip", traces = c(7:12))
 ```
-
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
@@ -508,43 +458,27 @@ if(Variacion_Porcentual == "NA"){
 </div>
 
 <div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
-  <h3>Resultados por grupos de partidos</h3>
+  <h3>Resultados por candidaturas</h3>
 </div>
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="column" style="margin-bottom: 20px;">
 
-<div class="piramide" style="height: 280px;">
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
+<div class="piechart_P">
   `r g_cabildo_mun`
 </div>
 
-<div class="legend-vertical-container" style="margin-top: -100px;">
-```{r leyenda mun, results='asis'}
-for (i in 1:nrow(df_plot_)) {
+<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
+<div class="legend-vertical-container">
+```{r leyenda barras, results='asis'}
+for (i in 1:(nrow(df_plot)/2)) {
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
 }
 ```
+  <div class='progressbar-legend'>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>`r municipio_actual$isla`</div></div>
+</div>
 </div>
 
-</div>
-
-<div class="column" style="margin-bottom: 20px;">
-
-<div class="piramide" style="height: 280px;">
-  `r g_cabildo_C`
-</div>
-
-<p style="margin: -120px 20px 0; position: relative;">Canarias</p>
-<div class="legend-vertical-container" style="margin-top: 6px;">
-```{r leyenda Canarias, results='asis'}
-for (i in 1:nrow(df_plot_C_)) {
-  cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-grey",i,"'></div><div class='sp-content-b'>", df_plot_C[i,]$name_partido, " (", format(round(df_plot_C[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
-}
-```
-</div>
-
-</div>
 </div>
 
 <div class="indicator-title" style="width: 100% !important; margin-top: 20px; margin-left: 0">
