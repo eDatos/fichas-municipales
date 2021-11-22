@@ -559,7 +559,7 @@ g_estr_part_ingresos <- ggplot(data = df_part_ingresos_mun,  aes(y = id_partida,
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_estr_part_ingresos <- ggplotly(g_estr_part_ingresos, tooltip = c("text")) %>%
-  layout(margin = list(t=10, l=0, r=0), hovermode = "y unified", showlegend = FALSE) %>%
+  layout(hovermode = "y unified", showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(7:12))
 ```

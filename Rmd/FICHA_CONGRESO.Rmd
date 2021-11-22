@@ -2,21 +2,20 @@
 title: ''
 params:
   id_municipio: 35001
-  convocatoria: 201904
+  convocatoria: 2019_NOVIEMBRE
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.congreso_201911: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.congreso_201904: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000034/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_201606: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_201512: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_201111: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?dim=INDICADORES:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_200803: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
-  url.congreso_200403: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_200003: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_electores: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a73b11d9-02c6-49dd-bed4-1b21978d003b
-  url.congreso_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:CONGRESO_2019_NOVIEMBRE|CONGRESO_2019_ABRIL|CONGRESO_2016|CONGRESO_2015|CONGRESO_2011|CONGRESO_2008|CONGRESO_2004|CONGRESO_2000&lang=es
+  url.congreso_2019_n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.congreso_2019_a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000034/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?dim=INDICADORES:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2008: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.congreso_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:CONGRESO_2019_NOVIEMBRE|CONGRESO_2019_ABRIL|CONGRESO_2016|CONGRESO_2015|CONGRESO_2011|CONGRESO_2008|CONGRESO_2004|CONGRESO_2000&lang=es
 output:
   html_document:
     df_print: paged
@@ -43,22 +42,31 @@ signo <- function(value) {
 ```
 
 ```{r Convocatoria}
-# Electores en Canarias en las elecciones Generales según convocatorias. Municipios por islas de Canarias.
-data_electores <- fromJSON(params$url.congreso_electores)
-convocatoria <- data.frame(code = as.integer(data_electores[["categories"]][["codes"]][[1]]),
-                           convocatoria = data_electores[["categories"]][["labels"]][[1]],
-                           order = as.integer(order(data_electores[["categories"]][["codes"]][[1]], decreasing = FALSE)))
+data_participacion <- fromJSON(params$url.congreso_participacion)
 
-convocatoria <- convocatoria %>% 
-  transform(convocatoria_formatted = paste0(unlist(lapply(strsplit(convocatoria, " "), '[[', 2))),
-            url = paste0("url.congreso_", substring(code, 0,6)),
-            proceso = ifelse(substring(code, 0,4) == "2019",
-                             paste0("CONGRESO_", unlist(lapply(strsplit(convocatoria, " "), '[[', 2)), "_", unlist(lapply(strsplit(toupper(convocatoria), " "), '[[', 1))),
-                             paste0("CONGRESO_", unlist(lapply(strsplit(convocatoria, " "), '[[', 2)))))
-convocatoria_actual <- convocatoria %>% filter(substring(code, 0,6) == params$convocatoria)
-convocatoria_tva <- convocatoria[convocatoria$order == convocatoria[convocatoria_actual$code == convocatoria$code, ]$order - 1, ]
-min_code <- min(convocatoria$code)
-convocatoria$code <- factor(convocatoria$code, levels = convocatoria$code)
+convocatoria <- data.frame(
+    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
+  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+}
+
+convocatoria_congreso <- convocatoria %>% 
+  filter(substring(code, 0,9) == "CONGRESO_") %>% 
+  transform(url = paste0("url.", tolower(substring(code, 0,15))))
+convocatoria_congreso <- convocatoria_congreso %>% 
+  mutate(order = as.integer(order(1:nrow(convocatoria_congreso), decreasing = TRUE)),
+         convocatoria_formatted = ifelse(substring(code, 10,13) == "2019",
+                                         paste0(substring(code, 15,15), tolower(substring(code, 16,23)), " ", substring(code, 10,13)),
+                                         paste0(substring(code, 10,13))),
+         convocatoria_axis = ifelse(substring(code, 10,13) == "2019",
+                                    paste0(tolower(substring(code, 15,17)), " ", substring(code, 10,13)),
+                                    paste0(substring(code, 10,13))))
+
+convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$convocatoria)
+convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convocatoria_congreso[convocatoria_actual$code == convocatoria_congreso$code, ]$order - 1, ]
+min_code <- min(convocatoria_congreso$code)
+convocatoria_congreso$code <- factor(convocatoria_congreso$code, levels = convocatoria_congreso$code)
 ```
 
 ```{r Municipio actual}
@@ -85,7 +93,7 @@ df_CL_AREA_mun <- df_CL_AREA %>%
   left_join(df_CL_AREA, by="code") %>% 
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
   left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, id_provincia = code, provincia = value)
 
 municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
@@ -136,25 +144,36 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población}
-df_u <- cbind(data.frame(do.call('rbind', data_electores[["data"]][["dimCodes"]])), data_electores[["data"]][["Valor"]])
-colnames(df_u) <- c('Convocatoria', 'Municipio', 'Residencia', 'Valor')
-df_u$Convocatoria <- factor(df_u$Convocatoria, levels=data_electores[["categories"]][["codes"]][[1]][8:1])
-df_u$Municipio <- factor(df_u$Municipio, levels=data_electores[["categories"]][["codes"]][[2]])
-df_u$Residencia <- factor(df_u$Residencia, levels=data_electores[["categories"]][["codes"]][[3]])
-df_u$Valor <- as.numeric(df_u$Valor)
-df_u_ <- df_u %>% filter(substring(Municipio, 0,2) != "ES" & Residencia == "T") %>% arrange(Convocatoria) %>% select(!Residencia)
+dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-related_mun <- df_u_ %>% filter(Convocatoria == convocatoria_actual$code)
-related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 
+df_participacion <- data.frame(
+    ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+              each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                     length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+    mun = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+              each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+    proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+    valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
+df_participacion$valor <- as.numeric(df_participacion$valor)
+df_u_ <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
+
+related_mun <- df_u_ %>% filter(proceso == convocatoria_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+min_code <- min(df_u_$proceso)
 df <- related_mun %>%
-  select(Municipio = "mun") %>%
-  left_join(df_u_, by = "Municipio") %>%
-  select(id = Municipio, Convocatoria, Valor) %>%
+  select(mun, nombre) %>%
+  left_join(df_u_, by = "mun") %>%
+  select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(code = Convocatoria, Valor, Municipio = municipio) %>%
-  left_join(convocatoria, by = "code") %>%
-  transform(Tasa = ifelse(code == min_code, NA, round(100*((Valor / lag(Valor)) - 1), 1))) %>% 
+  select(code = proceso, valor, Municipio = id, nombre) %>%
+  left_join(convocatoria_congreso, by = "code") %>%
+  transform(Tasa = ifelse(code == min_code, NA, round(100*((valor / lag(valor)) - 1), 1))) %>% 
   filter(order <= convocatoria_actual$order)
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -164,15 +183,15 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Electores: <span cl
 
 df <- df %>% mutate(
     tooltip = ifelse(code == convocatoria_actual$code,
-                     sprintf(leyenda.content, Municipio, ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")),
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
                              ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, Municipio, paste0(ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")), ' (',convocatoria,')'),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',convocatoria_formatted,')'),
                              ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
     )
-) 
+)
 
 g_line <- ggplot(data = df, 
-                 aes(x = order, y = Valor, group = Municipio, colour = Municipio, text = tooltip)) +
+                 aes(x = order, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -183,8 +202,8 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = c(convocatoria$order[8:1]), labels = c(convocatoria$convocatoria_formatted[8:1])) +
-  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+  scale_x_continuous(breaks = c(convocatoria_congreso$order[convocatoria_actual$order:1]), labels = c(convocatoria_congreso$convocatoria_axis[convocatoria_actual$order:1])) +
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
@@ -223,35 +242,39 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 
 leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
-  mutate(Valor = ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")),
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
          Tasa = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
-```{r Indicador evolución de la población}
-df_lv <- df_u %>%
-  filter(Municipio == params$id_municipio & Convocatoria == convocatoria_actual$code) %>% 
-  select(c(Residencia, Valor))
+```{r Indicadores}
+df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(c(ind, valor))
 
-Num_Electores <- df_lv %>% filter(Residencia == "T") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Elec <- (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_actual$convocatoria) %>% select(Valor) %>% as.numeric()) -
-                  (df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_tva$convocatoria) %>% select(Valor) %>% as.numeric())
-Imagen_Variacion <- ifelse(signo(Variacion_Elec) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Elec <- df %>% filter(Municipio == municipio_actual$municipio & convocatoria == convocatoria_actual$convocatoria) %>% select(Tasa) %>%
+Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>%  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(Tasa) %>%
   as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+
+Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric() %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+
+Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Electores por residencia}
-Num_Electores_Canarias <- df_lv %>% filter(Residencia == "ES70") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Num_Electores_Extranjero <- df_lv %>% filter(Residencia == "ESZ") %>% select(Valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-```
-
-```{r}
+```{r Data Resultados}
 data_congreso <- fromJSON(params[[convocatoria_actual$url]])
-```
 
-```{r}
-if(params$convocatoria %in% c(201911, 201904, 201606, 200403, 200003)){
+if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
   df_congreso <- data.frame(
     medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -267,7 +290,7 @@ if(params$convocatoria %in% c(201911, 201904, 201606, 200403, 200003)){
   for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
     df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$convocatoria == 200803){
+    if(params$convocatoria == 2008){
       df_congreso <- data.frame(
         mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -283,7 +306,7 @@ if(params$convocatoria %in% c(201911, 201904, 201606, 200403, 200003)){
       for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$convocatoria == 201512){
+        if(params$convocatoria == 2015){
           df_congreso <- data.frame(
             candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                               each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -299,7 +322,7 @@ if(params$convocatoria %in% c(201911, 201904, 201606, 200403, 200003)){
           for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
             df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
           }}else{
-            if(params$convocatoria == 201111){
+            if(params$convocatoria == 2011){
               df_congreso <- data.frame(
                 medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -326,162 +349,82 @@ df_congreso <- df_congreso %>% transform(mun = if_else(mun == "38013_2007",  "38
 
 ```{r Resultados}
 df_congreso_mun <- df_congreso %>% 
-  left_join(df_partido, by = "candidatura") %>%
   filter(mun == params$id_municipio)
 
-partido_mas_votado <- df_congreso_mun %>% filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>%
-  select(name_partido) %>% as.character()
-df_plot_ <- df_congreso_mun %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_ <- df_plot_ %>%
+df_plot_ <- df_congreso_mun %>% filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot <- df_plot_ %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
-df_plot <- df_plot_ %>% rbind(c("", sum(df_plot_$VOTOS_VALIDOS_CANDIDATURA)))
-df_plot$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot$VOTOS_VALIDOS_CANDIDATURA)
-df_plot$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot$RATIO_VOTOS_CANDIDATURA)
-df_plot <- df_plot %>% mutate(porcentaje = df_plot$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot$VOTOS_VALIDOS_CANDIDATURA) * 100)
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA) %>%
+  arrange(desc(valor)) %>% top_n(5, valor)
+df_plot$valor <- as.numeric(df_plot$valor)
+df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot_$name_partido[nrow(df_plot_):1])
+df_otros <- df_congreso_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_otros %>%
+  spread(medida, valor) %>%
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
 
-df_plot <- df_plot %>% transform(hovertext = paste0(
-    "<b>", name_partido, " </b>",
-    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
-  )
-)
-df_plot$hovertext[which(is.na(df_plot$RATIO_VOTOS_CANDIDATURA))] <- ""
+df_plot <- rbind(df_plot, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA)))
+df_plot$valor <- as.numeric(df_plot$valor)
+df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-if(nrow(df_plot_) == 6){
-      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
-      }else if(nrow(df_plot_) == 5){
-        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
-        }else if(nrow(df_plot_) == 4){
-          col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
-          }
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
 
-g_congreso_mun <- plot_ly(df_plot, labels = df_plot$name_partido, values = df_plot$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                          textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot$hovertext,
-                          marker = list(colors = col, line = list(width = 0)), rotation = 90
-                          )
-
-g_congreso_mun <- ggplotly(g_congreso_mun, tooltip = c("text")) %>%
-  layout(showlegend = FALSE) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-```
-
-```{r Resultados Canarias}
-df_congreso_C <- df_congreso %>% 
+df_congreso_P <- df_congreso %>% 
   left_join(df_partido, by = "candidatura") %>%
-  filter(mun == "ES70")
+  filter(mun == municipio_actual$id_provincia)
 
-partido_mas_votado_C <- df_congreso_C %>%
-  filter(medida == "VOTOS_VALIDOS_CANDIDATURA" & substring(candidatura, 0,1) == "P") %>% top_n(1, valor) %>% select(name_partido) %>% as.character()
-df_plot_C_ <- df_congreso_C %>% filter(substring(candidatura, 0,1) == "G") %>% arrange(valor) %>% select(c(medida, name_partido, valor))
-df_plot_C_ <- df_plot_C_ %>% 
+df_plot_P_ <- df_congreso_P %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot_P <- df_plot_P_ %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(name_partido, VOTOS_VALIDOS_CANDIDATURA, RATIO_VOTOS_CANDIDATURA) %>% arrange(desc(VOTOS_VALIDOS_CANDIDATURA))
-df_plot_C <- df_plot_C_ %>% rbind(c("", sum(df_plot_C_$VOTOS_VALIDOS_CANDIDATURA)))
-df_plot_C$VOTOS_VALIDOS_CANDIDATURA <- as.numeric(df_plot_C$VOTOS_VALIDOS_CANDIDATURA)
-df_plot_C$RATIO_VOTOS_CANDIDATURA <- as.numeric(df_plot_C$RATIO_VOTOS_CANDIDATURA)
-df_plot_C <- df_plot_C %>% mutate(porcentaje = df_plot_C$VOTOS_VALIDOS_CANDIDATURA / sum(df_plot_C$VOTOS_VALIDOS_CANDIDATURA) * 100)
+  select(candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = RATIO_VOTOS_CANDIDATURA)
+df_plot_P$valor_P <- as.numeric(df_plot_P$valor_P)
+df_plot_P$porcentaje_P <- as.numeric(df_plot_P$porcentaje_P)
 
-df_plot_C$name_partido <- ordered(df_plot_C$name_partido, levels = df_plot_C$name_partido[nrow(df_plot_C_):1])
+df_otros <- df_congreso_P %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_otros %>%
+  spread(medida, valor) %>%
+  select(candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = RATIO_VOTOS_CANDIDATURA)
 
-df_plot_C <- df_plot_C %>% transform(hovertext = paste0(
-    "<b>", name_partido, " </b>",
-    "<br>", trimws(format(VOTOS_VALIDOS_CANDIDATURA, big.mark = ".", decimal.mark = ",")), " votos", 
-    " (", trimws(format(round(RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",")), "%)"
-  )
-)
-df_plot_C$hovertext[which(is.na(df_plot_C$RATIO_VOTOS_CANDIDATURA))] <- ""
+df_plot_P <- rbind(df_plot_P, c("Otros", sum(df_otros$valor_P, na.rm = NA), sum(df_otros$porcentaje_P, na.rm = NA)))
+df_plot_P$valor_P <- as.numeric(df_plot_P$valor_P)
+df_plot_P$porcentaje_P <- as.numeric(df_plot_P$porcentaje_P)
 
-if(nrow(df_plot_C_) == 6){
-      col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "#BBC8D0", "white")
-      }else if(nrow(df_plot_C_) == 5){
-        col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "#ABBBC2", "white")
-        }else if(nrow(df_plot_C_) == 4){
-          col <- c("#59656E", "#77848D", "#8C9BA3", "#99A9B1", "white")
+df_plot <- df_plot %>%
+  left_join(df_partido, by = "candidatura") %>%
+  left_join(df_plot_P, by = "candidatura") %>%
+  mutate(label = "|") %>% 
+  transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+  
+df_plot <- df_plot %>% transform(hovertext = paste0(
+  "<b>", name_partido, " </b>",
+  "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>", municipio_actual$provincia,": ", format(valor_P, big.mark = ".", decimal.mark = ","), " votos",
+  " (", format(round(porcentaje_P, 1), big.mark = ".", decimal.mark = ","), "%)"
+  ))
+
+df_plot_0 <- df_plot %>% transform(porcentaje = 0,
+                                   porcentaje_P = 0,
+                                   label = "")
+df_plot <- rbind(df_plot, df_plot_0)
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot_P):1])
+
+if(nrow(df_plot)/2 == 6){
+      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+      }else if(nrow(df_plot_)/2 == 5){
+        col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+        }else if(nrow(df_plot_)/2 == 4){
+          col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
           }
 
-g_congreso_C <- plot_ly(df_plot_C, labels = df_plot_C$name_partido, values = df_plot_C$porcentaje, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                        textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_plot_C$hovertext,
-                        marker = list(colors = col, line = list(width = 0)), rotation = 90
-                        )
-
-g_congreso_C <- ggplotly(g_congreso_C, tooltip = c("text")) %>%
-  layout(showlegend = FALSE) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
-```
-
-```{r Participación}
-data_participacion <- fromJSON(params$url.congreso_participacion)
-
-dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
-      length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-
-###### Añadir aviso si la variable d_ es mayor que 0 ######
-
-df_participacion <- data.frame(
-    ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    mun = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-              each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-    valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
-df_participacion$valor <- as.numeric(df_participacion$valor)
-
-df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$proceso) %>% select(c(ind, valor))
-
-Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-
-Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-
-Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-```
-
-```{r Barras Participación}
-df_bars <- df_participacion_mun %>% filter(ind %in% c("VOTOS_VALIDOS_CANDIDATURA", "VOTOS_VALIDOS_BLANCO", "VOTOS_NULOS"))
-# df_bars <- df_bars %>% mutate(porcentaje = df_bars$valor / sum(df_bars$valor) * 100)
-df_participacion_C <- df_participacion %>% filter(mun == "ES70" & proceso == convocatoria_actual$proceso & ind %in% c("VOTOS_VALIDOS_CANDIDATURA", "VOTOS_VALIDOS_BLANCO", "VOTOS_NULOS")) %>%
-  select(c(ind, valor))
-df_participacion_C <- df_participacion_C %>% mutate(porcentaje = df_participacion_C$valor / sum(df_participacion_C$valor) * 100)
-
-df_bars <- df_bars %>%
-  mutate(porcentaje = df_bars$valor / sum(df_bars$valor) * 100,
-         valor_Canarias = df_participacion_C$valor,
-         porcentaje_Canarias = df_participacion_C$valor / sum(df_participacion_C$valor) * 100)
-df_bars <- df_bars %>% mutate(label = "|")
-
-df_bars <- df_bars %>% transform(hovertext = paste0(
-  "<b>", trimws(ind), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
-  )
-)
-
-df_bars_0 <- df_bars %>% 
-  transform(porcentaje = 0,
-            porcentaje_Canarias = 0,
-            label = "")
-
-df_bars <- rbind(df_bars, df_bars_0)
-
-g_participacion <- ggplot(data = df_bars,
-                          aes(y = ind, fill = ind,  label = label, name = NULL, text = hovertext)) +
+g_congreso_mun <- ggplot(data = df_plot,
+                         aes(y = candidatura, fill = candidatura, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_P, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
-  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
+  scale_fill_manual(values = col) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(),
         axis.text.y = element_blank(),
@@ -494,117 +437,99 @@ g_participacion <- ggplot(data = df_bars,
         legend.position = "none") +
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_participacion <- ggplotly(g_participacion, tooltip = c("text")) %>%
+g_congreso_mun <- ggplotly(g_congreso_mun, tooltip = c("text")) %>%
   layout(hovermode = "y unified", showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(4:6))
+  style(hoverinfo = "skip", traces = c(7:12))
 ```
-
 
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
-get_indicator3 = function(label, value, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+get_indicator4 = function(title, label, value) {
+  return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
 ```
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r convocatoria_actual$convocatoria`</h3>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r convocatoria_actual$convocatoria_formatted`</h3>
 <h2 style="color: #666; margin: 0;">Resultados de las Elecciones al Congreso</h2>
 <hr>
 
 <div class="linechart-placeholder">
-<h2 style="color: #005980; margin-bottom: 0;">`r Num_Electores` electores</h2>
+<h2 style="color: #005980; margin-bottom: 0;">Tasa de participación: `r Tasa_participacion` %</h2>
 <div class="linechart">
   `r g_line`
 </div>
 <div id="hover-event-placeholder" class="column-4">
-```{r leyendas, results = "asis"}
+```{r leyenda serie, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$Municipio[i], leyenda_poblacion$Valor[i], leyenda_poblacion$Tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$Tasa[i]))
 }
 ```
 </div>
 </div>
 
 <div class="row">
-```{r indicadores principales, results='asis'}
-if(Variacion_Porcentual_Elec == "NA"){
+```{r Indicadores principales, results='asis'}
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2(paste0('Electores</br>de Canarias</p><p class="label" style="color: #999;">', Num_Electores_Canarias), './img/world.png'), "</div><div class='column-2'>", get_indicator2(paste0('Electores</br>del extranjero</p><p class="label" style="color: #999;">', Num_Electores_Extranjero), './img/world.png'), "</div>"))
+    "<div class='column-2'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Elec, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Electores</br>de Canarias', Num_Electores_Canarias, './img/world.png'), "</div><div class='column-3'>", get_indicator2('Electores</br>del extranjero', Num_Electores_Extranjero, './img/world.png'), "</div>"))
+    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }
 ```
 </div>
 
 <div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
-  <h3>Resultados por grupos de partidos</h3>
+  <h3>Resultados por candidaturas</h3>
 </div>
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="row">
-<div class="column">
-</div>
-<div class="column">
-<p style="margin: 13px 16px -10px;">Canarias</p>
-</div>
-</div>
-<div class="column">
 
-<div class="piramide" style="height: 280px;">
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
+<div class="piechart_P">
   `r g_congreso_mun`
 </div>
 
-<div class="legend-vertical-container" style="margin-top: -80px;">
-```{r leyenda mun, results='asis'}
-for (i in 1:nrow(df_plot_)) {
+<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
+<div class="legend-vertical-container">
+```{r leyenda barras, results='asis'}
+for (i in 1:(nrow(df_plot)/2)) {
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
 }
 ```
+  <div class='progressbar-legend'>
+  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>`r municipio_actual$provincia`</div></div>
+</div>
 </div>
 
 </div>
 
-<div class="column">
-
-<div class="piramide" style="height: 280px;">
-  `r g_congreso_C`
-</div>
-
-<div class="legend-vertical-container" style="margin-top: -80px;">
-```{r leyenda Canarias, results='asis'}
-for (i in 1:nrow(df_plot_C_)) {
-  cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-grey",i,"'></div><div class='sp-content-b'>", df_plot_C[i,]$name_partido, " (", format(round(df_plot_C[i,]$RATIO_VOTOS_CANDIDATURA, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
-}
-```
-</div>
-
-</div>
-
-<div class="row">
-<div class="column indicator-title">
+<div class="indicator-title" style="width: 100% !important; margin-top: 20px; margin-left: 0">
   <h3>Tipos de votos</h3>
 </div>
+<div class="row">
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Votos</h3>
+</div>
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Votos válidos</h3>
+</div>
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding: 38px 10px 20px;">
-<div class="piramide" style="height: 120px; margin-bottom: 20px;">
-  `r g_participacion`
+<div class="column highlight">
+  <div class="column-2">`r get_indicator4("Válidos", Votos_validos, paste0(Tasa_Votos_validos, "%"))`</div>
+  <div class="column-2">`r get_indicator4("Nulos", Votos_nulos, paste0(Tasa_Votos_nulos, "%"))`</div>
 </div>
-<div class="progressbar-legend-container">
-<div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class="column highlight">
+  <div class="column-2">`r get_indicator4("A candidatura", Votos_candidatura, paste0(Tasa_Votos_candidatura, "%"))`</div>
+  <div class="column-2">`r get_indicator4("En blanco", Votos_blanco, paste0(Tasa_Votos_blanco, "%"))`</div>
 </div>
-</div>
-
 </div>
 
 
