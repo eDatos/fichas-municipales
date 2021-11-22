@@ -194,7 +194,8 @@ g_line <- ggplot(data = df,
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
   scale_x_continuous(breaks = c(convocatoria_municipales$order[convocatoria_actual$order:1]), labels = c(convocatoria_municipales$convocatoria_formatted[convocatoria_actual$order:1])) +
-  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
+
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
@@ -336,7 +337,7 @@ df_plot_ <- df_municipales_mun_ %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
   select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA, repr_elegidos = REPRESENTANTES_ELEGIDOS)
 df_plot <- df_plot_ %>%
-  arrange(desc(valor)) %>% top_n(5, valor) %>% select(-repr_elegidos)
+  arrange(desc(valor)) %>% top_n(6, valor) %>% select(-repr_elegidos)
 df_plot$valor <- as.numeric(df_plot$valor)
 df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
@@ -349,33 +350,41 @@ df_plot <- rbind(df_plot, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otr
 df_plot$valor <- as.numeric(df_plot$valor)
 df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
-
 df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
   transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+
+if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
+  df_plot <- df_plot[-nrow(df_plot),]
+  }else{
+    
+}
   
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
+
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
   "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   ))
 
-if(nrow(df_plot) == 8){
-  col <- c("#00405B", "#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "#D5EDFA", "")
-  }else if(nrow(df_plot) == 7){
-    col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-    }else if(nrow(df_plot) == 6){
-      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      }else if(nrow(df_plot_) == 5){
-        col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-        }else if(nrow(df_plot_) == 4){
-          col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
-        }
+if(nrow(df_plot) == 7){
+  col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+  }else if(nrow(df_plot) == 6){
+    col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+    }else if(nrow(df_plot_) == 5){
+      col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+      }else if(nrow(df_plot_) == 4){
+        col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
+        }else if(nrow(df_plot_) == 3){
+          col <- c("#008BD0", "#0072A2", "#005980")
+          }else if(nrow(df_plot_) == 2){
+            col <- c("#0072A2", "#005980")
+          }
 
 g_municipales_mun <- ggplot(data = df_plot,
                          aes(y = candidatura, fill = candidatura, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_bar(stat = "identity", width = 0.6, aes(x = porcentaje)) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   scale_fill_manual(values = col) +
@@ -399,11 +408,11 @@ g_municipales_mun <- ggplotly(g_municipales_mun, tooltip = c("text")) %>%
 
 ```{r Resultados Representantes}
 df_plot_$repr_elegidos <- as.numeric(df_plot_$repr_elegidos)
-df_representantes <- df_plot_ %>% filter(repr_elegidos > 0)%>% select(candidatura, repr_elegidos) %>% arrange(-repr_elegidos)
+df_representantes_ <- df_plot_ %>% filter(repr_elegidos > 0)%>% select(candidatura, repr_elegidos) %>% arrange(-repr_elegidos)
 
-df_representantes <- df_representantes %>% rbind(c("", sum(df_representantes$repr_elegidos)))
+df_representantes <- df_representantes_ %>% rbind(c("", sum(df_representantes_$repr_elegidos)))
 df_representantes <- df_representantes %>% left_join(df_partido, by = "candidatura") 
-df_representantes$candidatura <- ordered(df_representantes$candidatura, levels = df_representantes$candidatura)
+df_representantes$candidatura <- ordered(df_representantes$candidatura, levels = df_representantes$candidatura[nrow(df_representantes):1])
 
 df_representantes <- df_representantes %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
@@ -413,20 +422,24 @@ df_representantes <- df_representantes %>% transform(hovertext = paste0(
 
 df_representantes$hovertext[which(is.na(df_representantes$name_partido))] <- ""
 
-if(nrow(df_representantes) == 8){
+if(nrow(df_representantes_) == 7){
   col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "#D5EDFA", "white")
-  }else if(nrow(df_representantes) == 7){
-      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
-      }else if(nrow(df_representantes) == 6){
-        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
-        }else if(nrow(df_representantes) == 5){
-          col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
-        }
+  }else if(nrow(df_representantes_) == 6){
+    col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
+    }else if(nrow(df_representantes_) == 5){
+      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
+      }else if(nrow(df_representantes_) == 4){
+        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
+        }else if(nrow(df_representantes_) == 3){
+          col <- c("#005980", "#0072A2", "#008BD0", "white")
+          }else if(nrow(df_representantes_) == 2){
+            col <- c("#005980", "#0072A2", "white")
+          }
 
-g_representantes <- plot_ly(df_representantes, labels = df_representantes$name_partido, values = df_representantes$repr_elegidos, type = 'pie', sort = TRUE, direction = "clockwise", hole = 0.6,
-                           textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_representantes$hovertext,
-                           rotation = 90, marker = list(colors = col, line = list(width = 0))
-                           )
+g_representantes <- plot_ly(df_representantes, labels = df_representantes$name_partido, values = df_representantes$repr_elegidos, type = 'pie', sort = TRUE, direction = "clockwise", 
+                            hole = 0.6, textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_representantes$hovertext,
+                            rotation = 90, marker = list(colors = col, line = list(width = 0), alpha = 0.8)
+                            )
 
 g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
   layout(showlegend = FALSE) %>%
@@ -475,38 +488,40 @@ if(Variacion_Porcentual == "NA"){
 </div>
 
 <div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
-  <h3>Resultados por grupos de partidos</h3>
+  <h3>Resultados por candidaturas</h3>
 </div>
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="column" style="margin-bottom: 20px;">
 
-<div class="piramide" style="height: 280px;">
-  `r g_municipales_mun`
-</div>
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
+<div class="piechart_P" style="height: 330px;">`r g_municipales_mun`</div>
+
+<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
 
 <div class="legend-vertical-container" style="margin-top: 10px;">
 ```{r leyenda Resultados, results='asis'}
 for (i in 1:nrow(df_plot)) {
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, "<br>(", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
 }
 ```
 </div>
 
 </div>
-
-<div class="column" style="margin-bottom: 20px;">
-
-<div class="piramide" style="height: 280px;">
-  `r g_representantes`
 </div>
 
-<p style="margin: -120px 20px 0; position: relative;">Representantes elegidos</p>
-<div class="legend-vertical-container" style="margin-top: 6px;">
+<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+  <h3>Representantes elegidos</h3>
+</div>
+
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
+<div class="piechart_P" style="height: 280px; margin: 20px 10px -10px -20px;">`r g_representantes`</div>
+
+<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
+
+<div class="legend-vertical-container">
 ```{r leyenda Representantes, results='asis'}
-for (i in 1:(nrow(df_representantes)-1)) {
+for (i in 1:nrow(df_representantes_)) {
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_representantes[i,]$name_partido, " (", format(df_representantes[i,]$repr_elegidos, big.mark = ".", decimal.mark = ",", nsmall = 0), " representantes elegidos)</div></div>"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_representantes[i,]$name_partido, "<br>(", format(df_representantes[i,]$repr_elegidos, big.mark = ".", decimal.mark = ",", nsmall = 0), " representantes elegidos)</div></div>"))
 }
 ```
 </div>
