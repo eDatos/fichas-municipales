@@ -398,7 +398,7 @@ g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group =
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
-  theme(axis.text.x = element_text(),
+  theme(axis.text.x = element_text(size = 8),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -406,7 +406,7 @@ g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group =
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}, )
 
 g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
@@ -686,8 +686,8 @@ if(Variacion_Porcentual_Turistas == "NA"){
 ```
 </div>
 
-<div class="row" style="margin-top: 10px;">
-<div class="column-3">
+<div class="row" style="margin: 10px 0 -30px;">
+<div class="column-3" style="margin: 0;">
   <div class="indicator-map map-canarias">
   <div class="image" style="height: 160px;">
 ```{r} 
@@ -700,7 +700,7 @@ mapa_Canarias_plot
   </div>
 </div>
 </div>
-<div class="column-3">
+<div class="column-3" style="margin: 0;">
 <div class="indicator-map">
   <div class="image" style="height: 160px;">
 ```{r} 
@@ -713,7 +713,7 @@ mapa_isla_plot
   </div>
 </div>
 </div>
-<div class="column-3">
+<div class="column-3" style="margin: 0;">
 <div class="column" style="width: 100% !important;">
 <div class="row highlight" style="width: 100% !important; margin-top: -5px; padding: 3px; padding-bottom: 0;">
   <h3>Grupos de edad</h3>
@@ -729,9 +729,74 @@ mapa_isla_plot
 
 </div>
 
-<div class="row">
-<div class="column indicator-title">
+<div class="row" style="margin: -30px 0;">
+<div class="column-3">
+<div class="indicator-title" style="width: 100% !important; padding: 5px;">
   <h3>Nacionalidades y sexos</h3>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-title" style="width: 100% !important; padding: 5px;">
+  <h3>Niveles educativos</h3>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-title" style="width: 100% !important; padding: 5px;">
+  <h3>Tipos de alojamientos</h3>
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-bottom: -30px;">
+
+<div class="column-3">
+<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding: 30px 0 40px;">
+  <div class="piramide" style="height: 152px; margin-bottom: 28px;">
+    `r g_turismo_pais`
+  </div>
+  <div class="legend-vertical-container">
+  <div class='progressbar-legend' style="padding-bottom: 10px;"><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div>
+  </div>
+</div>
+</div>
+
+<div class="column-3">
+<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding: 12px 5px 20px;">
+  <div class="piramide" style="height: 152px; margin-bottom: 28px;">
+  `r g_turismo_educacion`
+  </div>
+  <div class="legend-vertical-container">
+  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[1]`</div></div>
+  <div class='progressbar-legend'>
+  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  </div>
+</div>
+</div>
+
+<div class="column-3">
+<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding-top: 15px;">
+  <div class="piramide" style="height: 152px;">
+  `r g_turismo_aloj`
+  </div>
+  <div class="legend-vertical-container">
+  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-7' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[7]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[3]`</div></div>
+  <div class='progressbar-legend'>
+  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div class="row" style="margin-top: -30px;">
+<div class="column indicator-title">
+  <h3>Motivaciones principales</h3>
 </div>
 <div class="column indicator-title">
   <h3>Niveles de ingresos</h3>
@@ -739,13 +804,34 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding: 20px 10px 10px;">
-<div class="piramide" style="height: 158px; margin-bottom: 11px;">
-  `r g_turismo_pais`
+
+<div class="column highlight" style="padding: 10px;">
+<div class="progress-bar-container">
+  <div class="progress-bar-1" style="width:`r porc_Turistas_descansar`%"></div>
+  <div class="progress-bar-2" style="width:`r porc_Turistas_explorar`%"></div>
+  <div class="progress-bar-3" style="width:`r porc_Turistas_otros`%"></div>
 </div>
+
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
+
+<div class="row">
+<p style="margin: 13px 16px -10px;">Canarias</p>
+
+<div class="progress-bar-container" style="height: 20px;">
+  <div class="progress-bar-1-C" style="width:`r porc_Turistas_descansar_C`%"></div>
+  <div class="progress-bar-2-C" style="width:`r porc_Turistas_explorar_C`%"></div>
+  <div class="progress-bar-3-C" style="width:`r porc_Turistas_otros_C`%"></div>
+</div>
+
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+</div>
 </div>
 </div>
 
@@ -775,90 +861,6 @@ mapa_isla_plot
 </div>
 
 </div>
-</div>
-
-<div class="row">
-<div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px;">
-  <h3>Niveles educativos</h3>
-</div>
-</div>
-<div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px;">
-  <h3>Tipos de alojamientos</h3>
-</div>
-</div>
-<div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px;">
-  <h3>Motivaciones principales</h3>
-</div>
-</div>
-</div>
-
-<div class="row">
-<div class="column-3">
-<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding: 12px 5px 20px;">
-  <div class="piramide" style="height: 152px; margin-bottom: 28px;">
-  `r g_turismo_educacion`
-  </div>
-  <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[3]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[1]`</div></div>
-  <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-  </div>
-</div>
-</div>
-<div class="column-3">
-<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding-top: 15px;">
-  <div class="piramide" style="height: 152px;">
-  `r g_turismo_aloj`
-  </div>
-  <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[1]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-7' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[7]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[3]`</div></div>
-  <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-  </div>
-</div>
-</div>
-
-<div class="column-3">
-<div class="column highlight" style="width: 100% !important; margin-top: -30px; padding: 28px 5px;">
-<div class="progress-bar-container">
-  <div class="progress-bar-1" style="width:`r porc_Turistas_descansar`%"></div>
-  <div class="progress-bar-2" style="width:`r porc_Turistas_explorar`%"></div>
-  <div class="progress-bar-3" style="width:`r porc_Turistas_otros`%"></div>
-</div>
-
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-</div>
-
-<div class="row">
-<p style="margin: 24px 16px -10px;">Canarias</p>
-
-<div class="progress-bar-container" style="height: 20px;">
-  <div class="progress-bar-1-C" style="width:`r porc_Turistas_descansar_C`%"></div>
-  <div class="progress-bar-2-C" style="width:`r porc_Turistas_explorar_C`%"></div>
-  <div class="progress-bar-3-C" style="width:`r porc_Turistas_otros_C`%"></div>
-</div>
-
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 
 
