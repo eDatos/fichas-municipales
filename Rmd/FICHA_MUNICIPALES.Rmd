@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38001
+  id_municipio: 38005
   convocatoria: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -332,7 +332,8 @@ df_municipales <- df_municipales %>% transform(mun = if_else(mun == "38013_2007"
 df_municipales_mun <- df_municipales %>% 
   filter(mun == params$id_municipio)
 
-df_municipales_mun_ <- df_municipales_mun %>% filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_municipales_mun_ <- df_municipales_mun %>% 
+  filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
 df_plot_ <- df_municipales_mun_ %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
   select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA, repr_elegidos = REPRESENTANTES_ELEGIDOS)
@@ -352,7 +353,7 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
-  transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+  transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
 
 if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
   df_plot <- df_plot[-nrow(df_plot),]
@@ -401,14 +402,17 @@ g_municipales_mun <- ggplot(data = df_plot,
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_municipales_mun <- ggplotly(g_municipales_mun, tooltip = c("text")) %>%
-  layout(hovermode = "y unified", showlegend = FALSE) %>%
+  layout(margin = list(t=40, b=20, l=20, r=20), hovermode = "y unified", showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(7:12))
 ```
 
 ```{r Resultados Representantes}
 df_plot_$repr_elegidos <- as.numeric(df_plot_$repr_elegidos)
-df_representantes_ <- df_plot_ %>% filter(repr_elegidos > 0)%>% select(candidatura, repr_elegidos) %>% arrange(-repr_elegidos)
+df_representantes_ <- df_plot_ %>% 
+  filter(repr_elegidos > 0) %>% 
+  arrange(-valor) %>% 
+  select(candidatura, repr_elegidos)
 
 df_representantes <- df_representantes_ %>% rbind(c("", sum(df_representantes_$repr_elegidos)))
 df_representantes <- df_representantes %>% left_join(df_partido, by = "candidatura") 
@@ -492,7 +496,7 @@ if(Variacion_Porcentual == "NA"){
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="piechart_P" style="height: 330px;">`r g_municipales_mun`</div>
+<div class="piechart_P" style="height: 300px;">`r g_municipales_mun`</div>
 
 <div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
 

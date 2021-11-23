@@ -62,6 +62,7 @@ convocatoria_congreso <- convocatoria_congreso %>%
          convocatoria_axis = ifelse(substring(code, 10,13) == "2019",
                                     paste0(tolower(substring(code, 15,17)), " ", substring(code, 10,13)),
                                     paste0(substring(code, 10,13))))
+convocatoria_congreso <- convocatoria_congreso %>% arrange(order)
 
 convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$convocatoria)
 convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convocatoria_congreso[convocatoria_actual$code == convocatoria_congreso$code, ]$order - 1, ]
@@ -202,12 +203,16 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = c(convocatoria_congreso$order[convocatoria_actual$order:1]), labels = c(convocatoria_congreso$convocatoria_axis[convocatoria_actual$order:1])) +
+  scale_x_continuous(breaks = function(x){min(df$order):max(df$order)},
+                   labels = c(convocatoria_congreso$convocatoria_axis[which(convocatoria_congreso$order %in% c(min(df$order):max(df$order)))])) +
   scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  layout(hoverlabel = "", hovermode = 'x unified') %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(min(df$order), max(df$order) - 8), max(df$order)),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');
@@ -394,7 +399,7 @@ df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
   left_join(df_plot_P, by = "candidatura") %>%
   mutate(label = "|") %>% 
-  transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+  transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
   
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",

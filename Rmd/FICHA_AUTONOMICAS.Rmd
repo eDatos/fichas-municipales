@@ -351,7 +351,7 @@ df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
   left_join(df_plot_C, by = "candidatura") %>%
   mutate(label = "|") %>% 
-  transform(name_partido = if_else(candidatura == "Otros",  "Resto de partidos", name_partido))
+  transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
   
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
