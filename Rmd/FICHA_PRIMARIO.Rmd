@@ -3,13 +3,11 @@ title: ''
 params:
   id_municipio: 35006
   año: 2020
-  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.superficie: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/2b88193e-29c3-44ae-91dd-c17bbe90124a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/2b88193e-29c3-44ae-91dd-c17bbe90124a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D
   url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/e59bfde6-0aab-473f-a771-0063f9b3133d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/40e615bb-a0fb-4575-931b-c8ca0ef99b59/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cultivada_herbaceos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/682d0933-f921-46f6-94bc-fbb7d2569247/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
@@ -22,6 +20,7 @@ params:
   url.agr_leñosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
   url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/1.0
   url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/1.0
+  url.superficie: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
 output:
   html_document:
     df_print: paged
@@ -52,7 +51,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -62,14 +61,14 @@ df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
 df_CL_AREA_mun <- df_CL_AREA %>% 
   select(id = code, municipio = value, code = parent) %>%
   filter(substring(id, 0,2) != "ES") %>% 
-  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  transform(id = sub("\\_.*", "", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
   left_join(df_CL_AREA, by="code") %>% 
   select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
   left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
   left_join(df_CL_AREA, by="code") %>% 
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
 
@@ -77,8 +76,8 @@ municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
 
 ```{r Normalización de municipios} 
-recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
-recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
 recode_mun <- function(df, colname) {
   df[,colname] = trimws(df[,colname])
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
@@ -156,40 +155,31 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución de la población}
-# Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+```{r Gráfico evolución de la población turística}
 data_u <- fromJSON(params$url.cultivada)
+df_u_ <- data.frame(
+  municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  año = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
+  arrange(año) %>%
+  spread(medida, valor) %>%
+  select(municipio, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+df_u <- df_u_ %>% filter(substring(municipio, 0,2) != "ES")
+df_u$año <- as.integer(df_u$año)
 
-df_u <- data.frame(Municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                         each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                   Año = as.integer(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]])), 
-                   Valor = as.integer(data_u[["observation"]])) %>% 
-        arrange(Año)
-
-ind_pobl <- fromJSON(params$url.ind_pobl)
-
-df_lv <- data.frame(
-  municipio = rep(names(ind_pobl[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=ind_pobl[["dimension"]][["TIME"]][["representation"]][["size"]] * ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  año = rep(names(ind_pobl[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(ind_pobl[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(ind_pobl[["observation"]]), 1))
-df_lv$año <- as.integer(df_lv$año)
-
-df_u <- df_u %>% 
-  left_join((df_lv %>% filter(medida == "ANNUAL_PERCENTAGE_RATE") %>% select(Municipio = municipio, Año = año, Tasa = valor)), by = c("Municipio", "Año"))
-
-related_mun <- df_u %>% filter(Año == params$año)
-related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
+related_mun <- df_u %>% filter(año == params$año)
+related_mun <- seleccion_mun(related_mun %>% select(mun = municipio, valor), 'valor')
 
 df <- related_mun %>%
-  select(Municipio = "mun") %>%
-  left_join(df_u, by= "Municipio") %>%
-  select(id = Municipio, Año, Valor, Tasa) %>%
+  select(municipio = "mun") %>%
+  left_join(df_u, by= "municipio") %>%
+  select(id = municipio, año, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(Año, Valor, Municipio = municipio, Tasa) %>%
-  filter(Año <= params$año & Año != min(Año))
+  select(año, municipio, valor, tasa) %>%
+  filter(año <= params$año & año != min(año))
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
@@ -197,16 +187,16 @@ leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div cl
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Habitantes: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 df <- df %>% mutate(
-    tooltip = ifelse(Año == params$año,
-                     sprintf(leyenda.content, Municipio, ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")),
-                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, Municipio, paste0(ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")), ' (',Año,')'),
-                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    tooltip = ifelse(año == params$año,
+                     sprintf(leyenda.content, municipio, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, municipio, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',año,')'),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
     )
 ) 
 
 g_line <- ggplot(data = df, 
-                 aes(x = Año, y = Valor, group = Municipio, colour = Municipio, text = tooltip)) +
+                 aes(x = año, y = valor, group = municipio, colour = municipio, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -217,14 +207,14 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = min(df$Año), to = max(df$Año), by = as.integer((max(df$Año)-min(df$Año))/3))}) +
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 8, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/3))}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(max(df$Año) - 18, min(df$Año)), max(df$Año)),
+                      range = c(max(max(df$año) - 8, min(df$año)), max(df$año)),
                       rangeslider = list(type = "date", thickness=0.04))) %>%
   onRender("
     function(el) {
@@ -259,88 +249,187 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
     }
   ") 
 
-leyenda_poblacion <- df %>% filter(Año == params$año) %>%
-  mutate(Valor = ifelse(is.na(Valor), " -", format(Valor, big.mark = ".", decimal.mark = ",")),
-         Tasa = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
+leyenda_poblacion <- df %>% filter(año == params$año) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "municipio")
 ```
 
 ```{r Indicador evolución de la población}
-df_lv <- df_lv %>% filter(año == params$año & municipio == params$id_municipio)
+df_lv <- df_u %>% filter(año == params$año & municipio == params$id_municipio)
 
-Num_Pobl <-  format(df_lv[df_lv$medida == 'ABSOLUTE', ]$valor, big.mark = ".", decimal.mark = ",")
-Variacion_Pobl <- format(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor, big.mark = ".", decimal.mark = ",")
-Imagen_Variacion <- ifelse(signo(df_lv[df_lv$medida == 'ANNUAL_PUNTUAL_RATE', ]$valor) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Pobl <- format(df_lv[df_lv$medida == 'ANNUAL_PERCENTAGE_RATE', ]$valor, big.mark = ".", decimal.mark = ",", nsmall = 1)
+superficie_cultivada_num <- df_lv$valor
+superficie_cultivada <- format(superficie_cultivada_num, big.mark = ".", decimal.mark = ",")
+Imagen_Variacion <- ifelse(signo(df_lv$tasa) == "más", './img/up.png', './img/down.png')
+Variacion_Porcentual <- format(df_lv$tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Indicador Secano}
+data_secano <- fromJSON(params$url.cultivada_secano)
+
+df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                  each=data_secano[["dimension"]][["TIME"]][["representation"]][["size"]] * data_secano[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+                        año = rep(names(data_secano[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                                  each=data_secano[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+                        medida = names(data_secano[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+                        valor = round(as.numeric(data_secano[["observation"]]), 1)) %>% 
+  spread(medida, valor) %>%
+  select(mun, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+
+sup_secano_num <- df_secano %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_secano <- sup_secano_num %>% format(big.mark = ".", decimal.mark = ",")
+percent_secano <- round(sup_secano_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Indicador Regadío}
+data_regadio <- fromJSON(params$url.cultivada_regadio)
+
+df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                   each=data_regadio[["dimension"]][["TIME"]][["representation"]][["size"]] * data_regadio[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+                         año = rep(names(data_regadio[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                                   each=data_regadio[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+                         medida = names(data_regadio[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+                         valor = round(as.numeric(data_regadio[["observation"]]), 1)) %>% 
+  spread(medida, valor) %>%
+  select(mun, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+
+sup_regadio_num <- df_regadio %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_regadio <- sup_regadio_num %>% format(big.mark = ".", decimal.mark = ",")
+percent_regadio <- round(sup_regadio_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Indicador Proporción superficie cultivada sobre superficie total}
+data_superficie <- fromJSON(params$url.superficie)
+
+df_superficie <- data.frame(mun = rep(names(data_superficie[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                      each=length(data_superficie[["dimension"]][["TIME"]][["representation"]][["index"]])),
+                            año = names(data_superficie[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                            valor = as.numeric(data_superficie[["observation"]]))
+
+superficie_num <- df_superficie %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+percent_sup_cultivada <- round(superficie_cultivada_num / superficie_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Rankings}
-df_ranking <- data.frame(id = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                               each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]]), 
-                      año = names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
-                      valor = as.numeric(data_u[["observation"]])) %>% 
-  filter(substring(id, 0,2) != "ES") %>% 
+sup_Canarias_total <- df_u_ %>% filter(municipio == "ES70" & año == params$año) %>% select(valor) %>% as.numeric()
+sup_Isla_total <- df_u_ %>% filter(municipio == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric()
+
+df_ranking <- df_u %>%
+  select(id = municipio, año, valor) %>%
   filter(año == params$año) %>%
-  filter(!is.na(valor)) %>%
-  left_join(df_CL_AREA_mun, by="id") %>% 
+  left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 
+df_ranking_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
 num_mun_canarias <- nrow(df_ranking)
-percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / Num_Pobl_Canarias * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+percent_canarias <- format(round(df_ranking_mun$valor / sup_Canarias_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
-df_ranking_isla <- df_ranking %>% filter(isla == municipio_actual$isla)
+df_ranking_isla <- df_ranking %>% filter(isla == df_ranking_mun$isla)
 rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
 num_mun_isla <- nrow(df_ranking_isla)
-percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / Num_Pobl_Isla * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+percent_isla <- format(round(df_ranking_mun$valor / sup_Isla_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
 rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
 num_mun_comarca <- nrow(df_ranking_comarca)
-percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$rankingacion / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Tipos de vehículo y tipos de combustible}
-data_tipos <- fromJSON(params$url.tipos)
+```{r Barras países por sexo, eval=FALSE}
+# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+df_turismo_pais <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["valor"]])
+colnames(df_turismo_pais) <- c('ge', 'sexo', 'pais', 'mun', 'periodo', 'valor')
+df_turismo_pais$ge <- factor(df_turismo_pais$ge, levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
+df_turismo_pais$sexo <- factor(df_turismo_pais$sexo, levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
+df_turismo_pais$pais <- factor(df_turismo_pais$pais, levels=piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
+df_turismo_pais$mun <- factor(df_turismo_pais$mun, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
+df_turismo_pais$periodo <- as.numeric(df_turismo_pais$periodo)
+df_turismo_pais$valor <- as.numeric(df_turismo_pais$valor)
+df_turismo_pais$mun <- recode_mun(df_turismo_pais, 'mun')
+df_turismo_pais <- df_turismo_pais %>% transform(pais = gsub("Otros países", "Otros", pais))
 
-df_tipos <- cbind(data.frame(do.call('rbind', data_tipos[["data"]][["dimCodes"]])), data_tipos[["data"]][["Valor"]])
-colnames(df_tipos) <- c('veh', 'combustible', 'mun', 'periodo', 'valor')
-df_tipos$veh <- factor(df_tipos$veh, levels=data_tipos[["categories"]][["codes"]][[1]], labels=data_tipos[["categories"]][["labels"]][[1]])
-df_tipos$combustible <- factor(df_tipos$combustible, levels=data_tipos[["categories"]][["codes"]][[2]], labels=data_tipos[["categories"]][["labels"]][[2]])
-df_tipos$mun <- factor(df_tipos$mun, levels=data_tipos[["categories"]][["codes"]][[3]], labels=data_tipos[["categories"]][["labels"]][[3]])
-df_tipos$periodo <- factor(df_tipos$periodo, levels=data_tipos[["categories"]][["codes"]][[4]], labels=paste0(substring(data_tipos[["categories"]][["codes"]][[4]], 0,4), "-",
-                                                                                                              substring(data_tipos[["categories"]][["codes"]][[4]], 5,7)))
-df_tipos$valor <- as.numeric(df_tipos$valor)
-df_tipos$mun <- recode_mun(df_tipos, 'mun')
-df_tipos <- df_tipos %>% mutate(veh = recode(veh, "Camiones y furgonetas" = "Camiones y<br>furgonetas"),
-                                veh = recode(veh, "Tractores industriales" = "Tractores<br>industriales"),
-                                veh = recode(veh, "Remolques y semirremolques" = "Remolques y<br>semirremolques"),
-                                veh = recode(veh, "Otros tipos de vehículo" = "Otros tipos<br>de vehículo"))
+rk_turismo_pais_mun <- df_turismo_pais %>%
+  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% arrange(valor) %>%
+  select(c(pais, valor))
+rk_turismo_pais_mun <- rk_turismo_pais_mun %>% mutate(porcentaje = rk_turismo_pais_mun$valor/ Num_Turistas_num * 100)
+rk_turismo_pais_mun$pais <- ordered(rk_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
+
+df_turismo_pais_mun <- df_turismo_pais %>%
+  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>%
+  select(c(sexo, pais, valor))
+df_turismo_pais_Canarias <- df_turismo_pais %>%
+  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>%
+  select(c(sexo, pais, valor))
+
+df_turismo_pais_mun <- df_turismo_pais_mun %>%
+  mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100,
+         valor_Canarias = df_turismo_pais_Canarias$valor, porcentaje_Canarias = df_turismo_pais_Canarias$valor / num_Canarias_total * 100)
+df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
+
+df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br>"), ""),
+    "<b>", sexo, "</b>",
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
+    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
+    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  )
+)
+
+g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group = sexo, text = hovertext)) +
+  geom_bar(stat = "identity", width = 0.6, alpha = 0.8, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
+  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(size = 8),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}, )
+
+g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(3, 4))
 ```
 
-```{r Barras Tipos de vehículo}
-rk_vehiculos_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>%
-  arrange(valor) %>%
-  select(c(veh, valor))
-rk_vehiculos_mun$veh <- ordered(rk_vehiculos_mun$veh, levels = rk_vehiculos_mun$veh)
+```{r Tipos de alojamiento, eval=FALSE}
+# Turistas según tipos de alojamiento por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_sl_aloj <- fromJSON(params$url.sl_aloj)
+df_turismo_sl_aloj <- cbind(data.frame(do.call('rbind', turismo_sl_aloj[["data"]][["dimCodes"]])), turismo_sl_aloj[["data"]][["valor"]])
+colnames(df_turismo_sl_aloj) <- c('sl', 'tipo', 'mun', 'periodo', 'valor')
+df_turismo_sl_aloj$sl <- factor(df_turismo_sl_aloj$sl, levels=turismo_sl_aloj[["categories"]][["codes"]][[1]], labels=turismo_sl_aloj[["categories"]][["labels"]][[1]])
+df_turismo_sl_aloj$tipo <- factor(df_turismo_sl_aloj$tipo, levels=turismo_sl_aloj[["categories"]][["codes"]][[2]], labels=turismo_sl_aloj[["categories"]][["labels"]][[2]])
+df_turismo_sl_aloj$mun <- factor(df_turismo_sl_aloj$mun, levels=turismo_sl_aloj[["categories"]][["codes"]][[3]], labels=turismo_sl_aloj[["categories"]][["labels"]][[3]])
+df_turismo_sl_aloj$periodo <- as.numeric(df_turismo_sl_aloj$periodo)
+df_turismo_sl_aloj$valor <- as.numeric(df_turismo_sl_aloj$valor)
+df_turismo_sl_aloj$mun <- recode_mun(df_turismo_sl_aloj, 'mun')
 
-df_vehiculos_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
-df_vehiculos_C <- df_tipos %>%
-  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
-  select(!mun)
-df_vehiculos_mun <- df_vehiculos_mun %>%
-  mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos * 100,
-         valor_Canarias = df_vehiculos_C$valor,
-         porcentaje_Canarias = df_vehiculos_C$valor / Num_vehiculos_Canarias * 100)
+df_turismo_aloj_mun <- df_turismo_sl_aloj %>%
+  filter(tipo != "TOTAL" & sl == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(tipo, valor))
+df_turismo_aloj_C <- df_turismo_sl_aloj %>%
+  filter(mun == "CANARIAS" & tipo != "TOTAL" & sl == "TOTAL" & periodo == params$año) %>% 
+  select(c(tipo, valor))
+df_turismo_aloj_mun <- df_turismo_aloj_mun %>%
+  mutate(porcentaje = df_turismo_aloj_mun$valor / Num_Turistas_num * 100,
+         valor_Canarias = df_turismo_aloj_C$valor,
+         porcentaje_Canarias = df_turismo_aloj_C$valor / num_Canarias_total * 100)
 
-df_vehiculos_plot <- df_vehiculos_mun %>%
+df_turismo_aloj_plot <- df_turismo_aloj_mun %>%
   mutate(label = "|")
-df_vehiculos_plot$veh <- ordered(df_vehiculos_plot$veh, levels = rk_vehiculos_mun$veh)
+df_turismo_aloj_plot$tipo <- ordered(df_turismo_aloj_plot$tipo, levels = df_turismo_aloj_plot$tipo[5:1])
+df_turismo_aloj_plot <- df_turismo_aloj_plot %>% mutate(tipo = recode(tipo, "Vivienda privada propia o de terceros" = "Vivienda privada"),
+                                                        tipo = recode(tipo, "Otros alojamientos colectivos" = "Otros"))
 
-df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(veh), "</b><br>",
+df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(tipo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
@@ -348,21 +437,22 @@ df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
   )
 )
 
-df_vehiculos_0 <- df_vehiculos_plot %>% 
+df_turismo_aloj_0 <- df_turismo_aloj_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
 
-df_vehiculos_plot <- rbind(df_vehiculos_plot, df_vehiculos_0)
+df_turismo_aloj_plot <- rbind(df_turismo_aloj_plot, df_turismo_aloj_0)
 
-g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
+g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  scale_fill_manual(values = c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")) +
   theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
-  guides(fill = FALSE) +
-  scale_fill_manual(values = c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")) +
-  theme(axis.text.x = element_text(),
+  theme(axis.text.x = element_text(size = 8),
+        axis.text.y = element_blank(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -372,110 +462,95 @@ g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label =
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_vehiculos <- ggplotly(g_vehiculos, tooltip = c("text")) %>%
-  layout(hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(8:14))
+g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(5:8))
 ```
 
-```{r Progress-bar Tipos de combustible}
-rk_combustibles_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
-  arrange(valor) %>%
-  select(c(combustible, valor))
-rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos * 100)
-rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
+```{r Niveles de ingresos, eval=FALSE}
+# Turistas según niveles de ingresos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_ingresos <- fromJSON(params$url.ingresos)
+df_turismo_ingresos <- cbind(data.frame(do.call('rbind', turismo_ingresos[["data"]][["dimCodes"]])), turismo_ingresos[["data"]][["valor"]])
+colnames(df_turismo_ingresos) <- c('nivel', 'pais', 'mun', 'periodo', 'valor')
+df_turismo_ingresos$nivel <- factor(df_turismo_ingresos$nivel, levels=turismo_ingresos[["categories"]][["codes"]][[1]], labels=turismo_ingresos[["categories"]][["labels"]][[1]])
+df_turismo_ingresos$pais <- factor(df_turismo_ingresos$pais, levels=turismo_ingresos[["categories"]][["codes"]][[2]], labels=turismo_ingresos[["categories"]][["labels"]][[2]])
+df_turismo_ingresos$mun <- factor(df_turismo_ingresos$mun, levels=turismo_ingresos[["categories"]][["codes"]][[3]], labels=turismo_ingresos[["categories"]][["labels"]][[3]])
+df_turismo_ingresos$periodo <- as.numeric(df_turismo_ingresos$periodo)
+df_turismo_ingresos$valor <- as.numeric(df_turismo_ingresos$valor)
+df_turismo_ingresos$mun <- recode_mun(df_turismo_ingresos, 'mun')
 
-df_combustibles_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
-  select(c(combustible, valor))
-df_combustibles_mun <- df_combustibles_mun %>%
-  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
+df_turismo_ingresos_C <- df_turismo_ingresos %>%
+  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  select(c(nivel, valor))
+df_turismo_ingresos_C <- df_turismo_ingresos_C %>% mutate(porcentaje = df_turismo_ingresos_C$valor/ num_Canarias_total * 100)
 
-porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
-porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
-porc_otros <- 100 - df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")] - df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
-porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric
-porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric
-porc_otros_l <- round(porc_otros, 1) %>% as.numeric
+porc_Turistas_menos50_C <- df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
+porc_Turistas_mas50_C <- 100 - df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
+porc_Turistas_menos50_C_l <- round(porc_Turistas_menos50_C, 1) %>% as.numeric
+porc_Turistas_mas50_C_l <- round(porc_Turistas_mas50_C, 1) %>% as.numeric
+
+df_turismo_ingresos <- df_turismo_ingresos %>%
+  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(nivel, valor))
+df_turismo_ingresos <- df_turismo_ingresos %>% mutate(porcentaje = df_turismo_ingresos$valor/ Num_Turistas_num * 100)
+
+porc_Turistas_menos50 <- df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
+porc_Turistas_mas50 <- 100 - df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
+porc_Turistas_menos50_l <- round(porc_Turistas_menos50, 1) %>% as.numeric
+porc_Turistas_mas50_l <- round(porc_Turistas_mas50, 1) %>% as.numeric
 ```
 
-```{r Matriculaciones}
-# Número de vehículos matriculados durante el periodo de referencia.
-data_matr <- fromJSON(params$url.matricula)
+```{r Propósito principal, eval=FALSE}
+# Turistas según el propósito principal del viaje por tipos de alojamiento. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_proposito <- fromJSON(params$url.proposito)
+df_turismo_proposito <- cbind(data.frame(do.call('rbind', turismo_proposito[["data"]][["dimCodes"]])), turismo_proposito[["data"]][["valor"]])
+colnames(df_turismo_proposito) <- c('proposito', 'tipo', 'mun', 'periodo', 'valor')
+df_turismo_proposito$proposito <- factor(df_turismo_proposito$proposito, levels=turismo_proposito[["categories"]][["codes"]][[1]],
+                                         labels=turismo_proposito[["categories"]][["labels"]][[1]])
+df_turismo_proposito$tipo <- factor(df_turismo_proposito$tipo, levels=turismo_proposito[["categories"]][["codes"]][[2]], labels=turismo_proposito[["categories"]][["labels"]][[2]])
+df_turismo_proposito$mun <- factor(df_turismo_proposito$mun, levels=turismo_proposito[["categories"]][["codes"]][[3]], labels=turismo_proposito[["categories"]][["labels"]][[3]])
+df_turismo_proposito$periodo <- as.numeric(df_turismo_proposito$periodo)
+df_turismo_proposito$valor <- as.numeric(df_turismo_proposito$valor)
+df_turismo_proposito$mun <- recode_mun(df_turismo_proposito, 'mun')
 
-df_matr <- data.frame(
-  mun = rep(names(data_matr[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=data_matr[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  mes = rep(names(data_matr[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(data_matr[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(data_matr[["observation"]]), 1))
-df_matr$valor <- as.numeric(df_matr$valor)
+df_turismo_proposito <- df_turismo_proposito %>%
+  filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(proposito, valor))
+df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_proposito$valor/ Num_Turistas_num * 100)
 
-Num_Matriculaciones_num <- df_matr %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
-Num_Matriculaciones <- df_matr %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
-  format(big.mark = ".", decimal.mark = ",")
-
-# Número de turismos matriculados durante el periodo de referencia.
-data_matr_turismos <- fromJSON(params$url.matricula_tur)
-
-df_matr_turismos <- data.frame(
-  mun = rep(names(data_matr_turismos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  mes = rep(names(data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(data_matr_turismos[["observation"]]), 1))
-df_matr_turismos$valor <- as.numeric(df_matr_turismos$valor)
-
-Num_Matr_turismos <- df_matr_turismos %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
-  format(big.mark = ".", decimal.mark = ",")
+percent_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Matriculaciones Tipos}
-data_matr_tipos <- fromJSON(params$url.matr_tipos)
+```{r Nivel educativo, eval=FALSE}
+# Turistas según nivel educativo por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_educacion <- fromJSON(params$url.educacion)
+df_turismo_educacion <- cbind(data.frame(do.call('rbind', turismo_educacion[["data"]][["dimCodes"]])), turismo_educacion[["data"]][["valor"]])
+colnames(df_turismo_educacion) <- c('estudios', 'pais', 'mun', 'periodo', 'valor')
+df_turismo_educacion$estudios <- factor(df_turismo_educacion$estudios, levels=turismo_educacion[["categories"]][["codes"]][[1]], 
+                                        labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
+df_turismo_educacion$pais <- factor(df_turismo_educacion$pais, levels=turismo_educacion[["categories"]][["codes"]][[2]], labels=turismo_educacion[["categories"]][["labels"]][[2]])
+df_turismo_educacion$mun <- factor(df_turismo_educacion$mun, levels=turismo_educacion[["categories"]][["codes"]][[3]], labels=turismo_educacion[["categories"]][["labels"]][[3]])
+df_turismo_educacion$periodo <- as.numeric(df_turismo_educacion$periodo)
+df_turismo_educacion$valor <- as.numeric(df_turismo_educacion$valor)
+df_turismo_educacion$mun <- recode_mun(df_turismo_educacion, 'mun')
 
-df_matr_tipos <- cbind(data.frame(do.call('rbind', data_matr_tipos[["data"]][["dimCodes"]])), data_matr_tipos[["data"]][["Valor"]])
-colnames(df_matr_tipos) <- c('veh', 'mun', 'periodo', 'valor')
-df_matr_tipos$veh <- factor(df_matr_tipos$veh, levels=data_matr_tipos[["categories"]][["codes"]][[1]], labels=data_matr_tipos[["categories"]][["labels"]][[1]])
-df_matr_tipos$mun <- factor(df_matr_tipos$mun, levels=data_matr_tipos[["categories"]][["codes"]][[2]], labels=data_matr_tipos[["categories"]][["labels"]][[2]])
-df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["categories"]][["codes"]][[3]], labels=paste0(substring(data_matr_tipos[["categories"]][["codes"]][[3]], 0,4), "-",
-                                                                                                                             substring(data_matr_tipos[["categories"]][["codes"]][[3]], 5,7)))
-df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
-df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
-df_matr_tipos <- df_matr_tipos %>% filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES"))
-df_matr_tipos <- df_matr_tipos %>% mutate(veh = recode(veh, "  Vehículos mixtos adaptables" = "  Vehículos mixtos<br>adaptables"),
-                                          veh = recode(veh, "  Otros automóviles" = "  Otros<br>automóviles"),
-                                          veh = recode(veh, " CICLOMOTORES" = " Ciclomotores"),
-                                          veh = recode(veh, " VEHICULOS ESPECIALES" = " Vehículos<br>especiales"),
-                                          veh = recode(veh, " REMOLQUES Y SEMIRREMOLQUES" = " Remolques y<br>semirremolques"),
-                                          veh = recode(veh, "  " = ""),
-                                          )
+df_turismo_educacion_mun <- df_turismo_educacion %>%
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(estudios, valor))
+df_turismo_educacion_C <- df_turismo_educacion %>%
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  select(c(estudios, valor))
+df_turismo_educacion_mun <- df_turismo_educacion_mun %>%
+  mutate(porcentaje = df_turismo_educacion_mun$valor / Num_Turistas_num * 100,
+         valor_Canarias = df_turismo_educacion_C$valor,
+         porcentaje_Canarias = df_turismo_educacion_C$valor / num_Canarias_total * 100)
 
-rk_matr_tipos_mun <- df_matr_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
-  arrange(valor) %>%
-  select(c(veh, valor))
-rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_mun$veh)
-
-Num_Matriculaciones_C <- df_matr %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
-df_matr_tipos_mun <- df_matr_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>% select(!c(mun, periodo))
-df_matr_tipos_C <- df_matr_tipos %>%
-  filter(mun == "CANARIAS" & periodo == mes_actual$code) %>% 
-  select(!c(mun, periodo))
-df_matr_tipos_mun <- df_matr_tipos_mun %>%
-  mutate(porcentaje = df_matr_tipos_mun$valor / Num_Matriculaciones_num * 100,
-         valor_Canarias = df_matr_tipos_C$valor,
-         porcentaje_Canarias = df_matr_tipos_C$valor / Num_Matriculaciones_C * 100)
-
-df_matr_tipos_plot <- df_matr_tipos_mun %>%
+df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
   mutate(label = "|")
-df_matr_tipos_plot$veh <- ordered(df_matr_tipos_plot$veh, levels = rk_matr_tipos_mun$veh)
 
-df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(veh), "</b><br>",
+df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(estudios), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
@@ -483,45 +558,22 @@ df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
   )
 )
 
-df_matr_tipos_0 <- df_matr_tipos_plot %>% 
+df_turismo_educacion_0 <- df_turismo_educacion_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
 
-df_matr_tipos_plot <- rbind(df_matr_tipos_plot, df_matr_tipos_0)
+df_turismo_educacion_plot <- rbind(df_turismo_educacion_plot, df_turismo_educacion_0)
 
-df_matr_tipos_plot <- df_matr_tipos_plot %>% filter(valor != 0)
-
-if(nrow(df_matr_tipos_plot)/2 == 12){
-  col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
-  }else if(nrow(df_matr_tipos_plot)/2 == 11){
-    col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0072A2", "#005980", "#00405B")
-    }else if(nrow(df_matr_tipos_plot)/2 == 10){
-      col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-      }else if(nrow(df_matr_tipos_plot)/2 == 9){
-        col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-        }else if(nrow(df_matr_tipos_plot)/2 == 8){
-          col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-          }else if(nrow(df_matr_tipos_plot)/2 == 7){
-            col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-            }else if(nrow(df_matr_tipos_plot)/2 == 6){
-              col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-              }else if(nrow(df_matr_tipos_plot)/2 == 5){
-                col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
-                }else if(nrow(df_matr_tipos_plot)/2 == 4){
-                  col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
-                  }else if(nrow(df_matr_tipos_plot)/2 == 3){
-                    col <- c("#8CD2EA", "#008BD0", "#005980")
-                  }
-
-g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
+g_turismo_educacion <- ggplot(df_turismo_educacion_plot, aes(y = estudios, fill = estudios, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
   theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
-  guides(fill = FALSE) +
-  scale_fill_manual(values = col) +
-  theme(axis.text.x = element_text(),
+  theme(axis.text.x = element_text(size = 8),
+        axis.text.y = element_blank(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -531,10 +583,47 @@ g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_matr_tipos <- ggplotly(g_matr_tipos, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c((nrow(df_matr_tipos_plot)/2+1):24))
+g_turismo_educacion <- ggplotly(g_turismo_educacion, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(4:6))
+```
+
+```{r Motivaciones principales, eval=FALSE}
+# Motivaciones principales para sus vacaciones","Tipos de alojamiento","Municipios". Municipios turísticos de Canarias y periodos. 2018 a 2020.
+turismo_motiv <- fromJSON(params$url.motivacion)
+df_turismo_motiv <- cbind(data.frame(do.call('rbind', turismo_motiv[["data"]][["dimCodes"]])), turismo_motiv[["data"]][["valor"]])
+colnames(df_turismo_motiv) <- c('motiv', 'tipo', 'mun', 'periodo', 'valor')
+df_turismo_motiv$motiv <- factor(df_turismo_motiv$motiv, levels=turismo_motiv[["categories"]][["codes"]][[1]], labels=turismo_motiv[["categories"]][["labels"]][[1]])
+df_turismo_motiv$tipo <- factor(df_turismo_motiv$tipo, levels=turismo_motiv[["categories"]][["codes"]][[2]], labels=turismo_motiv[["categories"]][["labels"]][[2]])
+df_turismo_motiv$mun <- factor(df_turismo_motiv$mun, levels=turismo_motiv[["categories"]][["codes"]][[3]], labels=turismo_motiv[["categories"]][["labels"]][[3]])
+df_turismo_motiv$periodo <- as.numeric(df_turismo_motiv$periodo)
+df_turismo_motiv$valor <- as.numeric(df_turismo_motiv$valor)
+df_turismo_motiv$mun <- recode_mun(df_turismo_motiv, 'mun')
+
+df_turismo_motiv_C <- df_turismo_motiv %>%
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  select(c(motiv, valor))
+df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ sum(df_turismo_motiv_C$valor) * 100)
+
+porc_Turistas_descansar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")]
+porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros_C <- 100 - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")] - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
+porc_Turistas_descansar_C_l <- round(porc_Turistas_descansar_C, 1) %>% as.numeric
+porc_Turistas_explorar_C_l <- round(porc_Turistas_explorar_C, 1) %>% as.numeric
+porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
+
+df_turismo_motiv <- df_turismo_motiv %>%
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  select(c(motiv, valor))
+df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ sum(df_turismo_motiv$valor) * 100)
+
+porc_Turistas_descansar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")]
+porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
+porc_Turistas_otros <- 100 - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")] - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
+porc_Turistas_descansar_l <- round(porc_Turistas_descansar, 1) %>% as.numeric
+porc_Turistas_explorar_l <- round(porc_Turistas_explorar, 1) %>% as.numeric
+porc_Turistas_otros_l <- round(porc_Turistas_otros, 1) %>% as.numeric
 ```
 
 
@@ -542,29 +631,23 @@ g_matr_tipos <- ggplotly(g_matr_tipos, tooltip = c("text")) %>%
 get_indicator2 = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
-get_indicator3 = function(label, value, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
-}
-get_indicator4 = function(title, label, value) {
-  return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
-}
 ```
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r mes_actual$periodo_formatted`</h3>
-<h2 style="color: #666; margin: 0;">Parque de vehículos</h2>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$año`</h3>
+<h2 style="color: #666; margin: 0;">Sector primario</h2>
 <hr>
 
 <div class="linechart-placeholder">
-<h2 style="color: #005980; margin-bottom: 0;">`r Num_Veh_Parque` vehículos</h2>
+<h2 style="color: #005980; margin-bottom: 0;">Superficie cultivada: `r superficie_cultivada` m<sup>2</sup></h2>
 <div class="linechart">
   `r g_line`
 </div>
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$Tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$municipio[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
 }
 ```
 </div>
@@ -572,12 +655,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r indicadores principales, results='asis'}
-if(Variacion_Porcentual_Veh_Parque == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-3'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
+    "<div class='column-3'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), sup_secano, './img/family.png'), "</div><div class='column-3'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), sup_regadio, './img/family.png'), "</div><div class='column-3'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), sup_secano, './img/family.png'), "</div><div class='column-4'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), sup_regadio, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
 }
 ```
 </div>
@@ -626,19 +709,18 @@ mapa_comarca_plot
 
 <div class="row">
 <div class="column indicator-title" style="margin-top: 10px;">
-  <h3>Tipos de vehículos</h3>
+  <h3>Cultivos herbáceos</h3>
 </div>
 <div class="column indicator-title" style="margin-top: 10px;">
-  <h3>Matriculaciones</h3>
+  <h3>Cultivos leñosos</h3>
 </div>
 </div>
 
 
 <div class="row">
-<div class="column" style="padding: 0px 5px 0px 0px;">
-<div class="highlight" style="width: 100% !important; padding-top: 12px;">
-<div class="piramide" style="height: 300px">
-  `r g_vehiculos`
+<div class="column highlight">
+<div class="piramide" style="height: 330px">
+  `r `
 </div>
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
@@ -648,31 +730,9 @@ mapa_comarca_plot
 
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 15px; padding: 5px;">
-  <h3>Tipos de combustible</h3>
-</div>
-
-<div class="highlight" style="width: 100% !important; margin-top: 10px; padding-top: 10px;">
-<div class="progress-bar-container">
-  <div class="progress-bar-1" style="width:`r porc_gasolina`%"></div>
-  <div class="progress-bar-2" style="width:`r porc_diesel`%"></div>
-  <div class="progress-bar-3" style="width:`r porc_otros`%"></div>
-</div>
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Gasolina<br>`r format(porc_gasolina_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Diesel<br>`r format(porc_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-</div>
-
-</div>
-
-</div>
-
-<div class="column" style="padding: 0px 5px 0px 0px;">
-<div class="highlight" style="width: 100% !important; padding-top: 12px;">
-
-<div class="piramide" style="height: 360px">
-  `r g_matr_tipos`
+<div class="column highlight">
+<div class="piramide" style="height: 330px">
+  `r `
 </div>
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
@@ -681,8 +741,15 @@ mapa_comarca_plot
 </div>
 
 </div>
-
 </div>
+
+<div class="indicator-title" style="width: 100% !important; margin-left: 0; padding: 5px;">
+  <h3>Ganadería</h3>
+</div>
+<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
+  
+</div>
+
 
 <div class="row" style="margin-top: 10px;">
 </div>

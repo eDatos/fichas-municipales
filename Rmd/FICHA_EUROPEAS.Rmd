@@ -53,6 +53,7 @@ convocatoria_europeas <- convocatoria %>%
 convocatoria_europeas <- convocatoria_europeas %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_europeas), decreasing = TRUE)),
          convocatoria_formatted = paste0(substring(code, 20,23)))
+convocatoria_europeas <- convocatoria_europeas %>% arrange(order)
 
 convocatoria_actual <- convocatoria_europeas %>% filter(substring(code, 20,23) == params$convocatoria)
 convocatoria_tva <- convocatoria_europeas[convocatoria_europeas$order == convocatoria_europeas[convocatoria_actual$code == convocatoria_europeas$code, ]$order - 1, ]
@@ -193,12 +194,16 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = c(convocatoria_europeas$order[convocatoria_actual$order:1]), labels = c(convocatoria_europeas$convocatoria_formatted[convocatoria_actual$order:1])) +
+  scale_x_continuous(breaks = function(x){min(df$order):max(df$order)},
+                     labels = c(convocatoria_europeas$convocatoria_formatted[which(convocatoria_europeas$order %in% c(min(df$order):max(df$order)))])) +
   scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  layout(hoverlabel = "", hovermode = 'x unified') %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(min(df$order), max(df$order) - 8), max(df$order)),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');

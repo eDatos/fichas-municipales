@@ -654,6 +654,8 @@ h4, h5 {
 
 .progress-bar-blue1 {
   background-color: #005980;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 .progress-bar-blue2 {
   background-color: #0072A2;
@@ -669,6 +671,8 @@ h4, h5 {
 }
 .progress-bar-blue6 {
   background-color: #8CD2EA;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 .progress-bar-blue7 {
   background-color: #D5EDFA;
@@ -676,6 +680,8 @@ h4, h5 {
 
 .progress-bar-grey1 {
   background-color: #59656E;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 .progress-bar-grey2 {
   background-color: #77848D;
@@ -694,5 +700,7 @@ h4, h5 {
 }
 .progress-bar-grey7 {
   background-color: #CED6E7;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
