@@ -624,6 +624,34 @@ df_exp_especies_mun <- df_exp_especies %>%
 
 ```
 
+```{r Ganadería explotaciones}
+data_cab_especies <- fromJSON(params$url.cab_especies)
+
+df_cab_especies <- data.frame(
+  mun = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  año = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            times = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_especie = data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+  valor = unlist(strsplit(data_cab_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+# df_especies_ <- data.frame(
+#   id_especie = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+#   especie = vector(mode = "character", length = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+# for(i in 1:data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]) {
+#   df_especies_$especie[i] <- data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+# }
+
+df_cab_especies$valor <- as.numeric(df_cab_especies$valor)
+df_cab_especies <- df_cab_especies %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun)) %>% 
+    left_join(df_especies, by = "id_especie")
+
+df_cab_especies_mun <- df_cab_especies %>%
+  filter(mun == municipio_actual$id & año == params$año & especie != "Total")
+
+```
+
 
 ```{r Generación HTML, results="asis"}
 get_indicator2 = function(label, value, image) {
