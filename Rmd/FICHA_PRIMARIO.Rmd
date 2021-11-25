@@ -10,17 +10,18 @@ params:
   url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/2b88193e-29c3-44ae-91dd-c17bbe90124a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D
   url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/e59bfde6-0aab-473f-a771-0063f9b3133d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/40e615bb-a0fb-4575-931b-c8ca0ef99b59/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.superficie: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.agr_herbaceos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9bd9de0e-1785-4e6c-b0e5-b139106445b9
+  url.agr_leñosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
+  url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  
   url.cultivada_herbaceos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/682d0933-f921-46f6-94bc-fbb7d2569247/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cultivada_leñosos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/bd997d29-4bb6-402f-9086-17eee6022d73/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cabezas_bovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/0f6d7612-91b6-49d4-aa38-a6624243712d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cabezas_ovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ea920cf7-48fc-4f12-8071-75a1f336133a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cabezas_caprino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/005c5a4d-44a3-4fb3-802d-8b4ec348ccb8/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.cabezas_porcino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/fb761796-5971-4ed8-8550-3c7cea6ad3a5/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.agr_herbaceos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9bd9de0e-1785-4e6c-b0e5-b139106445b9
-  url.agr_leñosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
-  url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/1.0
-  url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/1.0
-  url.superficie: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
 output:
   html_document:
     df_print: paged
@@ -207,7 +208,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 8, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/3))}) +
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 8, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4))}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -215,7 +216,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
                       range = c(max(max(df$año) - 8, min(df$año)), max(df$año)),
-                      rangeslider = list(type = "date", thickness=0.04))) %>%
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');
@@ -336,100 +337,79 @@ num_mun_comarca <- nrow(df_ranking_comarca)
 percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$rankingacion / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Barras países por sexo, eval=FALSE}
-# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-df_turismo_pais <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["valor"]])
-colnames(df_turismo_pais) <- c('ge', 'sexo', 'pais', 'mun', 'periodo', 'valor')
-df_turismo_pais$ge <- factor(df_turismo_pais$ge, levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
-df_turismo_pais$sexo <- factor(df_turismo_pais$sexo, levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
-df_turismo_pais$pais <- factor(df_turismo_pais$pais, levels=piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
-df_turismo_pais$mun <- factor(df_turismo_pais$mun, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
-df_turismo_pais$periodo <- as.numeric(df_turismo_pais$periodo)
-df_turismo_pais$valor <- as.numeric(df_turismo_pais$valor)
-df_turismo_pais$mun <- recode_mun(df_turismo_pais, 'mun')
-df_turismo_pais <- df_turismo_pais %>% transform(pais = gsub("Otros países", "Otros", pais))
+```{r Barras herbáceos}
+data_herbaceos <- fromJSON(params$url.agr_herbaceos)
+df_herbaceos <- cbind(data.frame(do.call('rbind', data_herbaceos[["data"]][["dimCodes"]])), data_herbaceos[["data"]][["Valor"]])
+colnames(df_herbaceos) <- c('mun', 'cultivo', 'año', 'sistema', 'valor')
+df_herbaceos$mun <- factor(df_herbaceos$mun, levels=data_herbaceos[["categories"]][["codes"]][[1]], labels=data_herbaceos[["categories"]][["labels"]][[1]])
+df_herbaceos$cultivo <- factor(df_herbaceos$cultivo, levels=data_herbaceos[["categories"]][["codes"]][[2]], labels=data_herbaceos[["categories"]][["labels"]][[2]])
+df_herbaceos$año <- as.numeric(df_herbaceos$año)
+df_herbaceos$sistema <- factor(df_herbaceos$sistema, levels=data_herbaceos[["categories"]][["codes"]][[4]], labels=data_herbaceos[["categories"]][["labels"]][[4]])
+df_herbaceos$valor <- as.numeric(df_herbaceos$valor)
+df_herbaceos$mun <- recode_mun(df_herbaceos, 'mun')
 
-rk_turismo_pais_mun <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% arrange(valor) %>%
-  select(c(pais, valor))
-rk_turismo_pais_mun <- rk_turismo_pais_mun %>% mutate(porcentaje = rk_turismo_pais_mun$valor/ Num_Turistas_num * 100)
-rk_turismo_pais_mun$pais <- ordered(rk_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
+sup_herbaceos <- df_herbaceos %>%
+  filter(mun == municipio_actual$municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+sup_herbaceos_C <- df_herbaceos %>%
+  filter(mun == "CANARIAS" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+df_herbaceos <- df_herbaceos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL (SECANO+REGADÍO)" & año == params$año)
+df_herbaceos <- df_herbaceos %>% mutate(cultivo = recode(cultivo, " Maíz grano" = "Maíz<br>grano"),
+                                        cultivo = recode(cultivo, " Alforfón o trigo sarraceno" = "Alforfón o<br>trigo sarraceno"),
+                                        cultivo = recode(cultivo, " Judías grano" = "Judías<br>grano"),
+                                        cultivo = recode(cultivo, " Habas grano" = "Habas<br>grano"),
+                                        cultivo = recode(cultivo, " Veza para grano" = "Veza para<br>grano"),
+                                        cultivo = recode(cultivo, " Papa extratemprana" = "Papa<br>extratemprana"),
+                                        cultivo = recode(cultivo, " Papa temprana" = "Papa<br>temprana"),
+                                        cultivo = recode(cultivo, " Papa media estación" = "Papa media<br>estación"),
+                                        cultivo = recode(cultivo, " Papa tardía" = "Papa<br>tardía"),
+                                        cultivo = recode(cultivo, " Batata y boniato" = "Batata y<br>boniato"),
+                                        cultivo = recode(cultivo, " Caña de azúcar" = "Caña de<br>azúcar"),
+                                        cultivo = recode(cultivo, " Azafrán de la tierra" = "Azafrán de<br>la tierra"),
+                                        cultivo = recode(cultivo, " Plantas ornamentales" = "Plantas<br>ornamentales"),
+                                        cultivo = recode(cultivo, " Cereales de Invierno" = "Cereales de<br>Invierno"),
+                                        cultivo = recode(cultivo, " Maíz forrajero" = "Maíz<br>forrajero"),
+                                        cultivo = recode(cultivo, " Sorgo forrajero" = "Sorgo<br>forrajero"),
+                                        cultivo = recode(cultivo, " Veza para forraje" = "Veza para<br>forraje"),
+                                        cultivo = recode(cultivo, " Remolacha forrajera" = "Remolacha<br>forrajera"),
+                                        cultivo = recode(cultivo, " Col forrajera" = "Col<br>forrajera"),
+                                        cultivo = recode(cultivo, " Cardo y otros forrajes varios" = "Cardo y otros<br>forrajes varios"),
+                                        cultivo = recode(cultivo, " Guindilla y pimiento para mojo" = "Guindilla y pimiento<br>para mojo"),
+                                        cultivo = recode(cultivo, " Fresa y fresón" = "Fresa y<br>fresón"),
+                                        cultivo = recode(cultivo, " Remolacha de mesa" = "Remolacha<br>de mesa"),
+                                        cultivo = recode(cultivo, " Habichuelas (Judía verde)" = "Habichuelas<br>(Judía verde)"),
+                                        cultivo = recode(cultivo, " Guisante verde" = "Guisante<br>verde"),
+                                        cultivo = recode(cultivo, " Haba verde" = "Haba<br>verde")
+                                        )
 
-df_turismo_pais_mun <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>%
-  select(c(sexo, pais, valor))
-df_turismo_pais_Canarias <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>%
-  select(c(sexo, pais, valor))
+rk_herbaceos_mun <- df_herbaceos %>%
+  filter(mun == municipio_actual$municipio) %>%
+  top_n(8, valor) %>% 
+  arrange(valor) %>%
+  select(c(cultivo, valor))
 
-df_turismo_pais_mun <- df_turismo_pais_mun %>%
-  mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100,
-         valor_Canarias = df_turismo_pais_Canarias$valor, porcentaje_Canarias = df_turismo_pais_Canarias$valor / num_Canarias_total * 100)
-df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
+if(length(rk_herbaceos_mun$cultivo) > 10){
+  rk_herbaceos_mun <- rk_herbaceos_mun %>% filter(valor != min(rk_herbaceos_mun$valor))
+}
+rk_herbaceos_mun$cultivo <- ordered(rk_herbaceos_mun$cultivo, levels = rk_herbaceos_mun$cultivo)
 
-df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br>"), ""),
-    "<b>", sexo, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
-  )
-)
+df_herbaceos_mun <- df_herbaceos %>%
+  filter(mun == municipio_actual$municipio & cultivo %in% rk_herbaceos_mun$cultivo) %>%
+  select(c(cultivo, valor))
+df_herbaceos_C <- df_herbaceos %>%
+  filter(mun == "CANARIAS" & cultivo %in% rk_herbaceos_mun$cultivo) %>%
+  select(c(cultivo, valor))
+df_herbaceos_mun <- df_herbaceos_mun %>%
+  mutate(porcentaje = df_herbaceos_mun$valor / sup_herbaceos * 100,
+         valor_Canarias = df_herbaceos_C$valor,
+         porcentaje_Canarias = df_herbaceos_C$valor / sup_herbaceos_C * 100)
 
-g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group = sexo, text = hovertext)) +
-  geom_bar(stat = "identity", width = 0.6, alpha = 0.8, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
-  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
-  theme_minimal() +
-  guides(fill = guide_legend(title = " ")) +
-  labs(title = "", x = NULL, y = NULL, colour = " ") +
-  theme(axis.text.x = element_text(size = 8),
-        axis.line = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.major.x = element_line(colour = "lightgray"),
-        panel.grid.minor.x = element_line(colour = "lightgray"),
-        panel.background = element_rect(fill = "white"),
-        legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}, )
-
-g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(3, 4))
-```
-
-```{r Tipos de alojamiento, eval=FALSE}
-# Turistas según tipos de alojamiento por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_sl_aloj <- fromJSON(params$url.sl_aloj)
-df_turismo_sl_aloj <- cbind(data.frame(do.call('rbind', turismo_sl_aloj[["data"]][["dimCodes"]])), turismo_sl_aloj[["data"]][["valor"]])
-colnames(df_turismo_sl_aloj) <- c('sl', 'tipo', 'mun', 'periodo', 'valor')
-df_turismo_sl_aloj$sl <- factor(df_turismo_sl_aloj$sl, levels=turismo_sl_aloj[["categories"]][["codes"]][[1]], labels=turismo_sl_aloj[["categories"]][["labels"]][[1]])
-df_turismo_sl_aloj$tipo <- factor(df_turismo_sl_aloj$tipo, levels=turismo_sl_aloj[["categories"]][["codes"]][[2]], labels=turismo_sl_aloj[["categories"]][["labels"]][[2]])
-df_turismo_sl_aloj$mun <- factor(df_turismo_sl_aloj$mun, levels=turismo_sl_aloj[["categories"]][["codes"]][[3]], labels=turismo_sl_aloj[["categories"]][["labels"]][[3]])
-df_turismo_sl_aloj$periodo <- as.numeric(df_turismo_sl_aloj$periodo)
-df_turismo_sl_aloj$valor <- as.numeric(df_turismo_sl_aloj$valor)
-df_turismo_sl_aloj$mun <- recode_mun(df_turismo_sl_aloj, 'mun')
-
-df_turismo_aloj_mun <- df_turismo_sl_aloj %>%
-  filter(tipo != "TOTAL" & sl == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(tipo, valor))
-df_turismo_aloj_C <- df_turismo_sl_aloj %>%
-  filter(mun == "CANARIAS" & tipo != "TOTAL" & sl == "TOTAL" & periodo == params$año) %>% 
-  select(c(tipo, valor))
-df_turismo_aloj_mun <- df_turismo_aloj_mun %>%
-  mutate(porcentaje = df_turismo_aloj_mun$valor / Num_Turistas_num * 100,
-         valor_Canarias = df_turismo_aloj_C$valor,
-         porcentaje_Canarias = df_turismo_aloj_C$valor / num_Canarias_total * 100)
-
-df_turismo_aloj_plot <- df_turismo_aloj_mun %>%
+df_herbaceos_plot <- df_herbaceos_mun %>%
+  top_n(8, valor) %>% 
   mutate(label = "|")
-df_turismo_aloj_plot$tipo <- ordered(df_turismo_aloj_plot$tipo, levels = df_turismo_aloj_plot$tipo[5:1])
-df_turismo_aloj_plot <- df_turismo_aloj_plot %>% mutate(tipo = recode(tipo, "Vivienda privada propia o de terceros" = "Vivienda privada"),
-                                                        tipo = recode(tipo, "Otros alojamientos colectivos" = "Otros"))
+df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herbaceos_mun$cultivo)
 
-df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(tipo), "</b><br>",
+df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(cultivo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
@@ -437,22 +417,47 @@ df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
   )
 )
 
-df_turismo_aloj_0 <- df_turismo_aloj_plot %>% 
+df_herbaceos_0 <- df_herbaceos_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
 
-df_turismo_aloj_plot <- rbind(df_turismo_aloj_plot, df_turismo_aloj_0)
+df_herbaceos_plot <- rbind(df_herbaceos_plot, df_herbaceos_0)
 
-g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label = label, name = NULL, text = hovertext)) +
+df_herbaceos_plot <- df_herbaceos_plot %>% filter(valor != 0)
+
+if(nrow(df_herbaceos_plot)/2 == 12){
+  col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
+  }else if(nrow(df_herbaceos_plot)/2 == 11){
+    col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0072A2", "#005980", "#00405B")
+    }else if(nrow(df_herbaceos_plot)/2 == 10){
+      col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+      }else if(nrow(df_herbaceos_plot)/2 == 9){
+        col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+        }else if(nrow(df_herbaceos_plot)/2 == 8){
+          col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+          }else if(nrow(df_herbaceos_plot)/2 == 7){
+            col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+            }else if(nrow(df_herbaceos_plot)/2 == 6){
+              col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+              }else if(nrow(df_herbaceos_plot)/2 == 5){
+                col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
+                }else if(nrow(df_herbaceos_plot)/2 == 4){
+                  col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
+                  }else if(nrow(df_herbaceos_plot)/2 == 3){
+                    col <- c("#8CD2EA", "#008BD0", "#005980")
+                    }else if(nrow(df_herbaceos_plot)/2 == 2){
+                      col <- c("#8CD2EA", "#005980")
+                    }
+
+g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
-  scale_fill_manual(values = c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")) +
   theme_minimal() +
-  guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
-  theme(axis.text.x = element_text(size = 8),
-        axis.text.y = element_blank(),
+  guides(fill = FALSE) +
+  scale_fill_manual(values = col) +
+  theme(axis.text.x = element_text(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -462,95 +467,72 @@ g_turismo_aloj <- ggplot(df_turismo_aloj_plot, aes(y = tipo, fill = tipo, label 
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(5:8))
+g_herbaceos <- ggplotly(g_herbaceos, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  style(hoverinfo = "skip", traces = c((nrow(df_herbaceos_plot)/2+1):24))
 ```
 
-```{r Niveles de ingresos, eval=FALSE}
-# Turistas según niveles de ingresos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_ingresos <- fromJSON(params$url.ingresos)
-df_turismo_ingresos <- cbind(data.frame(do.call('rbind', turismo_ingresos[["data"]][["dimCodes"]])), turismo_ingresos[["data"]][["valor"]])
-colnames(df_turismo_ingresos) <- c('nivel', 'pais', 'mun', 'periodo', 'valor')
-df_turismo_ingresos$nivel <- factor(df_turismo_ingresos$nivel, levels=turismo_ingresos[["categories"]][["codes"]][[1]], labels=turismo_ingresos[["categories"]][["labels"]][[1]])
-df_turismo_ingresos$pais <- factor(df_turismo_ingresos$pais, levels=turismo_ingresos[["categories"]][["codes"]][[2]], labels=turismo_ingresos[["categories"]][["labels"]][[2]])
-df_turismo_ingresos$mun <- factor(df_turismo_ingresos$mun, levels=turismo_ingresos[["categories"]][["codes"]][[3]], labels=turismo_ingresos[["categories"]][["labels"]][[3]])
-df_turismo_ingresos$periodo <- as.numeric(df_turismo_ingresos$periodo)
-df_turismo_ingresos$valor <- as.numeric(df_turismo_ingresos$valor)
-df_turismo_ingresos$mun <- recode_mun(df_turismo_ingresos, 'mun')
+```{r Barras leñosos}
+data_leñosos <- fromJSON(params$url.agr_leñosos)
+df_leñosos <- cbind(data.frame(do.call('rbind', data_leñosos[["data"]][["dimCodes"]])), data_leñosos[["data"]][["Valor"]])
+colnames(df_leñosos) <- c('mun', 'cultivo', 'año', 'sistema', 'valor')
+df_leñosos$mun <- factor(df_leñosos$mun, levels=data_leñosos[["categories"]][["codes"]][[1]], labels=data_leñosos[["categories"]][["labels"]][[1]])
+df_leñosos$cultivo <- factor(df_leñosos$cultivo, levels=data_leñosos[["categories"]][["codes"]][[2]], labels=data_leñosos[["categories"]][["labels"]][[2]])
+df_leñosos$año <- as.numeric(df_leñosos$año)
+df_leñosos$sistema <- factor(df_leñosos$sistema, levels=data_leñosos[["categories"]][["codes"]][[4]], labels=data_leñosos[["categories"]][["labels"]][[4]])
+df_leñosos$valor <- as.numeric(df_leñosos$valor)
+df_leñosos$mun <- recode_mun(df_leñosos, 'mun')
 
-df_turismo_ingresos_C <- df_turismo_ingresos %>%
-  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
-  select(c(nivel, valor))
-df_turismo_ingresos_C <- df_turismo_ingresos_C %>% mutate(porcentaje = df_turismo_ingresos_C$valor/ num_Canarias_total * 100)
+sup_leñosos <- df_leñosos %>%
+  filter(mun == municipio_actual$municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+sup_leñosos_C <- df_leñosos %>%
+  filter(mun == "CANARIAS" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+df_leñosos <- df_leñosos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)" & año == params$año)
+df_leñosos <- df_leñosos %>% mutate(cultivo = recode(cultivo, " Naranjo amargo" = "Naranjo<br>amargo"),
+                                    cultivo = recode(cultivo, " Limero y otros cítricos" = "Limero y<br>otros cítricos"),
+                                    cultivo = recode(cultivo, " Cerezo y guindo" = "Cerezo y<br>guindo"),
+                                    cultivo = recode(cultivo, " Palmera datilera" = "Palmera<br>datilera"),
+                                    cultivo = recode(cultivo, " Piña tropical" = "Piña<br>tropical"),
+                                    cultivo = recode(cultivo, " Uva de mesa (Principal)" = "Uva de mesa<br>(Principal)"),
+                                    cultivo = recode(cultivo, " Uva de mesa (Asociada)" = "Uva de mesa<br>(Asociada)"),
+                                    cultivo = recode(cultivo, " Uva para vino (Principal)" = "Uva para vino<br>(Principal)"),
+                                    cultivo = recode(cultivo, " Uva para vino (Asociada)" = "Uva para vino<br>(Asociada)"),
+                                    cultivo = recode(cultivo, " Olivar de aceituna de mesa" = "Olivar de<br>aceituna de mesa"),
+                                    cultivo = recode(cultivo, " Olivar de aceituna de aceite" = "Olivar de<br>aceituna de aceite"),
+                                    cultivo = recode(cultivo, " Agave, pita y rafia" = "Agave, pita<br>y rafia"),
+                                    cultivo = recode(cultivo, " Morera y otros" = "Morera<br>y otros"),
+                                    cultivo = recode(cultivo, "VIVEROS" = "Viveros"),
+                                    )
 
-porc_Turistas_menos50_C <- df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
-porc_Turistas_mas50_C <- 100 - df_turismo_ingresos_C$porcentaje[which(df_turismo_ingresos_C$nivel == "Menos de 50.000€")]
-porc_Turistas_menos50_C_l <- round(porc_Turistas_menos50_C, 1) %>% as.numeric
-porc_Turistas_mas50_C_l <- round(porc_Turistas_mas50_C, 1) %>% as.numeric
+rk_leñosos_mun <- df_leñosos %>%
+  filter(mun == municipio_actual$municipio) %>%
+  top_n(8, valor) %>% 
+  arrange(valor) %>%
+  select(c(cultivo, valor))
 
-df_turismo_ingresos <- df_turismo_ingresos %>%
-  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(nivel, valor))
-df_turismo_ingresos <- df_turismo_ingresos %>% mutate(porcentaje = df_turismo_ingresos$valor/ Num_Turistas_num * 100)
+if(length(rk_leñosos_mun$cultivo) > 10){
+  rk_leñosos_mun <- rk_leñosos_mun %>% filter(valor != min(rk_leñosos_mun$valor))
+}
+rk_leñosos_mun$cultivo <- ordered(rk_leñosos_mun$cultivo, levels = rk_leñosos_mun$cultivo)
 
-porc_Turistas_menos50 <- df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
-porc_Turistas_mas50 <- 100 - df_turismo_ingresos$porcentaje[which(df_turismo_ingresos$nivel == "Menos de 50.000€")]
-porc_Turistas_menos50_l <- round(porc_Turistas_menos50, 1) %>% as.numeric
-porc_Turistas_mas50_l <- round(porc_Turistas_mas50, 1) %>% as.numeric
-```
+df_leñosos_mun <- df_leñosos %>%
+  filter(mun == municipio_actual$municipio & cultivo %in% rk_leñosos_mun$cultivo) %>%
+  select(c(cultivo, valor))
+df_leñosos_C <- df_leñosos %>%
+  filter(mun == "CANARIAS" & cultivo %in% rk_leñosos_mun$cultivo) %>%
+  select(c(cultivo, valor))
+df_leñosos_mun <- df_leñosos_mun %>%
+  mutate(porcentaje = df_leñosos_mun$valor / sup_leñosos * 100,
+         valor_Canarias = df_leñosos_C$valor,
+         porcentaje_Canarias = df_leñosos_C$valor / sup_leñosos_C * 100)
 
-```{r Propósito principal, eval=FALSE}
-# Turistas según el propósito principal del viaje por tipos de alojamiento. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_proposito <- fromJSON(params$url.proposito)
-df_turismo_proposito <- cbind(data.frame(do.call('rbind', turismo_proposito[["data"]][["dimCodes"]])), turismo_proposito[["data"]][["valor"]])
-colnames(df_turismo_proposito) <- c('proposito', 'tipo', 'mun', 'periodo', 'valor')
-df_turismo_proposito$proposito <- factor(df_turismo_proposito$proposito, levels=turismo_proposito[["categories"]][["codes"]][[1]],
-                                         labels=turismo_proposito[["categories"]][["labels"]][[1]])
-df_turismo_proposito$tipo <- factor(df_turismo_proposito$tipo, levels=turismo_proposito[["categories"]][["codes"]][[2]], labels=turismo_proposito[["categories"]][["labels"]][[2]])
-df_turismo_proposito$mun <- factor(df_turismo_proposito$mun, levels=turismo_proposito[["categories"]][["codes"]][[3]], labels=turismo_proposito[["categories"]][["labels"]][[3]])
-df_turismo_proposito$periodo <- as.numeric(df_turismo_proposito$periodo)
-df_turismo_proposito$valor <- as.numeric(df_turismo_proposito$valor)
-df_turismo_proposito$mun <- recode_mun(df_turismo_proposito, 'mun')
-
-df_turismo_proposito <- df_turismo_proposito %>%
-  filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(proposito, valor))
-df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_proposito$valor/ Num_Turistas_num * 100)
-
-percent_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-```
-
-```{r Nivel educativo, eval=FALSE}
-# Turistas según nivel educativo por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_educacion <- fromJSON(params$url.educacion)
-df_turismo_educacion <- cbind(data.frame(do.call('rbind', turismo_educacion[["data"]][["dimCodes"]])), turismo_educacion[["data"]][["valor"]])
-colnames(df_turismo_educacion) <- c('estudios', 'pais', 'mun', 'periodo', 'valor')
-df_turismo_educacion$estudios <- factor(df_turismo_educacion$estudios, levels=turismo_educacion[["categories"]][["codes"]][[1]], 
-                                        labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
-df_turismo_educacion$pais <- factor(df_turismo_educacion$pais, levels=turismo_educacion[["categories"]][["codes"]][[2]], labels=turismo_educacion[["categories"]][["labels"]][[2]])
-df_turismo_educacion$mun <- factor(df_turismo_educacion$mun, levels=turismo_educacion[["categories"]][["codes"]][[3]], labels=turismo_educacion[["categories"]][["labels"]][[3]])
-df_turismo_educacion$periodo <- as.numeric(df_turismo_educacion$periodo)
-df_turismo_educacion$valor <- as.numeric(df_turismo_educacion$valor)
-df_turismo_educacion$mun <- recode_mun(df_turismo_educacion, 'mun')
-
-df_turismo_educacion_mun <- df_turismo_educacion %>%
-  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(estudios, valor))
-df_turismo_educacion_C <- df_turismo_educacion %>%
-  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
-  select(c(estudios, valor))
-df_turismo_educacion_mun <- df_turismo_educacion_mun %>%
-  mutate(porcentaje = df_turismo_educacion_mun$valor / Num_Turistas_num * 100,
-         valor_Canarias = df_turismo_educacion_C$valor,
-         porcentaje_Canarias = df_turismo_educacion_C$valor / num_Canarias_total * 100)
-
-df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
+df_leñosos_plot <- df_leñosos_mun %>%
   mutate(label = "|")
+df_leñosos_plot$cultivo <- ordered(df_leñosos_plot$cultivo, levels = rk_leñosos_mun$cultivo)
 
-df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(estudios), "</b><br>",
+df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(cultivo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
   "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
@@ -558,22 +540,47 @@ df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext =
   )
 )
 
-df_turismo_educacion_0 <- df_turismo_educacion_plot %>% 
+df_leñosos_0 <- df_leñosos_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
 
-df_turismo_educacion_plot <- rbind(df_turismo_educacion_plot, df_turismo_educacion_0)
+df_leñosos_plot <- rbind(df_leñosos_plot, df_leñosos_0)
 
-g_turismo_educacion <- ggplot(df_turismo_educacion_plot, aes(y = estudios, fill = estudios, label = label, name = NULL, text = hovertext)) +
+df_leñosos_plot <- df_leñosos_plot %>% filter(valor != 0)
+
+if(nrow(df_leñosos_plot)/2 == 12){
+  col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
+  }else if(nrow(df_leñosos_plot)/2 == 11){
+    col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0072A2", "#005980", "#00405B")
+    }else if(nrow(df_leñosos_plot)/2 == 10){
+      col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+      }else if(nrow(df_leñosos_plot)/2 == 9){
+        col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+        }else if(nrow(df_leñosos_plot)/2 == 8){
+          col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+          }else if(nrow(df_leñosos_plot)/2 == 7){
+            col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+            }else if(nrow(df_leñosos_plot)/2 == 6){
+              col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+              }else if(nrow(df_leñosos_plot)/2 == 5){
+                col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
+                }else if(nrow(df_leñosos_plot)/2 == 4){
+                  col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
+                  }else if(nrow(df_leñosos_plot)/2 == 3){
+                    col <- c("#8CD2EA", "#008BD0", "#005980")
+                    }else if(nrow(df_leñosos_plot)/2 == 2){
+                      col <- c("#8CD2EA", "#005980")
+                    }
+
+g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
-  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
   theme_minimal() +
-  guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
-  theme(axis.text.x = element_text(size = 8),
-        axis.text.y = element_blank(),
+  guides(fill = FALSE) +
+  scale_fill_manual(values = col) +
+  theme(axis.text.x = element_text(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -583,47 +590,38 @@ g_turismo_educacion <- ggplot(df_turismo_educacion_plot, aes(y = estudios, fill 
         legend.position = "none") +
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
-g_turismo_educacion <- ggplotly(g_turismo_educacion, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified') %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(4:6))
+g_leñosos <- ggplotly(g_leñosos, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  style(hoverinfo = "skip", traces = c((nrow(df_leñosos_plot)/2+1):24))
 ```
 
-```{r Motivaciones principales, eval=FALSE}
-# Motivaciones principales para sus vacaciones","Tipos de alojamiento","Municipios". Municipios turísticos de Canarias y periodos. 2018 a 2020.
-turismo_motiv <- fromJSON(params$url.motivacion)
-df_turismo_motiv <- cbind(data.frame(do.call('rbind', turismo_motiv[["data"]][["dimCodes"]])), turismo_motiv[["data"]][["valor"]])
-colnames(df_turismo_motiv) <- c('motiv', 'tipo', 'mun', 'periodo', 'valor')
-df_turismo_motiv$motiv <- factor(df_turismo_motiv$motiv, levels=turismo_motiv[["categories"]][["codes"]][[1]], labels=turismo_motiv[["categories"]][["labels"]][[1]])
-df_turismo_motiv$tipo <- factor(df_turismo_motiv$tipo, levels=turismo_motiv[["categories"]][["codes"]][[2]], labels=turismo_motiv[["categories"]][["labels"]][[2]])
-df_turismo_motiv$mun <- factor(df_turismo_motiv$mun, levels=turismo_motiv[["categories"]][["codes"]][[3]], labels=turismo_motiv[["categories"]][["labels"]][[3]])
-df_turismo_motiv$periodo <- as.numeric(df_turismo_motiv$periodo)
-df_turismo_motiv$valor <- as.numeric(df_turismo_motiv$valor)
-df_turismo_motiv$mun <- recode_mun(df_turismo_motiv, 'mun')
+```{r Ganadería explotaciones}
+data_exp_especies <- fromJSON(params$url.exp_especies)
 
-df_turismo_motiv_C <- df_turismo_motiv %>%
-  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
-  select(c(motiv, valor))
-df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ sum(df_turismo_motiv_C$valor) * 100)
+df_exp_especies <- data.frame(
+  mun = rep(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  año = rep(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            times = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_especie = data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+  valor = unlist(strsplit(data_exp_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-porc_Turistas_descansar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")]
-porc_Turistas_explorar_C <- df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
-porc_Turistas_otros_C <- 100 - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Descansar")] - df_turismo_motiv_C$porcentaje[which(df_turismo_motiv_C$motiv == "Explorar o conocer las islas")]
-porc_Turistas_descansar_C_l <- round(porc_Turistas_descansar_C, 1) %>% as.numeric
-porc_Turistas_explorar_C_l <- round(porc_Turistas_explorar_C, 1) %>% as.numeric
-porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
+df_especies <- data.frame(
+  id_especie = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  especie = vector(mode = "character", length = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+for(i in 1:data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]) {
+  df_especies$especie[i] <- data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
 
-df_turismo_motiv <- df_turismo_motiv %>%
-  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(c(motiv, valor))
-df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ sum(df_turismo_motiv$valor) * 100)
+df_exp_especies$valor <- as.numeric(df_exp_especies$valor)
+df_exp_especies <- df_exp_especies %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun)) %>% 
+    left_join(df_especies, by = "id_especie")
 
-porc_Turistas_descansar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")]
-porc_Turistas_explorar <- df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
-porc_Turistas_otros <- 100 - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Descansar")] - df_turismo_motiv$porcentaje[which(df_turismo_motiv$motiv == "Explorar o conocer las islas")]
-porc_Turistas_descansar_l <- round(porc_Turistas_descansar, 1) %>% as.numeric
-porc_Turistas_explorar_l <- round(porc_Turistas_explorar, 1) %>% as.numeric
-porc_Turistas_otros_l <- round(porc_Turistas_otros, 1) %>% as.numeric
+df_exp_especies_mun <- df_exp_especies %>%
+  filter(mun == municipio_actual$id & año == params$año & especie != "Total")
+
 ```
 
 
@@ -719,8 +717,8 @@ mapa_comarca_plot
 
 <div class="row">
 <div class="column highlight">
-<div class="piramide" style="height: 330px">
-  `r `
+<div class="piramide" style="height: 300px">
+  `r g_herbaceos`
 </div>
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
@@ -731,8 +729,8 @@ mapa_comarca_plot
 </div>
 
 <div class="column highlight">
-<div class="piramide" style="height: 330px">
-  `r `
+<div class="piramide" style="height: 300px">
+  `r g_leñosos`
 </div>
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
