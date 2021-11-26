@@ -12,7 +12,7 @@ library(bslib)
 library(RCurl)
 library(webshot)
 
-addResourcePath("frames", dirname(rstudioapi::getActiveDocumentContext()$path))
+addResourcePath("frames", getwd())
 directory.data <- "../data/"
 directory.rmd <- "../Rmd/"
 directory.output <- "output"
@@ -58,7 +58,10 @@ loadMunicipios <- function() {
     left_join(df_CL_AREA, by="code") %>% 
     select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
     left_join(df_CL_AREA, by="code") %>% 
-    select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+    select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value) %>%
+    arrange(id) %>%
+    arrange(id_isla) %>%
+    arrange(provincia)
   
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
   #return(deframe(df_CL_AREA_mun %>% select(municipio, id)))
@@ -133,6 +136,7 @@ server <- function(input, output) {
     dir.fichero <- paste0("./output/",input$año, "/")
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
     nombre.fichero <- paste0(input$id_ficha, "_",
+                             input$año, "_",
                              ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
                              ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
                              input$id_municipio, ".html")
@@ -159,6 +163,7 @@ server <- function(input, output) {
     dir.fichero <- paste0("./output/",input$año_2, "/")
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha_2,]
     nombre.fichero <- paste0(input$id_ficha_2, "_",
+                             input$año, "_",
                              ifelse(periodicidad2() == "M", paste0(periodicidad2(), input$mes_2, "_"), ""),
                              ifelse(periodicidad2() == "Q", paste0(periodicidad2(), as.numeric(input$trimestre_2), "_"), ""),
                              input$id_municipio_2, ".html")
@@ -184,6 +189,7 @@ server <- function(input, output) {
     dir.fichero <- paste0("./output/",input$año, "/")
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
     nombre.fichero <- paste0(input$id_ficha, "_",
+                             input$año, "_",
                              ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
                              ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
                              input$id_municipio, ".html")
@@ -203,6 +209,7 @@ server <- function(input, output) {
           dir.fichero <- paste0("../output/",input$año, "/")
           ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
           nombre.fichero <- paste0(input$id_ficha, "_",
+                                   input$año, "_",
                                    ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
                                    ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
                                    input$id_municipio, ".html")

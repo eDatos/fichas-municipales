@@ -50,32 +50,10 @@ div.level3 {
   display: inline-flex;
   margin: 0;
 }
-.progress-bar-1 {
-  background-color: #005980;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-.progress-bar-2 {
-  background-color: #008BD0;
-}
-.progress-bar-3 {
-  background-color: #8CD2EA;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-.progress-bar-4 {
+.progress-bar-C {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   border: 1px solid #59656E;
-}
-.progress-bar-5 {
-  background-color: #0072A2;
-}
-.progress-bar-6 {
-  background-color: #00A6DC;
-}
-.progress-bar-7 {
-  background-color: #2CBCE2;
 }
 
 .progress-bar-container {
@@ -541,32 +519,6 @@ h4, h5 {
     color: #666;
 }
 
-.progress-bar-1-C {
-  background-color: #59656E;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-.progress-bar-2-C {
-  background-color: #8C9BA3;
-}
-.progress-bar-3-C {
-  background-color: #BBC8D0;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-.progress-bar-5-C {
-  background-color: #77848D;
-}
-.progress-bar-6-C {
-  background-color: #99A9B1;
-}
-.progress-bar-7-C {
-  background-color: #ABBBC2;
-}
-.progress-bar-8-C {
-  background-color: #CED6E7;
-}
-
 .indicator2b {
   display: inline-flex;
   align-items: center;
@@ -697,10 +649,10 @@ h4, h5 {
 }
 .progress-bar-grey6 {
   background-color: #BBC8D0;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 .progress-bar-grey7 {
   background-color: #CED6E7;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
 }
 

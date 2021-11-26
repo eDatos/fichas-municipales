@@ -173,8 +173,13 @@ df <- related_mun %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, año, Valor) %>%
   left_join(df_CL_AREA_mun_tur, by = "id") %>%
-  mutate(Tasa = ifelse(año == min(año), NA, round(100*((Valor / lag(Valor)) - 1), 1))) %>% 
-  filter(año <= params$año)
+  mutate(Tasa = ifelse(año == min(año), NA, round(100*((Valor / lag(Valor)) - 1), 1)))
+
+if(params$año == 2018){
+  df <- df %>% filter(año %in% c(2018,2019,2020))
+  }else{
+    df <- df %>% filter(año <= params$año)
+  }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 

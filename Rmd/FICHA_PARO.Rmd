@@ -604,9 +604,9 @@ mapa_comarca_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-4'></div><div class='sp-content'>Canarias</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-C'></div><div class='sp-content'>Canarias</div></div>
 </div>
 </div>
 
@@ -617,9 +617,9 @@ mapa_comarca_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-4'></div><div class='sp-content'>Canarias</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-C'></div><div class='sp-content'>Canarias</div></div>
 </div>
 
 </div>

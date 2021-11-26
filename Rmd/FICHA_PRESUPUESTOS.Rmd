@@ -220,9 +220,9 @@ df <- related_mun %>%
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
 df <- left_join(df, df_I %>% select(Año, Valor_inicial = Valor_M), by = "Año") %>% 
-  mutate(Valor_inicial_l = ifelse(is.na(Valor_inicial), " -", format(paste0(Valor_inicial, " mill.€"), big.mark = ".", decimal.mark = ",")),
-         Valor_l = ifelse(is.na(Valor_M), " -", format(paste0(Valor_M, " mill.€"), big.mark = ".", decimal.mark = ",")),
-         Tasa_l = ifelse(is.na(Tasa), " -", format(paste0(Tasa, "%"), big.mark = ".", decimal.mark = ",")))
+  mutate(Valor_inicial_l = ifelse(is.na(Valor_inicial), " -", paste0(format(Valor_inicial, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
+         Valor_l = ifelse(is.na(Valor_M), " -", paste0(format(Valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
+         Tasa_l = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
 
 leyenda_poblacion <- df %>% filter(Año == params$año) %>%
   left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
@@ -233,15 +233,13 @@ df <- df %>%
       Año == params$año,
       ifelse(
         Municipio == municipio_actual$municipio,
-        sprintf(leyenda.content_I, Municipio, format(Valor_inicial_l, big.mark = ".", decimal.mark = ","), format(Valor_l, big.mark = ".", decimal.mark = ","), 
-                format(Tasa_l, big.mark = ".", decimal.mark = ",")),
-        sprintf(leyenda.content, Municipio, format(Valor_l, big.mark = ".", decimal.mark = ","), format(Tasa_l, big.mark = ".", decimal.mark = ","))
+        sprintf(leyenda.content_I, Municipio, Valor_inicial_l, Valor_l, Tasa_l),
+        sprintf(leyenda.content, Municipio, Valor_l, Tasa_l)
         ),
       ifelse(
         Municipio == municipio_actual$municipio,
-        sprintf(leyenda.content_I, Municipio, paste0(format(Valor_inicial_l, big.mark = ".", decimal.mark = ","), ' (',Año,')'),
-                format(Valor_l, big.mark = ".", decimal.mark = ","), format(Tasa_l, big.mark = ".", decimal.mark = ",")),
-        sprintf(leyenda.content, Municipio, paste0(format(Valor_l, big.mark = ".", decimal.mark = ","), ' (',Año,')'), format(Tasa_l, big.mark = ".", decimal.mark = ","))
+        sprintf(leyenda.content_I, Municipio, paste0(Valor_inicial_l, ' (',Año,')'), Valor_l, Tasa_l),
+        sprintf(leyenda.content, Municipio, paste0(Valor_l, ' (',Año,')'), Tasa_l)
         )
       )
     )
@@ -388,7 +386,7 @@ df_estr_partidas <- data.frame(
   id_partida = rep(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                    times = length(data_estr_partidas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = c(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dp)))
-df_estr_partidas$valor <- as.numeric(df_estr_partidas$valor)
+df_estr_partidas$valor <- as.integer(df_estr_partidas$valor)
 df_estr_partidas$id_municipio <- recode_id_Frontera(df_estr_partidas, 'id_municipio')
 
 df_estr_partidas_mun <- df_estr_partidas %>% filter(id_municipio == params$id_municipio & id_partida %notin% c("GASTOS", "INGRESOS")) %>% select(!id_municipio)
@@ -464,10 +462,10 @@ df_part_gastos_mun$id_partida <- ordered(df_part_gastos_mun$id_partida, levels =
 
 df_part_gastos_mun <- df_part_gastos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), "€", 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
+    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
     )
   )
 
@@ -528,10 +526,10 @@ df_part_ingresos_mun$id_partida <- ordered(df_part_ingresos_mun$id_partida, leve
 
 df_part_ingresos_mun <- df_part_ingresos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), "€", 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
+    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
     )
   )
 
@@ -600,7 +598,7 @@ df_gastos_programas$name_programa <- factor(
   df_gastos_programas$name_programa,
   levels = df_programa$id,
   labels = df_programa$name_programa)
-df_gastos_programas$valor <- as.numeric(df_gastos_programas$valor)
+df_gastos_programas$valor <- as.integer(df_gastos_programas$valor)
 df_gastos_programas$id_municipio <- recode_id_Frontera(df_gastos_programas, 'id_municipio')
 
 df_gastos_programas_mun <- df_gastos_programas %>% filter(año == params$año & id_municipio == params$id_municipio) %>% arrange(desc(valor)) %>% select(c(name_programa, valor))
@@ -623,10 +621,10 @@ df_gastos_programas_mun <- df_gastos_programas_mun %>%
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>% transform(hovertext = paste0(
     "<b>", programa, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), "€", 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
+    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
     )
   )
 
@@ -722,7 +720,7 @@ get_indicator4 = function(title, label, value) {
 <hr>
 
 <div class="linechart-placeholder">
-<h2 style="color: #005980; margin-bottom: 0;">`r Num_Presupuesto` mill.€</h2>
+<h2 style="color: #005980; margin-bottom: 0;">`r Num_Presupuesto` mill.€ de ingresos ejecutados</h2>
 <div class="linechart">
   `r g_line`
 </div>
@@ -861,12 +859,12 @@ altura <- max(altura_gastos, altura_ingresos)
 <div class="piramide" style="height: 250px;">`r g_estr_part_gastos`</div>
 
 <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[1,]$id_partida), ': ',df_part_gastos_mun[1,]$partida, ' (',format(round(df_part_gastos_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[2,]$id_partida), ': ',df_part_gastos_mun[2,]$partida, ' (',format(round(df_part_gastos_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[3,]$id_partida), ': ',df_part_gastos_mun[3,]$partida, ' (',format(round(df_part_gastos_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-6'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[4,]$id_partida), ': ',df_part_gastos_mun[4,]$partida, ' (',format(round(df_part_gastos_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[1,]$id_partida), ': ',df_part_gastos_mun[1,]$partida, ' (',format(round(df_part_gastos_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue2'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[2,]$id_partida), ': ',df_part_gastos_mun[2,]$partida, ' (',format(round(df_part_gastos_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[3,]$id_partida), ': ',df_part_gastos_mun[3,]$partida, ' (',format(round(df_part_gastos_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[4,]$id_partida), ': ',df_part_gastos_mun[4,]$partida, ' (',format(round(df_part_gastos_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[5,]$id_partida), ': ',df_part_gastos_mun[5,]$partida, ' (',format(round(df_part_gastos_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r paste0(df_part_gastos_mun[6,]$partida, ' (',format(round(df_part_gastos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>`r paste0(df_part_gastos_mun[6,]$partida, ' (',format(round(df_part_gastos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
   <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias (media municipal)</div></div>
 </div>
@@ -876,12 +874,12 @@ altura <- max(altura_gastos, altura_ingresos)
 <div class="piramide" style="height: 250px;">`r g_estr_part_ingresos`</div>
 
 <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[1,]$id_partida), ': ',df_part_ingresos_mun[1,]$partida, ' (',format(round(df_part_ingresos_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[2,]$id_partida), ': ',df_part_ingresos_mun[2,]$partida, ' (',format(round(df_part_ingresos_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[3,]$id_partida), ': ',df_part_ingresos_mun[3,]$partida, ' (',format(round(df_part_ingresos_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-6'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[4,]$id_partida), ': ',df_part_ingresos_mun[4,]$partida, ' (',format(round(df_part_ingresos_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[1,]$id_partida), ': ',df_part_ingresos_mun[1,]$partida, ' (',format(round(df_part_ingresos_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue2'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[2,]$id_partida), ': ',df_part_ingresos_mun[2,]$partida, ' (',format(round(df_part_ingresos_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[3,]$id_partida), ': ',df_part_ingresos_mun[3,]$partida, ' (',format(round(df_part_ingresos_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[4,]$id_partida), ': ',df_part_ingresos_mun[4,]$partida, ' (',format(round(df_part_ingresos_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[5,]$id_partida), ': ',df_part_ingresos_mun[5,]$partida, ' (',format(round(df_part_ingresos_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>`r paste0(df_part_ingresos_mun[6,]$partida, ' (',format(round(df_part_ingresos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>`r paste0(df_part_ingresos_mun[6,]$partida, ' (',format(round(df_part_ingresos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
   <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias (media municipal)</div></div>
 </div>
@@ -899,12 +897,12 @@ altura <- max(altura_gastos, altura_ingresos)
 <div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
 
 <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[1,]$name_programa, ' (',format(round(df_gastos_programas_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-5'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[2,]$name_programa, ' (',format(round(df_gastos_programas_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[3,]$name_programa, ' (',format(round(df_gastos_programas_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-6'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[4,]$name_programa, ' (',format(round(df_gastos_programas_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[1,]$name_programa, ' (',format(round(df_gastos_programas_mun[1,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue2'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[2,]$name_programa, ' (',format(round(df_gastos_programas_mun[2,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[3,]$name_programa, ' (',format(round(df_gastos_programas_mun[3,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[4,]$name_programa, ' (',format(round(df_gastos_programas_mun[4,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[5,]$name_programa, ' (',format(round(df_gastos_programas_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[6,]$name_programa, ' (',format(round(df_gastos_programas_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[6,]$name_programa, ' (',format(round(df_gastos_programas_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
   <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>Canarias (media municipal)</div></div>
 </div>
