@@ -1,0 +1,59 @@
+.card-columns {
+  column-count: 4;
+  margin: 10px auto;
+  column-gap: 1.25rem;
+}
+.card {
+  display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    width: 100%;
+    border: 2px solid #D5EDFA;
+    border-radius: 20px;
+}
+.card-title {
+  color: #008BD0;
+  margin-bottom: 0px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 3px;
+}
+.card-text {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+hr {
+    margin: 0px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+hr.separator {
+  border-top: 2px solid #eee;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+h1 {
+  font-size: 44px;
+  color: #008BD0;
+  margin: 0;
+}
+h2 {
+  font-size: 26px;
+  color: #666;
+  margin: 0 0 6px 0;
+}
+.logos .column {
+  float: left;
+  padding: 0 20px;
+}
+.logo-istac {
+  height: 80px;
+  float: right;
+}
+.logo-fecam {
+  height: 60px;
+  margin-top: 10px;
+}
