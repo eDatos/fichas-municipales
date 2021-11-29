@@ -866,7 +866,7 @@ altura <- max(altura_gastos, altura_ingresos)
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[5,]$id_partida), ': ',df_part_gastos_mun[5,]$partida, ' (',format(round(df_part_gastos_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>`r paste0(df_part_gastos_mun[6,]$partida, ' (',format(round(df_part_gastos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias (media municipal)</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias (media municipal)</div></div>
 </div>
 </div>
 
@@ -881,7 +881,7 @@ altura <- max(altura_gastos, altura_ingresos)
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content'>`r paste0(sub(".*\\_\\s*", "", df_part_ingresos_mun[5,]$id_partida), ': ',df_part_ingresos_mun[5,]$partida, ' (',format(round(df_part_ingresos_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>`r paste0(df_part_ingresos_mun[6,]$partida, ' (',format(round(df_part_ingresos_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias (media municipal)</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias (media municipal)</div></div>
 </div>
 </div>
 </div>
@@ -904,7 +904,7 @@ altura <- max(altura_gastos, altura_ingresos)
   <div class='progressbar-legend'><div class='progress-bar-7'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[5,]$name_programa, ' (',format(round(df_gastos_programas_mun[5,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content-b'>`r paste0(df_gastos_programas_mun[6,]$name_programa, ' (',format(round(df_gastos_programas_mun[6,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), '%)')`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>Canarias (media municipal)</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias (media municipal)</div></div>
 </div>
 </div>
 </div>

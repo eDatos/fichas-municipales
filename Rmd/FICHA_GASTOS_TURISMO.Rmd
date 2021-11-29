@@ -806,7 +806,7 @@ mapa_isla_plot
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -818,7 +818,7 @@ mapa_isla_plot
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -873,11 +873,11 @@ mapa_isla_plot
   `r g_GM_ne`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[3]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_ne_plot$estudios[1]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600; font-size: 11px;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -887,11 +887,11 @@ mapa_isla_plot
   `r g_GM_pt`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[1]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_pt_plot$paquete[3]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600; font-size: 11px;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -901,11 +901,11 @@ mapa_isla_plot
   `r g_GM_np`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[3]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6' style='font-size: 11px;'></div><div class='sp-content'>`r df_GM_np_plot$noches[1]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;font-size: 11px;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style="margin-top: 1px;">|</div><div class='sp-content-b'>Canarias</div></div>
   </div>
 </div>
 </div>

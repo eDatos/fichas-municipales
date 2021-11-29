@@ -675,7 +675,7 @@ mapa_comarca_plot
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-C-b'>|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
 </div>
@@ -687,7 +687,7 @@ mapa_comarca_plot
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-C-b'>|</div><div class='sp-content'>Canarias</div></div>
 </div>
 
 </div>
