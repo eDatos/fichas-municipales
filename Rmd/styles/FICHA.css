@@ -409,34 +409,6 @@ hr.separator {
   margin-top: 3px;
   margin-bottom: 6px;
 }
-.nota-metodologica .indicator-title, .nota-metodologica .highlight, .nota-metodologica .indicator-content {
-  width: 100% !important;
-}
-.nota-metodologica .highlight {
-  padding: 20px 0;   
- }
-.nota-metodologica .image { 
-  text-align: center;
-  height: 70px;
-  width: 80px;
-}
-.nota-metodologica .indicator3 {
-  width: calc(100% - 20px) !important;
-  text-align: left;
-  margin-left: 10px;
-  height: 100px;
-  align-items: start;
-}
-.nota-metodologica .indicator-content {
-  text-align: left;
-  display: inline;
-}
-.nota-metodologica .label {
-  color: #666;
-  margin-bottom: 6px;
-  text-align: left;
-  font-size: 22px;
-}
 h4, h5 {
     margin: 10px;
     text-align: center;
