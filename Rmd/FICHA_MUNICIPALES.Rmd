@@ -358,6 +358,7 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
+  arrange(desc(valor)) %>% 
   transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
 
 if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
@@ -365,8 +366,9 @@ if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
   }else{
     
 }
-  
-df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
+ 
+df_plot <- df_plot %>%
+  transform(name_partido = paste0(name_partido, "<br>(", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
 
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
@@ -374,29 +376,16 @@ df_plot <- df_plot %>% transform(hovertext = paste0(
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   ))
 
-if(nrow(df_plot) == 7){
-  col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-  }else if(nrow(df_plot) == 6){
-    col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-    }else if(nrow(df_plot_) == 5){
-      col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      }else if(nrow(df_plot_) == 4){
-        col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
-        }else if(nrow(df_plot_) == 3){
-          col <- c("#008BD0", "#0072A2", "#005980")
-          }else if(nrow(df_plot_) == 2){
-            col <- c("#0072A2", "#005980")
-          }
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot):1])
 
-g_municipales_mun <- ggplot(data = df_plot,
-                         aes(y = candidatura, fill = candidatura, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", width = 0.6, aes(x = porcentaje)) +
+g_municipales_mun <-  ggplot(data = df_plot,
+                             aes(y = name_partido, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
-  scale_fill_manual(values = col) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(),
-        axis.text.y = element_blank(),
+        axis.text.y = element_text(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -407,7 +396,7 @@ g_municipales_mun <- ggplot(data = df_plot,
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_municipales_mun <- ggplotly(g_municipales_mun, tooltip = c("text")) %>%
-  layout(margin = list(t=40, b=20, l=20, r=20), hovermode = "y unified", showlegend = FALSE) %>%
+  layout(hovermode = "y unified", showlegend = FALSE, margin = list(l = -6)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(7:12))
 ```
@@ -418,40 +407,44 @@ df_representantes_ <- df_plot_ %>%
   filter(repr_elegidos > 0) %>% 
   arrange(-valor) %>% 
   select(candidatura, repr_elegidos)
+df_representantes_$candidatura <- ordered(df_representantes_$candidatura, levels = df_representantes_$candidatura[nrow(df_representantes_):1])
+df_representantes_ <- df_representantes_ %>% left_join(df_partido, by = "candidatura") 
 
-df_representantes <- df_representantes_ %>% rbind(c("", sum(df_representantes_$repr_elegidos)))
-df_representantes <- df_representantes %>% left_join(df_partido, by = "candidatura") 
-df_representantes$candidatura <- ordered(df_representantes$candidatura, levels = df_representantes$candidatura[nrow(df_representantes):1])
+df_representantes <- list()
+df_points <- data.frame()
+for(i in 1:nrow(df_representantes_)) {
+  df_representantes[[i]] <- data.frame(candidatura = rep(df_representantes_$candidatura[i], times = (df_representantes_$repr_elegidos[i])),
+                                       puntos = c(1:df_representantes_$repr_elegidos[i]))
+  df_points <- df_points %>% rbind(df_representantes[[i]])
+}
 
-df_representantes <- df_representantes %>% transform(hovertext = paste0(
+df_points <- df_points %>% left_join(df_partido, by = "candidatura") 
+df_points$name_partido <- ordered(df_points$name_partido, levels = df_representantes_$name_partido[nrow(df_representantes_):1])
+
+df_points <- df_points %>% transform(hovertext = paste0(
     "<b>", name_partido, " </b>",
-    "<br>", trimws(format(repr_elegidos, big.mark = ".", decimal.mark = ",")), " representantes elegidos"
+    "<br>", trimws(format(puntos, big.mark = ".", decimal.mark = ",")), " representantes elegidos"
   )
 )
 
-df_representantes$hovertext[which(is.na(df_representantes$name_partido))] <- ""
+df_points$hovertext[which(is.na(df_points$name_partido))] <- ""
 
-if(nrow(df_representantes_) == 7){
-  col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "#D5EDFA", "white")
-  }else if(nrow(df_representantes_) == 6){
-    col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "#8CD2EA", "white")
-    }else if(nrow(df_representantes_) == 5){
-      col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "#2CBCE2", "white")
-      }else if(nrow(df_representantes_) == 4){
-        col <- c("#005980", "#0072A2", "#008BD0", "#00A6DC", "white")
-        }else if(nrow(df_representantes_) == 3){
-          col <- c("#005980", "#0072A2", "#008BD0", "white")
-          }else if(nrow(df_representantes_) == 2){
-            col <- c("#005980", "#0072A2", "white")
-          }
-
-g_representantes <- plot_ly(df_representantes, labels = df_representantes$name_partido, values = df_representantes$repr_elegidos, type = 'pie', sort = TRUE, direction = "clockwise", 
-                            hole = 0.6, textposition = "none", textinfo = "none", insidetextfont = list(color = "white"), hoverinfo = "text", text = df_representantes$hovertext,
-                            rotation = 90, marker = list(colors = col, line = list(width = 0), alpha = 0.8)
-                            )
+g_representantes <- ggplot(data = df_points,
+                           aes(y = name_partido, name = NULL, text = hovertext)) +
+  geom_point(stat = "identity", colour = "#0072A2", size = 6, alpha = 0.8, aes(x = puntos)) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(),
+        axis.text.y = element_text(),
+        axis.line = element_blank(),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(n.breaks = 5, labels = function(x){format(x, big.mark = '.', decimal.mark = ",")}, limits = c(0.3, NA))
 
 g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
-  layout(showlegend = FALSE) %>%
+  layout(hovermode = "y unified", showlegend = FALSE) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
 ```
 
@@ -484,61 +477,41 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-bottom: 30px;">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }
 ```
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Resultados por candidaturas</h3>
 </div>
 
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="piechart_P" style="height: 300px;">`r g_municipales_mun`</div>
-
-<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
-
-<div class="legend-vertical-container" style="margin-top: 10px;">
-```{r leyenda Resultados, results='asis'}
-for (i in 1:nrow(df_plot)) {
-  cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, "<br>(", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
-}
-```
+<div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
+<div class="barras-c">
+  `r g_municipales_mun`
 </div>
 
 </div>
-</div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Representantes elegidos</h3>
 </div>
 
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="piechart_P" style="height: 280px; margin: 20px 10px -10px -20px;">`r g_representantes`</div>
-
-<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
-
-<div class="legend-vertical-container">
-```{r leyenda Representantes, results='asis'}
-for (i in 1:nrow(df_representantes_)) {
-  cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_representantes[i,]$name_partido, "<br>(", format(df_representantes[i,]$repr_elegidos, big.mark = ".", decimal.mark = ",", nsmall = 0), " representantes elegidos)</div></div>"))
-}
-```
+<div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 10px;">
+<div class="barras-r">
+  `r g_representantes`
 </div>
 
 </div>
-</div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 20px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Tipos de votos</h3>
 </div>
 <div class="row">

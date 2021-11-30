@@ -607,7 +607,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual_Veh_Parque == "NA"){
   cat(paste0(
-    "<div class='column-3'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-3'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-3-ind'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
 }else{
   cat(paste0(
     "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
@@ -693,7 +693,7 @@ mapa_comarca_plot
 </div>
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 15px; padding: 5px;">
+<div class="indicator-title-row">
   <h3>Tipos de combustible</h3>
 </div>
 

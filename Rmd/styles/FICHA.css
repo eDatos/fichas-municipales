@@ -36,6 +36,20 @@ div.level3 {
   line-height: 2em;
   width: calc(50% - 10px);
 }
+.column-2 {
+  float: left;
+  width: 50%;
+  padding: 5px;
+  display: inline-flex;
+  margin: 0;
+}
+.column-2-ind {
+  width: 49%;
+  padding: 5px;
+  height: 75px;
+  display: inline-flex;
+  margin: 0;
+}
 .column-3 {
   float: left;
   width: 33.33%;
@@ -43,10 +57,17 @@ div.level3 {
   display: inline-flex;
   margin: 10px 0;
 }
-.column-2 {
-  float: left;
-  width: 50%;
+.column-3-ind {
+  width: 32%;
   padding: 5px;
+  height: 75px;
+  display: inline-flex;
+  margin: 0;
+}
+.column-4 {
+  width: 24%;
+  padding: 5px;
+  height: 75px;
   display: inline-flex;
   margin: 0;
 }
@@ -96,14 +117,6 @@ div.level3 {
 }
 .legend-vertical-container > .progressbar-legend > .sp-content {
     text-align: left;
-}
-.column-4 {
-  /*float: left;*/
-  width: 24%;
-  padding: 5px;
-  height: 75px;
-  display: inline-flex;
-  margin: 0;
 }
 .indicator2 {
   display: inline-flex;
@@ -224,7 +237,7 @@ div.level3 {
 }
 
 .indicator-map {
-  border: 2px solid #D5EDFA;/*#008BD0;*/
+  border: 2px solid #D5EDFA;
   border-radius: 20px;
   padding: 10px 0px;
   width: 100%;
@@ -303,7 +316,23 @@ div.level3 {
     margin-right: 5px;
     width: calc(50% - 10px) !important;
 }
+.indicator-title-row {
+    border: 2px solid #008BD0;
+    border-radius: 15px;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 5px;
+    width: 100% !important;
+}
 .indicator-title h3 {
+    font-size: 20px;
+    margin: 0px;
+    text-align: center;
+    color: #666;
+}
+.indicator-title-row h3 {
     font-size: 20px;
     margin: 0px;
     text-align: center;
@@ -414,7 +443,7 @@ h4, h5 {
     text-align: center;
     color: #666;
 }
-.piechart_P {
+.piechart {
   float: left;
   width: 46%;
   height: 250px;
@@ -426,7 +455,6 @@ h4, h5 {
   padding: 0;
 }
 .indicator4s {
-  /*display: inline-flex;*/
   align-items: center;
   margin: 0 auto;
 }
@@ -567,7 +595,6 @@ h4, h5 {
   text-align: left;
 }
 
-
 .progress-bar-blue1 {
   background-color: #005980;
   border-top-left-radius: 20px;
@@ -593,7 +620,6 @@ h4, h5 {
 .progress-bar-blue7 {
   background-color: #D5EDFA;
 }
-
 .progress-bar-grey1 {
   background-color: #59656E;
   border-top-left-radius: 20px;
@@ -619,7 +645,6 @@ h4, h5 {
 .progress-bar-grey7 {
   background-color: #CED6E7;
 }
-
 .progress-bar-C {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -631,6 +656,10 @@ h4, h5 {
   color: #59656E;
   font-weight: 600;
 }
-.barras {
+.barras-c {
   height: 300px;
+}
+.barras-r {
+  height: 250px;
+  width: calc(100% - 25%);
 }

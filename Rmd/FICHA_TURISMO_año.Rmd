@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 35034
-  año: 2020
+  año: 2018
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -216,7 +216,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(min(df$año), params$año - 18), params$año),
+                      range = c(max(min(df$año), params$año - 18), max(df$año)),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -683,7 +683,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual_Turistas == "NA"){
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-3'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
 }else{
   cat(paste0(
     "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Turistas, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-4'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
@@ -736,17 +736,17 @@ mapa_isla_plot
 
 <div class="row">
 <div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px; margin-top: 0;">
+<div class="indicator-title-row" style="margin-top: 0;">
   <h3>Nacionalidades y sexos</h3>
 </div>
 </div>
 <div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px; margin-top: 0;">
+<div class="indicator-title-row" style="margin-top: 0;">
   <h3>Niveles educativos</h3>
 </div>
 </div>
 <div class="column-3">
-<div class="indicator-title" style="width: 100% !important; padding: 5px; margin-top: 0;">
+<div class="indicator-title-row" style="margin-top: 0;">
   <h3>Tipos de alojamientos</h3>
 </div>
 </div>
@@ -756,11 +756,11 @@ mapa_isla_plot
 
 <div class="column-3">
 <div class="column highlight" style="width: 100% !important; margin-top: -30px; padding: 30px 0 40px;">
-  <div class="piramide" style="height: 152px; margin-bottom: 28px;">
+  <div class="piramide" style="height: 152px; margin-bottom: 32px;">
     `r g_turismo_pais`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend' style="padding-bottom: 10px;"><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend' style="padding-bottom: 12px;"><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
   <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
   </div>
 </div>

@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 2019
+  convocatoria: 2007
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -383,7 +383,7 @@ df_plot <- rbind(df_plot, df_plot_0)
 df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot_I):1])
 
 g_autonomicas_mun <- ggplot(data = df_plot,
-                         aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
+                            aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_I, text = "")) +
   theme_minimal() +
@@ -436,25 +436,24 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-bottom: 30px;">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-2'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
 }
 ```
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Resultados por candidaturas</h3>
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
-
-<div class="barras">
+<div class="barras-c">
   `r g_autonomicas_mun`
 </div>
 
@@ -465,7 +464,7 @@ if(Variacion_Porcentual == "NA"){
 
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 20px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Tipos de votos</h3>
 </div>
 <div class="row">
