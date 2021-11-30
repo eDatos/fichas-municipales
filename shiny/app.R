@@ -69,9 +69,15 @@ loadMunicipios <- function() {
 
 ui <- fluidPage(
   theme = bs_theme(version = 4, bootswatch = "lumen"),
+  includeCSS("www/styles.css"),
   tags$script(HTML(
     "function resizeIframe(obj) {
-      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 90) + 'px';
+      var cssLink = document.createElement('link');
+      cssLink.href = '../../www/styles.css'; 
+      cssLink.rel = 'stylesheet'; 
+      cssLink.type = 'text/css'; 
+      obj.contentWindow.document.head.appendChild(cssLink);
     }"
   )),
   htmlOutput('header'),
@@ -156,7 +162,7 @@ server <- function(input, output) {
       params <- append(option_params, (df_init_data[df_init_data[input$id_ficha] == 1, ] %>% select(param.name, filepath) %>% deframe %>% as.list))
       renderFicha(paste0(directory.rmd, ficha_actual$filename), nombre.fichero, dir.fichero, params)
     }
-    iframe <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
+    iframe <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
   })
   
   output$report_2 <- renderUI({
