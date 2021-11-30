@@ -22,11 +22,12 @@ df_init_data <-  read.csv("init-data.csv", sep = ";") %>%
 
 downloadData <- function() {
   for (i in 1:nrow(df_init_data)) {
+    if(file.exists(df_init_data$filepath[i])) {
+      next
+    }
     print(paste0('Download resource: ', df_init_data$name[i]))
     if(df_init_data$extension[i] == "json") {
-      write(getURL(df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
-      #data <- fromJSON(df_init_data$url[i])
-      #write(toJSON(data), df_init_data$filepath[i])
+      write(getURL( df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
     } else {
       download.file(df_init_data$url[i], df_init_data$filepath[i])
     }
@@ -88,7 +89,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  #downloadData()
+  downloadData()
   df_fichas <- read.csv("fichas.csv", sep = ";")
   periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
   #periods <- get_total_periods(df_init_data, df_fichas)
