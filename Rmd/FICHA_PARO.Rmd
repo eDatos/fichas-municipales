@@ -534,10 +534,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row">
-```{r, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual_Paro == "NA"){
   cat(paste0(
-    '</div><div class="column-3">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-3">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '</div><div class="column-3-ind">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
     '<div class="column-4">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_Paro, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
@@ -624,7 +624,7 @@ mapa_comarca_plot
 
 </div>
 </div>
-<div class="indicator-title" style="width: 100% !important; margin-left: 0; padding: 5px;">
+<div class="indicator-title-row">
   <h3>Estudios terminados</h3>
 </div>
 <div class="row highlight" style="width: 100% !important; margin-top: 10px;">

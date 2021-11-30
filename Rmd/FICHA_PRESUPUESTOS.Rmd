@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 38051
-  año: 2019
+  id_municipio: 35007
+  año: 2018
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -739,18 +739,18 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row" style="margin: 15px 0;">
-```{r, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
     cat(paste0(
       "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
       if(Variacion_Porcentual_Presupuesto == "NA" & GAP != "NA"){
         cat(paste0(
-          "<div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+          "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
           if(Variacion_Porcentual_Presupuesto != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+              "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
               "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
@@ -802,7 +802,7 @@ mapa_comarca_plot
 </div>
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Presupuesto según la clasificación económica</h3>
 </div>
 
@@ -887,12 +887,12 @@ altura <- max(altura_gastos, altura_ingresos)
 </div>
 
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Gastos por programas</h3>
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="piechart_P">`r g_gastos_programas`</div>
+<div class="piechart">`r g_gastos_programas`</div>
 
 <div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
 
@@ -909,7 +909,7 @@ altura <- max(altura_gastos, altura_ingresos)
 </div>
 </div>
 
-<div class="indicator-title" style="width: 100% !important; margin-top: 10px; margin-left: 0">
+<div class="indicator-title-row">
   <h3>Salud financiera</h3>
 </div>
 <div class="row highlight" style="width: 100% !important; margin-top: 10px;">

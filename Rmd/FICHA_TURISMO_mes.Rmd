@@ -628,7 +628,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r, results='asis'}
 if(Variacion_Porcentual_Viajeros == "NA"){
   cat(paste0(
-    "<div class='column-3'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
 }else{
   cat(paste0(
     "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Viajeros, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
@@ -658,7 +658,7 @@ mapa_isla_plot
 ```
 `r get_map_box_after(paste0(rk_isla, 'º'),  municipio_actual$isla, num_mun_isla, paste0(percent_isla, '%'))`
 
-```{r, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
   cat(paste0('<div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
 }else if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros == "NA"){

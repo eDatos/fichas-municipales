@@ -737,13 +737,13 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row">
-```{r, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual_GM == "NA"){
   cat(paste0(
     '<div class="column-2">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-2">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-3">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3-ind">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
