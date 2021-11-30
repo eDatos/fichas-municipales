@@ -73,7 +73,7 @@ ui <- fluidPage(
   includeCSS("www/styles.css"),
   tags$script(HTML(
     "function resizeIframe(obj) {
-      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 90) + 'px';
+      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
       var cssLink = document.createElement('link');
       cssLink.href = '../../www/styles.css'; 
       cssLink.rel = 'stylesheet'; 

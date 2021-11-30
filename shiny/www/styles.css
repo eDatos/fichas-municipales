@@ -28,12 +28,11 @@
 }
 
 .main-container::before {
-  right: 15px;
+  right: 8px;
   top: 0;
-  transform: rotate(-1deg);
+  transform: rotate(-1.1deg);
   z-index: -1;
 }
-
 .main-container::after {
   top: 5px;
   right: -5px;
@@ -42,4 +41,9 @@
 }
 .logo-fecam, .logo-istac {
   display: none;
+}
+#ficha_params .row {
+  border: 2px solid #D5EDFA;
+  border-radius: 20px;
+  margin: 20px;
 }
