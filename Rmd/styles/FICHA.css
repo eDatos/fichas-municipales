@@ -50,11 +50,6 @@ div.level3 {
   display: inline-flex;
   margin: 0;
 }
-.progress-bar-C {
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border: 1px solid #59656E;
-}
 
 .progress-bar-container {
   border-radius: 20px;
@@ -101,9 +96,6 @@ div.level3 {
 }
 .legend-vertical-container > .progressbar-legend > .sp-content {
     text-align: left;
-}
-.legend-vertical-container > .progressbar-legend > [class^="progress-bar-"] {
-    margin-top: 3px;
 }
 .column-4 {
   /*float: left;*/
@@ -417,34 +409,6 @@ hr.separator {
   margin-top: 3px;
   margin-bottom: 6px;
 }
-.nota-metodologica .indicator-title, .nota-metodologica .highlight, .nota-metodologica .indicator-content {
-  width: 100% !important;
-}
-.nota-metodologica .highlight {
-  padding: 20px 0;   
- }
-.nota-metodologica .image { 
-  text-align: center;
-  height: 70px;
-  width: 80px;
-}
-.nota-metodologica .indicator3 {
-  width: calc(100% - 20px) !important;
-  text-align: left;
-  margin-left: 10px;
-  height: 100px;
-  align-items: start;
-}
-.nota-metodologica .indicator-content {
-  text-align: left;
-  display: inline;
-}
-.nota-metodologica .label {
-  color: #666;
-  margin-bottom: 6px;
-  text-align: left;
-  font-size: 22px;
-}
 h4, h5 {
     margin: 10px;
     text-align: center;
@@ -656,3 +620,17 @@ h4, h5 {
   background-color: #CED6E7;
 }
 
+.progress-bar-C {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border: 1px solid #59656E;
+}
+.progress-bar-C-b {
+  padding-left: 6px;
+  padding-top: 1px;
+  color: #59656E;
+  font-weight: 600;
+}
+.barras {
+  height: 300px;
+}

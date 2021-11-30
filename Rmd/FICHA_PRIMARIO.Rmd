@@ -184,8 +184,8 @@ df <- related_mun %>%
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Habitantes: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Habitantes: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
@@ -789,10 +789,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), sup_secano, './img/family.png'), "</div><div class='column-3'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), sup_regadio, './img/family.png'), "</div><div class='column-3'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
+    "<div class='column-3'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " m<sup>2</sup>"), './img/family.png'), "</div><div class='column-3'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " m<sup>2</sup>"), './img/family.png'), "</div><div class='column-3'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), sup_secano, './img/family.png'), "</div><div class='column-4'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), sup_regadio, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Secano</br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " m<sup>2</sup>"), './img/family.png'), "</div><div class='column-4'>", get_indicator2(paste0('Regadío</br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " m<sup>2</sup>"), './img/family.png'), "</div><div class='column-4'>", get_indicator2("Cultivada<br>vs total", percent_sup_cultivada, "./img/percent-blue.png"), "</div>"))
 }
 ```
 </div>
@@ -856,7 +856,7 @@ mapa_comarca_plot
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -868,7 +868,7 @@ mapa_comarca_plot
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -894,9 +894,7 @@ mapa_comarca_plot
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-</div>
-
+<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div></div>
 </div>
 
 <div class="column highlight">

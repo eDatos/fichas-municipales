@@ -760,8 +760,8 @@ mapa_isla_plot
     `r g_turismo_pais`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend' style="padding-bottom: 10px;"><div class='progress-bar-1'></div><div class='sp-content'>Hombres</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend' style="padding-bottom: 10px;"><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
   </div>
 </div>
 </div>
@@ -772,11 +772,11 @@ mapa_isla_plot
   `r g_turismo_educacion`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[3]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_educacion_plot$estudios[1]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -787,12 +787,12 @@ mapa_isla_plot
   `r g_turismo_aloj`
   </div>
   <div class="legend-vertical-container">
-  <div class='progressbar-legend'><div class='progress-bar-1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[1]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[2]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-7' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[7]`</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[3]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[1]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[2]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue5' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[7]`</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6' style='font-size: 11px;'></div><div class='sp-content'>`r df_turismo_aloj_plot$tipo[3]`</div></div>
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>Canarias</div></div>
   </div>
 </div>
 </div>
@@ -812,56 +812,56 @@ mapa_isla_plot
 
 <div class="column highlight" style="padding: 10px;">
 <div class="progress-bar-container">
-  <div class="progress-bar-1" style="width:`r porc_Turistas_descansar`%"></div>
-  <div class="progress-bar-2" style="width:`r porc_Turistas_explorar`%"></div>
-  <div class="progress-bar-3" style="width:`r porc_Turistas_otros`%"></div>
+  <div class="progress-bar-blue1" style="width:`r porc_Turistas_descansar`%"></div>
+  <div class="progress-bar-blue3" style="width:`r porc_Turistas_explorar`%"></div>
+  <div class="progress-bar-blue6" style="width:`r porc_Turistas_otros`%"></div>
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 
 <div class="row">
 <p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
-  <div class="progress-bar-1-C" style="width:`r porc_Turistas_descansar_C`%"></div>
-  <div class="progress-bar-2-C" style="width:`r porc_Turistas_explorar_C`%"></div>
-  <div class="progress-bar-3-C" style="width:`r porc_Turistas_otros_C`%"></div>
+  <div class="progress-bar-grey1" style="width:`r porc_Turistas_descansar_C`%"></div>
+  <div class="progress-bar-grey3" style="width:`r porc_Turistas_explorar_C`%"></div>
+  <div class="progress-bar-grey6" style="width:`r porc_Turistas_otros_C`%"></div>
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-2-C'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-grey1'></div><div class='sp-content'>Descansar<br>`r format(porc_Turistas_descansar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-grey3'></div><div class='sp-content'>Conocer las islas<br>`r format(porc_Turistas_explorar_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-grey6'></div><div class='sp-content'>Otros<br>`r format(porc_Turistas_otros_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 </div>
 
 <div class="column highlight" style="padding: 10px;">
 <div class="progress-bar-container">
-  <div class="progress-bar-1" style="width:`r porc_Turistas_menos50`%"></div>
-  <div class="progress-bar-3" style="width:`r porc_Turistas_mas50`%"></div>
+  <div class="progress-bar-blue1" style="width:`r porc_Turistas_menos50`%"></div>
+  <div class="progress-bar-blue6" style="width:`r porc_Turistas_mas50`%"></div>
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1'></div><div class='sp-content'>&lt; 50.000€<br>`r format(porc_Turistas_menos50_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3'></div><div class='sp-content'>&ge; 50.000€<br>`r format(porc_Turistas_mas50_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>&lt; 50.000€<br>`r format(porc_Turistas_menos50_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>&ge; 50.000€<br>`r format(porc_Turistas_mas50_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 
 <div class="row">
 <p style="margin: 13px 16px -10px;">Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
-  <div class="progress-bar-1-C" style="width:`r porc_Turistas_menos50_C`%"></div>
-  <div class="progress-bar-3-C" style="width:`r porc_Turistas_mas50_C`%"></div>
+  <div class="progress-bar-grey1" style="width:`r porc_Turistas_menos50_C`%"></div>
+  <div class="progress-bar-grey6" style="width:`r porc_Turistas_mas50_C`%"></div>
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-1-C'></div><div class='sp-content'>&lt; 50.000€<br>`r format(porc_Turistas_menos50_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-3-C'></div><div class='sp-content'>&ge; 50.000€<br>`r format(porc_Turistas_mas50_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-grey1'></div><div class='sp-content'>&lt; 50.000€<br>`r format(porc_Turistas_menos50_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-grey6'></div><div class='sp-content'>&ge; 50.000€<br>`r format(porc_Turistas_mas50_C_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 

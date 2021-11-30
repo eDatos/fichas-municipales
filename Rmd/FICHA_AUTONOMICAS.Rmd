@@ -7,10 +7,10 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.autonomicas_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000030/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
-  url.autonomicas_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000013/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.autonomicas_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000004/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
-  url.autonomicas_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000021/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.autonomicas_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000030/~latest.json?dim=TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.autonomicas_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000013/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.autonomicas_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000004/~latest.json?dim=TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
+  url.autonomicas_2007: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000021/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.autonomicas_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:AUTONOMICAS_2019_INSULARES|AUTONOMICAS_2015|AUTONOMICAS_2011|AUTONOMICAS_2007&lang=es
 output:
   html_document:
@@ -271,6 +271,13 @@ Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %
 ```{r Data Resultados}
 data_autonomicas <- fromJSON(params[[convocatoria_actual$url]])
 
+dR <- length(rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+      length(unlist(strsplit(data_autonomicas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
 if(params$convocatoria %in% c(2015, 2007)){
   df_autonomicas <- data.frame(
     medida = rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
@@ -279,7 +286,7 @@ if(params$convocatoria %in% c(2015, 2007)){
     mun = rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
               each = length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
     candidatura = data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-    valor = unlist(strsplit(data_autonomicas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+    valor = c(unlist(strsplit(data_autonomicas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
   
   df_partido <- data.frame(
     candidatura = data_autonomicas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -295,7 +302,7 @@ if(params$convocatoria %in% c(2015, 2007)){
         medida = rep(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                      each = length(data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
         candidatura = data_autonomicas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-        valor = unlist(strsplit(data_autonomicas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+        valor = c(unlist(strsplit(data_autonomicas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
       
       df_partido <- data.frame(
         candidatura = data_autonomicas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -332,64 +339,58 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
 
-df_autonomicas_C <- df_autonomicas %>% 
+df_autonomicas_I <- df_autonomicas %>% 
   left_join(df_partido, by = "candidatura") %>%
-  filter(mun == "ES70")
+  filter(mun == municipio_actual$id_isla)
 
-df_plot_C_ <- df_autonomicas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
-df_plot_C <- df_plot_C_ %>% 
+df_plot_I_ <- df_autonomicas_I %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot_I <- df_plot_I_ %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
-df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
-df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
+  select(candidatura, valor_I = VOTOS_VALIDOS_CANDIDATURA, porcentaje_I = RATIO_VOTOS_CANDIDATURA)
+df_plot_I$valor_I <- as.numeric(df_plot_I$valor_I)
+df_plot_I$porcentaje_I <- as.numeric(df_plot_I$porcentaje_I)
 
-df_otros <- df_autonomicas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_autonomicas_I %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
 df_otros <- df_otros %>%
   spread(medida, valor) %>%
-  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
+  select(candidatura, valor_I = VOTOS_VALIDOS_CANDIDATURA, porcentaje_I = RATIO_VOTOS_CANDIDATURA)
 
-df_plot_C <- rbind(df_plot_C, c("Otros", sum(df_otros$valor_C, na.rm = NA), sum(df_otros$porcentaje_C, na.rm = NA)))
-df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
-df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
+df_plot_I <- rbind(df_plot_I, c("Otros", sum(df_otros$valor_I, na.rm = NA), sum(df_otros$porcentaje_I, na.rm = NA)))
+df_plot_I$valor_I <- as.numeric(df_plot_I$valor_I)
+df_plot_I$porcentaje_I <- as.numeric(df_plot_I$porcentaje_I)
 
 df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
-  left_join(df_plot_C, by = "candidatura") %>%
+  left_join(df_plot_I, by = "candidatura") %>%
   mutate(label = "|") %>% 
   transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
   
+df_plot <- df_plot %>%
+  transform(name_partido = paste0(name_partido, "<br>(", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
+
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
   "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", format(valor_C, big.mark = ".", decimal.mark = ","), " votos",
-  " (", format(round(porcentaje_C, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>", municipio_actual$isla,": ", format(valor_I, big.mark = ".", decimal.mark = ","), " votos",
+  " (", format(round(porcentaje_I, 1), big.mark = ".", decimal.mark = ","), "%)"
   ))
 
 df_plot_0 <- df_plot %>% transform(porcentaje = 0,
-                                   porcentaje_C = 0,
+                                   porcentaje_I = 0,
                                    label = "")
 df_plot <- rbind(df_plot, df_plot_0)
-df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot_C):1])
-
-if(nrow(df_plot)/2 == 6){
-      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      }else if(nrow(df_plot_)/2 == 5){
-        col <- c("#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-        }else if(nrow(df_plot_)/2 == 4){
-          col <- c("#00A6DC", "#008BD0", "#0072A2", "#005980")
-          }
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot_I):1])
 
 g_autonomicas_mun <- ggplot(data = df_plot,
-                         aes(y = candidatura, fill = candidatura, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_C, text = "")) +
+                         aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_I, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
-  scale_fill_manual(values = col) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(),
-        axis.text.y = element_blank(),
+        axis.text.y = element_text(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -400,7 +401,7 @@ g_autonomicas_mun <- ggplot(data = df_plot,
   scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_autonomicas_mun <- ggplotly(g_autonomicas_mun, tooltip = c("text")) %>%
-  layout(hovermode = "y unified", showlegend = FALSE) %>%
+  layout(hovermode = "y unified", showlegend = FALSE, margin = list(l = -6)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(7:12))
 ```
@@ -451,22 +452,15 @@ if(Variacion_Porcentual == "NA"){
   <h3>Resultados por candidaturas</h3>
 </div>
 
-<div class="row highlight" style="width: 100% !important; margin-top: 10px;">
-<div class="piechart_P">
+<div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
+
+<div class="barras">
   `r g_autonomicas_mun`
 </div>
 
-<div class="tablechart" style="margin-top: 20px; margin-left: -5px;">
-<div class="legend-vertical-container">
-```{r leyenda barras, results='asis'}
-for (i in 1:(nrow(df_plot)/2)) {
-  cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue",i,"'></div><div class='sp-content-b'>", df_plot[i,]$name_partido, " (", format(round(df_plot[i,]$porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)</div></div>"))
-}
-```
-  <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>Canarias</div></div>
-</div>
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+<div class='progress-bar-C-b style='margin-top: -9px;''>|</div><div class='sp-content' style='margin-top: 5px;'>`r municipio_actual$isla`</div></div>
 </div>
 
 </div>

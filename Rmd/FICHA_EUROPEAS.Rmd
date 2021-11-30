@@ -7,10 +7,10 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
-  url.parlamento_europeo_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000028/~latest.json?dim=TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.parlamento_europeo_2014: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000014/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.parlamento_europeo_2009: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000008/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.parlamento_europeo_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000024/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.parlamento_europeo_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000028/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.parlamento_europeo_2014: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000014/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.parlamento_europeo_2009: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000008/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.parlamento_europeo_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000024/~latest.json?dim=TERRITORIO:ES70|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es  
   url.europeas_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:PARLAMENTO_EUROPEO_2019|PARLAMENTO_EUROPEO_2014|PARLAMENTO_EUROPEO_2009|PARLAMENTO_EUROPEO_2004&lang=es
 output:
   html_document:
@@ -85,7 +85,7 @@ df_CL_AREA_mun <- df_CL_AREA %>%
   left_join(df_CL_AREA, by="code") %>% 
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
   left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, id_provincia = code, provincia = value)
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
 
 municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
@@ -349,29 +349,29 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
 
-df_europeas_P <- df_europeas %>% 
+df_europeas_C <- df_europeas %>% 
   left_join(df_partido, by = "candidatura") %>%
-  filter(mun == municipio_actual$id_provincia)
+  filter(mun == "ES70")
 
-df_plot_P_ <- df_europeas_P %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
-df_plot_P <- df_plot_P_ %>% 
+df_plot_C_ <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_plot_C <- df_plot_C_ %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = RATIO_VOTOS_CANDIDATURA)
-df_plot_P$valor_P <- as.numeric(df_plot_P$valor_P)
-df_plot_P$porcentaje_P <- as.numeric(df_plot_P$porcentaje_P)
+  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
+df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
+df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
 
-df_otros <- df_europeas_P %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
+df_otros <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
 df_otros <- df_otros %>%
   spread(medida, valor) %>%
-  select(candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = RATIO_VOTOS_CANDIDATURA)
+  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
 
-df_plot_P <- rbind(df_plot_P, c("Otros", sum(df_otros$valor_P, na.rm = NA), sum(df_otros$porcentaje_P, na.rm = NA)))
-df_plot_P$valor_P <- as.numeric(df_plot_P$valor_P)
-df_plot_P$porcentaje_P <- as.numeric(df_plot_P$porcentaje_P)
+df_plot_C <- rbind(df_plot_C, c("Otros", sum(df_otros$valor_C, na.rm = NA), sum(df_otros$porcentaje_C, na.rm = NA)))
+df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
+df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
 
 df_plot <- df_plot %>%
   left_join(df_partido, by = "candidatura") %>%
-  left_join(df_plot_P, by = "candidatura") %>%
+  left_join(df_plot_C, by = "candidatura") %>%
   mutate(label = "|") %>% 
   transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
   
@@ -379,15 +379,15 @@ df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
   "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>", municipio_actual$provincia,": ", format(valor_P, big.mark = ".", decimal.mark = ","), " votos",
-  " (", format(round(porcentaje_P, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>Canarias: ", format(valor_C, big.mark = ".", decimal.mark = ","), " votos",
+  " (", format(round(porcentaje_C, 1), big.mark = ".", decimal.mark = ","), "%)"
   ))
 
 df_plot_0 <- df_plot %>% transform(porcentaje = 0,
-                                   porcentaje_P = 0,
+                                   porcentaje_C = 0,
                                    label = "")
 df_plot <- rbind(df_plot, df_plot_0)
-df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot_P):1])
+df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot_C):1])
 
 if(nrow(df_plot)/2 == 6){
       col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
@@ -400,7 +400,7 @@ if(nrow(df_plot)/2 == 6){
 g_europeas_mun <- ggplot(data = df_plot,
                          aes(y = candidatura, fill = candidatura, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_P, text = "")) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_C, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   scale_fill_manual(values = col) +
@@ -482,8 +482,8 @@ for (i in 1:(nrow(df_plot)/2)) {
 }
 ```
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>`r municipio_actual$provincia`</div></div>
-</div>
+  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>Canarias</div></div>
+  </div>
 </div>
 
 </div>

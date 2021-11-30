@@ -480,8 +480,8 @@ for (i in 1:(nrow(df_plot)/2)) {
 }
 ```
   <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: 0; color: #59656E; font-weight: 600;">|</div><div class='sp-content-b'>`r municipio_actual$isla`</div></div>
-</div>
+  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>`r municipio_actual$isla`</div></div>
+  </div>
 </div>
 
 </div>

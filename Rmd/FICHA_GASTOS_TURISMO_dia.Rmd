@@ -729,14 +729,14 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="margin-bottom: -18px;">
+<div class="column highlight">
 <div class="piramide" style="height: 190px">
 `r g_GMd_pais`
 </div>
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -748,7 +748,7 @@ mapa_isla_plot
 
 <div class="progressbar-legend-container">
 <div class='progressbar-legend'>
-<div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
 </div>
 
 </div>
@@ -779,40 +779,40 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column-2">
-<div class="column" style="width: 100% !important;">
-<div class="indicator-title" style="width: 100% !important;">
+<div class="column indicator-title">
   <h3>Niveles educativos</h3>
 </div>
-<div class="column highlight" style="width: 100% !important; padding: 30px 10px 5px;">
-  <div class="piramide" style="height: 120px;">
-  `r g_GMd_ne`
-  </div>
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-  </div>
-</div>
-</div>
-</div>
-<div class="column-2">
-<div class="column" style="width: 100% !important;">
-<div class="indicator-title" style="width: 100% !important;">
+<div class="column indicator-title">
   <h3>Noches pernoctadas</h3>
-</div>
-<div class="column highlight" style="width: 100% !important; padding: 30px 10px 5px;">
-  <div class="piramide" style="height: 120px;">
-  `r g_GMd_np`
-  </div>
-<div class="progressbar-legend-container">
-  <div class='progressbar-legend'>
-  <div class='progress-bar-8' style="padding-left: 6px; margin-top: -5px; color: #59656E; font-weight: 600;">|</div><div class='sp-content'>Canarias</div></div>
-</div>
-</div>
 </div>
 </div>
 
+<div class="row">
+<div class="column highlight" style="padding: 30px 10px 5px;">
+<div class="piramide" style="height: 120px">
+`r g_GMd_ne`
 </div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+
+</div>
+
+<div class="column highlight" style="padding: 30px 10px 5px;">
+<div class="piramide" style="height: 120px">
+`r g_GMd_np`
+</div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+
+</div>
+</div>
+
 
 <div class="row" style="margin-top: 10px;">
 </div>
