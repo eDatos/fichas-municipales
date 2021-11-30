@@ -40,3 +40,6 @@
   transform: rotate(1deg);
   z-index: -2;
 }
+.logo-fecam, .logo-istac {
+  display: none;
+}
