@@ -1,0 +1,10 @@
+diff a/Rmd/FICHA_CABILDO.Rmd b/Rmd/FICHA_CABILDO.Rmd	(rejected hunks)
+@@ -312,7 +312,7 @@
+     candidatura = data_cabildo[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+     name_partido = vector(mode = "character", length = data_cabildo[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]))
+   for(i in 1:data_cabildo[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
+-    df_partido$name_partido[i] <- data_cabildo[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
++    df_partido$name_partido[i] <- get_nombre_partido(data_cabildo[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]])
+   }}else{
+     if(params$convocatoria %in% c(2015, 2011)){
+       df_cabildo <- data.frame(

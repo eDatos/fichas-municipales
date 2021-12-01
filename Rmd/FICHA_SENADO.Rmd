@@ -144,7 +144,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución de la población}
+```{r Gráfico evolución}
 dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                         length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
@@ -160,7 +160,7 @@ df_participacion <- data.frame(
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
-df_participacion$valor <- as.numeric(df_participacion$valor)
+df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
 df_u_ <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
 related_mun <- df_u_ %>% filter(proceso == convocatoria_actual$code)
@@ -174,20 +174,23 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = proceso, valor, Municipio = id, nombre) %>%
   left_join(convocatoria_senado, by = "code") %>%
-  transform(Tasa = ifelse(code == min_code, NA, round(100*((valor / lag(valor)) - 1), 1))) %>% 
-  filter(order <= convocatoria_actual$order)
+  transform(variacion = ifelse(code == min_code, NA, round((valor - lag(valor)), 1)))
+
+if(convocatoria_actual$code != min_code){
+  df <- df %>% filter(order <= convocatoria_actual$order)
+  }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Electores: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Electores: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Tasa de participación: <span class='sp-habitantes'>%s</span><br/>Variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Tasa de participación: <span class='sp-habitantes'>%s</span><br/>Variación: <span class='sp-tasa'>%s</span>"
 
 df <- df %>% mutate(
     tooltip = ifelse(code == convocatoria_actual$code,
-                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
-                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',convocatoria_formatted,')'),
-                             ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
+                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")), ' (',convocatoria_formatted,')'),
+                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales")))
     )
 )
 
@@ -247,8 +250,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 
 leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
-  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
-         Tasa = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
+         variacion = ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
@@ -256,9 +259,9 @@ leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
 df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(c(ind, valor))
 
 Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>%  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion_Porcentual <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(Tasa) %>%
+Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
   as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+Imagen_Variacion <- ifelse(signo(Variacion) == "más", './img/up.png', './img/down.png')
 
 Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric() %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -276,10 +279,28 @@ Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_
 Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
+```{r Nombres de partidos}
+get_nombre_partido <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 38) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
+```
+
 ```{r Data Resultados}
 data_senado <- fromJSON(params[[convocatoria_actual$url]])
 
-dS <- length(rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+dR <- length(rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                         length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
       length(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)))
@@ -294,7 +315,7 @@ if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 
     mun = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
               each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
     candidatura = data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-    valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dS)))
+    valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
   
   df_partido <- data.frame(
     candidatura = data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -310,7 +331,7 @@ if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 
         medida = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                      each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
         candidatura = data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-        valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dS)))
+        valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
       
       df_partido <- data.frame(
         candidatura = data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -326,7 +347,7 @@ if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 
             candidatura = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                          each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
             medida = data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-            valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dS)))
+            valor = c(unlist(strsplit(data_senado[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
           
           df_partido <- data.frame(
             candidatura = data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
@@ -391,16 +412,19 @@ df_plot <- df_plot %>%
   mutate(label = "|") %>% 
   transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
 
-df_plot <- df_plot %>%
-  transform(name_partido = paste0(name_partido, "<br>(", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
-
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
   "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>", municipio_actual$isla,": ", format(valor_I, big.mark = ".", decimal.mark = ","), " votos",
-  " (", format(round(porcentaje_I, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>", municipio_actual$isla,": ", trimws(format(valor_I, big.mark = ".", decimal.mark = ",")), " votos",
+  " (", trimws(format(round(porcentaje_I, 1), big.mark = ".", decimal.mark = ",")), "%)"
   ))
+
+df_plot$name_partido_percent <- ""
+
+for(i in 1:nrow(df_plot)) {
+  df_plot$name_partido_percent[i] <- get_nombre_partido(paste0(df_plot$name_partido[i], " (", trimws(format(round(df_plot$porcentaje[i], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
+}
 
 df_plot_0 <- df_plot %>% transform(porcentaje = 0,
                                    porcentaje_I = 0,
@@ -409,14 +433,14 @@ df_plot <- rbind(df_plot, df_plot_0)
 df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot_I):1])
 
 g_senado_mun <- ggplot(data = df_plot,
-                            aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
+                       aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_I, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   theme(axis.text.x = element_text(),
-        axis.text.y = element_text(),
+        axis.text.y = element_text(size = 8),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -424,12 +448,13 @@ g_senado_mun <- ggplot(data = df_plot,
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(n.breaks = 5, labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_plot$name_partido_percent[(nrow(df_plot)/2):1])
 
 g_senado_mun <- ggplotly(g_senado_mun, tooltip = c("text")) %>%
   layout(hovermode = "y unified", showlegend = FALSE, margin = list(l = -6)) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c(7:12))
+  style(hoverinfo = "skip", traces = c(2))
 ```
 
 
@@ -456,7 +481,7 @@ get_indicator4 = function(title, label, value) {
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyenda serie, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$Tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$variacion[i]))
 }
 ```
 </div>
@@ -464,12 +489,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row" style="margin-bottom: 30px;">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual == "NA"){
+if(Variacion == "NA"){
   cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/family.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/percent-blue.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/family.png'), "</div>"))
 }
 ```
 </div>
