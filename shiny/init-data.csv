@@ -1,41 +1,41 @@
-name;extension;demografia;paro;afiliacion_residencia;afiliacion_cotizacion;eiss;presupuestos;url;periodico
-mapa;json;1;1;1;1;1;1;https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json;0
-piramide;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d619ecaa-319c-4d29-a789-b7708fbaf3be;1
-nacionalidad;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a0df911-8098-4b6b-8002-bbfffa892cbc;1
-cl_area;xml;1;1;1;1;1;1;https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes;0
-habitantes;json;1;0;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;1
-ranking;json;1;0;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D%2CTIME;1
-dependencia;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7dcb25e5-f533-4ba1-a6aa-70fe8fc69db7;1
-defunciones;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=6a7b1c7f-f345-485c-b9de-e4b1477fe91b;1
-crec_veg;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=5012a489-2ef4-4ff2-b1bf-ebf6e4c5f2d2;1
-lugar;json;1;0;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=f0c5c903-5648-4822-80be-8da4d3927b98;1
-ind_pobl;json;1;0;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D%2CTIME;1
-edad_media;json;1;0;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/87f99b2c-608f-44be-8d7e-2e26681d1b45/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D%2CTIME;1
-nacimientos;json;1;0;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6879177d-dbe7-40f2-a02b-caa806cf064e/data?representation=GEOGRAPHICAL%2CTIME%2CMEASURE%5BABSOLUTE%5D;1
-mes;json;0;1;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97;0
-parados;json;0;1;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;1
-ind_paro;json;0;1;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D;1
-ind_paro_M;json;0;1;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/1b3dffb7-faa4-4b41-931b-68d7d384c706/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D;1
-ind_paro_H;json;0;1;0;0;0;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/68af63ed-db2b-4825-96be-69d94df6469f/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D;1
-piramide_paro;json;0;1;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=abc2a458-df6a-41eb-bc66-661b6e5c70fb;1
-paro_ge_se;json;0;1;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4483f2b9-db79-4f31-a8be-29a3ecfec255;1
-paro_se;json;0;1;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7c423bf5-3b26-4e21-aca3-f3745d461ec2;1
-paro_sexo_est;json;0;1;0;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4aa1f89e-bc23-4b31-97a9-55a95fea782f;1
-afil_r;json;0;0;1;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ffd9beb1-b9f0-477c-9a44-480397986f84;1
-afil_ae_r;json;0;0;1;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d1b462a5-c6c6-4469-bf81-0fde7f2b887a;1
-piramide_r;json;0;0;1;0;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=eb719ad5-ab9e-4591-9cdc-8f7628df9beb;1
-afil_c;json;0;0;0;1;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=aa1065d6-8f06-4c42-9ff0-cabef570fa78;1
-afil_ae_c;json;0;0;0;1;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a59bb24-1073-4c2f-8a08-88535adc7326;1
-piramide_c;json;0;0;0;1;0;0;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a8f8a59d-7ea1-4b0a-8ee6-14222af60963;1
-empresas;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D;1
-ind_empresas;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D;1
-intervalos;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000005/2.0?lang=es;1
-nat_jurid;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000007/2.0?lang=es;1
-agricultura;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_AGRICULTURA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D;1
-industria;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_INDUSTRIA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D;1
-construccion;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_CONSTRUCCION/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D;1
-servicios;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_SERVICIOS/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D;1
-otros;json;0;0;0;0;1;0;https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000003/3.0?dim=ACTIVIDAD_ECONOMICA%3AA38_19%7CA38_21&lang=es;1
-ingresos;json;0;0;0;0;0;1;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/3a8ca845-4811-4f93-a23c-9e8480173d25/data?representation=MEASURE%5BABSOLUTE%5D;1
-gastos;json;0;0;0;0;0;1;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/64d29481-fe6d-4919-a9de-5ab096c61680/data?representation=MEASURE%5BABSOLUTE%5D;1
-dist_mun;json;1;1;1;1;1;1;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7;0
+"name";"extension";"url";"fichas";"periodico"
+"mapa";"json";"https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json";"demografia paro afiliacion_residencia afiliacion_cotizacion eiss presupuestos ";0
+"piramide";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d619ecaa-319c-4d29-a789-b7708fbaf3be";"demografia ";1
+"nacionalidad";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a0df911-8098-4b6b-8002-bbfffa892cbc";"demografia ";1
+"cl_area";"xml";"https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes";"demografia paro afiliacion_residencia afiliacion_cotizacion eiss presupuestos ";0
+"habitantes";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D";"demografia ";1
+"ranking";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=MEASURE%5BABSOLUTE%5D%2CTIME";"demografia ";1
+"dependencia";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7dcb25e5-f533-4ba1-a6aa-70fe8fc69db7";"demografia ";1
+"defunciones";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=6a7b1c7f-f345-485c-b9de-e4b1477fe91b";"demografia ";1
+"crec_veg";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=5012a489-2ef4-4ff2-b1bf-ebf6e4c5f2d2";"demografia ";1
+"lugar";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=f0c5c903-5648-4822-80be-8da4d3927b98";"demografia ";1
+"ind_pobl";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D%2CTIME";"demografia ";1
+"edad_media";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/87f99b2c-608f-44be-8d7e-2e26681d1b45/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D%2CTIME";"demografia ";1
+"nacimientos";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6879177d-dbe7-40f2-a02b-caa806cf064e/data?representation=GEOGRAPHICAL%2CTIME%2CMEASURE%5BABSOLUTE%5D";"demografia ";1
+"mes";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97";"paro ";0
+"parados";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D";"paro ";1
+"ind_paro";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D";"paro ";1
+"ind_paro_M";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/1b3dffb7-faa4-4b41-931b-68d7d384c706/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D";"paro ";1
+"ind_paro_H";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/68af63ed-db2b-4825-96be-69d94df6469f/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D";"paro ";1
+"piramide_paro";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=abc2a458-df6a-41eb-bc66-661b6e5c70fb";"paro ";1
+"paro_ge_se";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4483f2b9-db79-4f31-a8be-29a3ecfec255";"paro ";1
+"paro_se";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7c423bf5-3b26-4e21-aca3-f3745d461ec2";"paro ";1
+"paro_sexo_est";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4aa1f89e-bc23-4b31-97a9-55a95fea782f";"paro ";1
+"afil_r";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ffd9beb1-b9f0-477c-9a44-480397986f84";"afiliacion_residencia ";1
+"afil_ae_r";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d1b462a5-c6c6-4469-bf81-0fde7f2b887a";"afiliacion_residencia ";1
+"piramide_r";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=eb719ad5-ab9e-4591-9cdc-8f7628df9beb";"afiliacion_residencia ";1
+"afil_c";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=aa1065d6-8f06-4c42-9ff0-cabef570fa78";"afiliacion_cotizacion ";1
+"afil_ae_c";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a59bb24-1073-4c2f-8a08-88535adc7326";"afiliacion_cotizacion ";1
+"piramide_c";"json";"http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a8f8a59d-7ea1-4b0a-8ee6-14222af60963";"afiliacion_cotizacion ";1
+"empresas";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D";"eiss ";1
+"ind_empresas";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D";"eiss ";1
+"intervalos";"json";"https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000005/2.0?lang=es";"eiss ";1
+"nat_jurid";"json";"https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000007/2.0?lang=es";"eiss ";1
+"agricultura";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_AGRICULTURA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D";"eiss ";1
+"industria";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_INDUSTRIA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D";"eiss ";1
+"construccion";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_CONSTRUCCION/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D";"eiss ";1
+"servicios";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/EMPRESAS_SEGURIDAD_SOCIAL_SERVICIOS/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D";"eiss ";1
+"otros";"json";"https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58028A_000003/3.0?dim=ACTIVIDAD_ECONOMICA%3AA38_19%7CA38_21&lang=es";"eiss ";1
+"ingresos";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/3a8ca845-4811-4f93-a23c-9e8480173d25/data?representation=MEASURE%5BABSOLUTE%5D";"presupuestos ";1
+"gastos";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/64d29481-fe6d-4919-a9de-5ab096c61680/data?representation=MEASURE%5BABSOLUTE%5D";"presupuestos ";1
+"dist_mun";"json";"https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7";"demografia paro afiliacion_residencia afiliacion_cotizacion eiss presupuestos ";0

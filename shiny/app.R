@@ -160,7 +160,7 @@ server <- function(input, output) {
         option_params <- append(option_params, list(mes = as.numeric(input$trimestre)))
       }
       
-      params <- append(option_params, (df_init_data[df_init_data[input$id_ficha] == 1, ] %>% select(param.name, filepath) %>% deframe %>% as.list))
+      params <- append(option_params, (df_init_data[grepl(input$id_ficha, df_init_data$fichas, fixed = TRUE),] %>% select(param.name, filepath) %>% deframe %>% as.list))
       renderFicha(paste0(directory.rmd, ficha_actual$filename), nombre.fichero, dir.fichero, params)
     }
     iframe <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
@@ -186,7 +186,7 @@ server <- function(input, output) {
         option_params <- append(option_params, list(mes = as.numeric(input$trimestre_2)*3))
       }
       
-      params <- append(option_params, (df_init_data[df_init_data[input$id_ficha_2] == 1, ] %>% select(param.name, filepath) %>% deframe %>% as.list))
+      params <- append(option_params, (df_init_data[grepl(input$id_ficha_2, df_init_data$fichas, fixed = TRUE),] %>% select(param.name, filepath) %>% deframe %>% as.list))
       renderFicha(paste0(directory.rmd, ficha_actual$filename), nombre.fichero, dir.fichero, params)
     }
     iframe_2 <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
