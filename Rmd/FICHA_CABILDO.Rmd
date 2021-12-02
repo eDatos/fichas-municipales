@@ -424,7 +424,7 @@ df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_part
 
 g_cabildo_mun <- ggplot(data = df_plot,
                         aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_bar(stat = "identity", fill = "#008BD0", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_I, text = "")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +

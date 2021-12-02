@@ -402,7 +402,7 @@ df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_part
 
 g_municipales_mun <-  ggplot(data = df_plot,
                              aes(y = name_partido, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", fill = "#0072A2", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_bar(stat = "identity", fill = "#008BD0", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -459,7 +459,7 @@ df_points$hovertext[which(is.na(df_points$name_partido))] <- ""
 
 g_representantes <- ggplot(data = df_points,
                            aes(y = name_partido, name = NULL, text = hovertext)) +
-  geom_point(stat = "identity", colour = "#0072A2", size = 6, alpha = 0.8, aes(x = puntos)) +
+  geom_point(stat = "identity", colour = "#008BD0", size = 6, alpha = 0.8, aes(x = puntos)) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
