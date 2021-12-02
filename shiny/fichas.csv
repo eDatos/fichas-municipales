@@ -1,7 +1,10 @@
 code;description;filename;periodicidad
-demografia;Indicadores demograficos;FICHA.Rmd;A
+demografia;Indicadores demográficos;FICHA.Rmd;A
 paro;Paro registrado;FICHA_PARO.Rmd;M
-afiliacion_residencia;Afiliaciones segÃºn lugar de residencia;FICHA_AFIL_RESID.Rmd;Q
-afiliacion_cotizacion;Afiliaciones segÃºn lugar de cotizaciÃ³n;FICHA_AFIL_COTIZ.Rmd;Q
-eiss;Empresas inscritas a la Seguridad Social;FICHA_EMPRESAS_SS.Rmd;Q
+afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q
+afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q
 presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A
+alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes;M
+perfil;Perfil del turista;FICHA_TURISMO_año;A
+gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO;Q
+gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia;Q
