@@ -189,9 +189,9 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Superficie cultivad
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
-                     sprintf(leyenda.content, municipio, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                     sprintf(leyenda.content, municipio, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), ' m<sup>2</sup>')),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, municipio, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',año,')'),
+                     sprintf(leyenda.content, municipio, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)), ' m<sup>2</sup> (',año,')'),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
     )
 ) 
@@ -251,7 +251,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 
 leyenda_poblacion <- df %>% filter(año == params$año) %>%
-  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " m<sup>2</sup>")),
          tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
   left_join(data.frame(cbind(municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "municipio")
 ```
@@ -410,10 +410,10 @@ df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herb
 
 df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(cultivo), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  " m<sup>2</sup> (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  " m<sup>2</sup> (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 
@@ -533,10 +533,10 @@ df_leñosos_plot$cultivo <- ordered(df_leñosos_plot$cultivo, levels = rk_leños
 
 df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(cultivo), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  " m<sup>2</sup> (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  " m<sup>2</sup> (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 
@@ -635,6 +635,16 @@ rk_exp_especies_mun <- df_exp_especies %>%
 if(length(rk_exp_especies_mun$especie) > 6){
   rk_exp_especies_mun <- rk_exp_especies_mun %>% filter(valor != min(rk_exp_especies_mun$valor))
 }
+if(nrow(rk_exp_especies_mun) == 5){
+  bar_size <- 5
+  }else if(nrow(rk_exp_especies_mun) == 4){
+    bar_size <- 6
+    }else if(nrow(rk_exp_especies_mun) == 3){
+      bar_size <- 8
+      }else if(nrow(rk_exp_especies_mun) == 2){
+        bar_size <- 10
+      }
+
 rk_exp_especies_mun$especie <- ordered(rk_exp_especies_mun$especie, levels = rk_exp_especies_mun$especie)
 
 df_exp_especies_mun <- df_exp_especies %>%
@@ -655,9 +665,9 @@ df_exp_especies_plot$especie <- ordered(df_exp_especies_plot$especie, levels = r
 df_exp_especies_plot <- df_exp_especies_plot %>% transform(hovertext = paste0(
   "<b>", trimws(especie), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 
@@ -696,7 +706,7 @@ if(nrow(df_exp_especies_plot)/2 == 12){
 
 g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = especie, fill = especie, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  geom_text(size = bar_size, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +

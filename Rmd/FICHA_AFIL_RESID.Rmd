@@ -465,8 +465,8 @@ df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% transform(hovertext = paste0(
     "<b>", sexo, "</b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
     " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-    " (", format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 

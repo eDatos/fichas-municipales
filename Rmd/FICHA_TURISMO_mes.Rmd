@@ -401,8 +401,8 @@ df_viajeros_lugar_plot <- df_viajeros_lugar_plot %>% transform(hovertext = paste
   "<b>", trimws(lugar), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
@@ -498,8 +498,8 @@ df_aloj_isla_plot <- df_aloj_isla_plot %>% transform(hovertext = paste0(
   "<b>", trimws(lugar), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 

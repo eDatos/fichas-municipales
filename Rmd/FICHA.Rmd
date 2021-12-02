@@ -298,10 +298,10 @@ df_mun <- df_mun %>% transform(
   hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", gredad," años</b><br>"), ""),
     "<br><b>", sexo, "</b>",
-    "<br>", format(abs(valor), big.mark = ".", decimal.mark = ","),
-    " (", format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ","), "%)",
-    "<br>Canarias: ", format(abs(valor_Canarias), big.mark = ".", decimal.mark = ","),
-    " (", format(round(abs(porcentaje_Canarias)*100, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)",
+    "<br>Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
@@ -524,8 +524,8 @@ df_nacionalidad_mun_sexo <- df_nacionalidad_mun_sexo %>% transform(hovertext = p
   hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad),"</b><br>"), ""),
     "<br><b>", sexo, "</b>",
-    "<br>", format(abs(valor), big.mark = ".", decimal.mark = ","),
-    " (", format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
     )
   ))
 

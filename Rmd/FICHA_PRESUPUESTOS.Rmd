@@ -464,8 +464,8 @@ df_part_gastos_mun <- df_part_gastos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
 
@@ -528,8 +528,8 @@ df_part_ingresos_mun <- df_part_ingresos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
 
@@ -623,8 +623,8 @@ df_gastos_programas_mun <- df_gastos_programas_mun %>% transform(hovertext = pas
     "<b>", programa, " </b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0), "€",
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%)"
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
 

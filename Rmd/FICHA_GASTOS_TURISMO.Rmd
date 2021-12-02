@@ -195,8 +195,8 @@ año_max <- max(as.integer(substring(df$code, 0,4)))
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df <- df %>%
-  mutate(Valor_l = ifelse(is.na(Valor), " -", paste0(format(Valor, big.mark = ".", decimal.mark = ","), " €")),
-         Tasa_l = ifelse(is.na(Tasa), " -", paste0(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+  mutate(Valor_l = ifelse(is.na(Valor), " -", paste0(trimws(format(Valor, big.mark = ".", decimal.mark = ",")), " €")),
+         Tasa_l = ifelse(is.na(Tasa), " -", paste0(trimws(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%")))
 
 leyenda_poblacion <- df %>% filter(Periodo == periodo_actual$Periodo) %>%
   left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
@@ -363,10 +363,6 @@ df_GM_sl_C <- df_GM_sl %>%
   filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
   select(c(sl, valor))
 
-df_GM_sl_C <- df_GM_sl %>%
-  filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
-  select(c(sl, valor))
-
 Gasto_tur_sl_Act_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",")
 Gasto_tur_sl_NAct_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
@@ -397,8 +393,8 @@ df_GM_ni_plot$nivel <- ordered(df_GM_ni_plot$nivel, levels = df_GM_ni_plot$nivel
 
 df_GM_ni_plot <- df_GM_ni_plot %>% transform(hovertext = paste0(
     "<b>", nivel, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -457,8 +453,8 @@ df_GM_ne_plot <- df_GM_ne_mun %>%
 
 df_GM_ne_plot <- df_GM_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -538,8 +534,8 @@ df_GM_np_plot <- df_GM_np_mun %>%
 
 df_GM_np_plot <- df_GM_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -603,8 +599,8 @@ df_GM_pt_plot$paquete <- ordered(df_GM_pt_plot$paquete, levels = df_GM_pt_plot$p
 
 df_GM_pt_plot <- df_GM_pt_plot %>% transform(hovertext = paste0(
     "<b>", paquete, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -671,8 +667,8 @@ df_GM_pais_plot <- df_GM_pais_mun %>%
 
 df_GM_pais_plot <- df_GM_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 

@@ -378,22 +378,16 @@ rk_turismo_pais_mun$pais <- ordered(rk_turismo_pais_mun$pais, levels = rk_turism
 df_turismo_pais_mun <- df_turismo_pais %>%
   filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>%
   select(c(sexo, pais, valor))
-df_turismo_pais_Canarias <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>%
-  select(c(sexo, pais, valor))
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>%
-  mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100,
-         valor_Canarias = df_turismo_pais_Canarias$valor, porcentaje_Canarias = df_turismo_pais_Canarias$valor / num_Canarias_total * 100)
+  mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100)
 df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br>"), ""),
     "<b>", sexo, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-    " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 
@@ -451,9 +445,9 @@ df_turismo_aloj_plot <- df_turismo_aloj_plot %>% mutate(tipo = recode(tipo, "Viv
 df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
   "<b>", trimws(tipo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 
@@ -572,9 +566,9 @@ df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
 df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
   "<b>", trimws(estudios), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
 

@@ -363,8 +363,8 @@ df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(veh), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
@@ -531,8 +531,8 @@ df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(veh), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", format(valor_Canarias, big.mark = ".", decimal.mark = ","),
-  " (", format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ","), "%)"
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
