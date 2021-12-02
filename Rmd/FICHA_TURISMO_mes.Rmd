@@ -4,7 +4,7 @@ params:
   id_municipio: 35024
   año: 2021
   mes: 8
-  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
+  url.mes_t: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -42,7 +42,7 @@ signo <- function(value) {
 ```
 
 ```{r Mes}
-data_mes <- fromJSON(params$url.mes)
+data_mes <- fromJSON(params$url.mes_t)
 
 mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
                   Periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]])

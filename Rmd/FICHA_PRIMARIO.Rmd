@@ -5,7 +5,6 @@ params:
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
-  url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
   url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/2b88193e-29c3-44ae-91dd-c17bbe90124a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D
   url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/e59bfde6-0aab-473f-a771-0063f9b3133d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
@@ -15,13 +14,6 @@ params:
   url.agr_leñosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
   url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
   url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  
-  url.cultivada_herbaceos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/682d0933-f921-46f6-94bc-fbb7d2569247/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cultivada_leñosos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/bd997d29-4bb6-402f-9086-17eee6022d73/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cabezas_bovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/0f6d7612-91b6-49d4-aa38-a6624243712d/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cabezas_ovino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ea920cf7-48fc-4f12-8071-75a1f336133a/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cabezas_caprino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/005c5a4d-44a3-4fb3-802d-8b4ec348ccb8/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cabezas_porcino: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/fb761796-5971-4ed8-8550-3c7cea6ad3a5/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
 output:
   html_document:
     df_print: paged
@@ -89,8 +81,7 @@ recode_mun <- function(df, colname) {
 ```{r Mapas}
 palette <- c('#8CD2EA', '#005980')
 
-url_mapa <- ifelse(params$año < 2007, params$url.mapa_2007, params$url.mapa)
-mapa_Canarias <- st_read(url_mapa, quiet = TRUE)
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
