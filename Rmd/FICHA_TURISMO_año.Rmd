@@ -391,9 +391,10 @@ df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
   )
 )
 
-g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(y = pais, fill = sexo, group = sexo, text = hovertext)) +
-  geom_bar(stat = "identity", width = 0.6, alpha = 0.8, position = position_stack(reverse = TRUE), aes(x = porcentaje)) +
+g_turismo_pais <- ggplot(df_turismo_pais_mun, aes(x = pais, fill = sexo, group = sexo, text = hovertext)) +
+  geom_bar(stat = "identity", width = 0.6, alpha = 0.8, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
   scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
+  coord_flip() +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
