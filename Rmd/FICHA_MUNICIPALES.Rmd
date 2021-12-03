@@ -177,9 +177,9 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Tasa de participaci
 df <- df %>% mutate(
     tooltip = ifelse(code == convocatoria_actual$code,
                      sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
-                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales"))),
+                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos"))),
                      sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")), ' (',convocatoria_formatted,')'),
-                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales")))
+                             ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos")))
     )
 )
 
@@ -241,7 +241,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 
 leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
   mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
-         variacion = ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos porcentuales"))) %>%
+         variacion = ifelse(is.na(variacion), " -", paste0(format(variacion, big.mark = ".", decimal.mark = ",", nsmall = 1), " puntos"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
