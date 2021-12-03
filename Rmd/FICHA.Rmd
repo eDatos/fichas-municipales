@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38001
+  id_municipio: 35003
   año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -498,15 +498,16 @@ ranking_nacionalidad_mun_o <- ranking_nacionalidad_mun %>% arrange(valor)
 df_nacionalidad_mun_sexo$nacionalidad <- ordered(df_nacionalidad_mun_sexo$nacionalidad, levels = ranking_nacionalidad_mun_o$nacionalidad)
 df_nacionalidad_mun_sexo <- df_nacionalidad_mun_sexo %>% transform(hovertext = paste0(
   hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad),"</b><br>"), ""),
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad),"</b>"), ""),
     "<br><b>", sexo, "</b>",
     "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
     )
   ))
 
-g_nacionalidad_mun_sexo <- ggplot(df_nacionalidad_mun_sexo, aes(x = valor, y = nacionalidad, fill = sexo, group = sexo, text = hovertext)) +
+g_nacionalidad_mun_sexo <- ggplot(df_nacionalidad_mun_sexo, aes(y = valor, x = nacionalidad, fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, position = position_stack(reverse = TRUE)) +
+  coord_flip() +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(x = NULL, y = NULL, colour = " ") +
@@ -518,13 +519,14 @@ g_nacionalidad_mun_sexo <- ggplot(df_nacionalidad_mun_sexo, aes(x = valor, y = n
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){format(abs(x), big.mark = '.', decimal.mark = ",")},
+  scale_y_continuous(labels = function(x){format(abs(x), big.mark = '.', decimal.mark = ",")},
                      limits = c(-1, 1)*max(abs(df_nacionalidad_mun_sexo$valor)),
                      n.breaks = 5)
 
 g_nacionalidad_mun_sexo <- ggplotly(g_nacionalidad_mun_sexo, tooltip = c("text")) %>%
-  layout(hoverlabel = "", margin = list( t = 10), hovermode = 'y unified') %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+  layout(hoverlabel = "", margin = list(t = 10), hovermode = 'y unified') %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>% 
+  style(hoverinfo = "skip", traces = c(3, 4))
 ```
 
 ```{r Generación HTML, results="asis"}
