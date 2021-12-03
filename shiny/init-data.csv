@@ -34,25 +34,25 @@ presupuesto_2;json;https://datos.canarias.es/api/estadisticas/statistical-resour
 presupuesto_3;json;https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000003/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:MEDIDAS:AHORRO_BRUTO|AHORRO_BRUTO_PORCENTAJE|AHORRO_NETO|AHORRO_NETO_PORCENTAJE|CARGA_FINANCIERA|CARGA_FINANCIERA_PORCENTAJE&lang=es;presupuestos ;1
 mes_t;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a;alojamientos;0
 mun_turisticos;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS;alojamientos perfil gm_turista gmt_dia;0
-url.viajeros_lugar;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48;alojamientos;1
-url.estancia_m;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY];alojamientos;1
-url.tasa_ocupacion;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ac286c1a-f70a-4888-9679-bd973250c824/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;alojamientos;1
-url.ADR;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d17b4953-73fe-4dcb-91e2-b63890eecd9f;alojamientos;1
-url.aloj_isla;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b4de650c-10d8-4202-b678-58f597b1b040;alojamientos;1
-url.hotel;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=2457b2ce-c6c1-46d5-9c85-59cd4b9b076d;alojamientos;1
-url.extrahoteleros;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=76147e33-158b-4df0-ac5d-447de68ad3ef;alojamientos;1
-url.turistas;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=1b5cca0a-e5b4-4380-b2fe-41cfa0ab55a6;perfil;1
-url.estancia;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=367e2066-b73c-4ce7-beac-89350e1971c2;perfil;1
-url.sl_aloj;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9b2e3158-2035-447e-9156-2825a6a999e4;perfil;1
-url.educacion;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=01946875-8fb5-4cc6-a1ed-0f6ebd135030;perfil;1
-url.ingresos;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=75e76f79-d3c1-433b-b3ac-0bafe7a19f04;perfil;1
-url.motivacion;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=850cd29b-039e-4a55-9588-8f827c4f8333;perfil;1
-url.proposito;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3f1290db-cfcd-4728-b040-2ee149e3bce5;perfil;1
-url.GM_sexo_edad;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=948e02fd-4d75-4a06-9d40-48acd5fd4556;gm_turista gmt_dia;1
-url.GM_sl;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=42f1c94f-5732-4e38-9583-39258ff8f5bf;gm_turista gmt_dia;1
-url.GM_ni;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b8a748fa-26de-46da-a276-5d4a2e97d740;gm_turista gmt_dia;1
-url.GM_ne;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ac3a3368-b6b5-4c63-aa23-19ed2261ed1d;gm_turista gmt_dia;1
-url.GM_ta;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9ea1e03b-3ce2-404e-b289-e7d6d7894575;gm_turista gmt_dia;1
-url.GM_np;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a6a6170b-1ac2-4393-a1d7-6ba04452c333;gm_turista gmt_dia;1
-url.GM_pt;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=70840a10-9dc8-409e-bf67-1099f6629093;gm_turista gmt_dia;1
-url.GM_pais;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7f56ab7b-ac57-4e2d-9b8a-02fa434cfbd6;gm_turista gmt_dia;1
+viajeros_lugar;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48;alojamientos;1
+estancia_m;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY];alojamientos;1
+tasa_ocupacion;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ac286c1a-f70a-4888-9679-bd973250c824/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;alojamientos;1
+ADR;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d17b4953-73fe-4dcb-91e2-b63890eecd9f;alojamientos;1
+aloj_isla;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b4de650c-10d8-4202-b678-58f597b1b040;alojamientos;1
+hotel;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=2457b2ce-c6c1-46d5-9c85-59cd4b9b076d;alojamientos;1
+extrahoteleros;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=76147e33-158b-4df0-ac5d-447de68ad3ef;alojamientos;1
+turistas;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=1b5cca0a-e5b4-4380-b2fe-41cfa0ab55a6;perfil;1
+estancia;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=367e2066-b73c-4ce7-beac-89350e1971c2;perfil;1
+sl_aloj;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9b2e3158-2035-447e-9156-2825a6a999e4;perfil;1
+educacion;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=01946875-8fb5-4cc6-a1ed-0f6ebd135030;perfil;1
+ingresos;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=75e76f79-d3c1-433b-b3ac-0bafe7a19f04;perfil;1
+motivacion;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=850cd29b-039e-4a55-9588-8f827c4f8333;perfil;1
+proposito;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3f1290db-cfcd-4728-b040-2ee149e3bce5;perfil;1
+GM_sexo_edad;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=948e02fd-4d75-4a06-9d40-48acd5fd4556;gm_turista gmt_dia;1
+GM_sl;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=42f1c94f-5732-4e38-9583-39258ff8f5bf;gm_turista gmt_dia;1
+GM_ni;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b8a748fa-26de-46da-a276-5d4a2e97d740;gm_turista gmt_dia;1
+GM_ne;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ac3a3368-b6b5-4c63-aa23-19ed2261ed1d;gm_turista gmt_dia;1
+GM_ta;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9ea1e03b-3ce2-404e-b289-e7d6d7894575;gm_turista gmt_dia;1
+GM_np;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a6a6170b-1ac2-4393-a1d7-6ba04452c333;gm_turista gmt_dia;1
+GM_pt;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=70840a10-9dc8-409e-bf67-1099f6629093;gm_turista gmt_dia;1
+GM_pais;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7f56ab7b-ac57-4e2d-9b8a-02fa434cfbd6;gm_turista gmt_dia;1
