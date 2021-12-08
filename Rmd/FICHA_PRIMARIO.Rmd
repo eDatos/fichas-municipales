@@ -150,7 +150,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución de la población turística}
 data_u <- fromJSON(params$url.cultivada)
 df_u_ <- data.frame(
-  municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
   año = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
             each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
@@ -158,19 +158,19 @@ df_u_ <- data.frame(
   valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
   arrange(año) %>%
   spread(medida, valor) %>%
-  select(municipio, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
-df_u <- df_u_ %>% filter(substring(municipio, 0,2) != "ES")
+  select(mun, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+df_u <- df_u_ %>% filter(substring(mun, 0,2) != "ES")
 df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
-related_mun <- seleccion_mun(related_mun %>% select(mun = municipio, valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 
 df <- related_mun %>%
-  select(municipio = "mun") %>%
-  left_join(df_u, by= "municipio") %>%
-  select(id = municipio, año, valor, tasa) %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by= "mun") %>%
+  select(id = mun, año, nombre, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(año, municipio, valor, tasa) %>%
+  select(año, mun = id, nombre, valor, tasa) %>%
   filter(año <= params$año & año != min(año))
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -180,15 +180,15 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Superficie cultivad
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
-                     sprintf(leyenda.content, municipio, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), ' m<sup>2</sup>')),
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), ' m<sup>2</sup>')),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, municipio, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)), ' m<sup>2</sup> (',año,')'),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)), ' m<sup>2</sup> (',año,')'),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
     )
 ) 
 
 g_line <- ggplot(data = df, 
-                 aes(x = año, y = valor, group = municipio, colour = municipio, text = tooltip)) +
+                 aes(x = año, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -244,11 +244,11 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 leyenda_poblacion <- df %>% filter(año == params$año) %>%
   mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " m<sup>2</sup>")),
          tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "municipio")
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
 ```{r Indicador evolución de la población}
-df_lv <- df_u %>% filter(año == params$año & municipio == params$id_municipio)
+df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 superficie_cultivada_num <- df_lv$valor
 superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -303,12 +303,12 @@ percent_sup_cultivada <- round(superficie_cultivada_num / superficie_num * 100, 
 ```
 
 ```{r Rankings}
-sup_Canarias_total <- df_u_ %>% filter(municipio == "ES70" & año == params$año) %>% select(valor) %>% as.numeric()
-sup_Isla_total <- df_u_ %>% filter(municipio == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric()
+sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & año == params$año) %>% select(valor) %>% as.numeric()
+sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric()
 
 df_ranking <- df_u %>%
-  select(id = municipio, año, valor) %>%
-  filter(año == params$año) %>%
+  select(id = mun, año, valor) %>%
+  filter(año == params$año & !is.na(valor)) %>%
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 
@@ -325,7 +325,7 @@ percent_isla <- format(round(df_ranking_mun$valor / sup_Isla_total * 100, 1), bi
 df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
 rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
 num_mun_comarca <- nrow(df_ranking_comarca)
-percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$rankingacion / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Barras herbáceos}
@@ -780,7 +780,7 @@ get_indicator3 = function(label, value, image) {
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$municipio[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
 }
 ```
 </div>

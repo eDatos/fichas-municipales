@@ -361,7 +361,7 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
 ```{r Rankings}
 df_ranking <- df_u %>%
   select(id = mun, code, valor) %>%
-  filter(code == mes_actual$code) %>%
+  filter(code == mes_actual$code & !is.na(valor)) %>%
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 

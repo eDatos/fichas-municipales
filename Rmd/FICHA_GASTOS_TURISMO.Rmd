@@ -44,13 +44,12 @@ signo <- function(value) {
 ```{r Periodo}
 data_periodo <- fromJSON(params$url.GM_sexo_edad)
 periodo <- data.frame(code = data_periodo[["categories"]][["codes"]][[5]], 
-                      Periodo = data_periodo[["categories"]][["labels"]][[5]]) %>% 
+                      periodo = data_periodo[["categories"]][["labels"]][[5]]) %>% 
   filter(substring(code, 5,5) == "Q")
 
-
 periodo <- periodo %>% 
-  transform(periodo_formatted = paste0(unlist(lapply(strsplit(Periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(Periodo, " "), '[[', 1)))) %>% 
-  mutate(order = as.integer(order(periodo$code, decreasing = FALSE)))
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
+  mutate(order = as.integer(order(code, decreasing = FALSE)))
 periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,7)) == params$trimestre)
 periodo_tva <- periodo[periodo$order == periodo[periodo_actual$code == periodo$code, ]$order - 4, ]
 ```
@@ -161,30 +160,30 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 # Gastos medios según sexos y grupos de edades por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
 df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
-colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'Municipio', 'Periodo', 'Valor')
+colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor')
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
 df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categories"]][["codes"]][[2]], labels=GM_sexo_edad[["categories"]][["labels"]][[2]])
 df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
-df_GM_sexo_edad$Valor <- as.numeric(df_GM_sexo_edad$Valor) %>% round(0)
-df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(Periodo, 5,5) == "Q") %>% 
-  select(c('Municipio','Periodo', 'Valor'))
-df_u <- df_u %>% filter(substring(Municipio, 6,6) == "_") %>% transform(Municipio = substr(Municipio, 7, 12))
-df_u <- df_u[with(df_u, order(Periodo)), ]
+df_GM_sexo_edad$valor <- as.numeric(df_GM_sexo_edad$valor) %>% round(0)
+df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(periodo, 5,5) == "Q") %>% 
+  select(c('mun','periodo', 'valor'))
+df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
+df_u <- df_u[with(df_u, order(periodo)), ]
 
-related_mun <- df_u %>% filter(Periodo == periodo_actual$code)
-related_mun <- seleccion_mun(related_mun %>% select(mun = Municipio, Valor), 'Valor')
+related_mun <- df_u %>% filter(periodo == periodo_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun , valor), 'valor')
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 df <- related_mun %>%
-  select(Municipio = "mun", nombre) %>%
-  left_join(df_u, by = "Municipio") %>%
-  select(id = Municipio, nombre, Periodo, Valor) %>%
+  select(mun = "mun", nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, nombre, periodo, valor) %>%
   left_join(df_CL_AREA_mun_tur, by = "id") %>%
-  select(code = Periodo, Valor, id, Municipio = nombre) %>%
+  select(code = periodo, mun = id, nombre, valor) %>%
   left_join(periodo, by = "code") %>%
-  mutate(Tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((Valor / lag(Valor, n = 4)) - 1), 1))) %>% 
+  mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
   filter(code <= periodo_actual$code)
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
@@ -193,24 +192,24 @@ año_max <- max(as.integer(substring(df$code, 0,4)))
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df <- df %>%
-  mutate(Valor_l = ifelse(is.na(Valor), " -", paste0(trimws(format(Valor, big.mark = ".", decimal.mark = ",")), " €")),
-         Tasa_l = ifelse(is.na(Tasa), " -", paste0(trimws(format(Tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%")))
+  mutate(valor_l = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+         tasa_l = ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%")))
 
-leyenda_poblacion <- df %>% filter(Periodo == periodo_actual$Periodo) %>%
-  left_join(data.frame(cbind(Municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "Municipio")
+leyenda_poblacion <- df %>% filter(periodo == periodo_actual$periodo) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
-df <- df %>% mutate(Periodo = strsplit(Periodo, " ")) %>% 
-  unnest_wider('Periodo') %>% 
+df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>% 
+  unnest_wider('periodo') %>% 
   mutate(
-    Periodo = paste0(...2, ' trimestre de ', ...1),
+    periodo = paste0(...2, ' trimestre de ', ...1),
     tooltip = ifelse(
-      Periodo == periodo_actual$periodo_formatted,
-      sprintf(leyenda.content, Municipio, Valor_l, Tasa_l),
-      sprintf(leyenda.content, Municipio, paste0(Valor_l, ' (',Periodo,')'), Tasa_l)
+      periodo == periodo_actual$periodo_formatted,
+      sprintf(leyenda.content, nombre, valor_l, tasa_l),
+      sprintf(leyenda.content, nombre, paste0(valor_l, ' (',periodo,')'), tasa_l)
       )
     )
 
-g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour = Municipio, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -228,8 +227,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(0.8, nrow(df[df$Municipio == municipio_actual$municipio, ]) - 5*4 - 0.2), 
-                                df$order[df$code == periodo_actual$code & df$id == params$id_municipio]),
+                      range = c(max(0.8, nrow(df[df$mun == params$id_municipio, ]) - 5*4 - 0.2), 
+                                df$order[df$code == periodo_actual$code & df$mun == params$id_municipio]),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -275,22 +274,22 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Indicador evolución de los gastos medios}
-ind_GM <- df %>% filter(Municipio == municipio_actual$municipio & code %in% c(periodo_actual$code, periodo_tva$code))
+ind_GM <- df %>% filter(mun == params$id_municipio & code %in% c(periodo_actual$code, periodo_tva$code))
 
-Num_GM_num <- ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Valor) %>% as.numeric()
+Num_GM_num <- ind_GM %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric()
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",")
-Imagen_Variacion <- ifelse(is.na(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_tva$code) %>% select(Valor) %>% as.numeric()),
+Imagen_Variacion <- ifelse(is.na(ind_GM %>% filter(mun == params$id_municipio & code == periodo_tva$code) %>% select(valor) %>% as.numeric()),
                            "NA",
-                           ifelse(signo(ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Tasa) %>% as.numeric()) == "más",
+                           ifelse(signo(ind_GM %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric()) == "más",
                                   './img/up.png', './img/down.png')
                            )
-Variacion_Porcentual_GM <- ind_GM %>% filter(Municipio == municipio_actual$municipio & code == periodo_actual$code) %>% select(Tasa) %>% as.numeric() %>%
+Variacion_Porcentual_GM <- ind_GM %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>%
   round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Indicadores Gastos Medios}
 ind_GM_sexo_edad <- df_GM_sexo_edad %>%
-  select(ind, sexo, gredad, mun = Municipio, periodo = Periodo, valor = Valor) %>%
+  select(ind, sexo, gredad, mun, periodo, valor) %>%
   filter(substring(mun, 6,6) == "_" & periodo == periodo_actual$code) %>% transform(mun = substr(mun, 7, 12)) %>% filter(mun == params$id_municipio)
 
 df_GM_mun <- ind_GM_sexo_edad %>%
@@ -314,7 +313,7 @@ Gasto_por_turista_menor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "
 Gasto_por_turista_mayor <- df_GM_edad_mun$valor[which(df_GM_edad_mun$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
 
 df_GM_sexo_edad_C <- df_GM_sexo_edad %>%
-  select(ind, sexo, gredad, mun = Municipio, periodo = Periodo, valor = Valor) %>%
+  select(ind, sexo, gredad, mun, periodo, valor) %>%
   filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES" & mun == "ES70" & periodo == periodo_actual$code)
 
 Gasto_por_turista_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
@@ -323,8 +322,8 @@ Gasto_por_turista_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gre
 
 ```{r Rankings}
 df_ranking <- df_u %>%
-  select(id = Municipio, periodo = Periodo, valor = Valor) %>%
-  filter(periodo == periodo_actual$code) %>%
+  select(id = mun, periodo, valor) %>%
+  filter(periodo == periodo_actual$code & !is.na(valor)) %>%
   inner_join(df_CL_AREA_mun_tur, by = "id") %>% 
   arrange(desc(valor))
 
@@ -371,10 +370,14 @@ GM_ni <- fromJSON(params$url.GM_ni)
 df_GM_ni <- cbind(data.frame(do.call('rbind', GM_ni[["data"]][["dimCodes"]])), GM_ni[["data"]][["Valor"]])
 colnames(df_GM_ni) <- c('ind', 'nivel','mun', 'periodo', 'valor')
 df_GM_ni$ind <- factor(df_GM_ni$ind, levels=GM_ni[["categories"]][["codes"]][[1]], labels=GM_ni[["categories"]][["labels"]][[1]])
-df_GM_ni$nivel <- factor(df_GM_ni$nivel, levels=GM_ni[["categories"]][["codes"]][[2]], labels=c("TOTAL", "< 25.000 €", "25.000 € - 49.999 €", "50.000 € - 74.999 €", "> 74.999 €"))
+df_GM_ni$nivel <- factor(df_GM_ni$nivel, levels=GM_ni[["categories"]][["codes"]][[2]], labels=GM_ni[["categories"]][["labels"]][[2]])
 df_GM_ni$mun <- factor(df_GM_ni$mun, levels=GM_ni[["categories"]][["codes"]][[3]], labels=GM_ni[["categories"]][["labels"]][[3]])
 df_GM_ni$valor <- as.numeric(df_GM_ni$valor) %>% round(0)
 df_GM_ni$mun <- recode_mun(df_GM_ni, 'mun')
+df_GM_ni <- df_GM_ni %>% mutate(nivel = recode(nivel, "Menos de 25.000€" = "< 25.000 €"),
+                                nivel = recode(nivel, "25.000€ - 49.999€" = "25.000 € - 49.999 €"),
+                                nivel = recode(nivel, "50.000€ - 74.999€" = "50.000 € - 74.999 €"),
+                                nivel = recode(nivel, "75.000€ o más" = "> 74.999 €"))
 
 df_GM_ni_mun <- df_GM_ni %>%
   filter(ind == "Gasto por turista" & nivel != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -432,10 +435,13 @@ GM_ne <- fromJSON(params$url.GM_ne)
 df_GM_ne <- cbind(data.frame(do.call('rbind', GM_ne[["data"]][["dimCodes"]])), GM_ne[["data"]][["Valor"]])
 colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
 df_GM_ne$ind <- factor(df_GM_ne$ind, levels=GM_ne[["categories"]][["codes"]][[1]], labels=GM_ne[["categories"]][["labels"]][[1]])
-df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=c("TOTAL", "Sin estudios o primarios", "Secundarios", "Superiores"))
+df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=GM_ne[["categories"]][["labels"]][[2]])
 df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
 df_GM_ne$valor <- as.numeric(df_GM_ne$valor) %>% round(0)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
+df_GM_ne <- df_GM_ne %>% mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios o primarios"),
+                                estudios = recode(estudios, "Estudios secundarios" = "Secundarios"),
+                                estudios = recode(estudios, "Estudios superiores" = "Superiores"))
 
 df_GM_ne_mun <- df_GM_ne %>%
   filter(ind == "Gasto por turista" & estudios != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -513,10 +519,13 @@ GM_np <- fromJSON(params$url.GM_np)
 df_GM_np <- cbind(data.frame(do.call('rbind', GM_np[["data"]][["dimCodes"]])), GM_np[["data"]][["Valor"]])
 colnames(df_GM_np) <- c('ind', 'noches','mun', 'periodo', 'valor')
 df_GM_np$ind <- factor(df_GM_np$ind, levels=GM_np[["categories"]][["codes"]][[1]], labels=GM_np[["categories"]][["labels"]][[1]])
-df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"]][[2]], labels=c("TOTAL", "1 - 7", "8 - 15", "&gt; 15"))
+df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"]][[2]], labels=GM_np[["categories"]][["labels"]][[2]])
 df_GM_np$mun <- factor(df_GM_np$mun, levels=GM_np[["categories"]][["codes"]][[3]], labels=GM_np[["categories"]][["labels"]][[3]])
 df_GM_np$valor <- as.numeric(df_GM_np$valor) %>% round(0)
 df_GM_np$mun <- recode_mun(df_GM_np, 'mun')
+df_GM_np <- df_GM_np %>% mutate(noches = recode(noches, "De 1 a 7 noches" = "1 - 7"),
+                                noches = recode(noches, "De 8 a 15 noches" = "8 - 15"),
+                                noches = recode(noches, "Más de 15 noches" = "&gt; 15"))
 
 df_GM_np_mun <- df_GM_np %>%
   filter(ind == "Gasto por turista" & noches != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -577,9 +586,9 @@ df_GM_pt$paquete <- factor(df_GM_pt$paquete, levels=GM_pt[["categories"]][["code
 df_GM_pt$mun <- factor(df_GM_pt$mun, levels=GM_pt[["categories"]][["codes"]][[2]], labels=GM_pt[["categories"]][["labels"]][[2]])
 df_GM_pt$valor <- as.numeric(df_GM_pt$valor) %>% round(0)
 df_GM_pt$mun <- recode_mun(df_GM_pt, 'mun')
-df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("TOTAL", "Paquete turístico", paquete))
-df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Con servicios extras", "Paquete con servicios extras", paquete))
-df_GM_pt <- df_GM_pt %>% transform(paquete = gsub("Sin servicios extras", "Paquete sin servicios extras", paquete))
+df_GM_pt <- df_GM_pt %>% mutate(paquete = recode(paquete, "TOTAL" = "Paquete turístico"),
+                                paquete = recode(paquete, "Con servicios extras" = "Paquete con servicios extras"),
+                                paquete = recode(paquete, "Sin servicios extras" = "Paquete sin servicios extras"))
 
 df_GM_pt_mun <- df_GM_pt %>%
   filter(mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -724,7 +733,7 @@ get_indicator4s = function(title, label, value) {
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$Municipio[i], leyenda_poblacion$Valor_l[i], leyenda_poblacion$Tasa_l[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor_l[i], leyenda_poblacion$tasa_l[i]))
 }
 ```
 </div>

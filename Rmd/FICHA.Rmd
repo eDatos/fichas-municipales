@@ -153,7 +153,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución de la población}
 data_u <- fromJSON(params$url.habitantes)
 df_u <- data.frame(
-  municipio = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
   año = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
             each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
@@ -161,18 +161,18 @@ df_u <- data.frame(
   valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
   arrange(año) %>%
   spread(medida, valor) %>%
-  select(municipio, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+  select(mun, año, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
 df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
-related_mun <- seleccion_mun(related_mun %>% select(mun = municipio, valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 
 df <- related_mun %>%
-  select(municipio = "mun") %>%
-  left_join(df_u, by= "municipio") %>%
-  select(id = municipio, año, valor, tasa) %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, año, nombre, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(año, municipio, valor, tasa) %>%
+  select(mun = id, año, nombre, valor, tasa) %>%
   filter(año <= params$año & año != min(año))
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -182,15 +182,15 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Habitantes: <span c
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
-                     sprintf(leyenda.content, municipio, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, municipio, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',año,')'),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',año,')'),
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
     )
 ) 
 
 g_line <- ggplot(data = df, 
-                 aes(x = año, y = valor, group = municipio, colour = municipio, text = tooltip)) +
+                 aes(x = año, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -246,11 +246,11 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 leyenda_poblacion <- df %>% filter(año == params$año) %>%
   mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
          tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(municipio = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "municipio")
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
 ```{r Indicador evolución de la población}
-df_lv <- df_u %>% filter(año == params$año & municipio == params$id_municipio)
+df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 Num_Pobl_num <- df_lv$valor %>% as.numeric()
 Num_Pobl <- Num_Pobl_num %>% format(big.mark = ".", decimal.mark = ",")
@@ -321,8 +321,8 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
 
 ```{r Rankings}
 df_ranking <- df_u %>%
-  select(id = municipio, año, valor) %>%
-  filter(año == params$año) %>%
+  select(id = mun, año, valor) %>%
+  filter(año == params$año & !is.na(valor)) %>%
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 
@@ -339,7 +339,7 @@ percent_isla <- format(round(df_ranking_mun$valor / Num_Pobl_Isla * 100, 1), big
 df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
 rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
 num_mun_comarca <- nrow(df_ranking_comarca)
-percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$rankingacion / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Número de mujeres y hombres}
@@ -552,7 +552,7 @@ get_indicator3 = function(label, value, image) {
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$municipio[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
 }
 ```
 </div>
