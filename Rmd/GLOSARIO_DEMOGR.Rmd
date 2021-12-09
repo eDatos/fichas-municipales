@@ -1,6 +1,5 @@
 ---
 title: ''
-params: null
 output:
   html_document:
     df_print: paged
@@ -24,7 +23,7 @@ get_indicator_met_ = function(label, description) {
 <h2>Indicadores demográficos</h2>
 <hr>
 
-<div class="row highlight card-columns">
+<div class="row highlight card-columns-4">
   `r get_indicator_met_("Crecimiento vegetativo", "Diferencia entre nacimientos y defunciones.")`
   `r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`
   `r get_indicator_met_("Índice de dependencia", "Cociente entre la población perteneciente a un determinado ámbito a 1 de enero de un año concreto menor de 16 años o mayor de 64 entre la población de 16 a 64 años, expresado en tanto por cien.")`

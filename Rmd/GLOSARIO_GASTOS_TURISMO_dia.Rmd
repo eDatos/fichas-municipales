@@ -3,8 +3,9 @@ title: ''
 output:
   html_document:
     df_print: paged
-    css: styles/FICHA.css
-always_allow_html: true
+    css: styles/NOTAS.css
+  pdf_document: default
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -12,35 +13,27 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
 ```{r}
-get_indicator_met = function(label, description, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", image, label, description))
-}
 get_indicator_met_ = function(label, description) {
-  return(sprintf("<div class='indicator3'><div class='indicator-content'><h2 class='label'>%s</h2><p>%s</p></div></div>", label, description))
+  return(sprintf("<div class='card'><h2 class='card-title'>%s</h2><hr class='separator'/><p class='card-text'>%s</p></div>", label, description))
 }
 ```
 
 <!-- HTML -->
-<div class="row nota-metodologica">
-<div class="indicator-title">
-  <h3>Glosario de conceptos de medida</h3>
+<h1>Glosario de conceptos de medida</h1>
+<h2>Gasto medio por turista y día</h2>
+<hr>
+
+<div class="row highlight card-columns-3">
+  `r get_indicator_met_("Establecimientos extrahoteleros", "Establecimientos turísticos de alojamiento que ofrece servicio de alojamiento acompañado o no de otros servicios complementarios como pueden ser un apartamento, villa, casa rural, casa emblemática o viviendas vacacionales.")`
+  `r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`
+  `r get_indicator_met_("Gasto medio diario por persona", "Gasto que resulta al dividir el gasto total entre el número de pernoctaciones del viaje.")`
+  `r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`
+  `r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.")`
 </div>
 
-<div class="row highlight">
-  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos extrahoteleros", "Establecimientos turísticos de alojamiento que ofrece servicio de alojamiento acompañado o no de otros servicios complementarios como pueden ser un apartamento, villa, casa rural, casa emblemática o viviendas vacacionales.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto -40px;">`r get_indicator_met_("Gasto medio diario por persona", "Gasto que resulta al dividir el gasto total entre el número de pernoctaciones del viaje.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto;">`r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`</div>
-  <div style="padding: 5px 10px; margin: 0 auto -20px;">`r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.")`</div>
-</div>
 
-<div class="row">
+<div class="row logos">
+  <div class="column"><img class="logo-istac" src="img/logo_istac.png"/></div>
+  <div class="column"><img class="logo-fecam" src="img/fecam.jpeg" /></div>
 </div>
-<div class="logo-fecam">
-  <img src="img/fecam.jpeg" />
-</div>
-<div class="logo-istac"> 
-  <img src="img/logo_istac.png" />
-</div>
-

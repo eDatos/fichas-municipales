@@ -1,15 +1,25 @@
-.card-columns {
+.card-columns-4 {
   column-count: 4;
+  margin: 10px auto;
+  column-gap: 1.25rem;
+}
+.card-columns-3 {
+  column-count: 3;
+  margin: 10px auto;
+  column-gap: 1.25rem;
+}
+.card-columns-2 {
+  column-count: 2;
   margin: 10px auto;
   column-gap: 1.25rem;
 }
 .card {
   display: inline-block;
-    margin: 5px;
-    padding: 10px;
-    width: 100%;
-    border: 2px solid #D5EDFA;
-    border-radius: 20px;
+  margin: 5px;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid #D5EDFA;
+  border-radius: 20px;
 }
 .card-title {
   color: #008BD0;
@@ -26,9 +36,9 @@
   margin: 0;
 }
 hr {
-    margin: 0px;
-    border: 0;
-    border-top: 1px solid #eee;
+  margin: 0px;
+  border: 0;
+  border-top: 1px solid #eee;
 }
 hr.separator {
   border-top: 2px solid #eee;
