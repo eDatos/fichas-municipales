@@ -3,7 +3,7 @@ title: ''
 params:
   id_municipio: 38038
   año: 2021
-  mes: 8
+  mes: 1
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -376,7 +376,7 @@ df_vehiculos_plot <- rbind(df_vehiculos_plot, df_vehiculos_0)
 col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
 
 g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -515,7 +515,7 @@ df_matr_tipos_plot <- rbind(df_matr_tipos_plot, df_matr_tipos_0)
 col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
 
 g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -532,7 +532,7 @@ g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label
   scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
 
 g_matr_tipos <- ggplotly(g_matr_tipos, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = -5, r = 0)) %>%
   config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_matr_tipos_plot)/2+1):nrow(df_matr_tipos_plot)))
 ```
@@ -629,29 +629,29 @@ mapa_comarca_plot
 
 <div class="row">
 <div class="column" style="padding: 0px 5px 0px 0px;">
-<div class="highlight" style="width: 100% !important; padding-top: 12px;">
+<div class="highlight" style="width: 100% !important; padding-top: 5px;">
 
-<div class="piramide" style="height: 300px">
+<div class="piramide" style="height: 260px">
   `r g_vehiculos`
 </div>
 
-<div class="progressbar-legend-container" style="margin-top:10px;">
+<div class="progressbar-legend-container" style="margin: 10px;">
   <div class="progressbar-legend">
-  <div class="progress-bar-C-b">|</div><div class="sp-content">Canarias</div></div>
+  <div class="progress-bar-C-a">|</div><div class="sp-content">Canarias</div></div>
 </div>
 </div>
 
-<div class="indicator-title-row">
+<div class="indicator-title-row" style="margin-top: 15px;">
   <h3>Tipos de combustible</h3>
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding-top: 10px;">
-  <div class="progress-bar-container">
-    <div class="progress-bar-blue1" style="width:`r porc_gasolina`%"></div>
-    <div class="progress-bar-blue3" style="width:`r porc_diesel`%"></div>
-    <div class="progress-bar-blue5" style="width:`r porc_electrico`%"></div>
-    <div class="progress-bar-blue6" style="width:`r porc_otros`%"></div>
-  </div>
+<div class="progress-bar-container">
+  <div class="progress-bar-blue1" style="width:`r porc_gasolina`%"></div>
+  <div class="progress-bar-blue3" style="width:`r porc_diesel`%"></div>
+  <div class="progress-bar-blue5" style="width:`r porc_electrico`%"></div>
+  <div class="progress-bar-blue6" style="width:`r porc_otros`%"></div>
+</div>
 <div class="progressbar-legend-container">
   <div class="progressbar-legend"><div class="progress-bar-blue1"></div><div class="sp-content">Gasolina<br>`r format(porc_gasolina_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
   <div class="progressbar-legend"><div class="progress-bar-blue3"></div><div class="sp-content">Diesel<br>`r format(porc_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
@@ -662,14 +662,14 @@ mapa_comarca_plot
 </div>
 </div>
 
-<div class="column highlight">
-<div class="piramide" style="height: 540px">
+<div class="column highlight" style="padding-top: 10px;">
+<div class="piramide" style="height: 401px">
   `r g_matr_tipos`
 </div>
 
-<div class="progressbar-legend-container" style="margin-top:10px;">
+<div class="progressbar-legend-container" style="margin: 20px 0;">
 <div class="progressbar-legend">
-<div class="progress-bar-C-b">|</div><div class="sp-content">Canarias</div></div>
+<div class="progress-bar-C-a">|</div><div class="sp-content">Canarias</div></div>
 </div>
 
 </div>

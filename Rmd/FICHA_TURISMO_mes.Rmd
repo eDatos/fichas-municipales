@@ -683,7 +683,7 @@ if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
 
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>Canarias</div></div>
+  <div class='progress-bar-C-a'>|</div><div class='sp-content-b'>Canarias</div></div>
 </div>
 
 <div class="row" style="margin: 24px 0 20px;">
@@ -700,7 +700,7 @@ if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
 </div>
 <div class="progressbar-legend-container" style="margin-top:10px;">
 <div class='progressbar-legend'>
-  <div class='progress-bar-C-b'>|</div><div class='sp-content-b'>Canarias</div></div>
+  <div class='progress-bar-C-a'>|</div><div class='sp-content-b'>Canarias</div></div>
 </div>
 
 <div class="row" style="margin: 14px 0 6px;">

@@ -310,20 +310,14 @@ div.level3 {
     border: 2px solid #008BD0;
     border-radius: 15px;
     padding: 10px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 20px 5px 10px;
     width: calc(50% - 10px) !important;
 }
 .indicator-title-row {
     border: 2px solid #008BD0;
     border-radius: 15px;
     padding: 5px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-left: 0;
-    margin-right: 5px;
+    margin: 20px 5px 10px 0;
     width: 100% !important;
 }
 .indicator-title h3 {
@@ -656,10 +650,17 @@ h4, h5 {
   color: #59656E;
   font-weight: 600;
 }
+.progress-bar-C-a {
+  padding-left: 6px;
+  margin-top: -7px;
+  color: #59656E;
+  font-weight: 600;
+}
 .barras-c {
   height: 310px;
+  width: calc(100% - 25px);
 }
 .barras-r {
-  height: 250px;
+  height: 300px;
   width: calc(100% - 25px);
 }
