@@ -194,7 +194,7 @@ GeomLime <- ggplot2::ggproto(
     fill   = NA,
     alpha  = NA,
     stroke = 0.5,
-    image_filename  = system.file("./img/family.png", mustWork = TRUE),
+    image_filename  = system.file("./img/representantes.png", mustWork = TRUE),
     scale = 5
   ),
   
@@ -226,13 +226,13 @@ library(ggimage)
 library(magick)
 library(grid)
 
-image <- image_read('./img/family.png')
+image <- image_read2('./img/representantes.png')
 
-df_points <- df_points %>% mutate(image = "./img/family.png")
+df_points <- df_points %>% mutate(image = "./img/representantes.png")
 
 g_representantes <- ggplot(data = df_points,
                            aes(x = puntos, y = name_partido, name = NULL, text = hovertext)) +
-  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(image = "./img/family.png")) +
+  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(image = "./img/representantes.png")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -252,8 +252,9 @@ g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
 
 ggplot(data = df_points,
-       aes(x = puntos, y = name_partido, name = NULL, text = hovertext)) +
-  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(image = image)) +
+       aes(y = name_partido, name = NULL, text = hovertext)) +
+  geom_point(stat = "identity", colour = "#008BD0", size = 1, alpha = 0.8, aes(x = puntos)) +
+  # geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -266,4 +267,47 @@ ggplot(data = df_points,
   scale_x_continuous(n.breaks = 5, labels = function(x){format(x, big.mark = '.', decimal.mark = ",")}, limits = c(0.3, NA)) +
   scale_y_discrete(labels = df_representantes_$name_partido_percent[nrow(df_representantes_):1])
 
-grid.raster(image, unit(0.95, "npc"), y = unit(0.95, "npc"))
+grid.raster(image, unit(1, "npc"), y = unit(5, "npc"))
+
+g_representantes <- ggplot(data = df_points,
+                           aes(y = name_partido, name = NULL, text = hovertext)) +
+  # geom_point(stat = "identity", colour = "#008BD0", size = 1, alpha = 0.8, aes(x = puntos)) +
+  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(),
+        axis.text.y = element_text(size = 8),
+        axis.line = element_blank(),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(n.breaks = 5, labels = function(x){format(x, big.mark = '.', decimal.mark = ",")}, limits = c(0.3, NA)) +
+  scale_y_discrete(labels = df_representantes_$name_partido_percent[nrow(df_representantes_):1])
+
+g_representantes <- ggplotly(g_representantes) %>% 
+  layout(
+    images = list(
+      list(source = "./img/representantes.png",
+           xref = "paper",
+           yref = "paper",
+           x = 2,
+           y = 2
+      )))
+
+g_representantes
+
+
+pen <- png::readPNG("./img/representantes.png")
+
+plot_ly() %>%
+  layout(
+    images = list(
+      source = raster2uri(as.raster("./img/representantes.png")),
+      x = 2, y = 2, 
+      sizex = 2, sizey = 1,
+      xref = "x", yref = "y",
+      xanchor = "left", yanchor = "bottom",
+      sizing = "stretch"
+    )
+  )

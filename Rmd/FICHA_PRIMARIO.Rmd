@@ -30,13 +30,31 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
   return(sign)
 }
 
 "%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 18) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
 ```
 
 ```{r Municipio actual}
@@ -343,40 +361,19 @@ sup_herbaceos <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
 sup_herbaceos_C <- df_herbaceos %>%
   filter(mun == "CANARIAS" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+
 df_herbaceos <- df_herbaceos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL (SECANO+REGADÍO)" & año == params$año)
-df_herbaceos <- df_herbaceos %>% mutate(cultivo = recode(cultivo, " Maíz grano" = "Maíz<br>grano"),
-                                        cultivo = recode(cultivo, " Alforfón o trigo sarraceno" = "Alforfón o<br>trigo sarraceno"),
-                                        cultivo = recode(cultivo, " Judías grano" = "Judías<br>grano"),
-                                        cultivo = recode(cultivo, " Habas grano" = "Habas<br>grano"),
-                                        cultivo = recode(cultivo, " Veza para grano" = "Veza para<br>grano"),
-                                        cultivo = recode(cultivo, " Papa extratemprana" = "Papa<br>extratemprana"),
-                                        cultivo = recode(cultivo, " Papa temprana" = "Papa<br>temprana"),
-                                        cultivo = recode(cultivo, " Papa media estación" = "Papa media<br>estación"),
-                                        cultivo = recode(cultivo, " Papa tardía" = "Papa<br>tardía"),
-                                        cultivo = recode(cultivo, " Batata y boniato" = "Batata y<br>boniato"),
-                                        cultivo = recode(cultivo, " Caña de azúcar" = "Caña de<br>azúcar"),
-                                        cultivo = recode(cultivo, " Azafrán de la tierra" = "Azafrán de<br>la tierra"),
-                                        cultivo = recode(cultivo, " Plantas ornamentales" = "Plantas<br>ornamentales"),
-                                        cultivo = recode(cultivo, " Cereales de Invierno" = "Cereales de<br>Invierno"),
-                                        cultivo = recode(cultivo, " Maíz forrajero" = "Maíz<br>forrajero"),
-                                        cultivo = recode(cultivo, " Sorgo forrajero" = "Sorgo<br>forrajero"),
-                                        cultivo = recode(cultivo, " Veza para forraje" = "Veza para<br>forraje"),
-                                        cultivo = recode(cultivo, " Remolacha forrajera" = "Remolacha<br>forrajera"),
-                                        cultivo = recode(cultivo, " Col forrajera" = "Col<br>forrajera"),
-                                        cultivo = recode(cultivo, " Cardo y otros forrajes varios" = "Cardo y otros<br>forrajes varios"),
-                                        cultivo = recode(cultivo, " Guindilla y pimiento para mojo" = "Guindilla y pimiento<br>para mojo"),
-                                        cultivo = recode(cultivo, " Fresa y fresón" = "Fresa y<br>fresón"),
-                                        cultivo = recode(cultivo, " Remolacha de mesa" = "Remolacha<br>de mesa"),
-                                        cultivo = recode(cultivo, " Habichuelas (Judía verde)" = "Habichuelas<br>(Judía verde)"),
-                                        cultivo = recode(cultivo, " Guisante verde" = "Guisante<br>verde"),
-                                        cultivo = recode(cultivo, " Haba verde" = "Haba<br>verde")
-                                        )
+
+df_herbaceos$name_cultivo <- ""
+for(i in 1:nrow(df_herbaceos)) {
+  df_herbaceos$name_cultivo[i] <- get_nombre(paste0(df_herbaceos$cultivo[i]))
+}
 
 rk_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
   arrange(valor) %>%
-  select(c(cultivo, valor))
+  select(cultivo, name_cultivo, valor)
 
 if(length(rk_herbaceos_mun$cultivo) > 10){
   rk_herbaceos_mun <- rk_herbaceos_mun %>% filter(valor != min(rk_herbaceos_mun$valor))
@@ -385,17 +382,17 @@ rk_herbaceos_mun$cultivo <- ordered(rk_herbaceos_mun$cultivo, levels = rk_herbac
 
 df_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(c(cultivo, valor))
+  select(cultivo, name_cultivo, valor)
 df_herbaceos_C <- df_herbaceos %>%
   filter(mun == "CANARIAS" & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(c(cultivo, valor))
+  select(cultivo, name_cultivo, valor)
 df_herbaceos_mun <- df_herbaceos_mun %>%
   mutate(porcentaje = df_herbaceos_mun$valor / sup_herbaceos * 100,
          valor_Canarias = df_herbaceos_C$valor,
          porcentaje_Canarias = df_herbaceos_C$valor / sup_herbaceos_C * 100)
 
 df_herbaceos_plot <- df_herbaceos_mun %>%
-  top_n(8, valor) %>% 
+  arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herbaceos_mun$cultivo)
 
@@ -456,7 +453,8 @@ g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo,
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_herbaceos_plot$name_cultivo[(nrow(df_herbaceos_plot)/2):1])
 
 g_herbaceos <- ggplotly(g_herbaceos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
@@ -479,28 +477,20 @@ sup_leñosos <- df_leñosos %>%
   filter(mun == municipio_actual$municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
 sup_leñosos_C <- df_leñosos %>%
   filter(mun == "CANARIAS" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+
 df_leñosos <- df_leñosos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)" & año == params$año)
-df_leñosos <- df_leñosos %>% mutate(cultivo = recode(cultivo, " Naranjo amargo" = "Naranjo<br>amargo"),
-                                    cultivo = recode(cultivo, " Limero y otros cítricos" = "Limero y<br>otros cítricos"),
-                                    cultivo = recode(cultivo, " Cerezo y guindo" = "Cerezo y<br>guindo"),
-                                    cultivo = recode(cultivo, " Palmera datilera" = "Palmera<br>datilera"),
-                                    cultivo = recode(cultivo, " Piña tropical" = "Piña<br>tropical"),
-                                    cultivo = recode(cultivo, " Uva de mesa (Principal)" = "Uva de mesa<br>(Principal)"),
-                                    cultivo = recode(cultivo, " Uva de mesa (Asociada)" = "Uva de mesa<br>(Asociada)"),
-                                    cultivo = recode(cultivo, " Uva para vino (Principal)" = "Uva para vino<br>(Principal)"),
-                                    cultivo = recode(cultivo, " Uva para vino (Asociada)" = "Uva para vino<br>(Asociada)"),
-                                    cultivo = recode(cultivo, " Olivar de aceituna de mesa" = "Olivar de<br>aceituna de mesa"),
-                                    cultivo = recode(cultivo, " Olivar de aceituna de aceite" = "Olivar de<br>aceituna de aceite"),
-                                    cultivo = recode(cultivo, " Agave, pita y rafia" = "Agave, pita<br>y rafia"),
-                                    cultivo = recode(cultivo, " Morera y otros" = "Morera<br>y otros"),
-                                    cultivo = recode(cultivo, "VIVEROS" = "Viveros"),
-                                    )
+
+df_leñosos$name_cultivo <- ""
+for(i in 1:nrow(df_leñosos)) {
+  df_leñosos$name_cultivo[i] <- get_nombre(paste0(df_leñosos$cultivo[i]))
+}
 
 rk_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
+  arrange(cultivo) %>%
   arrange(valor) %>%
-  select(c(cultivo, valor))
+  select(cultivo, name_cultivo, valor)
 
 if(length(rk_leñosos_mun$cultivo) > 10){
   rk_leñosos_mun <- rk_leñosos_mun %>% filter(valor != min(rk_leñosos_mun$valor))
@@ -509,16 +499,17 @@ rk_leñosos_mun$cultivo <- ordered(rk_leñosos_mun$cultivo, levels = rk_leñosos
 
 df_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_leñosos_mun$cultivo) %>%
-  select(c(cultivo, valor))
+  select(cultivo, name_cultivo, valor)
 df_leñosos_C <- df_leñosos %>%
   filter(mun == "CANARIAS" & cultivo %in% rk_leñosos_mun$cultivo) %>%
-  select(c(cultivo, valor))
+  select(cultivo, valor)
 df_leñosos_mun <- df_leñosos_mun %>%
   mutate(porcentaje = df_leñosos_mun$valor / sup_leñosos * 100,
          valor_Canarias = df_leñosos_C$valor,
          porcentaje_Canarias = df_leñosos_C$valor / sup_leñosos_C * 100)
 
 df_leñosos_plot <- df_leñosos_mun %>%
+  arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_leñosos_plot$cultivo <- ordered(df_leñosos_plot$cultivo, levels = rk_leñosos_mun$cultivo)
 
@@ -579,7 +570,8 @@ g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, l
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_leñosos_plot$name_cultivo[(nrow(df_leñosos_plot)/2):1])
 
 g_leñosos <- ggplotly(g_leñosos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
@@ -621,7 +613,7 @@ rk_exp_especies_mun <- df_exp_especies %>%
   filter(mun == municipio_actual$id) %>%
   top_n(4, valor) %>% 
   arrange(valor) %>%
-  select(c(especie, valor))
+  select(especie, valor)
 
 if(length(rk_exp_especies_mun$especie) > 6){
   rk_exp_especies_mun <- rk_exp_especies_mun %>% filter(valor != min(rk_exp_especies_mun$valor))
@@ -640,10 +632,10 @@ rk_exp_especies_mun$especie <- ordered(rk_exp_especies_mun$especie, levels = rk_
 
 df_exp_especies_mun <- df_exp_especies %>%
   filter(mun == municipio_actual$id & especie %in% rk_exp_especies_mun$especie) %>%
-  select(c(especie, valor))
+  select(especie, valor)
 df_exp_especies_C <- df_exp_especies %>%
   filter(mun == "ES70" & especie %in% rk_exp_especies_mun$especie) %>%
-  select(c(especie, valor))
+  select(especie, valor)
 df_exp_especies_mun <- df_exp_especies_mun %>%
   mutate(porcentaje = df_exp_especies_mun$valor / sup_exp_especies * 100,
          valor_Canarias = df_exp_especies_C$valor,

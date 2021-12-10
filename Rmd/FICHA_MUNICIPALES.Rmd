@@ -457,7 +457,8 @@ df_points$hovertext[which(is.na(df_points$name_partido))] <- ""
 
 g_representantes <- ggplot(data = df_points,
                            aes(x = puntos, y = name_partido, name = NULL, text = hovertext)) +
-  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(image = "./img/family.png")) +
+  geom_point(stat = "identity", colour = "#008BD0", size = 6, alpha = 0.8) +
+  # geom_image(stat = "identity", colour = "#008BD0", size = 0.03, alpha = 0.8, aes(image = "./img/representantes.png")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -470,9 +471,9 @@ g_representantes <- ggplot(data = df_points,
   scale_x_continuous(n.breaks = 5, labels = function(x){format(x, big.mark = '.', decimal.mark = ",")}, limits = c(0.3, NA)) +
   scale_y_discrete(labels = df_representantes_$name_partido_percent[nrow(df_representantes_):1])
 
-# g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
-#   layout(hovermode = "y unified", showlegend = FALSE, margin = list(l = -6)) %>%
-#   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
+g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
+  layout(hovermode = "y unified", showlegend = FALSE, margin = list(l = -6)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))
 ```
 
 
