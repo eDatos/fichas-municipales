@@ -47,7 +47,7 @@ get_nombre <- function(nombre) {
   result <- ""
   line.char <- 0
   for(word.index in 1:length(string_list)) {
-    if((line.char + nchar(string_list[word.index])) < 16) {
+    if((line.char + nchar(string_list[word.index])) < 17) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
@@ -500,7 +500,7 @@ df_matr_tipos <- df_matr_tipos %>% filter(veh %notin% c("TOTAL", " TOTAL DE AUTO
 
 rk_matr_tipos_mun <- df_matr_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
-  arrange(desc(name_veh)) %>%
+  arrange(desc(veh)) %>%
   arrange(valor) %>%
   select(veh, valor)
 rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_mun$veh)
@@ -524,7 +524,7 @@ df_matr_tipos_plot <- df_matr_tipos_mun %>%
 df_matr_tipos_plot$veh <- ordered(df_matr_tipos_plot$veh, levels = rk_matr_tipos_mun$veh)
 
 df_matr_tipos_plot <- df_matr_tipos_plot %>%
-  left_join(rk_matr_tipos_mun, by = c("veh", "name_veh", "valor")) %>% 
+  left_join(rk_matr_tipos_mun, by = c("veh", "valor")) %>% 
   arrange(desc(order))
 
 df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
