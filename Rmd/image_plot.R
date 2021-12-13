@@ -232,7 +232,7 @@ df_points <- df_points %>% mutate(image = "./img/representantes.png")
 
 g_representantes <- ggplot(data = df_points,
                            aes(x = puntos, y = name_partido, name = NULL, text = hovertext)) +
-  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(image = "./img/representantes.png")) +
+  geom_lime(stat = "identity", size = 0.06, alpha = 0.8) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -254,7 +254,7 @@ g_representantes <- ggplotly(g_representantes, tooltip = c("text")) %>%
 ggplot(data = df_points,
        aes(y = name_partido, name = NULL, text = hovertext)) +
   geom_point(stat = "identity", colour = "#008BD0", size = 1, alpha = 0.8, aes(x = puntos)) +
-  # geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
+  # geom_image(stat = "identity", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
@@ -272,7 +272,7 @@ grid.raster(image, unit(1, "npc"), y = unit(5, "npc"))
 g_representantes <- ggplot(data = df_points,
                            aes(y = name_partido, name = NULL, text = hovertext)) +
   # geom_point(stat = "identity", colour = "#008BD0", size = 1, alpha = 0.8, aes(x = puntos)) +
-  geom_image(stat = "identity", colour = "#008BD0", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
+  geom_image(stat = "identity", size = 0.06, alpha = 0.8, aes(x = puntos, image = "./img/representantes.png")) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
   labs(title = "", x = NULL, y = NULL, colour = " ") +

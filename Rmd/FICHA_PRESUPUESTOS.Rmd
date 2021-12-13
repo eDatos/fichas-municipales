@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 35007
-  año: 2018
+  id_municipio: 38030
+  año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -719,11 +719,15 @@ get_indicator4 = function(title, label, value) {
 <h2 style="color: #666; margin: 0;">Presupuesto ejecutado de ingresos y gastos</h2>
 <hr>
 
-<div class="linechart-placeholder">
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 64, 34)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 <h2 style="color: #005980; margin-bottom: 0;">`r Num_Presupuesto` mill.€ de ingresos ejecutados</h2>
 <div class="linechart">
   `r g_line`
 </div>
+
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {

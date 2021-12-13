@@ -32,13 +32,31 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
   return(sign)
 }
 
 "%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 16) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
 ```
 
 ```{r Mes}
@@ -330,24 +348,24 @@ df_tipos$periodo <- factor(df_tipos$periodo, levels=data_tipos[["categories"]][[
                            labels=paste0(substring(data_tipos[["categories"]][["codes"]][[4]], 0,4), "-", substring(data_tipos[["categories"]][["codes"]][[4]], 6,7)))
 df_tipos$valor <- as.numeric(df_tipos$valor)
 df_tipos$mun <- recode_mun(df_tipos, 'mun')
-df_tipos <- df_tipos %>% mutate(veh = recode(veh, "Camiones y furgonetas" = "Camiones y<br>furgonetas"),
-                                veh = recode(veh, "Tractores industriales" = "Tractores<br>industriales"),
-                                veh = recode(veh, "Remolques y semirremolques" = "Remolques y<br>semirremolques"),
-                                veh = recode(veh, "Otros tipos de vehículo" = "Otros tipos<br>de vehículo"))
 ```
 
 ```{r Barras Tipos de vehículo}
 rk_vehiculos_mun <- df_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>%
+  arrange(desc(veh)) %>%
   arrange(valor) %>%
-  select(c(veh, valor))
+  select(veh, valor)
 rk_vehiculos_mun$veh <- ordered(rk_vehiculos_mun$veh, levels = rk_vehiculos_mun$veh)
+rk_vehiculos_mun <- rk_vehiculos_mun %>% 
+  mutate(order = as.integer(rk_vehiculos_mun$valor, decreasing = FALSE))
 
 df_vehiculos_mun <- df_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% select(!mun)
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(veh, valor)
 df_vehiculos_C <- df_tipos %>%
   filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
-  select(!mun)
+  select(veh, valor)
 df_vehiculos_mun <- df_vehiculos_mun %>%
   mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos * 100,
          valor_Canarias = df_vehiculos_C$valor,
@@ -356,6 +374,10 @@ df_vehiculos_mun <- df_vehiculos_mun %>%
 df_vehiculos_plot <- df_vehiculos_mun %>%
   mutate(label = "|")
 df_vehiculos_plot$veh <- ordered(df_vehiculos_plot$veh, levels = rk_vehiculos_mun$veh)
+
+df_vehiculos_plot <- df_vehiculos_plot %>%
+  left_join(rk_vehiculos_mun, by = c("veh", "valor")) %>% 
+  arrange(desc(order))
 
 df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(veh), "</b><br>",
@@ -366,6 +388,11 @@ df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
   )
 )
 
+df_vehiculos_plot$name_veh <- ""
+for(i in 1:nrow(df_vehiculos_plot)) {
+  df_vehiculos_plot$name_veh[i] <- get_nombre(paste0(df_vehiculos_plot$veh[i]))
+}
+
 df_vehiculos_0 <- df_vehiculos_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
@@ -375,7 +402,7 @@ df_vehiculos_plot <- rbind(df_vehiculos_plot, df_vehiculos_0)
 
 col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
 
-g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
+g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = reorder(veh, order), fill = veh, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
@@ -390,7 +417,8 @@ g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = veh, fill = veh, label =
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_vehiculos_plot$name_veh[(nrow(df_vehiculos_plot)/2):1])
 
 g_vehiculos <- ggplotly(g_vehiculos, tooltip = c("text")) %>%
   layout(hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
@@ -402,13 +430,13 @@ g_vehiculos <- ggplotly(g_vehiculos, tooltip = c("text")) %>%
 rk_combustibles_mun <- df_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
   arrange(valor) %>%
-  select(c(combustible, valor))
+  select(combustible, valor)
 rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos * 100)
 rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
 
 df_combustibles_mun <- df_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
-  select(c(combustible, valor))
+  select(combustible, valor)
 df_combustibles_mun <- df_combustibles_mun %>%
   mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
 
@@ -466,27 +494,26 @@ df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["
                                 labels=paste0(substring(data_matr_tipos[["categories"]][["codes"]][[3]], 0,4), "-", substring(data_matr_tipos[["categories"]][["codes"]][[3]], 6,7)))
 df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
 df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
-df_matr_tipos <- df_matr_tipos %>% filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES"))
-df_matr_tipos <- df_matr_tipos %>% mutate(veh = recode(veh, "  Vehículos mixtos adaptables" = "  Vehículos mixtos<br>adaptables"),
-                                          veh = recode(veh, "  Otros automóviles" = "  Otros<br>automóviles"),
-                                          veh = recode(veh, " CICLOMOTORES" = " Ciclomotores"),
-                                          veh = recode(veh, " VEHICULOS ESPECIALES" = " Vehículos<br>especiales"),
-                                          veh = recode(veh, " REMOLQUES Y SEMIRREMOLQUES" = " Remolques y<br>semirremolques"),
-                                          veh = recode(veh, "  " = ""),
-                                          )
+df_matr_tipos <- df_matr_tipos %>% filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>% 
+  mutate(veh = trimws(veh),
+         veh = paste0(substring(veh, 0,1), tolower(substring(veh, 2,100))))
 
 rk_matr_tipos_mun <- df_matr_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
+  arrange(desc(name_veh)) %>%
   arrange(valor) %>%
-  select(c(veh, valor))
+  select(veh, valor)
 rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_mun$veh)
+
+rk_matr_tipos_mun <- rk_matr_tipos_mun %>%
+  mutate(order = as.integer(order(rk_matr_tipos_mun$valor, decreasing = FALSE)))
 
 Num_Matriculaciones_C <- df_matr %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
 df_matr_tipos_mun <- df_matr_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>% select(!c(mun, periodo))
 df_matr_tipos_C <- df_matr_tipos %>%
   filter(mun == "CANARIAS" & periodo == mes_actual$code) %>% 
-  select(!c(mun, periodo))
+  select(veh, valor)
 df_matr_tipos_mun <- df_matr_tipos_mun %>%
   mutate(porcentaje = df_matr_tipos_mun$valor / Num_Matriculaciones_num * 100,
          valor_Canarias = df_matr_tipos_C$valor,
@@ -495,6 +522,10 @@ df_matr_tipos_mun <- df_matr_tipos_mun %>%
 df_matr_tipos_plot <- df_matr_tipos_mun %>%
   mutate(label = "|")
 df_matr_tipos_plot$veh <- ordered(df_matr_tipos_plot$veh, levels = rk_matr_tipos_mun$veh)
+
+df_matr_tipos_plot <- df_matr_tipos_plot %>%
+  left_join(rk_matr_tipos_mun, by = c("veh", "name_veh", "valor")) %>% 
+  arrange(desc(order))
 
 df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(veh), "</b><br>",
@@ -505,6 +536,11 @@ df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
   )
 )
 
+df_matr_tipos_plot$name_veh <- ""
+for(i in 1:nrow(df_matr_tipos_plot)) {
+  df_matr_tipos_plot$name_veh[i] <- get_nombre(paste0(df_matr_tipos_plot$veh[i]))
+}
+
 df_matr_tipos_0 <- df_matr_tipos_plot %>% 
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
@@ -514,7 +550,7 @@ df_matr_tipos_plot <- rbind(df_matr_tipos_plot, df_matr_tipos_0)
 
 col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
 
-g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label = label, name = NULL, text = hovertext)) +
+g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = reorder(veh, order), fill = veh, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
@@ -529,7 +565,8 @@ g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = veh, fill = veh, label
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
         legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_matr_tipos_plot$name_veh[(nrow(df_matr_tipos_plot)/2):1])
 
 g_matr_tipos <- ggplotly(g_matr_tipos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = -5, r = 0)) %>%

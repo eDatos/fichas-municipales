@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35006
+  id_municipio: 35004
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -372,6 +372,7 @@ for(i in 1:nrow(df_herbaceos)) {
 rk_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
+  arrange(desc(name_cultivo)) %>%
   arrange(valor) %>%
   select(cultivo, name_cultivo, valor)
 
@@ -379,6 +380,9 @@ if(length(rk_herbaceos_mun$cultivo) > 10){
   rk_herbaceos_mun <- rk_herbaceos_mun %>% filter(valor != min(rk_herbaceos_mun$valor))
 }
 rk_herbaceos_mun$cultivo <- ordered(rk_herbaceos_mun$cultivo, levels = rk_herbaceos_mun$cultivo)
+
+rk_herbaceos_mun <- rk_herbaceos_mun %>%
+  mutate(order = as.integer(order(rk_herbaceos_mun$valor, decreasing = FALSE)))
 
 df_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_herbaceos_mun$cultivo) %>%
@@ -395,6 +399,9 @@ df_herbaceos_plot <- df_herbaceos_mun %>%
   arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herbaceos_mun$cultivo)
+df_herbaceos_plot <- df_herbaceos_plot %>%
+  left_join(rk_herbaceos_mun, by = c("cultivo", "name_cultivo", "valor")) %>% 
+  arrange(desc(order))
 
 df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(cultivo), "</b><br>",
@@ -438,7 +445,7 @@ if(nrow(df_herbaceos_plot)/2 == 12){
                       col <- c("#8CD2EA", "#005980")
                     }
 
-g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
+g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = reorder(cultivo, order), fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
@@ -488,7 +495,7 @@ for(i in 1:nrow(df_leñosos)) {
 rk_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
-  arrange(cultivo) %>%
+  arrange(desc(name_cultivo)) %>%
   arrange(valor) %>%
   select(cultivo, name_cultivo, valor)
 
@@ -496,6 +503,9 @@ if(length(rk_leñosos_mun$cultivo) > 10){
   rk_leñosos_mun <- rk_leñosos_mun %>% filter(valor != min(rk_leñosos_mun$valor))
 }
 rk_leñosos_mun$cultivo <- ordered(rk_leñosos_mun$cultivo, levels = rk_leñosos_mun$cultivo)
+
+rk_leñosos_mun <- rk_leñosos_mun %>% 
+  mutate(order = as.integer(order(rk_leñosos_mun$valor, decreasing = FALSE)))
 
 df_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_leñosos_mun$cultivo) %>%
@@ -512,6 +522,9 @@ df_leñosos_plot <- df_leñosos_mun %>%
   arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_leñosos_plot$cultivo <- ordered(df_leñosos_plot$cultivo, levels = rk_leñosos_mun$cultivo)
+df_leñosos_plot <- df_leñosos_plot %>% 
+  left_join(rk_leñosos_mun, by = c("cultivo", "name_cultivo", "valor")) %>% 
+  arrange(desc(order))
 
 df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(cultivo), "</b><br>",
@@ -555,7 +568,7 @@ if(nrow(df_leñosos_plot)/2 == 12){
                       col <- c("#8CD2EA", "#005980")
                     }
 
-g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
+g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = reorder(cultivo, order), fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
@@ -581,7 +594,6 @@ g_leñosos <- ggplotly(g_leñosos, tooltip = c("text")) %>%
 
 ```{r Ganadería explotaciones}
 data_exp_especies <- fromJSON(params$url.exp_especies)
-
 df_exp_especies <- data.frame(
   mun = rep(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
@@ -612,6 +624,7 @@ df_exp_especies <- df_exp_especies %>% transform(mun = if_else(mun == "38013_200
 rk_exp_especies_mun <- df_exp_especies %>%
   filter(mun == municipio_actual$id) %>%
   top_n(4, valor) %>% 
+  arrange(desc(especie)) %>%
   arrange(valor) %>%
   select(especie, valor)
 
@@ -630,6 +643,9 @@ if(nrow(rk_exp_especies_mun) == 5){
 
 rk_exp_especies_mun$especie <- ordered(rk_exp_especies_mun$especie, levels = rk_exp_especies_mun$especie)
 
+rk_exp_especies_mun <- rk_exp_especies_mun %>%
+  mutate(order = as.integer(order(rk_exp_especies_mun$valor, decreasing = FALSE)))
+
 df_exp_especies_mun <- df_exp_especies %>%
   filter(mun == municipio_actual$id & especie %in% rk_exp_especies_mun$especie) %>%
   select(especie, valor)
@@ -644,6 +660,10 @@ df_exp_especies_mun <- df_exp_especies_mun %>%
 df_exp_especies_plot <- df_exp_especies_mun %>%
   mutate(label = "|")
 df_exp_especies_plot$especie <- ordered(df_exp_especies_plot$especie, levels = rk_exp_especies_mun$especie)
+
+df_exp_especies_plot <- df_exp_especies_plot %>%
+  left_join(rk_exp_especies_mun, by = c("especie", "valor")) %>% 
+  arrange(desc(order))
 
 df_exp_especies_plot <- df_exp_especies_plot %>% transform(hovertext = paste0(
   "<b>", trimws(especie), "</b><br>",
@@ -687,7 +707,7 @@ if(nrow(df_exp_especies_plot)/2 == 12){
                       col <- c("#8CD2EA", "#005980")
                     }
 
-g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = especie, fill = especie, label = label, name = NULL, text = hovertext)) +
+g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = reorder(especie, order), fill = especie, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
   geom_text(size = bar_size, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
