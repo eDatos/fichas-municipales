@@ -677,7 +677,7 @@ h4, h5 {
   color: #666;
   font-size: 13px;
   padding: 0;
-  text-align: center;
+  text-align: right;
 }
 .representantes span {
   display: inline-block;
@@ -686,5 +686,8 @@ h4, h5 {
 }
 .representantes .image {
   padding: 6px;
-  height: 20px;
+  height: 30px;
+}
+.row-repr {
+  height: 60px;
 }
