@@ -664,3 +664,27 @@ h4, h5 {
   height: 300px;
   width: calc(100% - 25px);
 }
+
+.representantes {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 auto;
+}
+.representantes img {
+  max-height: 20px;
+}
+.representantes .partido {
+  color: #666;
+  font-size: 13px;
+  padding: 0;
+  text-align: center;
+}
+.representantes span {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.representantes .image {
+  padding: 6px;
+  height: 20px;
+}

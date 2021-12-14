@@ -430,44 +430,11 @@ df_representantes_ <- df_plot_ %>%
 df_representantes_$candidatura <- ordered(df_representantes_$candidatura, levels = df_representantes_$candidatura[nrow(df_representantes_):1])
 df_representantes_ <- df_representantes_ %>% left_join(df_partido, by = "candidatura") 
 
-df_representantes <- list()
-df_points <- data.frame()
-for(i in 1:nrow(df_representantes_)) {
-  df_representantes[[i]] <- data.frame(candidatura = rep(df_representantes_$candidatura[i], times = (df_representantes_$repr_elegidos[i])),
-                                       puntos = c(1:df_representantes_$repr_elegidos[i]))
-  df_points <- df_points %>% rbind(df_representantes[[i]])
-}
-
-df_points <- df_points %>% left_join(df_partido, by = "candidatura") 
-df_points$name_partido <- ordered(df_points$name_partido, levels = df_representantes_$name_partido[nrow(df_representantes_):1])
-
-df_points <- df_points %>% transform(hovertext = paste0(
-    "<b>", name_partido, " </b>",
-    "<br>", trimws(format(puntos, big.mark = ".", decimal.mark = ",")), " representantes elegidos"
-  )
-)
-
-df_representantes_$name_partido_percent <- ""
+df_representantes_$name_partido_siglas <- ""
 
 for(i in 1:nrow(df_representantes_)) {
-  df_representantes_$name_partido_percent[i] <- get_nombre_partido(df_representantes_$name_partido[i])
+  df_representantes_$name_partido_siglas[i] <- get_nombre_partido(df_representantes_$name_partido[i])
 }
-
-df_points$hovertext[which(is.na(df_points$name_partido))] <- ""
-
-g_representantes <- ggplot(data = df_points,
-                           aes(x = puntos, y = name_partido, name = NULL, text = hovertext)) +
-  geom_image(stat = "identity", size = 0.08, aes(image = "./img/representantes.png")) +
-  theme_minimal() +
-  guides(fill = guide_legend(title = " ")) +
-  labs(title = "", x = NULL, y = NULL, colour = " ") +
-  theme(axis.text.x = element_blank(),
-        axis.text.y = element_blank(),
-        axis.line = element_blank(),
-        panel.grid = element_blank(),
-        panel.background = element_rect(fill = "white"),
-        legend.position = "none")
-g_representantes
 ```
 
 
@@ -528,9 +495,18 @@ if(Variacion == "NA"){
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 10px;">
-<div class="barras-r">
-  `r g_representantes`
-</div>
+
+```{r Representantes elegidos, results='asis'}
+for (i in 1:nrow(df_representantes_)) {
+  cat(paste0(
+    "<div class='row'><div class='representantes'><p class='partido'>", df_representantes_$name_partido_siglas[i], "</p>"))
+  for (j in 1:df_representantes_$repr_elegidos[i]) {
+    cat(paste0(
+      "<div class='image'><img src='./img/representantes.png'></img></div>"))
+  }
+  cat(paste0("</div></div>"))
+}
+```
 
 </div>
 

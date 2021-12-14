@@ -711,6 +711,14 @@ get_indicator2 = function(label, value, image) {
 get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
+if(nchar(GAP) > 4){
+  padding_left <- 6
+}else{
+  padding_left <- 10
+}
+get_indicator2_GAP = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content' style='padding-left: %spx;'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, padding_left, value, label))
+}
 ```
 
 <!-- HTML -->
@@ -750,14 +758,14 @@ if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
     }else{
       if(Variacion_Porcentual_Presupuesto == "NA" & GAP != "NA"){
         cat(paste0(
-          "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+          "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
           if(Variacion_Porcentual_Presupuesto != "NA" & GAP == "NA"){
             cat(paste0(
               "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }
