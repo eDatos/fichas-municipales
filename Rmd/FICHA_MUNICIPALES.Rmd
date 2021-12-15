@@ -499,7 +499,8 @@ if(Variacion == "NA"){
 ```{r Representantes elegidos, results='asis'}
 for (i in 1:nrow(df_representantes_)) {
   cat(paste0(
-    "<div class='row-repr'><div class='column'><div class='representantes'><p class='partido'>", df_representantes_$name_partido_siglas[i], "</p></div></div><div class='column'><div class='representantes'>"))
+    "<div class='row-repr'><div class='column-partido'><div class='representantes'><div class='partido'>", df_representantes_$name_partido_siglas[i],
+    "</div></div></div><div class='column-icono'><div class='representantes'>"))
   for (j in 1:df_representantes_$repr_elegidos[i]) {
     cat(paste0(
       "<div class='image'><img src='./img/representantes.png'></img></div>"))
