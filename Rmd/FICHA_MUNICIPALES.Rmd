@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35016
+  id_municipio: 35023
   convocatoria: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -453,7 +453,10 @@ get_indicator4 = function(title, label, value) {
 <h2 style="color: #666; margin: 0;">Resultados de las Elecciones Municipales</h2>
 <hr>
 
-<div class="linechart-placeholder">
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 <h2 style="color: #005980; margin-bottom: 0;">Tasa de participación: `r Tasa_participacion` %</h2>
 <div class="linechart">
   `r g_line`

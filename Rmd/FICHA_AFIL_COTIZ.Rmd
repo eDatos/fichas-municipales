@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38028
+  id_municipio: 35023
   año: 2021
   mes: 6
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97
@@ -506,7 +506,10 @@ get_indicator2 = function(label, value, image) {
 <h2 style="color: #666; margin: 0;">Afiliaciones según el lugar de cotización</h2>
 <hr>
 
-<div class="linechart-placeholder">
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 <h2 style="color: #005980; margin-bottom: 0;">`r Num_Afil` afiliaciones</h2>
 <div class="linechart">
   `r g_line`

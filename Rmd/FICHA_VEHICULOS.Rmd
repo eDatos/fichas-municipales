@@ -587,7 +587,10 @@ get_indicator2 = function(label, value, image) {
 <h2 style="color: #666; margin: 0;">Parque de vehículos</h2>
 <hr>
 
-<div class="linechart-placeholder">
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 <h2 style="color: #005980; margin-bottom: 0;">`r Num_Veh_Parque` vehículos</h2>
 <div class="linechart">
   `r g_line`

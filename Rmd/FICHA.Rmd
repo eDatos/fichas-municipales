@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35023
+  id_municipio: 38003
   año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -477,7 +477,6 @@ peso_extranjeros <- df_nacionalidad_mun %>% filter(nacionalidad == "EXTRANJERO")
 ```
 
 ```{r Barras nacionalidades, echo=FALSE, message=FALSE, warning=FALSE}
-# municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == 35007,]
 ranking_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$municipio &
                             nacionalidad %notin% c("TOTAL", "ESPAÑA", "EXTRANJERO", "RESTO DE UE-28", "Ampliación de 2004", "Otros países de la Unión Europea",
                                                    "RESTO EUROPA", "Otros países de Europa", "ÁFRICA", "Otros de África", "AMÉRICA",
