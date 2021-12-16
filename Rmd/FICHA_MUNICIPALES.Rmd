@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35023
+  id_municipio: 38003
   convocatoria: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
 ```{r librerías, include=FALSE}
-list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "ggimage")
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
@@ -353,32 +353,26 @@ df_municipales <- df_municipales %>% transform(mun = if_else(mun == "38013_2007"
 ```
 
 ```{r Resultados}
-df_municipales_mun <- df_municipales %>% 
+df_municipales_mun_ <- df_municipales %>% 
   filter(mun == params$id_municipio)
 
-df_municipales_mun_ <- df_municipales_mun %>% 
+df_municipales_mun <- df_municipales_mun_ %>% 
   filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
-df_plot_ <- df_municipales_mun_ %>%
+df_municipales_mun <- df_municipales_mun %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
   select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA, repr_elegidos = REPRESENTANTES_ELEGIDOS)
-df_plot <- df_plot_ %>%
+
+df_plot_ <- df_municipales_mun %>%
+  left_join(df_partido, by = "candidatura") %>% arrange(name_partido) %>% 
   arrange(desc(valor)) %>% top_n(6, valor) %>% select(-repr_elegidos)
+df_plot_$valor <- as.integer(df_plot_$valor)
+df_plot_$porcentaje <- as.numeric(df_plot_$porcentaje)
+
+df_otros <- df_municipales_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot_$candidatura)
+
+df_plot <- rbind(df_plot_, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA), "Resto de candidaturas"))
 df_plot$valor <- as.integer(df_plot$valor)
 df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
-
-df_otros <- df_municipales_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
-df_otros <- df_otros %>%
-  spread(medida, valor) %>%
-  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
-
-df_plot <- rbind(df_plot, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA)))
-df_plot$valor <- as.integer(df_plot$valor)
-df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
-
-df_plot <- df_plot %>%
-  left_join(df_partido, by = "candidatura") %>%
-  arrange(desc(valor)) %>% 
-  transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
 
 if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
   df_plot <- df_plot[-nrow(df_plot),]
@@ -396,7 +390,7 @@ for(i in 1:nrow(df_plot)) {
   df_plot$name_partido_percent[i] <- get_nombre_partido(paste0(df_plot$name_partido[i], " (", trimws(format(round(df_plot$porcentaje[i], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
 }
 
-df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot):1])
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = c("Resto de candidaturas", df_plot_$name_partido[nrow(df_plot_):1]))
 
 g_municipales_mun <-  ggplot(data = df_plot,
                              aes(y = name_partido, name = NULL, text = hovertext)) +
@@ -422,18 +416,19 @@ g_municipales_mun <- ggplotly(g_municipales_mun, tooltip = c("text")) %>%
 ```
 
 ```{r Resultados Representantes}
-df_plot_$repr_elegidos <- as.numeric(df_plot_$repr_elegidos)
-df_representantes_ <- df_plot_ %>% 
-  filter(repr_elegidos > 0) %>% 
+df_municipales_mun$repr_elegidos <- as.numeric(df_municipales_mun$repr_elegidos)
+df_representantes <- df_municipales_mun %>% 
+  filter(repr_elegidos > 0) %>%
+  left_join(df_partido, by = "candidatura") %>% 
+  arrange(name_partido) %>% 
   arrange(-valor) %>% 
-  select(candidatura, repr_elegidos)
-df_representantes_$candidatura <- ordered(df_representantes_$candidatura, levels = df_representantes_$candidatura[nrow(df_representantes_):1])
-df_representantes_ <- df_representantes_ %>% left_join(df_partido, by = "candidatura") 
+  select(candidatura, name_partido, repr_elegidos)
+df_representantes$candidatura <- ordered(df_representantes$candidatura, levels = df_representantes$candidatura[nrow(df_representantes):1])
 
-df_representantes_$name_partido_siglas <- ""
+df_representantes$name_partido_siglas <- ""
 
-for(i in 1:nrow(df_representantes_)) {
-  df_representantes_$name_partido_siglas[i] <- get_nombre_partido(df_representantes_$name_partido[i])
+for(i in 1:nrow(df_representantes)) {
+  df_representantes$name_partido_siglas[i] <- get_nombre_partido(df_representantes$name_partido[i])
 }
 ```
 
@@ -500,13 +495,14 @@ if(Variacion == "NA"){
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 40px;">
 
 ```{r Representantes elegidos, results='asis'}
-for (i in 1:nrow(df_representantes_)) {
+for (i in 1:nrow(df_representantes)) {
   cat(paste0(
-    "<div class='row-repr'><div class='column-partido'><div class='representantes'><div class='partido'>", df_representantes_$name_partido_siglas[i],
+    "<div class='row-repr'><div class='column-partido'><div class='representantes'><div class='partido'>", df_representantes$name_partido_siglas[i],
     "</div></div></div><div class='column-icono'><div class='representantes'>"))
-  for (j in 1:df_representantes_$repr_elegidos[i]) {
+  for (j in 1:df_representantes$repr_elegidos[i]) {
     cat(paste0(
-      "<div class='image'><img src='./img/representantes.png'></img></div>"))
+      "<div class='image'><img src='./img/butaca.png'></img></div>"))
+      # "<div class='image'><img src='./img/representantes.png'></img></div>"))
   }
   cat(paste0("</div></div></div>"))
 }

@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38003
+  id_municipio: 35023
   año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -485,7 +485,6 @@ ranking_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$m
   select(c(nacionalidad, valor)) %>%
   top_n(10, valor) %>%
   mutate(nacionalidad = trimws(nacionalidad)) %>% 
-  arrange(desc(nacionalidad)) %>% 
   arrange(-valor)
 
 if(length(ranking_nacionalidad_mun$nacionalidad) > 10){

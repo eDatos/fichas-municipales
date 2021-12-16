@@ -346,54 +346,44 @@ df_europeas <- df_europeas %>% transform(mun = if_else(mun == "38013_2007",  "38
 ```
 
 ```{r Resultados}
-df_europeas_mun <- df_europeas %>% 
+df_europeas_mun_ <- df_europeas %>% 
   filter(mun == params$id_municipio)
 
-df_plot_ <- df_europeas_mun %>% filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
-df_plot <- df_plot_ %>%
+df_europeas_mun <- df_europeas_mun_ %>%
+  filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
+df_europeas_mun <- df_europeas_mun %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA) %>%
-  arrange(desc(valor)) %>% top_n(5, valor)
-df_plot$valor <- as.numeric(df_plot$valor)
-df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
-
-df_otros <- df_europeas_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
-df_otros <- df_otros %>%
-  spread(medida, valor) %>%
   select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
 
-df_plot <- rbind(df_plot, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA)))
+df_plot_ <- df_europeas_mun %>%
+  left_join(df_partido, by = "candidatura") %>% arrange(name_partido) %>% 
+  arrange(desc(valor)) %>% top_n(5, valor)
+df_plot_$valor <- as.integer(df_plot_$valor)
+df_plot_$porcentaje <- as.numeric(df_plot_$porcentaje)
+
+df_otros <- df_europeas_mun %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot_$candidatura)
+
+df_plot <- rbind(df_plot_, c("Otros", sum(df_otros$valor, na.rm = NA), sum(df_otros$porcentaje, na.rm = NA), "Resto de candidaturas"))
 df_plot$valor <- as.numeric(df_plot$valor)
 df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
-df_plot$candidatura <- ordered(df_plot$candidatura, levels = df_plot$candidatura[nrow(df_plot):1])
-
 df_europeas_C <- df_europeas %>% 
-  left_join(df_partido, by = "candidatura") %>%
-  filter(mun == "ES70")
-
-df_plot_C_ <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor) %>% select(medida, candidatura, valor)
-df_plot_C <- df_plot_C_ %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
-df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
-df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
+  select(mun, candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA) %>% 
+  filter(mun == "ES70") %>% select(!mun)
+
+df_plot_C_ <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor_C)
+df_plot_C_$valor_C <- as.numeric(df_plot_C_$valor_C)
+df_plot_C_$porcentaje_C <- as.numeric(df_plot_C_$porcentaje_C)
 
 df_otros <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %notin% df_plot$candidatura)
-df_otros <- df_otros %>%
-  spread(medida, valor) %>%
-  select(candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA)
 
-df_plot_C <- rbind(df_plot_C, c("Otros", sum(df_otros$valor_C, na.rm = NA), sum(df_otros$porcentaje_C, na.rm = NA)))
+df_plot_C <- rbind(df_plot_C_, c("Otros", sum(df_otros$valor_C, na.rm = NA), sum(df_otros$porcentaje_C, na.rm = NA)))
 df_plot_C$valor_C <- as.numeric(df_plot_C$valor_C)
 df_plot_C$porcentaje_C <- as.numeric(df_plot_C$porcentaje_C)
 
-df_plot <- df_plot %>%
-  left_join(df_partido, by = "candidatura") %>%
-  left_join(df_plot_C, by = "candidatura") %>%
-  mutate(label = "|") %>% 
-  transform(name_partido = if_else(candidatura == "Otros",  "Resto de candidaturas", name_partido))
-  
+df_plot <- df_plot %>% left_join(df_plot_C, by = "candidatura") %>% mutate(label = "|")
+
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
   "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
@@ -412,7 +402,7 @@ df_plot_0 <- df_plot %>% transform(porcentaje = 0,
                                    porcentaje_C = 0,
                                    label = "")
 df_plot <- rbind(df_plot, df_plot_0)
-df_plot$name_partido <- ordered(df_plot$name_partido, levels = df_plot$name_partido[nrow(df_plot_C):1])
+df_plot$name_partido <- ordered(df_plot$name_partido, levels = c("Resto de candidaturas", df_plot_$name_partido[nrow(df_plot_C):1]))
 
 g_europeas_mun <- ggplot(data = df_plot,
                          aes(y = name_partido, label = label, name = NULL, text = hovertext)) +
