@@ -400,7 +400,7 @@ df_nacimientos <- data.frame(
 
 df_nacimientos_mun <- df_nacimientos %>% filter(año == params$año & mun == params$id_municipio)
 
-# Tasa por mil habitantes con dos decimales:
+# Tasa por mil habitantes con un decimal:
 TBN <- format(round(df_nacimientos_mun$valor / Num_Pobl_num * 1000, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 

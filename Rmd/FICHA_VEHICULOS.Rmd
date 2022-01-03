@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38038
+  id_municipio: 35016
   año: 2021
   mes: 1
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
@@ -70,7 +70,7 @@ mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][[
 mes <- mes %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
-mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
 
@@ -440,15 +440,46 @@ df_combustibles_mun <- df_tipos %>%
 df_combustibles_mun <- df_combustibles_mun %>%
   mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
 
-porc_gasolina_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")] + df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
+porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
+porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
+porc_gasolina_diesel <- porc_gasolina + porc_diesel
 porc_electrico <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Eléctrico")]
-# porc_otros <- 100 - porc_gasolina - porc_diesel - porc_electrico
+porc_otros <- 100 - porc_gasolina - porc_diesel - porc_electrico
+
+porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric
+porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric
 porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric
 porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric
-# porc_otros_l <- round(porc_otros, 1) %>% as.numeric
+porc_otros_l <- round(porc_otros, 1) %>% as.numeric
 ```
 
-```{r Matriculaciones, eval=FALSE}
+```{r Progress-bar Otros tipos de combustible}
+df_combustibles_otros <- df_combustibles_mun %>%
+  filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico")) %>%
+  top_n(4) %>% 
+  arrange(-valor)
+df_combustibles_otros <- df_combustibles_otros %>%
+  mutate(porcentaje = df_combustibles_otros$valor / sum(df_combustibles_otros$valor) * 100)
+
+tipo_1 <- df_combustibles_otros$combustible[1]
+tipo_2 <- df_combustibles_otros$combustible[2]
+tipo_3 <- df_combustibles_otros$combustible[3]
+tipo_4 <- df_combustibles_otros$combustible[4]
+
+porc_1 <- df_combustibles_otros$porcentaje[1]
+porc_2 <- df_combustibles_otros$porcentaje[2]
+porc_3 <- df_combustibles_otros$porcentaje[3]
+porc_4 <- df_combustibles_otros$porcentaje[4]
+porc_o <- 100 - porc_1 - porc_2 - porc_3 - porc_4
+
+porc_1_l <- round(porc_1, 1) %>% as.numeric
+porc_2_l <- round(porc_2, 1) %>% as.numeric
+porc_3_l <- round(porc_3, 1) %>% as.numeric
+porc_4_l <- round(porc_4, 1) %>% as.numeric
+porc_o_l <- round(porc_o, 1) %>% as.numeric
+```
+
+```{r Matriculaciones}
 # Número de vehículos matriculados durante el periodo de referencia.
 data_matr <- fromJSON(params$url.matricula)
 
@@ -606,10 +637,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual_Veh_Parque == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", porc_gasolina_diesel_l, "./img/female.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", porc_electrico_l, "./img/male.png"), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/female.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/male.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Matriculaciones", Num_Matriculaciones, "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Matriculaciones<br>de turismos", Num_Matr_turismos, "./img/male.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/male.png"), "</div>"))
 }
 ```
 </div>
@@ -669,19 +700,20 @@ mapa_comarca_plot
 </div>
 </div>
 
-<div class="column highlight">
-<div class="piramide" style="height: 390px">
+<div class="row">
+<div class="column highlight" style="padding-top: 40px;">
+<div class="piramide" style="height: 320px;">
   `r g_vehiculos`
 </div>
 
-<div class="progressbar-legend-container" style="margin: 10px;">
+<div class="progressbar-legend-container" style="margin: 37px 0;">
   <div class="progressbar-legend">
   <div class="progress-bar-C-a">|</div><div class="sp-content">Canarias</div></div>
 </div>
 </div>
 
 <div class="column highlight">
-<div class="piramide" style="height: 390px">
+<div class="piramide" style="height: 390px;">
   `r g_matr_tipos`
 </div>
 
@@ -691,23 +723,45 @@ mapa_comarca_plot
 </div>
 
 </div>
+</div>
 
 <div class="indicator-title-row">
   <h3>Tipos de combustible</h3>
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding-top: 10px;">
+<div class="column">
 <div class="progress-bar-container">
   <div class="progress-bar-blue1" style="width:`r porc_gasolina`%"></div>
   <div class="progress-bar-blue3" style="width:`r porc_diesel`%"></div>
   <div class="progress-bar-blue5" style="width:`r porc_electrico`%"></div>
   <div class="progress-bar-blue6" style="width:`r porc_otros`%"></div>
 </div>
-<div class="progressbar-legend-container">
-  <div class="progressbar-legend"><div class="progress-bar-blue1"></div><div class="sp-content">Gasolina<br>`r format(porc_gasolina_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class="progressbar-legend"><div class="progress-bar-blue3"></div><div class="sp-content">Diesel<br>`r format(porc_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class="progressbar-legend"><div class="progress-bar-blue5"></div><div class="sp-content">Eléctrico<br>`r format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class="progressbar-legend"><div class="progress-bar-blue6"></div><div class="sp-content">Otros<br>`r format(porc_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+
+<div class="legend-vertical-container" style="margin-top: 60px;">
+  <div class="progressbar-legend"><div class="progress-bar-blue1"></div><div class="sp-content">Gasolina (`r format(porc_gasolina_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue3"></div><div class="sp-content">Diesel (`r format(porc_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue5"></div><div class="sp-content">Eléctrico (`r format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue6"></div><div class="sp-content">Resto de tipos de combustible (`r format(porc_otros_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+</div>
+</div>
+
+<div class="column">
+<div class="progress-bar-container">
+  <div class="progress-bar-blue1" style="width:`r porc_1`%"></div>
+  <div class="progress-bar-blue3" style="width:`r porc_2`%"></div>
+  <div class="progress-bar-blue4" style="width:`r porc_3`%"></div>
+  <div class="progress-bar-blue5" style="width:`r porc_4`%"></div>
+  <div class="progress-bar-blue6" style="width:`r porc_o`%"></div>
+</div>
+
+<div class="legend-vertical-container" style="margin-top: 60px;">
+  <div class="progressbar-legend"><div class="progress-bar-blue1"></div><div class="sp-content">`r tipo_1` (`r format(porc_1_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue3"></div><div class="sp-content">`r tipo_2` (`r format(porc_2_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue4"></div><div class="sp-content">`r tipo_3` (`r format(porc_3_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue5"></div><div class="sp-content">`r tipo_4` (`r format(porc_4_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+  <div class="progressbar-legend"><div class="progress-bar-blue6"></div><div class="sp-content">Resto de tipos de combustible (`r format(porc_o_l, big.mark = ".", decimal.mark = ",", nsmall = 1)`%)</div></div>
+</div>
 </div>
 
 </div>
