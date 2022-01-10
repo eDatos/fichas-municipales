@@ -217,14 +217,14 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 8, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4))}) +
-  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 18, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4))}) +
+  scale_y_continuous(labels = function(x){paste0(format(as.integer(x), big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(max(df$año) - 8, min(df$año)), max(df$año)),
+                      range = c(max(max(df$año) - 18, min(df$año)), max(df$año)),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {

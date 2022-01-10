@@ -24,7 +24,7 @@ always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
 ```{r librerías, include=FALSE}
@@ -476,7 +476,7 @@ peso_españoles <- df_nacionalidad_mun %>% filter(nacionalidad == "ESPAÑA") %>%
 peso_extranjeros <- df_nacionalidad_mun %>% filter(nacionalidad == "EXTRANJERO") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
-```{r Barras nacionalidades, echo=FALSE, message=FALSE, warning=FALSE}
+```{r Barras nacionalidades}
 ranking_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$municipio &
                             nacionalidad %notin% c("TOTAL", "ESPAÑA", "EXTRANJERO", "RESTO DE UE-28", "Ampliación de 2004", "Otros países de la Unión Europea",
                                                    "RESTO EUROPA", "Otros países de Europa", "ÁFRICA", "Otros de África", "AMÉRICA",

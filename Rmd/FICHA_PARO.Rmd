@@ -30,13 +30,31 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
   return(sign)
 }
 
 "%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 17) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
 ```
 
 ```{r Mes}
@@ -398,22 +416,18 @@ edad_media <- round(sum(df_edad_media$producto) / sum(df_edad_media$valor), 1) %
 data_paro_se <- fromJSON(params$url.paro_se)
 
 df_paro_se <- cbind(data.frame(do.call('rbind', data_paro_se[["data"]][["dimCodes"]])), data_paro_se[["data"]][["Valor"]])
-colnames(df_paro_se) <- c('mun', 'periodo', 'sector_', 'sexo', 'valor')
+colnames(df_paro_se) <- c('mun', 'periodo', 'sector', 'sexo', 'valor')
 df_paro_se$mun <- factor(df_paro_se$mun, levels=data_paro_se[["categories"]][["codes"]][[1]], labels=data_paro_se[["categories"]][["labels"]][[1]])
 df_paro_se$periodo <- factor(df_paro_se$periodo, levels=data_paro_se[["categories"]][["codes"]][[2]], labels=data_paro_se[["categories"]][["labels"]][[2]])
-df_paro_se$sector_ <- factor(df_paro_se$sector_, levels=data_paro_se[["categories"]][["codes"]][[3]], labels=data_paro_se[["categories"]][["labels"]][[3]])
+df_paro_se$sector <- factor(df_paro_se$sector, levels=data_paro_se[["categories"]][["codes"]][[3]], labels=data_paro_se[["categories"]][["labels"]][[3]])
 df_paro_se$sexo <- factor(df_paro_se$sexo, levels=data_paro_se[["categories"]][["codes"]][[4]], labels=data_paro_se[["categories"]][["labels"]][[4]])
 df_paro_se$valor <- as.numeric(df_paro_se$valor)
 df_paro_se$mun <- recode_mun(df_paro_se, 'mun')
-df_paro_se$sector <- ordered(df_paro_se$sector, levels = levels(df_paro_se$sector)[8:1])
-df_paro_se <- df_paro_se %>% mutate(sector = recode(sector_, "Sin actividad económica" = "Sin actividad<br>económica"),
-                                    sector = recode(sector_, "Resto de servicios" = "Resto de<br>servicios"))
 
 df_paro_se_mun <- df_paro_se %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo & sector != "TOTAL" & sexo != "AMBOS SEXOS") %>% select(!mun)
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo & sector != "TOTAL" & sexo != "AMBOS SEXOS") %>% select(!c(mun, periodo))
 df_paro_Canarias <- df_paro_se %>%
-  filter(mun == "CANARIAS" & periodo == mes_actual$periodo & sector != "TOTAL" & sexo != "AMBOS SEXOS") %>% 
-  select(!mun)
+  filter(mun == "CANARIAS" & periodo == mes_actual$periodo & sector != "TOTAL" & sexo != "AMBOS SEXOS") %>% select(!c(mun, periodo))
 df_paro_se_mun <- df_paro_se_mun %>%
   mutate(porcentaje = df_paro_se_mun$valor / Num_Paro_num * 100,
          valor_Canarias = df_paro_Canarias$valor,
@@ -421,8 +435,13 @@ df_paro_se_mun <- df_paro_se_mun %>%
   transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje),
             porcentaje_Canarias = if_else(sexo == "Hombres", -porcentaje_Canarias, porcentaje_Canarias))
 
+df_paro_se_mun$name_sector <- ""
+for(i in 1:nrow(df_paro_se_mun)) {
+  df_paro_se_mun$name_sector[i] <- get_nombre(paste0(df_paro_se_mun$sector[i]))
+}
+
 df_paro_se_mun <- df_paro_se_mun %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(sector_), "</b><br>"), ""),
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(sector), "</b><br>"), ""),
     "<br><b>", sexo, "</b>",
     "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
     " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
@@ -433,7 +452,7 @@ df_paro_se_mun <- df_paro_se_mun %>% transform(hovertext = paste0(
 
 df_paro_se_mun <- rbind(df_paro_se_mun[3:nrow(df_paro_se_mun),], df_paro_se_mun[1:2,]) %>% mutate(order = nrow(df_paro_se_mun):1)
 
-g_paro_se <- ggplot(data = df_paro_se_mun, aes(x = reorder(sector, order), fill = sexo, group = sexo, text = hovertext)) +
+g_paro_se <- ggplot(data = df_paro_se_mun, aes(x = reorder(name_sector, order), fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
   geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias, text = "")) +
   coord_flip() +
