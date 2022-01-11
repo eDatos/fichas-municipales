@@ -3,7 +3,7 @@ title: ''
 params:
   id_municipio: 35024
   año: 2021
-  mes: 8
+  mes: 3
   url.mes_t: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
@@ -24,7 +24,7 @@ always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
 ```{r librerías, include=FALSE}
@@ -544,7 +544,7 @@ df_hoteles <- df_hoteles %>% mutate(ind = recode(ind, "Establecimientos hotelero
 
 df_hoteles_mun <- df_hoteles %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
-  select(c(ind, valor))
+  select(c(ind, valor_hoteles = valor))
 
 # Establecimientos extrahoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
 extrahoteleros <- fromJSON(params$url.extrahoteleros)
@@ -562,20 +562,10 @@ df_extrahoteleros <- df_extrahoteleros %>% mutate(ind = recode(ind, "Establecimi
 
 df_extrahoteleros_mun <- df_extrahoteleros %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
-  select(c(ind, valor))
+  select(c(ind, valor_extrahoteleros = valor))
 
-df_mun_tur <- df_ADR %>% filter(ind == "Ingresos totales" & periodo == mes_actual$periodo) %>% select(mun)
-df_establecimientos_ <- data.frame(ind = rep(levels(df_hoteles$ind), each= length(df_mun_tur$mun)),
-                                   mun = rep(df_mun_tur)
-                                   )
-
-df_establecimientos <- df_establecimientos_ %>% 
-  left_join(filter(df_hoteles, cat == "TOTAL CATEGORÍAS"), by = c("ind", "mun")) %>% 
-  select(c(ind, mun, periodo, valor_hoteles = valor)) %>% 
-  left_join(filter(df_extrahoteleros, cat == "TOTAL CATEGORÍAS"), by = c("ind", "mun", "periodo")) %>% 
-  select(c(ind, mun, periodo, valor_hoteles, valor_extrahoteleros = valor))
-
-df_establecimientos_mun <- df_establecimientos %>% filter(mun == municipio_actual$municipio, periodo == mes_actual$periodo)
+df_establecimientos_mun <- df_hoteles_mun %>% 
+  left_join(df_extrahoteleros_mun, by = "ind")
 
 Num_Hoteles <- df_establecimientos_mun$valor_hoteles[which(df_establecimientos_mun$ind == "Establecimientos")] %>% format(big.mark = ".", decimal.mark = ",")
 Plazas_Hoteles <- df_establecimientos_mun$valor_hoteles[which(df_establecimientos_mun$ind == "Plazas")] %>% format(big.mark = ".", decimal.mark = ",")
@@ -619,7 +609,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row">
-```{r, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual_Viajeros == "NA"){
   cat(paste0(
     "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
@@ -652,7 +642,7 @@ mapa_isla_plot
 ```
 `r get_map_box_after(paste0(rk_isla, 'º'),  municipio_actual$isla, num_mun_isla, paste0(percent_isla, '%'))`
 
-```{r Indicadores principales, results='asis'}
+```{r Indicadores tipo alojamiento, results='asis'}
 if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
   cat(paste0('<div class="column-3"><div class="column" style="width: 100% !important;"><div class="indicator-map" style="margin-top: -5px;"><div class="indicator-content" style="margin-top: -10px; padding: 38px;"><div class="row"><p class="label"><span class="value">', Num_extrahoteleros,' </span> Apartamentos</p></div><div class="row"><p class="label2" style="margin-top: 31px;"><span class="value2">', Plazas_extrahoteleros,' </span>plazas</p></div><div class="row"><p class="label2" style="margin-top: 10px;"><span class="value2">', Num_Apartamentos,' </span>apartamentos</p></div></div></div></div></div>'))
 }else if(Plazas_Hoteles != "NA" & Plazas_extrahoteleros == "NA"){
