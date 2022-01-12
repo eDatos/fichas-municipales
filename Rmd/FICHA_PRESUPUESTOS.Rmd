@@ -424,12 +424,12 @@ df_estr_partidas_C <- df_estr_partidas %>%
   group_by(id_partida) %>% 
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
   inner_join(df_CL_PARTIDA_dos, by = "id_partida") %>%
-  select(c(id_partida, valor_Canarias))
+  select(id_partida, valor_Canarias)
 
 df_ep_total_C <- df_estr_partidas %>% filter(id_partida %in% c("GASTOS", "INGRESOS")) %>% 
   group_by(id_partida) %>% 
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
-  select(c(id_partida, valor_Canarias))
+  select(id_partida, valor_Canarias)
 
 ep_total_G_C <- df_ep_total_C %>% filter(id_partida == "GASTOS") %>% select(valor_Canarias) %>% as.numeric()
 ep_total_I_C <- df_ep_total_C %>% filter(id_partida == "INGRESOS") %>% select(valor_Canarias) %>% as.numeric()
@@ -601,13 +601,13 @@ df_gastos_programas$name_programa <- factor(
 df_gastos_programas$valor <- as.integer(df_gastos_programas$valor)
 df_gastos_programas$mun <- recode_id_Frontera(df_gastos_programas, 'mun')
 
-df_gastos_programas_mun <- df_gastos_programas %>% filter(año == params$año & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(c(name_programa, valor))
+df_gastos_programas_mun <- df_gastos_programas %>% filter(año == params$año & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(name_programa, valor)
 
 df_gastos_programas_C <- df_gastos_programas %>%
   filter(año == params$año) %>% 
   group_by(name_programa) %>% 
   summarise(valor = sum(valor, na.rm = NA)) %>%
-  select(c(name_programa, valor_Canarias = valor))
+  select(name_programa, valor_Canarias = valor)
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>%
   left_join(df_gastos_programas_C, by = "name_programa") %>% 

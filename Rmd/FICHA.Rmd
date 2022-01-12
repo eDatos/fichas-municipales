@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35023
+  id_municipio: 35034
   año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -173,12 +173,17 @@ df <- related_mun %>%
   select(id = mun, año, nombre, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(mun = id, año, nombre, valor, tasa) %>%
-  filter(año <= params$año & año != min(año))
+  filter(año <= params$año)
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Habitantes: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Habitantes: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+leyenda_poblacion <- df %>% filter(año == params$año) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
@@ -201,7 +206,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 18, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4))}) +
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 18, min(df$año)), to = max(df$año), by = max(1, as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4)))}) +
   scale_y_continuous(labels = function(x){paste0(format(as.integer(x), big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -242,11 +247,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
     }
   ") 
-
-leyenda_poblacion <- df %>% filter(año == params$año) %>%
-  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
-         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
 ```{r Indicador evolución de la población}
@@ -267,13 +267,13 @@ df_piramide$valor <- as.numeric(df_piramide$valor)
 df_piramide$año <- as.numeric(df_piramide$año)
 df_piramide$gredad <- ordered(df_piramide$gredad, levels = piramide[["categories"]][["codes"]][[2]])
 
-Num_Pobl_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% subset(select = "valor") %>%  as.numeric()
+Num_Pobl_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>%  as.numeric()
 df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 df_piramide$mun <- recode_mun(df_piramide, 'mun')
-Num_Pobl_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% subset(select = "valor") %>%  as.numeric()
+Num_Pobl_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>%  as.numeric()
 
 df_piramide_plot <- df_piramide %>% filter(gredad %notin% c("T","0 a 14","65 ó más","15 a 64") & sexo != "AMBOS SEXOS" & año == params$año) %>%
-  subset(select = c("gredad", "sexo", "valor", "mun")) %>%
+  select(gredad, sexo, valor, mun)%>%
   transform(valor = if_else(sexo == "Hombres", -valor, valor), gredad = ifelse(grepl("ó", gredad, fixed = TRUE), gsub(" ó ", "-", gredad), gsub(" a ", "-", gredad))) %>%
   transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>% 
   transform(gredad = ifelse(gredad == "100-más",">99",gredad)) %>%
@@ -343,10 +343,10 @@ percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==
 ```
 
 ```{r Número de mujeres y hombres}
-Num_Mujeres <- df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Mujeres" & año == params$año) %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-Percent_Mujeres <- round(df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Mujeres" & año == params$año) %>% subset(select = "valor") / Num_Pobl_num *100, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Num_Hombres <- df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Hombres" & año == params$año) %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-Percent_Hombres <- round(df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Hombres" & año == params$año) %>% subset(select = "valor") / Num_Pobl_num *100, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Mujeres <- df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Mujeres" & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Percent_Mujeres <- round(df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Mujeres" & año == params$año) %>% select(valor) / Num_Pobl_num *100, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Hombres <- df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Hombres" & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Percent_Hombres <- round(df_piramide %>% filter(mun == municipio_actual$municipio & gredad == "T" & sexo == "Hombres" & año == params$año) %>% select(valor) / Num_Pobl_num *100, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Edad media}
@@ -357,7 +357,7 @@ df_edadm <- data.frame(
   año = names(data_edadm[["dimension"]][["TIME"]][["representation"]][["index"]]),
   valor = as.numeric(data_edadm[["observation"]]))
 
-edad_media <- df_edadm %>% filter(mun == params$id_municipio & año == params$año) %>% subset(select = valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+edad_media <- df_edadm %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Índice de dependencia}
@@ -367,7 +367,7 @@ df_id_depen <- cbind(data.frame(do.call('rbind', id_depen[["data"]][["dimCodes"]
 colnames(df_id_depen) <- c('mun', 'año', 'valor')
 df_id_depen$valor <- as.numeric(df_id_depen$valor)
 
-id_dep <- round(df_id_depen %>% filter(mun == params$id_municipio & año == params$año) %>% subset(select = valor), 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+id_dep <- round(df_id_depen %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor), 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Defunciones}
@@ -384,9 +384,9 @@ df_defunciones$valor <- as.numeric(df_defunciones$valor)
 df_defunciones_mun <- df_defunciones %>% filter(año == params$año & mun == params$id_municipio)
 
 # Tasas por mil habitantes con un decimal:
-TBM <- df_defunciones_mun %>% filter(sexo =="AMBOS SEXOS" & ind == "Tasas brutas de mortalidad") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-emd_mujer <- df_defunciones_mun %>% filter(sexo =="Mujeres" & ind == "Edades medias de la defunción") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-emd_hombre <- df_defunciones_mun %>% filter(sexo =="Hombres" & ind == "Edades medias de la defunción") %>% subset(select = "valor") %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+TBM <- df_defunciones_mun %>% filter(sexo =="AMBOS SEXOS" & ind == "Tasas brutas de mortalidad") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+emd_mujer <- df_defunciones_mun %>% filter(sexo =="Mujeres" & ind == "Edades medias de la defunción") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+emd_hombre <- df_defunciones_mun %>% filter(sexo =="Hombres" & ind == "Edades medias de la defunción") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Natalidad}
@@ -412,9 +412,7 @@ colnames(df_crec_veg) <- c('mun', 'año', 'valor')
 df_crec_veg$año <- as.numeric(df_crec_veg$año)
 df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
 
-df_crec_veg_mun <- df_crec_veg %>% filter(año == params$año & mun == params$id_municipio)
-
-Crec_veg <- df_crec_veg_mun$valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Crec_veg <- df_crec_veg %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 ```{r Lugares de nacimiento}
@@ -429,9 +427,9 @@ df_lugar$valor <- as.numeric(df_lugar$valor)
 df_lugar$mun <- recode_mun(df_lugar, 'mun')
 
 # Personas que viven en el municipios pero han nacido en otro país, el resto de España o Canarias:
-Num_lugar_Canarias <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "CANARIAS" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
-Num_lugar_RestoEspaña <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "RESTO DE ESPAÑA" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
-Num_lugar_OtroPais <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "OTRO PAÍS" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
+Num_lugar_Canarias <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "CANARIAS" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
+Num_lugar_RestoEspaña <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "RESTO DE ESPAÑA" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
+Num_lugar_OtroPais <- df_lugar %>% filter(mun == municipio_actual$municipio & lugar == "OTRO PAÍS" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
 
 porc_lugar_Canarias <- 100 * Num_lugar_Canarias/Num_Pobl_num
 porc_lugar_RestoEspaña <- 100 * Num_lugar_RestoEspaña/Num_Pobl_num
@@ -440,9 +438,9 @@ porc_lugar_Canarias_l <- round(porc_lugar_Canarias, 1) %>% as.numeric
 porc_lugar_RestoEspaña_l <- round(porc_lugar_RestoEspaña, 1) %>% as.numeric
 porc_lugar_OtroPais_l <- round(100 - porc_lugar_Canarias_l - porc_lugar_RestoEspaña_l, 1) %>% as.numeric
 
-Num_lugar_Canarias_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "CANARIAS" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
-Num_lugar_RestoEspaña_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "RESTO DE ESPAÑA" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
-Num_lugar_OtroPais_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "OTRO PAÍS" & año == params$año & sexo =="AMBOS SEXOS") %>% subset(select = "valor") %>% as.numeric
+Num_lugar_Canarias_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "CANARIAS" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
+Num_lugar_RestoEspaña_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "RESTO DE ESPAÑA" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
+Num_lugar_OtroPais_C <- df_lugar %>% filter(mun == "CANARIAS" & lugar == "OTRO PAÍS" & año == params$año & sexo =="AMBOS SEXOS") %>% select(valor) %>% as.numeric
 
 porc_lugar_Canarias_C <- 100 * Num_lugar_Canarias_C/Num_Pobl_Canarias
 porc_lugar_RestoEspaña_C <- 100 * Num_lugar_RestoEspaña_C/Num_Pobl_Canarias
@@ -469,7 +467,7 @@ df_nacionalidad <- df_nacionalidad %>%
 ## Porcentaje de población según nacionalidad. 2020.
 df_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$municipio &
                        nacionalidad %in% c("TOTAL", "ESPAÑA", "EXTRANJERO") & año == params$año & sexo == "AMBOS SEXOS") %>% 
-  select(c(nacionalidad, valor))
+  select(nacionalidad, valor)
 df_nacionalidad_mun <- cbind(df_nacionalidad_mun, porcentaje = round(df_nacionalidad_mun$valor / df_nacionalidad_mun$valor[1] * 100, 2))
 
 peso_españoles <- df_nacionalidad_mun %>% filter(nacionalidad == "ESPAÑA") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>%  as.character()
@@ -482,7 +480,7 @@ ranking_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$m
                                                    "RESTO EUROPA", "Otros países de Europa", "ÁFRICA", "Otros de África", "AMÉRICA",
                                                    "Otros países de América", "ASIA", "Otros países de Asia", "OCEANÍA")
                             & año == params$año & sexo == "AMBOS SEXOS") %>%
-  select(c(nacionalidad, valor)) %>%
+  select(nacionalidad, valor) %>%
   top_n(10, valor) %>%
   mutate(nacionalidad = trimws(nacionalidad)) %>% 
   arrange(-valor)

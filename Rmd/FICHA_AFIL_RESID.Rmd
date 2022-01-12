@@ -165,11 +165,11 @@ df_afil_$valor <- as.integer(df_afil_$valor)
 df_afil_ <- df_afil_ %>% filter(substring(periodo, 5,8) %in% c("M03", "M06", "M09", "M12") & substring(mun, 0,2) != "ES")
 
 df_u <- df_afil_ %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & nacionalidad == "TOTAL") %>%
-  select(c(mun, periodo, valor)) %>% arrange(periodo) %>% 
+  select(mun, periodo, valor) %>% arrange(periodo) %>% 
   transform(periodo = ifelse(grepl("M", periodo, fixed = TRUE), gsub("M", "-", periodo)))
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
-related_mun <- seleccion_mun(df_localizacion, related_mun  %>% select(mun = mun, valor), 'valor')
+related_mun <- seleccion_mun(df_localizacion, related_mun  %>% select(mun, valor), 'valor')
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span>"
@@ -280,15 +280,15 @@ df_piramide$sexo <- factor(df_piramide$sexo, levels=piramide[["categories"]][["c
 df_piramide$valor <- as.numeric(df_piramide$valor)
 
 Num_Afil_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
-                             subset(select = "valor") %>%  as.numeric()
+  select(valor) %>%  as.numeric()
 df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 df_piramide$mun <- recode_mun(df_piramide, 'mun')
 Num_Afil_num <- df_piramide %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
-                             subset(select = "valor") %>%  as.numeric()
+  select(valor) %>%  as.numeric()
 Num_Afil_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & periodo == mes_actual$periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
-                             subset(select = "valor") %>%  as.numeric()
+  select(valor) %>%  as.numeric()
 df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$periodo & gredad != "_T" & sexo != "AMBOS SEXOS") %>%
-  subset(select = c("gredad", "sexo", "valor", "mun")) %>%
+  select(gredad, sexo, valor, mun) %>%
   transform(valor = if_else(sexo == " Hombres", -valor, valor)) %>%
   transform(gredad = ifelse(gredad == "Y_GE60", ">59", ifelse(grepl("T", gredad, fixed = TRUE), gsub("T", "-", substring(gredad, 2, 6)), gredad))) %>%
   transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>% 
@@ -355,7 +355,7 @@ df_afil_ <- df_afil_ %>%
 df_afil_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & nacionalidad == "TOTAL") %>%
   mutate(variacion =  valor - lag(valor, n=4), variacion_porc = round((valor / lag(valor, n=4) - 1)*100, 1)) %>%
-  select(c(periodo, valor, variacion, variacion_porc))
+  select(periodo, valor, variacion, variacion_porc)
 
 Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 Imagen_Variacion <- ifelse(signo(df_afil_mun %>% filter(periodo == mes_actual$periodo) %>% select(variacion)) == "más", './img/up.png', './img/down.png')
@@ -363,7 +363,7 @@ Variacion_Porcentual_Afil <- df_afil_mun %>% filter(periodo == mes_actual$period
 
 df_afil_sexo_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & sexo != "AMBOS SEXOS" & periodo == mes_actual$periodo & nacionalidad == "TOTAL") %>%
-  select(c(sexo, periodo, valor))
+  select(sexo, periodo, valor)
 
 Num_Afil_M <- df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
 Percent_Mujeres <- round(df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -374,7 +374,7 @@ Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% sel
 ```{r Rankings}
 df_Afil_ranking <- df_afil_ %>%
   filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & periodo == mes_actual$periodo & nacionalidad == "TOTAL" & !is.na(valor)) %>%
-  select(c(municipio = mun, periodo, valor)) %>% 
+  select(municipio = mun, periodo, valor) %>%
   right_join(df_CL_AREA_mun, by = "municipio") %>% 
   arrange(desc(valor))
 
@@ -397,7 +397,7 @@ percent_comarca <- format(round(rk_Afil_comarca[which(rk_Afil_comarca$id==params
 df_afil_extr_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & periodo == mes_actual$periodo &
          nacionalidad %in% c(" ESPAÑOLA", " EXTRANJERA", " APÁTRIDA O SIN ESPECIFICAR")) %>%
-  select(c(nacionalidad, periodo, valor))
+  select(nacionalidad, periodo, valor)
 df_afil_extr_mun <- df_afil_extr_mun %>% mutate(peso = round(df_afil_extr_mun$valor / Num_Afil_num * 100, 1))
 
 Peso_afil_esp <- df_afil_extr_mun %>% filter(nacionalidad == " ESPAÑOLA") %>% select(peso) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -408,7 +408,7 @@ Peso_afil_apat <- df_afil_extr_mun %>% filter(nacionalidad == " APÁTRIDA O SIN 
 ```{r Afiliaciones según situación laboral}
 df_afil_sl_mun <- df_afil_ %>%
   filter(mun == municipio_actual$municipio & sexo == "AMBOS SEXOS" & periodo == mes_actual$periodo & nacionalidad == "TOTAL") %>%
-  select(c(sl, periodo, valor))
+  select(sl, periodo, valor)
 df_afil_sl_mun <- df_afil_sl_mun %>% mutate(peso = round(df_afil_sl_mun$valor / df_afil_sl_mun$valor[which(df_afil_sl_mun$sl == "TOTAL DE AFILIACIONES")] * 100, 1))
 
 Peso_afil_asal <- df_afil_sl_mun %>% filter(sl == " Empleos asalariados") %>% select(peso) %>% as.numeric()
@@ -431,11 +431,11 @@ df_afil_ae$ae <- ordered(df_afil_ae$ae, levels = c( "Resto de servicios", "Hoste
 
 df_afil_ae <- df_afil_ae %>%
   left_join(mes, by = "periodo") %>%
-  select(!c(code))
+  select(!code)
 
 df_afil_ae_sexo_mun_ <- df_afil_ae %>%
   filter(mun == municipio_actual$municipio & sl == "TOTAL DE AFILIACIONES" & ae != "TOTAL" & sexo != "AMBOS SEXOS" & periodo == mes_actual$periodo) %>%
-  select(c(ae, sexo, valor))
+  select(ae, sexo, valor)
 df_afil_ae_sexo_mun <- acast(df_afil_ae_sexo_mun_, ae ~ sexo, sum)
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% 
   melt(id.var = "ae")
@@ -443,7 +443,7 @@ colnames(df_afil_ae_sexo_mun) <- c("ae", "sexo", "valor")
 
 df_afil_Canarias_ <- df_afil_ae %>%
   filter(mun == "CANARIAS"  & sl == "TOTAL DE AFILIACIONES" & ae != "TOTAL" & sexo != "AMBOS SEXOS" & periodo == mes_actual$periodo) %>% 
-  select(c(ae, sexo, valor))
+  select(ae, sexo, valor)
 df_afil_Canarias <- acast(df_afil_Canarias_, ae ~ sexo, sum)
 df_afil_Canarias <- df_afil_Canarias %>% 
   melt(id.var = "ae")

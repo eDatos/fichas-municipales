@@ -166,7 +166,7 @@ df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categ
 df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
 df_GM_sexo_edad$valor <- as.numeric(df_GM_sexo_edad$valor) %>% round(1)
 df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(periodo, 5,5) == "Q") %>% 
-  select(c('mun','periodo', 'valor'))
+  select(mun, periodo, valor)
 df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
 df_u <- df_u[with(df_u, order(periodo)), ]
 
@@ -294,20 +294,20 @@ ind_GM_sexo_edad <- df_GM_sexo_edad %>%
 
 df_GM_mun <- ind_GM_sexo_edad %>%
   filter(sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
-  select(c(ind, valor))
+    select(ind, valor)
 
 Gasto_por_turista_dia <- df_GM_mun$valor[which(df_GM_mun$ind == "Gasto por turista y día")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_GMd_sexo_mun <- ind_GM_sexo_edad %>%
   filter(ind == "Gasto por turista y día" & sexo != "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
-  select(c(sexo, valor))
+  select(sexo, valor)
 
 Gasto_por_turista_d_M <- df_GMd_sexo_mun$valor[which(df_GMd_sexo_mun$sexo == "Mujeres")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_por_turista_d_H <- df_GMd_sexo_mun$valor[which(df_GMd_sexo_mun$sexo == "Hombres")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_GMd_edad_mun <- ind_GM_sexo_edad %>%
   filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES") %>% 
-  select(c(gredad, valor))
+  select(gredad, valor)
 
 Gasto_por_turista_d_menor <- df_GMd_edad_mun$valor[which(df_GMd_edad_mun$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_por_turista_d_mayor <- df_GMd_edad_mun$valor[which(df_GMd_edad_mun$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -351,14 +351,14 @@ df_GM_sl$mun <- recode_mun(df_GM_sl, 'mun')
 
 df_GMd_sl_mun <- df_GM_sl %>%
   filter(ind == "Gasto por turista y día" & sl != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
-  select(c(sl, valor))
+  select(sl, valor)
 
 Gasto_tur_sl_d_Act <- df_GMd_sl_mun$valor[which(df_GMd_sl_mun$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_tur_sl_d_NAct <- df_GMd_sl_mun$valor[which(df_GMd_sl_mun$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_GMd_sl_C <- df_GM_sl %>%
   filter(ind == "Gasto por turista y día" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
-  select(c(sl, valor))
+  select(sl, valor)
 
 Gasto_tur_sl_d_Act_C <- df_GMd_sl_C$valor[which(df_GMd_sl_C$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_tur_sl_d_NAct_C <- df_GMd_sl_C$valor[which(df_GMd_sl_C$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -381,11 +381,11 @@ df_GM_ni <- df_GM_ni %>% mutate(nivel = recode(nivel, "Menos de 25.000€" = "< 
 
 df_GMd_ni_mun <- df_GM_ni %>%
   filter(ind == "Gasto por turista y día" & nivel != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
-  select(c(nivel, valor))
+  select(nivel, valor)
 
 df_GM_ni_Canarias <- df_GM_ni %>%
   filter(ind == "Gasto por turista y día" & nivel != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
-  select(c(nivel, valor))
+  select(nivel, valor)
 
 df_GMd_ni_plot <- df_GMd_ni_mun %>%
   mutate(valor_Canarias = df_GM_ni_Canarias$valor,
@@ -445,11 +445,11 @@ df_GM_ne <- df_GM_ne %>% mutate(estudios = recode(estudios, "Sin estudios o estu
 
 df_GMd_ne_mun <- df_GM_ne %>%
   filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
-  select(c(estudios, valor))
+  select(estudios, valor)
 
 df_GMd_ne_Canarias <- df_GM_ne %>%
   filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
-  select(c(estudios, valor))
+  select(estudios, valor)
 df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
 
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
@@ -506,7 +506,7 @@ df_GM_ta$mun <- recode_mun(df_GM_ta, 'mun')
 
 df_GMd_ta_mun <- df_GM_ta %>%
   filter(ind == "Gasto por turista y día" & tipo != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
-  select(c(tipo, valor))
+  select(tipo, valor)
 
 Gasto_tur_ta_d_hot <- df_GMd_ta_mun$valor[which(df_GMd_ta_mun$tipo == "Hoteleros")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_tur_ta_d_ext <- df_GMd_ta_mun$valor[which(df_GMd_ta_mun$tipo == "Extrahoteleros")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -529,11 +529,11 @@ df_GM_np <- df_GM_np %>% mutate(noches = recode(noches, "De 1 a 7 noches" = "1 -
 
 df_GMd_np_mun <- df_GM_np %>%
   filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
-  select(c(noches, valor))
+  select(noches, valor)
 
 df_GMd_np_Canarias <- df_GM_np %>%
   filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
-  select(c(noches, valor))
+  select(noches, valor)
 df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
 
 df_GMd_np_plot <- df_GMd_np_mun %>%
@@ -591,15 +591,15 @@ df_GM_pais <- df_GM_pais %>% transform(pais = gsub("Otros países", "Otros", pai
 
 rk_GMd_pais_mun <- df_GM_pais %>%
   filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% arrange(valor) %>%
-  select(c(pais, valor))
+  select(pais, valor)
 rk_GMd_pais_mun$pais <- ordered(rk_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
 
 df_GMd_pais_mun <- df_GM_pais %>%
   filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>%
-  select(c(pais, valor))
+  select(pais, valor)
 df_GMd_pais_Canarias <- df_GM_pais %>%
   filter(ind == "Gasto por turista y día" & pais != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
-  select(c(pais, valor))
+  select(pais, valor)
 df_GMd_pais_mun <- df_GMd_pais_mun %>% mutate(valor_Canarias = df_GMd_pais_Canarias$valor)
 df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
 

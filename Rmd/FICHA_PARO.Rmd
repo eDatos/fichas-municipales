@@ -326,7 +326,7 @@ Num_Paro_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & period
 Num_Paro_Canarias <- df_piramide %>% filter(mun == "ES70" & periodo == mes_actual$periodo & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
 
 df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$periodo & gredad != "TOTAL" & sexo != "AMBOS SEXOS") %>%
-  subset(select = c("gredad", "sexo", "valor", "mun")) %>%
+  select(gredad, sexo, valor, mun) %>%
   transform(valor = if_else(sexo == "Hombres", -valor, valor), gredad = ifelse(grepl("ó", gredad, fixed = TRUE), gsub(" ó ", "-", gredad), gsub(" a ", "-", gredad))) %>%
   transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>% 
   transform(gredad = ifelse(gredad == "Menores de 20", "<20", gredad)) %>%

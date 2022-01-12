@@ -254,7 +254,7 @@ leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
 ```
 
 ```{r Indicadores}
-df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(c(ind, valor))
+df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(ind, valor)
 
 Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>%  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
