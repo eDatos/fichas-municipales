@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 38030
-  año: 2019
+  id_municipio: 38013
+  año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -30,10 +30,28 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) { ifelse(value > 0, "más", "menos") }
 
 "%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 20) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
 ```
 
 ```{r url}
@@ -574,10 +592,12 @@ df_programa <- data.frame(
                     data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[4]][["value"]],
                     data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[5]][["value"]],
                     data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[6]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[7]][["value"]]),
-  programa = c("Presupuesto de gastos", "Deuda Pública", "Servicios<br>públicos básicos", "Actuaciones de<br>protección y<br>promoción social",
-               "Producción de<br>bienes públicos de<br>carácter preferente", "Actuaciones de<br>carácter económico", "Actuaciones de<br>carácter general"),
-  id_programa = c("PG", "DP", "SPB", "APPS", "PBPCP", "ACE", "ACG"))
+                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[7]][["value"]]))
+
+df_programa$programa <- ""
+for(i in 1:nrow(df_programa)) {
+  df_programa$programa[i] <- get_nombre(paste0(df_programa$name_programa[i]))
+}
 
 dg <- length(rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                  each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *

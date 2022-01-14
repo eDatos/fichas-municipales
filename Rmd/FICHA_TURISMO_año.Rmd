@@ -144,20 +144,20 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución de la población turística}
 # Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turistas <- fromJSON(params$url.turistas)
-df_u_ <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
-colnames(df_u_) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
-df_u_$gredad <- ordered(df_u_$gredad, levels=turistas[["categories"]][["codes"]][[1]], labels=turistas[["categories"]][["labels"]][[1]])
-df_u_$sexo <- factor(df_u_$sexo, levels=turistas[["categories"]][["codes"]][[2]], labels=turistas[["categories"]][["labels"]][[2]])
-df_u_$pais <- factor(df_u_$pais, levels=turistas[["categories"]][["codes"]][[3]], labels=turistas[["categories"]][["labels"]][[3]])
-df_u_$año <- as.integer(df_u_$año)
-df_u_$valor <- as.numeric(df_u_$valor)
+df_turistas <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
+colnames(df_turistas) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
+df_turistas$gredad <- ordered(df_turistas$gredad, levels=turistas[["categories"]][["codes"]][[1]], labels=turistas[["categories"]][["labels"]][[1]])
+df_turistas$sexo <- factor(df_turistas$sexo, levels=turistas[["categories"]][["codes"]][[2]], labels=turistas[["categories"]][["labels"]][[2]])
+df_turistas$pais <- factor(df_turistas$pais, levels=turistas[["categories"]][["codes"]][[3]], labels=turistas[["categories"]][["labels"]][[3]])
+df_turistas$año <- as.integer(df_turistas$año)
+df_turistas$valor <- as.numeric(df_turistas$valor)
 
-num_Canarias_total <- df_u_ %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
+num_Canarias_total <- df_turistas %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
   select(valor) %>% as.numeric()
-num_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>%
+num_Isla_total <- df_turistas %>% filter(mun == municipio_actual$id_isla & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>%
   select(valor) %>% as.numeric()
 
-df_u <- df_u_ %>% filter(gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & substring(mun, 6,7) == "_3") %>%
+df_u <- df_turistas %>% filter(gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & substring(mun, 6,7) == "_3") %>%
   transform(mun = substr(mun, 7, 12)) %>% 
   select(mun, año, valor)
 df_u <- df_u[with(df_u, order(año)), ]
@@ -310,15 +310,7 @@ percent_isla <- format(round(df_tur_mun$valor / num_Isla_total * 100, 1), big.ma
 ```
 
 ```{r Grupos de edad}
-# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-df_turistas <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
-colnames(df_turistas) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
-df_turistas$gredad <- ordered(df_turistas$gredad, levels=turistas[["categories"]][["codes"]][[1]], labels=turistas[["categories"]][["labels"]][[1]])
-df_turistas$sexo <- factor(df_turistas$sexo, levels=turistas[["categories"]][["codes"]][[2]], labels=turistas[["categories"]][["labels"]][[2]])
-df_turistas$pais <- factor(df_turistas$pais, levels=turistas[["categories"]][["codes"]][[3]], labels=turistas[["categories"]][["labels"]][[3]])
 df_turistas$mun <- factor(df_turistas$mun, levels=turistas[["categories"]][["codes"]][[4]], labels=turistas[["categories"]][["labels"]][[4]])
-df_turistas$año <- as.integer(df_turistas$año)
-df_turistas$valor <- as.numeric(df_turistas$valor)
 df_turistas$mun <- recode_mun(df_turistas, 'mun')
 
 df_turismo_gedad <- df_turistas %>%
@@ -357,26 +349,16 @@ Num_Hombres <- df_turistas %>%
 ```
 
 ```{r Barras países por sexo}
-# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
-df_turismo_pais <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
-colnames(df_turismo_pais) <- c('ge', 'sexo', 'pais', 'mun', 'periodo', 'valor')
-df_turismo_pais$ge <- factor(df_turismo_pais$ge, levels=turistas[["categories"]][["codes"]][[1]], labels=turistas[["categories"]][["labels"]][[1]])
-df_turismo_pais$sexo <- factor(df_turismo_pais$sexo, levels=turistas[["categories"]][["codes"]][[2]], labels=turistas[["categories"]][["labels"]][[2]])
-df_turismo_pais$pais <- factor(df_turismo_pais$pais, levels=turistas[["categories"]][["codes"]][[3]], labels=turistas[["categories"]][["labels"]][[3]])
-df_turismo_pais$mun <- factor(df_turismo_pais$mun, levels=turistas[["categories"]][["codes"]][[4]], labels=turistas[["categories"]][["labels"]][[4]])
-df_turismo_pais$periodo <- as.numeric(df_turismo_pais$periodo)
-df_turismo_pais$valor <- as.numeric(df_turismo_pais$valor)
-df_turismo_pais$mun <- recode_mun(df_turismo_pais, 'mun')
-df_turismo_pais <- df_turismo_pais %>% transform(pais = gsub("Otros países", "Otros", pais))
+df_turistas <- df_turistas %>% transform(pais = gsub("Otros países", "Otros", pais))
 
-rk_turismo_pais_mun <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% arrange(valor) %>%
+rk_turismo_pais_mun <- df_turistas %>%
+  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & año == params$año) %>% arrange(valor) %>%
   select(pais, valor)
 rk_turismo_pais_mun <- rk_turismo_pais_mun %>% mutate(porcentaje = rk_turismo_pais_mun$valor/ Num_Turistas_num * 100)
 rk_turismo_pais_mun$pais <- ordered(rk_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
 
-df_turismo_pais_mun <- df_turismo_pais %>%
-  filter(ge == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>%
+df_turismo_pais_mun <- df_turistas %>%
+  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & año == params$año) %>%
   select(sexo, pais, valor)
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>%

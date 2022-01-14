@@ -482,7 +482,6 @@ ranking_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$m
                             & año == params$año & sexo == "AMBOS SEXOS") %>%
   select(nacionalidad, valor) %>%
   top_n(10, valor) %>%
-  mutate(nacionalidad = trimws(nacionalidad)) %>% 
   arrange(-valor)
 
 if(length(ranking_nacionalidad_mun$nacionalidad) > 10){
