@@ -273,7 +273,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicadores de la población parada por sexos}
+```{r Valor de la población parada y su variación porcentual}
 # Paro registrado. Mes.
 df_lv <- df_u %>% filter(code == mes_actual$code & mun == params$id_municipio)
 
@@ -281,46 +281,40 @@ Num_Paro_num <- df_lv$valor %>% as.numeric
 Num_Paro <- Num_Paro_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual_Paro <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Paro) == "más", './img/up.png', './img/down.png')
-
-# Paro registrado. Hombres. Mes.
-ind_paro_H <- fromJSON(params$url.ind_paro_H)
-
-df_p_H_ <- data.frame(mun = rep(names(ind_paro_H[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                         each=length(ind_paro_H[["dimension"]][["TIME"]][["representation"]][["index"]])),
-                      code = names(ind_paro_H[["dimension"]][["TIME"]][["representation"]][["index"]]),
-                      valor = as.numeric(ind_paro_H[["observation"]]))
-df_p_H <- df_p_H_ %>% filter(code == mes_actual$code & mun == params$id_municipio) %>%
-  left_join(mes, by = "code") %>%
-  select(!code)
-
-Num_Paro_H <- df_p_H$valor %>% format(big.mark = ".", decimal.mark = ",")
-Percent_Hombres <- round(df_p_H$valor %>% as.numeric() / Num_Paro_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-# Paro registrado. Mujeres. Mes.
-ind_paro_M <- fromJSON(params$url.ind_paro_M)
-
-df_p_M_ <- data.frame(mun = rep(names(ind_paro_M[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                         each=length(ind_paro_M[["dimension"]][["TIME"]][["representation"]][["index"]])),
-                      code = names(ind_paro_M[["dimension"]][["TIME"]][["representation"]][["index"]]),
-                      valor = as.numeric(ind_paro_M[["observation"]]))
-df_p_M <- df_p_M_ %>% filter(code == mes_actual$code & mun == params$id_municipio) %>%
-  left_join(mes, by = "code") %>%
-  select(!code)
-
-Num_Paro_M <- df_p_M$valor %>% format(big.mark = ".", decimal.mark = ",")
-Percent_Mujeres <- round(df_p_M$valor %>% as.numeric() / Num_Paro_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Pirámide paro por edad y sexo}
+```{r Indicadores por sexos}
+ind_paro_H <- fromJSON(params$url.ind_paro_H)
+
+df_p_H <- data.frame(mun = rep(names(ind_paro_H[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                               each=length(ind_paro_H[["dimension"]][["TIME"]][["representation"]][["index"]])),
+                     code = names(ind_paro_H[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                     valor = as.numeric(ind_paro_H[["observation"]]))
+
+Num_Paro_H_num <- df_p_H %>% filter(code == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% as.numeric
+Num_Paro_H <- Num_Paro_H_num %>% format(big.mark = ".", decimal.mark = ",")
+Percent_Hombres <- round(Num_Paro_H_num / Num_Paro_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+ind_paro_M <- fromJSON(params$url.ind_paro_M)
+
+df_p_M <- data.frame(mun = rep(names(ind_paro_M[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                               each=length(ind_paro_M[["dimension"]][["TIME"]][["representation"]][["index"]])),
+                     code = names(ind_paro_M[["dimension"]][["TIME"]][["representation"]][["index"]]),
+                     valor = as.numeric(ind_paro_M[["observation"]]))
+
+Num_Paro_M_num <- df_p_M %>% filter(code == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% as.numeric
+Num_Paro_M <- Num_Paro_M_num %>% format(big.mark = ".", decimal.mark = ",")
+Percent_Mujeres <- round(Num_Paro_M_num / Num_Paro_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Pirámide paro por grupos de edad y sexos}
 piramide <- fromJSON(params$url.piramide_paro)
 df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_piramide) <- c('mun', 'periodo', 'gredad', 'sexo', 'valor')
-# df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 df_piramide$periodo <- factor(df_piramide$periodo , levels=piramide[["categories"]][["codes"]][[2]], labels=piramide[["categories"]][["labels"]][[2]])
 df_piramide$gredad <- ordered(df_piramide$gredad, levels = piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
 df_piramide$sexo <- factor(df_piramide$sexo , levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_piramide$valor <- as.numeric(df_piramide$valor)
-# df_piramide$mun <- recode_mun(df_piramide, 'mun')
 
 Num_Paro_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$periodo & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
 Num_Paro_Canarias <- df_piramide %>% filter(mun == "ES70" & periodo == mes_actual$periodo & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
