@@ -4,7 +4,6 @@ params:
   id_municipio: 35023
   año: 2021
   mes: 6
-  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.afil_c: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=aa1065d6-8f06-4c42-9ff0-cabef570fa78
@@ -37,9 +36,11 @@ signo <- function(value) {
 ```
 
 ```{r Mes}
-data_mes <- fromJSON(params$url.mes)
-mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
-                  periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]])
+# Afiliaciones según situaciones laborales, nacionalidades y sexos. Municipios por meses.
+data_afil <- fromJSON(params$url.afil_c)
+
+mes <- data.frame(code = data_afil[["categories"]][["codes"]][[4]],
+                  periodo = data_afil[["categories"]][["labels"]][[4]])
 
 mes <- mes %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
@@ -154,8 +155,6 @@ seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución del empleo registrado}
-# Afiliaciones según situaciones laborales, nacionalidades y sexos. Municipios por meses.
-data_afil <- fromJSON(params$url.afil_c)
 df_afil <- cbind(data.frame(do.call('rbind', data_afil[["data"]][["dimCodes"]])), data_afil[["data"]][["Valor"]])
 colnames(df_afil) <- c('mun', 'sl', 'nacionalidad',  'periodo', 'sexo', 'valor')
 df_afil$sl <- factor(df_afil$sl, levels=data_afil[["categories"]][["codes"]][[2]], labels=data_afil[["categories"]][["labels"]][[2]])
@@ -163,8 +162,7 @@ df_afil$nacionalidad <- factor(df_afil$nacionalidad, levels=data_afil[["categori
 df_afil$sexo <- factor(df_afil$sexo, levels=data_afil[["categories"]][["codes"]][[5]], labels=data_afil[["categories"]][["labels"]][[5]])
 df_afil$valor <- as.integer(df_afil$valor)
 df_afil <- df_afil %>%
-  filter(substring(periodo, 5,8) %in% c("M03", "M06", "M09", "M12") & substring(mun, 0,2) != "ES") %>% 
-  transform(periodo = ifelse(grepl("M", periodo, fixed = TRUE), gsub("M", "-", periodo)))
+  filter(substring(periodo, 5,8) %in% c("M03", "M06", "M09", "M12") & substring(mun, 0,2) != "ES")
 
 df_u <- df_afil %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & nacionalidad == "TOTAL") %>%
   select(mun, periodo, valor) %>% arrange(periodo)
@@ -185,7 +183,7 @@ df <- related_mun %>%
   select(mun = id, code = periodo, nombre, valor) %>%
   left_join(mes, by = "code") %>%
   transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 4)) - 1), 1), NA)) %>%
-  filter(code <= mes_actual$code & order >= 60)
+  filter(code <= mes_actual$code & order > 4)
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))

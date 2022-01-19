@@ -42,9 +42,9 @@ signo <- function(value) {
 ```
 
 ```{r Periodo}
-data_periodo <- fromJSON(params$url.GM_sexo_edad)
-periodo <- data.frame(code = data_periodo[["categories"]][["codes"]][[5]], 
-                      periodo = data_periodo[["categories"]][["labels"]][[5]]) %>% 
+GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
+periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]], 
+                      periodo = GM_sexo_edad[["categories"]][["labels"]][[5]]) %>% 
   filter(substring(code, 5,5) == "Q")
 
 periodo <- periodo %>% 
@@ -158,7 +158,6 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 
 ```{r Gráfico evolución de los gastos medios turísticos}
 # Gastos medios según sexos y grupos de edades por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
-GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
 df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
 colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor')
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])

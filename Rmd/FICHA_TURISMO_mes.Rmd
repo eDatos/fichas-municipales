@@ -464,15 +464,16 @@ df_aloj_isla$valor <- as.numeric(df_aloj_isla$valor)
 df_aloj_isla$mun <- recode_mun(df_aloj_isla, 'mun')
 df_aloj_isla <- df_aloj_isla %>% transform(lugar = gsub("Residencia en ", "", lugar))
 
-num_turistas_canarios_mun <- df_u_ %>%
+num_viajeros_islas_mun <- df_u_ %>%
   filter(mun == params$id_municipio & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar == "  Canarias") %>% select(valor) %>% as.numeric()
-num_turistas_canarios_C <- df_u_ %>%
+num_viajeros_islas_C <- df_u_ %>%
   filter(mun == "ES70" & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar == "  Canarias") %>% select(valor) %>% as.numeric()
+
 rk_aloj_isla_mun <- df_aloj_isla %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar != "Canarias") %>%
   arrange(valor) %>%
   select(lugar, valor)
-rk_aloj_isla_mun <- rk_aloj_isla_mun %>% mutate(porcentaje = rk_aloj_isla_mun$valor/ num_turistas_canarios_mun * 100)
+rk_aloj_isla_mun <- rk_aloj_isla_mun %>% mutate(porcentaje = rk_aloj_isla_mun$valor/ num_viajeros_islas_mun * 100)
 rk_aloj_isla_mun$lugar <- ordered(rk_aloj_isla_mun$lugar, levels = rk_aloj_isla_mun$lugar)
 
 df_aloj_isla_mun <- df_aloj_isla %>%
@@ -480,9 +481,9 @@ df_aloj_isla_mun <- df_aloj_isla %>%
 df_aloj_isla_C <- df_aloj_isla %>%
 filter(mun == "CANARIAS" & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar != "Canarias") %>% select(lugar, valor)
 df_aloj_isla_mun <- df_aloj_isla_mun %>%
-  mutate(porcentaje = df_aloj_isla_mun$valor / num_turistas_canarios_mun * 100,
+  mutate(porcentaje = df_aloj_isla_mun$valor / num_viajeros_islas_mun * 100,
          valor_Canarias = df_aloj_isla_C$valor,
-         porcentaje_Canarias = df_aloj_isla_C$valor / num_turistas_canarios_C * 100)
+         porcentaje_Canarias = df_aloj_isla_C$valor / num_viajeros_islas_C * 100)
 
 df_aloj_isla_plot <- df_aloj_isla_mun %>%
   mutate(label = "|")
