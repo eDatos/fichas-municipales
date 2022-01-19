@@ -26,13 +26,31 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
   return(sign)
 }
 
 "%notin%" <- Negate("%in%")
+
+get_nombre_partido <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 38) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
 ```
 
 ```{r Convocatoria}
@@ -46,18 +64,16 @@ for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dim
 }
 
 convocatoria_autonomicas <- convocatoria %>% 
-  filter(substring(code, 0,12) == "AUTONOMICAS_") %>% 
-  filter(code != "AUTONOMICAS_2019_REGIONALES") %>% 
+  filter(substring(code, 0,12) == "AUTONOMICAS_" & code != "AUTONOMICAS_2019_REGIONALES") %>% 
   transform(url = paste0("url.", tolower(substring(code, 0,16))))
 convocatoria_autonomicas <- convocatoria_autonomicas %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_autonomicas), decreasing = TRUE)),
          convocatoria_formatted = paste0(substring(code, 13,16)))
 convocatoria_autonomicas <- convocatoria_autonomicas %>% arrange(order)
+convocatoria_autonomicas$code <- factor(convocatoria_autonomicas$code, levels = convocatoria_autonomicas$code)
 
 convocatoria_actual <- convocatoria_autonomicas %>% filter(substring(code, 13,16) == params$convocatoria)
 convocatoria_tva <- convocatoria_autonomicas[convocatoria_autonomicas$order == convocatoria_autonomicas[convocatoria_actual$code == convocatoria_autonomicas$code, ]$order - 1, ]
-min_code <- min(convocatoria_autonomicas$code)
-convocatoria_autonomicas$code <- factor(convocatoria_autonomicas$code, levels = convocatoria_autonomicas$code)
 ```
 
 ```{r Municipio actual}
@@ -75,7 +91,7 @@ df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
 df_CL_AREA_mun <- df_CL_AREA %>% 
   select(id = code, municipio = value, code = parent) %>%
   filter(substring(id, 0,2) != "ES") %>% 
-  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  transform(id = sub("\\_.*", "", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
@@ -151,15 +167,15 @@ df_participacion <- data.frame(
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
-df_u_ <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
+df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
-related_mun <- df_u_ %>% filter(proceso == convocatoria_actual$code)
+related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 
-min_code <- min(df_u_$proceso)
+min_code <- min(df_u$proceso)
 df <- related_mun %>%
   select(mun, nombre) %>%
-  left_join(df_u_, by = "mun") %>%
+  left_join(df_u, by = "mun") %>%
   select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(code = proceso, valor, Municipio = id, nombre) %>%
@@ -260,31 +276,14 @@ Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>
 Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 
 Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+
 Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-```
-
-```{r Nombres de partidos}
-get_nombre_partido <- function(nombre) {
-  string_list <- str_split(nombre, pattern = " ")[[1]]
-  result <- ""
-  line.char <- 0
-  for(word.index in 1:length(string_list)) {
-    if((line.char + nchar(string_list[word.index])) < 38) {
-      result <- paste0(result, " ", string_list[word.index])
-      line.char <- line.char + 1 + nchar(string_list[word.index])
-    } else {
-      result <- paste0(result, "<br>", string_list[word.index])
-      line.char <- nchar(string_list[word.index])
-    }
-  }
-  trimws(result)
-}
 ```
 
 ```{r Data Resultados}
@@ -332,7 +331,7 @@ if(params$convocatoria %in% c(2015, 2007)){
   }
 
 df_autonomicas$valor <- as.numeric(df_autonomicas$valor)
-df_autonomicas <- df_autonomicas %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun))
+df_autonomicas <- df_autonomicas %>% transform(mun = sub("\\_.*", "", mun))
 ```
 
 ```{r Resultados}
@@ -383,7 +382,6 @@ df_plot <- df_plot %>% transform(hovertext = paste0(
   ))
 
 df_plot$name_partido_percent <- ""
-
 for(i in 1:nrow(df_plot)) {
   df_plot$name_partido_percent[i] <- get_nombre_partido(paste0(df_plot$name_partido[i], " (", trimws(format(round(df_plot$porcentaje[i], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"))
 }
