@@ -30,7 +30,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Población", "Número de personas según las cifras oficiales de población, a 1 de enero de cada año, elaboradas a partir del Padrón Municipal de Habitantes.")`
   `r get_indicator_met_("Tasa de mortalidad", "Número de defunciones a lo largo del año frente al total poblacional del ámbito geográfico correspondiente por cada 1.000 habitantes de ese ámbito.")`
   `r get_indicator_met_("Tasa de natalidad", "Total de nacimientos de madre perteneciente a un determinado ámbito en un año concreto por cada 1.000 habitantes.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto por cada 1.000 habitantes.")`</div>
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito en un año concreto.")`</div>
 </div>
 
 

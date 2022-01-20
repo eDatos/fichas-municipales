@@ -26,8 +26,8 @@ get_indicator_met_ = function(label, description) {
 <div class="row highlight card-columns-2">
   `r get_indicator_met_("Actividad económica", "Se define como la generación de valor añadido mediante la producción de bienes y servicios.")`
   `r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`
-  `r get_indicator_met_("Persona parada", "Son todas aquellas personas de 16 años o más que, según los criterios OIT, durante la semana de referencia, se encontraran en las tres situaciones siguientes simultáneamente:</br>a) sin trabajo, es decir, no tenían un empleo asalariado o por cuenta propia,</br>b) disponibles para trabajar, es decir, disponibles para un empleo como asalariado o un empleo por cuenta propia dentro de las dos semanas posteriores a la semana de referencia,</br>c) buscando activamente un trabajo durante el mes precedente al domingo de la semana de referencia. Este último requisito no se precisa en el caso de haber encontrado un empleo al que se incorporará dentro de los tres meses posteriores a la semana de referencia.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Paro registrado", "Comprende a todas aquellas personas, desocupadas y con disponibilidad inmediata para trabajar, inscritas en el Servicio Público de Empleo Estatal con una demanda en alta a último día del mes, excluyéndose a determinados colectivos tales como los que demandan empleo con características específicas (empleo a domicilio, por período inferior a tres meses, de jornada semanal inferior a 20 horas, para trabajar en el extranjero)")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto.")`
 </div>
 
 

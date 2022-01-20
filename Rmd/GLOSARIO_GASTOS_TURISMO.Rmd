@@ -29,7 +29,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Gasto turístico", "Suma pagada por la adquisición de bienes y servicios de consumo y de objetos valiosos, para uso propio o para regalar, antes y durante los viajes turísticos; incluyendo los gastos incurridos por los propios visitantes, así como los gastos pagados o reembolsados por otros.")`
   `r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`
   `r get_indicator_met_("Paquete turístico", "Reserva previa del viaje que incluye al menos alojamiento y transporte, aunque alguno de estos dos elementos puede ser reemplazado por cualquier otro servicio que suponga una cantidad significativa del precio total del viaje (visitas organizadas, alquiler de coche, etc.) y que ha sido vendida a un precio global indivisible a través de agencia de viajes o turoperador.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo trimestre del año anterior al seleccionado por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Tasa de variación", "Medición que estudia el incremento o disminución porcentual que experimenta el gasto medio por turista entre dos momentos determinados. Los periodos comprendidos a la hora de realizar cálculos de tasas de variación suelen ser de un año o por trimestre.")`
 </div>
 
 

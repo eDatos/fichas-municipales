@@ -31,7 +31,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Personas alojadas", "Todas aquellas personas que realizan una o más pernoctaciones seguidas en el mismo alojamiento. Los viajeros se clasifican por su país de residencia, y para los residentes en España, por la Comunidad Autónoma donde residen habitualmente.")`
   `r get_indicator_met_("Tarifa media diaria", "Ingresos medios diarios obtenidos por habitación ocupada. Los ingresos hacen referencia a aquellos percibidos por los hoteleros por la prestación del servicio de alojamiento, sin incluir otro tipo de servicios que sí pueda ofrecer el establecimiento, como pueden ser servicios de restauración, spa, gimnasio, organización de reuniones o eventos.")`
   `r get_indicator_met_("Tasa de ocupación", "Relación expresada en porcentaje entre el total de las pernoctaciones en un mes determinado y el producto de las plazas, excluyendo las camas supletorias, por el número de días que ese mes tiene.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado.")`
 </div>
 
 

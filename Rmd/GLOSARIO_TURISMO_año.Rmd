@@ -28,7 +28,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Establecimientos hoteleros", "Establecimientos turísticos de alojamiento que ofrece los servicios de alojamiento y alimentación como son los hoteles, hoteles urbanos, hoteles rurales y hoteles emblemáticos.")`
   `r get_indicator_met_("Estancia media", "Número de noches que por término medio permanece un turista en un establecimiento en un periodo de referencia.")`
   `r get_indicator_met_("Municipios turísticos", "Aquellos municipios en los que existe una gran afluencia turística, existe una variada oferta alojativa, ofrecen productos y/o servicios turísticos diferentes y de calidad y ofrecen un servicio público, en términos de recogida de basura, de protección ciudadana, etc. a toda la población ya sean vecinos del municipio o no.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un año concreto por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito en un año concreto.")`
   `r get_indicator_met_("Turista", "Persona mayor de 16 años que realiza un viaje turístico con al menos una pernoctación.")`
 </div>
 

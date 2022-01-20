@@ -29,7 +29,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Asalariados", "Aquellas personas que trabajan a cambio de un sueldo, salario, remuneración, comisión o cualquier otra retribución en metálico o en especie, para un empresario (persona física o jurídica).")`
   `r get_indicator_met_("Autónomos", "Aquellas personas que llevan su propia empresa o ejercen por su cuenta y con autonomía una profesión liberal, para lo cual pueden a su vez contratar empleados a los que remuneran mediante un sueldo.")`
   `r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado.")`
 </div>
 
 

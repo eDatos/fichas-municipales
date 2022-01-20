@@ -24,13 +24,13 @@ get_indicator_met_ = function(label, description) {
 <hr>
 
 <div class="row highlight card-columns-3">
-  `r get_indicator_met_("Ahorro bruto", "Diferencia entre los ingresos corrientes y los gastos corrientes.")`
-  `r get_indicator_met_("Ahorro neto", "Ahorro bruto menos la amortización de préstamos.")`
-  `r get_indicator_met_("Carga financiera", "Suma de los gastos financieros y la variación de pasivos financieros")`
-  `r get_indicator_met_("Gastos por habitante", "Razón entre el presupuesto liquidado de gastos y la población de derecho.")`
-  `r get_indicator_met_("Ingresos por habitante", "Razón entre el presupuesto liquidado de ingresos y la población de derecho.")`
-  `r get_indicator_met_("Presupuesto", "Expresión contable del plan económico del sector público para un periodo de tiempo determinado (generalmente un año). Cada entidad pública con personalidad jurídica propia tiene su presupuesto en el que se reflejan, de manera desagregada, las correspondientes previsiones de ingresos y limitaciones de gastos.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución en el número de individuos pertenecientes a un determinado ámbito en un año concreto por cada 1.000 habitantes.")`
+  `r get_indicator_met_("Ahorro bruto", "Diferencia entre los ingresos corrientes (capítulos del 1 al 5) y los gastos corrientes (capítulos del 1 al 5).")`
+  `r get_indicator_met_("Ahorro neto", "Ahorro bruto menos la amortización de préstamos. Representa la medida en que la entidad local puede hacer frente a nuevas deudas, teniendo en cuenta su estructura de ingresos y gastos y las deudas concertadas que tiene pendientes.")`
+  `r get_indicator_met_("Carga financiera", "Suma de los gastos financieros (capítulo 3) y la amortización del capital (capítulo 9), referida a los préstamos a largo plazo formalizados y pendientes de reembolso. Es decir, corresponde a la cuantía a la que tiene que hacer frente la entidad para pagar el principal y los intereses de sus préstamos.")`
+  `r get_indicator_met_("Gastos por habitante", "Razón entre el total de las obligaciones reconocidas netas y la población de derecho.")`
+  `r get_indicator_met_("Ingresos por habitante", "Razón entre el total de los derechos reconocidos netos y la población de derecho.")`
+  `r get_indicator_met_("Presupuesto", "La expresión cifrada, conjunta y sistemática de las obligaciones que, como máximo, pueden reconocer la entidad, y sus organismos autónomos, y de los derechos que prevean liquidar durante el correspondiente ejercicio, así como de las previsiones de ingresos y gastos de las sociedades mercantiles cuyo capital social pertenezca íntegramente a la entidad local correspondiente.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual del valor presupuestario en un año concreto.")`
 </div>
 
 
@@ -38,3 +38,5 @@ get_indicator_met_ = function(label, description) {
   <div class="column"><img class="logo-istac" src="img/logo_istac.png"/></div>
   <div class="column"><img class="logo-fecam" src="img/fecam.jpeg" /></div>
 </div>
+
+
