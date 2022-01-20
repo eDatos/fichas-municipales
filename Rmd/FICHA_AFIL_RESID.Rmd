@@ -216,7 +216,7 @@ g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = no
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-M03")}, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "M03")}, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -311,8 +311,7 @@ g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo,
         panel.grid.major.x = element_line(colour = "lightgray"),
         panel.grid.minor.x = element_line(colour = "lightgray"),
         panel.background = element_rect(fill = "white"),
-        legend.position = "none"
-        ) +
+        legend.position = "none") +
   scale_y_continuous(n.breaks = 8, labels = function(x){paste0(format(round(abs(x), 1), big.mark = '.', decimal.mark = ","), '%')},
                      limits = c(-1, 1)*max(abs(df_mun$porcentaje), abs(df_mun$porcentaje_Canarias)))
 
@@ -327,6 +326,7 @@ df_edad_media <- df_piramide %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo, gredad != "_T" & sexo == "AMBOS SEXOS") %>% 
   transform(gredad = ifelse(gredad == "Y_GE60", ">59", ifelse(grepl("T", gredad, fixed = TRUE), gsub("T", "-", substring(gredad, 2, 6)), gredad))) %>%
   transform(x = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1))) + 2.5) %>%
+  transform(x = if_else(gredad == "15-19", 18, x)) %>%
   transform(x = if_else(gredad == ">59", 62.5, x)) %>% 
   transform(producto = valor * x)
 
