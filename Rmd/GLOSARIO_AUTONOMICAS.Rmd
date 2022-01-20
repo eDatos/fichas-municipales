@@ -1,0 +1,45 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/NOTAS.css
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='card'><h2 class='card-title'>%s</h2><hr class='separator'/><p class='card-text'>%s</p></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<h1>Glosario de conceptos de medida</h1>
+<h2>Resultados de las Elecciones Autonómicas</h2>
+<hr>
+
+<div class="row highlight card-columns-3">
+  `r get_indicator_met_("Candidatura", "Conjunto de candidatos que, constituyendo una lista, se presenta en una circunscripción electoral por un partido político, coalición de partidos o agrupación de electores, de acuerdo con los criterios y requisitos fijados por la ley.")`
+  `r get_indicator_met_("Electores", "Personas que reúnen los requisitos para votar y no están privadas definitiva o temporalmente del derecho de sufragio. El total de estas personas constituye el censo electoral. Este está compuesto por el censo de electores residentes en España (CER) y en determinadas elecciones, por el censo de electores residentes ausentes que viven en el extranjero (CERA) y/o por el censo de personas extranjeras que residen en España (CERE).")`
+  `r get_indicator_met_("Ratio de votos a candidatura", "Porcentaje de votos que recibe una determinada candidatura sobre el total de los votos válidos emitidos a candidaturas.")`
+  `r get_indicator_met_("Tasa de abstención", "Porcentaje de electores que no ejercen su derecho al voto (electores abstenidos) sobre el total de electores.")`
+  `r get_indicator_met_("Tasa de participación", "Porcentaje de electores que ejercen su derecho al voto (electores votantes) sobre el total de electores.")`
+  `r get_indicator_met_("Variación", "Incremento o disminución de la tasa de participación pertenecientes a un determinado ámbito en un periodo concreto medido por puntos.")`
+  `r get_indicator_met_("Votos nulos", "Se considera voto nulo aquel emitido en sobre o papeleta diferente del modelo oficial, así como el emitido en papeleta sin sobre o en sobre que contenga más de una papeleta de distinta candidatura. En el supuesto de contener más de una papeleta de la misma candidatura, se computará como un solo voto válido. Además, se consideran votos nulos los emitidos en papeletas en las que se hubieran modificado, añadido o tachado nombres de personas candidatas incluidas en ellas o alterado su orden de colocación, así como aquellas en las que se hubiera introducido cualquier leyenda o expresión, o producido cualquier otra alteración de carácter voluntario o intencionado. Asimismo se consideran votos nulos los votos contenidos en sobres en los que se hubiera producido cualquier tipo de alteración de las señaladas anteriormente.")`
+  `r get_indicator_met_("Votos válidos", "Se considera voto válido el depositado en la urna que cumple con las exigencias legales. Se trata del total de votos emitidos menos los votos nulos. Se considera voto válido el voto a candidatura y el voto en blanco. Exclusivamente la Mesa Electoral, formada por el Presidente o Presidenta y los vocales, deciden sobre la validez de un voto.")`
+  `r get_indicator_met_("Votos válidos a candidatura", "Se considera voto válido a candidatura aquel emitido a una candidatura electoral.")`
+  `r get_indicator_met_("Votos válidos en blanco", "Se considera voto válido en blanco el sobre que no contenga papeleta y, además, en las elecciones para el Senado, las papeletas que no contengan indicación a favor de ninguna persona candidata.")`
+  </div>
+</div>
+
+
+<div class="row logos">
+  <div class="column"><img class="logo-istac" src="img/logo_istac.png"/></div>
+  <div class="column"><img class="logo-fecam" src="img/fecam.jpeg" /></div>
+</div>
+
