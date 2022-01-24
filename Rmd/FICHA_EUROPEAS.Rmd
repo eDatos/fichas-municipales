@@ -182,8 +182,10 @@ df <- related_mun %>%
   left_join(convocatoria_europeas, by = "code") %>%
   transform(variacion = ifelse(code == min_code, NA, round((valor - lag(valor)), 1)))
 
-if(convocatoria_actual$code != min_code){
-  df <- df %>% filter(order <= convocatoria_actual$order)
+if(convocatoria_actual$code == min_code){
+  df <- df %>% filter(convocatoria_formatted  %in% c(2004,2009,2014))
+  }else{
+    df <- df %>% filter(order <= convocatoria_actual$order)
   }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
@@ -462,10 +464,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion == "NA"){
   cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/family.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/family.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }
 ```
 </div>
