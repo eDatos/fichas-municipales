@@ -589,6 +589,13 @@ h4, h5 {
   text-align: left;
 }
 
+.progress-bar-blue-0 {
+  background-color: #005980;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
 .progress-bar-blue1 {
   background-color: #005980;
   border-top-left-radius: 20px;
