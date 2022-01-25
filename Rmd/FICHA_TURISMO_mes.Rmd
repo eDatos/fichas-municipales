@@ -3,10 +3,9 @@ title: ''
 params:
   id_municipio: 35024
   año: 2021
-  mes: 3
+  mes: 6
   url.mes_t: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
-  url.mun_turisticos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_VIAJEROS_ENTRADOS
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
   url.viajeros_lugar: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48
@@ -80,11 +79,7 @@ df_CL_AREA_mun <- df_CL_AREA %>%
   left_join(df_CL_AREA, by="code") %>% 
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
 
-# Municipios turísticos
-mun_turisticos <- fromJSON(params$url.mun_turisticos)
-df_CL_AREA_mun_tur <- df_CL_AREA_mun %>% filter(id %in% mun_turisticos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]])
-
-municipio_actual <- df_CL_AREA_mun_tur[df_CL_AREA_mun_tur$id == params$id_municipio,]
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
 
 ```{r Normalización de municipios} 
