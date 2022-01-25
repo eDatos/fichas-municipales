@@ -289,13 +289,8 @@ ind_viaj <- df %>% filter(id == params$id_municipio & code %in% c(mes_actual$cod
 
 Num_Viajeros_num <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(valor) %>% as.numeric()
 Num_Viajeros <- Num_Viajeros_num %>% format(big.mark = ".", decimal.mark = ",")
-Imagen_Variacion <- ifelse(is.na(ind_viaj$valor[which(ind_viaj$...1 == params$año-1)]),
-                           "NA",
-                           ifelse(signo(ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(tasa) %>% as.numeric()) == "más",
-                                  './img/up.png', './img/down.png')
-                           )
-Variacion_Porcentual_Viajeros <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(tasa) %>% as.numeric() %>%
-  format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Indicador Estancia Media}
@@ -611,12 +606,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_Viajeros == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
     "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Viajeros, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
 }
 ```
 </div>

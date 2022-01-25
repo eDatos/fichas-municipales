@@ -329,8 +329,8 @@ df_lv <- df %>%
   filter(mun == params$id_municipio & año %in% c(params$año, params$año-1))
 
 Num_Presupuesto <-  format(round(df_lv$valor_M[df_lv$año == params$año], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(df_lv$valor_M[df_lv$año == params$año] - df_lv$valor_M[df_lv$año == params$año-1]) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Presupuesto <- format(df_lv$tasa[df_lv$año == params$año], big.mark =".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Variacion_Porcentual <- format(df_lv$tasa[df_lv$año == params$año], big.mark =".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Rankings}
@@ -772,20 +772,20 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row" style="margin: 15px 0;">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_Presupuesto == "NA" & GAP == "NA"){
+if(Variacion_Porcentual == "NA" & GAP == "NA"){
     cat(paste0(
       "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
-      if(Variacion_Porcentual_Presupuesto == "NA" & GAP != "NA"){
+      if(Variacion_Porcentual == "NA" & GAP != "NA"){
         cat(paste0(
           "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
-          if(Variacion_Porcentual_Presupuesto != "NA" & GAP == "NA"){
+          if(Variacion_Porcentual != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+              "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Presupuesto, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }

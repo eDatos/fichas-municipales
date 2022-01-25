@@ -270,8 +270,8 @@ df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 superficie_cultivada_num <- df_lv$valor
 superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(df_lv$tasa) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Indicador Secano}

@@ -266,13 +266,8 @@ ind_turistas <- df %>% filter(id == params$id_municipio & año %in% c(params$añ
 
 Num_Turistas_num <- ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric()
 Num_Turistas <- Num_Turistas_num %>% format(big.mark = ".", decimal.mark = ",")
-Imagen_Variacion <- ifelse(is.na(ind_turistas %>% filter(id == params$id_municipio & año == params$año-1) %>% select(valor) %>% as.numeric()),
-                           "NA",
-                           ifelse(signo(ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(tasa) %>% as.numeric()) == "más",
-                                  './img/up.png', './img/down.png')
-                           )
-Variacion_Porcentual_Turistas <- ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(tasa) %>% as.numeric() %>%
-                                 format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Indicador Estancia media}
@@ -661,12 +656,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_Turistas == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
     "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Turistas, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-4'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-4'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
 }
 ```
 </div>

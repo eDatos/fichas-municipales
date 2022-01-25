@@ -291,8 +291,8 @@ df_lv <- df_u %>% filter(mun == params$id_municipio & mes == mes_actual$code)
 
 Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric()
 Num_Veh_Parque <- df_lv %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual_Veh_Parque <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual_Veh_Parque) == "más", './img/up.png', './img/down.png')
+Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 
 # Número de turismos en circulación según datos del parque de vehículos elaborado por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
 data_Tur_Parque <- fromJSON(params$url.parque_tur)
@@ -643,12 +643,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r indicadores principales, results='asis'}
-if(Variacion_Porcentual_Veh_Parque == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
     "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/female.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/male.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual_Veh_Parque, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/male.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/family.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/female.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/male.png"), "</div>"))
 }
 ```
 </div>

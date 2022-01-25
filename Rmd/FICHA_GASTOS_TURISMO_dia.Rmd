@@ -278,13 +278,8 @@ ind_GM <- df %>% filter(id == params$id_municipio & code %in% c(periodo_actual$c
 
 Num_GM_num <- ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric()
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(is.na(ind_GM %>% filter(id == params$id_municipio & code == periodo_tva$code) %>% select(valor) %>% as.numeric()),
-                           "NA",
-                           ifelse(signo(ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric()) == "más",
-                                  './img/up.png', './img/down.png')
-                           )
-Variacion_Porcentual_GM <- ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% 
-  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Indicadores Gastos Medios}
@@ -676,12 +671,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_GM == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
     '<div class="column-2">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3-ind">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_GM, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3-ind">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>

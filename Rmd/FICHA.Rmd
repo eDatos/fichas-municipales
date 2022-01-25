@@ -254,8 +254,8 @@ df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 Num_Pobl_num <- df_lv$valor %>% as.numeric()
 Num_Pobl <- Num_Pobl_num %>% format(big.mark = ".", decimal.mark = ",")
-Imagen_Variacion <- ifelse(signo(df_lv$tasa) == "más", './img/up.png', './img/down.png')
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Pirámide por edad y sexo}

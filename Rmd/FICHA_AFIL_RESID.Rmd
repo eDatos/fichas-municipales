@@ -345,8 +345,8 @@ df_afil_mun <- df_afil_ %>%
   select(periodo, valor, variacion, variacion_porc)
 
 Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-Imagen_Variacion <- ifelse(signo(df_afil_mun %>% filter(periodo == mes_actual$periodo) %>% select(variacion)) == "más", './img/up.png', './img/down.png')
-Variacion_Porcentual_Afil <- df_afil_mun %>% filter(periodo == mes_actual$periodo) %>% select(variacion_porc) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Variacion_Porcentual <- df_afil_mun %>% filter(periodo == mes_actual$periodo) %>% select(variacion_porc) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
 ```{r Indicadores afiliación por sexo}
@@ -536,12 +536,12 @@ for (i in 1:nrow(leyenda_poblacion)) {
 
 <div class="row">
 ```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual_Afil == "NA"){
+if(Variacion_Porcentual == "NA"){
   cat(paste0(
     '</div><div class="column-3-ind">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual_Afil, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
