@@ -188,13 +188,23 @@ df <- related_mun %>%
   left_join(df_u, by= "mun") %>%
   select(id = mun, año, nombre, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(año, mun = id, nombre, valor, tasa) %>%
-  filter(año <= params$año & año != min(año))
+  select(año, mun = id, nombre, valor, tasa)
+
+if(params$año == 2007){
+  df <- df %>% filter(año %in% c(2007,2008,2009))
+  }else{
+    df <- df %>% filter(año <= params$año)
+  }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+leyenda_poblacion <- df %>% filter(año == params$año) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " m<sup>2</sup>")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
 df <- df %>% mutate(
     tooltip = ifelse(año == params$año,
@@ -217,7 +227,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 18, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4))}) +
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$año) - 18, min(df$año)), to = max(df$año), by = as.integer((max(df$año)-max(max(df$año) - 18, min(df$año)))/4)+1)}) +
   scale_y_continuous(labels = function(x){paste0(format(as.integer(x), big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -258,11 +268,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
     }
   ") 
-
-leyenda_poblacion <- df %>% filter(año == params$año) %>%
-  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " m<sup>2</sup>")),
-         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 ```
 
 ```{r Indicador evolución de la población}
@@ -364,17 +369,11 @@ sup_herbaceos_C <- df_herbaceos %>%
 
 df_herbaceos <- df_herbaceos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL (SECANO+REGADÍO)" & año == params$año)
 
-df_herbaceos$name_cultivo <- ""
-for(i in 1:nrow(df_herbaceos)) {
-  df_herbaceos$name_cultivo[i] <- get_nombre(paste0(df_herbaceos$cultivo[i]))
-}
-
 rk_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
-  arrange(desc(name_cultivo)) %>%
   arrange(valor) %>%
-  select(cultivo, name_cultivo, valor)
+  select(cultivo, valor)
 
 if(length(rk_herbaceos_mun$cultivo) > 10){
   rk_herbaceos_mun <- rk_herbaceos_mun %>% filter(valor != min(rk_herbaceos_mun$valor))
@@ -386,21 +385,27 @@ rk_herbaceos_mun <- rk_herbaceos_mun %>%
 
 df_herbaceos_mun <- df_herbaceos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(cultivo, name_cultivo, valor)
+  select(cultivo, valor)
 df_herbaceos_C <- df_herbaceos %>%
   filter(mun == "CANARIAS" & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(cultivo, name_cultivo, valor)
+  select(cultivo, valor)
 df_herbaceos_mun <- df_herbaceos_mun %>%
   mutate(porcentaje = df_herbaceos_mun$valor / sup_herbaceos * 100,
          valor_Canarias = df_herbaceos_C$valor,
          porcentaje_Canarias = df_herbaceos_C$valor / sup_herbaceos_C * 100)
 
+df_herbaceos_mun$name_cultivo <- ""
+for(i in 1:nrow(df_herbaceos_mun)) {
+  df_herbaceos_mun$name_cultivo[i] <- get_nombre(paste0(df_herbaceos_mun$cultivo[i]))
+}
+
 df_herbaceos_plot <- df_herbaceos_mun %>%
+  arrange(desc(name_cultivo)) %>%
   arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herbaceos_mun$cultivo)
 df_herbaceos_plot <- df_herbaceos_plot %>%
-  left_join(rk_herbaceos_mun, by = c("cultivo", "name_cultivo", "valor")) %>% 
+  left_join(rk_herbaceos_mun, by = c("cultivo", "valor")) %>% 
   arrange(desc(order))
 
 df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
@@ -487,17 +492,11 @@ sup_leñosos_C <- df_leñosos %>%
 
 df_leñosos <- df_leñosos %>% filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)" & año == params$año)
 
-df_leñosos$name_cultivo <- ""
-for(i in 1:nrow(df_leñosos)) {
-  df_leñosos$name_cultivo[i] <- get_nombre(paste0(df_leñosos$cultivo[i]))
-}
-
 rk_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio) %>%
   top_n(8, valor) %>% 
-  arrange(desc(name_cultivo)) %>%
   arrange(valor) %>%
-  select(cultivo, name_cultivo, valor)
+  select(cultivo, valor)
 
 if(length(rk_leñosos_mun$cultivo) > 10){
   rk_leñosos_mun <- rk_leñosos_mun %>% filter(valor != min(rk_leñosos_mun$valor))
@@ -509,7 +508,7 @@ rk_leñosos_mun <- rk_leñosos_mun %>%
 
 df_leñosos_mun <- df_leñosos %>%
   filter(mun == municipio_actual$municipio & cultivo %in% rk_leñosos_mun$cultivo) %>%
-  select(cultivo, name_cultivo, valor)
+  select(cultivo, valor)
 df_leñosos_C <- df_leñosos %>%
   filter(mun == "CANARIAS" & cultivo %in% rk_leñosos_mun$cultivo) %>%
   select(cultivo, valor)
@@ -518,12 +517,18 @@ df_leñosos_mun <- df_leñosos_mun %>%
          valor_Canarias = df_leñosos_C$valor,
          porcentaje_Canarias = df_leñosos_C$valor / sup_leñosos_C * 100)
 
+df_leñosos_mun$name_cultivo <- ""
+for(i in 1:nrow(df_leñosos_mun)) {
+  df_leñosos_mun$name_cultivo[i] <- get_nombre(paste0(df_leñosos_mun$cultivo[i]))
+}
+
 df_leñosos_plot <- df_leñosos_mun %>%
+  arrange(desc(name_cultivo)) %>%
   arrange(desc(valor)) %>% 
   mutate(label = "|")
 df_leñosos_plot$cultivo <- ordered(df_leñosos_plot$cultivo, levels = rk_leñosos_mun$cultivo)
 df_leñosos_plot <- df_leñosos_plot %>% 
-  left_join(rk_leñosos_mun, by = c("cultivo", "name_cultivo", "valor")) %>% 
+  left_join(rk_leñosos_mun, by = c("cultivo", "valor")) %>% 
   arrange(desc(order))
 
 df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
