@@ -1,0 +1,39 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/NOTAS.css
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='card'><h2 class='card-title'>%s</h2><hr class='separator'/><p class='card-text'>%s</p></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<h1>Glosario de conceptos de medida</h1>
+<h2>Parque de vehículos</h2>
+<hr>
+
+<div class="row highlight card-columns-3">
+  `r get_indicator_met_("Combustible", ".")`
+  `r get_indicator_met_("Matriculaciones", ".")`
+  `r get_indicator_met_("Parque de vehículos", ".")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto.")`
+  `r get_indicator_met_("Turismos", ".")`
+  `r get_indicator_met_("Vehículos", ".")`
+</div>
+
+
+<div class="row logos">
+  <div class="column"><img class="logo-istac" src="img/logo_istac.png"/></div>
+  <div class="column"><img class="logo-fecam" src="img/fecam.jpeg" /></div>
+</div>

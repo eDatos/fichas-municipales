@@ -1,0 +1,42 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+    css: styles/NOTAS.css
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r}
+get_indicator_met_ = function(label, description) {
+  return(sprintf("<div class='card'><h2 class='card-title'>%s</h2><hr class='separator'/><p class='card-text'>%s</p></div>", label, description))
+}
+```
+
+<!-- HTML -->
+<h1>Glosario de conceptos de medida</h1>
+<h2>Sector primario</h2>
+<hr>
+
+<div class="row highlight card-columns-4">
+  `r get_indicator_met_("Cabezas de ganado", ".")`
+  `r get_indicator_met_("Cultivos herbáceos", ".")`
+  `r get_indicator_met_("Cultivos leñosos", ".")`
+  `r get_indicator_met_("Explotaciones ganaderas", ".")`
+  `r get_indicator_met_("Ganadería", "Animales de producción pertenecientes a la explotación o criados por la misma incluidos los trashumantes y el ganado en régimen de integración o contrato.")`
+  `r get_indicator_met_("Superficie cultivada", ".")`
+  `r get_indicator_met_("Superficie cultivada de secano", ".")`
+  `r get_indicator_met_("Superficie cultivada de regadío", ".")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en los m<sup>2</sup> pertenecientes a un determinado ámbito en un año concreto.")`</div>
+</div>
+
+
+<div class="row logos">
+  <div class="column"><img class="logo-istac" src="img/logo_istac.png"/></div>
+  <div class="column"><img class="logo-fecam" src="img/fecam.jpeg" /></div>
+</div>
