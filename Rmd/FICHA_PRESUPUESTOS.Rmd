@@ -849,7 +849,7 @@ mapa_comarca_plot
 
 <div class="row">
 
-```{r}
+```{r Tamaño de los recuadros}
 df_p_g <- data.frame(matrix(ncol = 2, nrow = 6, dimnames = list(NULL, c("leyenda", "n"))))
 for(i in 1:5) {
   df_p_g[i,]$leyenda <- paste0(sub(".*\\_\\s*", "", df_part_gastos_mun[i,]$id_partida), ': ', df_part_gastos_mun[i,]$partida, ' (',

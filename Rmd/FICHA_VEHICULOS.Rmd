@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 38002
+  id_municipio: 35007
   año: 2021
-  mes: 1
+  mes: 11
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -461,10 +461,6 @@ df_combustibles_otros <- df_combustibles_mun %>%
   top_n(4) %>% 
   arrange(-valor)
 
-# if(length(df_combustibles_otros$combustible) > 4){
-  # df_combustibles_otros <- df_combustibles_otros %>% filter(valor != min(df_combustibles_otros$valor))
-# }
-
 df_combustibles_otros <- df_combustibles_otros %>%
   mutate(porcentaje_barra = df_combustibles_otros$valor / sum(df_combustibles_otros$valor) * 100,
          porcentaje = df_combustibles_otros$valor / Num_Vehiculos * 100)
@@ -747,7 +743,32 @@ mapa_comarca_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="height: 210px;">
+
+```{r Tamaño de los recuadros}
+altura_total <- 200
+for(i in 1:3) {
+  if(df_combustibles_mun[i,]$valor == 0){
+    altura_total <- altura_total - 20
+  }
+}
+if(porc_otros == 0){
+  altura_total <- altura_total - 20
+}
+
+altura_resto <- 220
+for(i in 1:4) {
+  if(df_combustibles_otros[i,]$valor == 0){
+    altura_resto <- altura_resto - 20
+  }
+}
+if(porc_o == 0){
+  altura_resto <- altura_resto - 20
+}
+
+altura <- max(altura_total, altura_resto)
+```
+
+<div class="column highlight" style="height: `r paste0(altura, 'px')`; padding: 10px;">
 <div class="progress-bar-container">
 
 ```{r, results='asis'}
@@ -794,7 +815,7 @@ if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
 </div>
 </div>
 
-<div class="column highlight" style="height: 210px;">
+<div class="column highlight" style="height: `r paste0(altura, 'px')`; padding: 10px;">
 <div class="progress-bar-container">
 
 ```{r, results='asis'}
