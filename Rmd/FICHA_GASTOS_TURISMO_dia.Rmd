@@ -2,8 +2,8 @@
 title: ''
 params:
   id_municipio: 35012
-  año: 2020
-  trimestre: 4
+  año: 2021
+  trimestre: 3
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -180,6 +180,10 @@ df <- related_mun %>%
   left_join(periodo, by = "code") %>%
   mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
   filter(code <= periodo_actual$code)
+
+if(substring(periodo_actual$code, 0,4) != 2019){
+  df <- df %>% filter(substring(code, 0,4) != 2018)
+}
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))

@@ -172,8 +172,15 @@ df <- related_mun %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, año, nombre, valor, tasa) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(mun = id, año, nombre, valor, tasa) %>%
-  filter(año <= params$año)
+  select(mun = id, año, nombre, valor, tasa) 
+
+if(params$año == 2001){
+  df <- df %>% filter(año %in% c(2001,2002,2003))
+  }else if(params$año == 2002){
+    df <- df %>% filter(año <= params$año)
+    }else{
+      df <- df %>% filter(año != 2000 & año <= params$año)
+    }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 

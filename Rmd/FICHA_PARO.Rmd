@@ -203,7 +203,7 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(mun = id, code, nombre, valor, tasa) %>%
   left_join(mes, by = "code") %>%
-  filter(code <= mes_actual$code & order > 12)
+  filter(code <= mes_actual$code & substring(code, 0,4) != 2006)
 
 leyenda_poblacion <- df %>% filter(periodo == mes_actual$periodo) %>%
   mutate(valor = format(valor, big.mark = ".", decimal.mark = ",")) %>%

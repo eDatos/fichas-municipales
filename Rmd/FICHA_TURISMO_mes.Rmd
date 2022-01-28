@@ -180,6 +180,8 @@ related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas alojadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas alojadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
@@ -187,31 +189,29 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(id, code = periodo, nombre, valor) %>%
   left_join(mes, by = "code") %>%
-  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 12)) - 1), 1), NA)) %>%
-  filter(substring(periodo, 0,4) != min(substring(code, 0,4)) & code <= mes_actual$code)
+  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 12)) - 1), 1), NA)) %>% 
+  filter(order < mes_actual$order+1)
+
+if(substring(mes_actual$code, 0,4) != 2010){
+  df <- df %>% filter(substring(code, 0,4) != 2009)
+}
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))
 
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
-
-df <- df %>%
-  mutate(valor_l = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
-         tasa_l = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ","), "%")))
-
-leyenda_poblacion <- df %>% filter(periodo == mes_actual$periodo) %>%
+leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
-df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>% 
-  unnest_wider('periodo') %>% 
-  mutate(
-    periodo = paste0(...2, ' ', ...1),
-    tooltip = ifelse(
-      periodo == mes_actual$periodo_formatted,
-      sprintf(leyenda.content, nombre, valor_l, tasa_l),
-      sprintf(leyenda.content, nombre, paste0(valor_l, ' (',periodo,')'), tasa_l)
-              )
-  )
+df <- df %>% mutate(
+    tooltip = ifelse(code == mes_actual$code,
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    )
+)
 
 g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
@@ -224,7 +224,7 @@ g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nom
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-M01") }, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-01") }, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x/10^3, big.mark = ".", decimal.mark = ","), " mil")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -593,7 +593,7 @@ get_indicator3s = function(label, value) {
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor_l[i], leyenda_poblacion$tasa_l[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
 }
 ```
 </div>

@@ -170,6 +170,8 @@ related_mun <- seleccion_mun(related_mun %>% select(mun , valor), 'valor')
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
 df <- related_mun %>%
   select(mun = "mun", nombre) %>%
   left_join(df_u, by = "mun") %>%
@@ -180,10 +182,12 @@ df <- related_mun %>%
   mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
   filter(code <= periodo_actual$code)
 
+if(substring(periodo_actual$code, 0,4) != 2019){
+  df <- df %>% filter(substring(code, 0,4) != 2018)
+}
+
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))
-
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df <- df %>%
   mutate(valor_l = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),

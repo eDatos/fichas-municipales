@@ -169,8 +169,8 @@ df_u <- df_afil %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS"
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(df_localizacion, related_mun  %>% select(mun, valor), 'valor')
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
@@ -181,29 +181,29 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(mun = id, code = periodo, nombre, valor) %>%
   left_join(mes, by = "code") %>%
-  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 4)) - 1), 1), NA)) %>%
-  filter(code <= mes_actual$code & order > 4)
+  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 4)) - 1), 1), NA)) %>% 
+  filter(order < mes_actual$order+1)
+
+if(substring(mes_actual$code, 0,4) != 2013){
+  df <- df %>% filter(substring(code, 0,4) != 2012)
+}
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))
 
-df$order <- as.integer(df$order)
-
-leyenda_poblacion <- df %>% filter(periodo == mes_actual$periodo) %>%
-  mutate(valor = format(valor, big.mark = ".", decimal.mark = ",")) %>%
-  mutate(tasa = format(tasa, big.mark = ".", decimal.mark = ",")) %>%
+leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
-df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>% 
-  unnest_wider('periodo') %>% 
-  mutate(
-    periodo = paste0(...2, ' ', ...1),
-    tooltip = ifelse(periodo == mes_actual$periodo_formatted, 
-                     sprintf(leyenda.content, nombre, format(valor, big.mark = ".", decimal.mark = ","), format(tasa, big.mark = ".", decimal.mark = ",")),
-                     sprintf(leyenda.content, nombre, paste0(format(valor, big.mark = ".", decimal.mark = ","), ' (',periodo,')'), format(tasa, big.mark = ".", decimal.mark = ","))
-              ),
-    order = order(code, decreasing = FALSE)
-  )
+df <- df %>% mutate(
+    tooltip = ifelse(code == mes_actual$code,
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    )
+)
 
 g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line() +
@@ -524,10 +524,8 @@ margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
 </div>
 <div id="hover-event-placeholder" class="column-4">
 ```{r leyendas, results = "asis"}
-template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s&percnt;</span></div></div>"
-
 for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
 }
 ```
 
