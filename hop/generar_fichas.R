@@ -120,12 +120,27 @@ loadMunicipios <- function() {
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
 }
 
-periods <- get_total_periods(df_init_data, df_fichas)
+
+downloadData()
+periods <- get_total_periods(df_init_data, df_fichas) %>%
+  left_join(
+    data.frame(
+      M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
+      id_M = 1:12
+    ),
+    by ='M') %>% 
+  left_join(
+    data.frame(
+      Q = c("Marzo", "Junio", "Septiembre", "Diciembre", "Primer trimestre", "Segundo trimestre", "Tercer trimestre", "Cuarto trimestre"),
+      id_Q = c(3, 6, 9, 12, 1, 2, 3, 4)
+    ),
+    by ='Q') %>%
+  select (code, A, Q = id_Q, M = id_M)
 
 municipios <- loadMunicipios()
 
 generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municipio) {
-  dir.fichero <- paste0("./output/",ano, "/")
+  dir.fichero <- paste0("./output/", id_ficha, "/", ano, "/")
   ficha_actual <- df_fichas[df_fichas$code == id_ficha,]
   nombre.fichero <- paste0(id_ficha, "_",
                            ifelse(periodicidad == "M", paste0(periodicidad, mes, "_"), ""),
