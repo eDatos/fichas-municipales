@@ -3,8 +3,9 @@ library(xml2)
 library(sf)
 library(tibble)
 library(tidyverse)
+library(jsonlite)
 
-Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
+#Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
 directory.rmd <- "Rmd/"
 directory.output <- "output"
@@ -12,6 +13,20 @@ df_init_data <-  read.csv("shiny/init-data.csv", encoding = "UTF-8", sep = ";") 
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
 
+
+downloadData <- function() {
+  for (i in 1:nrow(df_init_data)) {
+    if(file.exists(df_init_data$filepath[i])) {
+      next
+    }
+    print(paste0('Download resource: ', df_init_data$name[i]))
+    if(df_init_data$extension[i] == "json") {
+      write(getURL( df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
+    } else {
+      download.file(df_init_data$url[i], df_init_data$filepath[i])
+    }
+  }
+}
 
 loadMunicipios <- function() {
   file <- paste0(directory.data, df_init_data[df_init_data$name == 'cl_area',]$name, '.', df_init_data[df_init_data$name == 'cl_area',]$extension)
@@ -106,7 +121,9 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-#generarFicha(2017, 'demografia', 'A', NA, NA, 35003)
+downloadData()
 
-generarFichas(municipios, df_fichas %>% filter(code == 'paro'), periods %>% filter(A > 2003))
+generarFicha(2017, 'demografia', 'A', NA, NA, 35003)
+
+#generarFichas(municipios, df_fichas %>% filter(code == 'paro'), periods %>% filter(A > 2003))
 
