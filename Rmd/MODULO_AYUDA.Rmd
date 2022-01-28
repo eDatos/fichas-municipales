@@ -20,7 +20,7 @@ params:
 output:
   html_document:
     df_print: paged
-    css: styles/FICHA.css
+    css: styles/MODULO.css
 always_allow_html: yes
 ---
 
@@ -657,14 +657,14 @@ get_indicator_mod = function(label, description) {
 
 
 <!-- HTML -->
-<div class="row">
+<div class="row" style="margin-top: 10px;">
   `r get_indicator_mod("Encabezado", "Contexto territorial, temático y temporal.")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
 
-<h1 style="color: #008BD0; margin: 0; font-size: 54px;">Nombre del municipio en cifras</h1>
-<h3 style="color: #999; margin: 0; float: right; margin-right: 20px;">año</h3>
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">[Nombre del municipio] en cifras</h1>
+<h3 style="color: #999; margin: 0; float: right; margin-right: 20px;">Temporalidad</h3>
 <h2 style="color: #666; margin: 0;">Temática</h2>
 <hr>
 
@@ -678,8 +678,8 @@ margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
 ```
 <div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 
-<div class="row">
-  `r get_indicator_mod("Indicador de la variable principal", "")`
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod("Variable principal", "")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -689,8 +689,8 @@ margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
 </div>
 </div>
 
-<div class="row">
-  `r get_indicator_mod("Gráfico espacio-temporal", "Gráfico comparativo del municipio con otros dos relacionados a lo largo del tiempo.")`
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod("Gráfico<br>espacio-temporal", "Gráfico comparativo del municipio con dos municipios relacionados, a lo largo del tiempo.")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -712,8 +712,8 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row">
-  `r get_indicator_mod("Indicadores principales", "Tasa de variación y los indicadores más relevantes de cada ámbito.")`
+<div class="row" style="margin-top: -5px;">
+  `r get_indicator_mod("Indicadores principales", "Tasa de variación e indicadores de mayor relevancia.")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -735,12 +735,12 @@ if(Variacion_Porcentual == "NA"){
 </div>
 </div>
 
-<div class="row">
-  `r get_indicator_mod("Rankings territoriales", "Clasificación del municipio en distintos territorios.</p>")`
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod("Rankings territoriales", "Clasificación del municipio a nivel autonómico, insular y comarcal.</p>")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="row" style="margin-top: 10px;">
+<div class="row">
 <div class="column-3">
   <div class="indicator-map">
   <div class="image map-canarias">
@@ -787,12 +787,12 @@ mapa_comarca_plot
 </div>
 </div>
 
-<div class="row">
-  `r get_indicator_mod("Otros indicadores", "Recuadros característicos de cada temática, con las representaciones gráficas adecuadas para cada desagregación que se tiene de los datos.")`
+<div class="row" style="margin: 10px 0;">
+  `r get_indicator_mod("Otros indicadores", "Representaciones gráficas e indicadores de interés de la temática en cuestión.")`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="row">
+<div class="row" style="margin: -4px;">
 <div class="column indicator-title">
   <h3>Pirámide poblacional</h3>
 </div>
@@ -847,21 +847,6 @@ if(max(df_nacimientos$año) == params$año-1 | max(df_defunciones$año) == param
   cat(paste0("<div class='indicator-title-row' style='margin-top: 15px;'><h3>Lugares de nacimiento</h3></div><div class='highlight' style='width: 100% !important; margin-top: 10px; padding-top: 10px;'><div class='progress-bar-container'><div class='progress-bar-blue1' style='width:", porc_lugar_Canarias, "%'></div><div class='progress-bar-blue3' style='width:", porc_lugar_RestoEspaña, "%'></div><div class='progress-bar-blue6' style='width:", porc_lugar_OtroPais, "%'></div></div><div class='progressbar-legend-container'><div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Canarias<br/>", format(porc_lugar_Canarias_l, big.mark = ".", decimal.mark = ",", nsmall = 1), "%</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Resto de España<br/>", format(porc_lugar_RestoEspaña_l, big.mark = ".", decimal.mark = ",", nsmall = 1), "%</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Extranjero<br/>", format(porc_lugar_OtroPais_l, big.mark = ".", decimal.mark = ",", nsmall = 1), "%</div></div></div></div></div></div>"))
 }
 ```
-</div>
-
-</div>
-</div>
-
-<div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod("Logos", "")`
-
-<div class="column-modulo-right">
-<div class="highlight-modulo">
-<div class="logo-fecam">
-  <img src="img/fecam.jpeg" />
-</div>
-<div class="logo-istac"> 
-  <img src="img/logo_istac.png" />
 </div>
 
 </div>
