@@ -209,7 +209,11 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(id, code = mes, nombre, valor, tasa) %>%
   left_join(mes, by = "code") %>% 
-  filter(order < mes_actual$order+1 & substring(code, 0,4) != 2006)
+  filter(order < mes_actual$order+1)
+
+if(substring(mes_actual$code, 0,4) != 2009){
+  df <- df %>% filter(substring(code, 0,4) != 2008)
+}
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
