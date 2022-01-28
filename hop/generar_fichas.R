@@ -3,7 +3,7 @@ library(xml2)
 library(sf)
 library(tibble)
 library(tidyverse)
-library(jsonlite)
+library(RCurl)
 
 #Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
@@ -93,7 +93,8 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
       paste0(directory.rmd, ficha_actual$filename), 
       output_dir = dir.fichero, 
       output_file = nombre.fichero, 
-      params = option_params
+      params = option_params,
+      output_options = list(lib_dir = paste0('../', dir.fichero, '/libs'))
     )
  
   }
