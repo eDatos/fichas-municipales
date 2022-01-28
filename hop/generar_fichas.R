@@ -3,7 +3,7 @@ library(xml2)
 library(sf)
 library(tibble)
 library(tidyverse)
-library(RCurl)
+library(jsonlite)
 
 #Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
@@ -12,7 +12,7 @@ directory.output <- "output"
 df_init_data <-  read.csv("shiny/init-data.csv", encoding = "UTF-8", sep = ";") %>% 
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
-
+df_fichas <- read.csv("shiny/fichas.csv", encoding = "UTF-8", sep = ";")
 
 downloadData <- function() {
   for (i in 1:nrow(df_init_data)) {
@@ -26,6 +26,65 @@ downloadData <- function() {
       download.file(df_init_data$url[i], df_init_data$filepath[i])
     }
   }
+}
+
+get_resource_period_list <- function(init_data_row) {
+  source <- fromJSON(init_data_row$filepath) 
+  result <- NULL
+  if(grepl("/api/", init_data_row$url, fixed = T)) {
+    result <- names(source[["dimension"]][["TIME"]][["representation"]]$index)
+    if(is.null(result)) {
+      result <- source[["dimension"]][["TIME"]][["representation"]]$title$es
+      if(is.null(result)) {
+        result <- source$metadata$temporalCoverages$item$id
+      }
+    }
+  } else {
+    result <- source$categories$labels[[which(source$categories$variable == source$temporals)]]
+  }
+  if(any(grepl("-", result))) {
+    result <- data.frame(code = result) %>% 
+      left_join(fromJSON(df_init_data[df_init_data$name == 'mes', ]$filepath)[["dimension"]][["TIME"]][["representation"]], by = "code") %>%
+      filter(!is.na(title$es))
+    result <- result$title$es
+  }
+  result
+}
+
+get_resources_period <- function(df_init_data) {
+  result <- get_resource_period_list(df_init_data[1, ])
+  for(i in 2:nrow(df_init_data)) {
+    result <- intersect(result, get_resource_period_list(df_init_data[i, ]))
+  }
+  result
+}
+
+get_periods_df <- function(df_init_data, df_fichas_row) {
+  periods <- get_resources_period(df_init_data[grepl(df_fichas_row['code'], df_init_data[,'fichas'], fixed = T) & df_init_data['periodico'] == 1, ])
+  time_period <- df_fichas_row$periodicidad
+  if(time_period =='A') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA)
+  } else if(time_period == 'Q') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
+      mutate(A = strsplit(sub(" ", ";", A), split = ';', )) %>% 
+      unnest_wider('A') %>% 
+      select(code, A = ...1, Q = ...2, M) %>%
+      filter(Q %in% c("Marzo", "Junio", "Septiembre", "Diciembre", "Primer trimestre", "Segundo trimestre", "Tercer trimestre", "Cuarto trimestre"))
+  } else if(time_period == 'M') {
+    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
+      mutate(A = strsplit(A, split = ' ')) %>% 
+      unnest_wider('A') %>% 
+      select(code, A = ...1, Q, M = ...2)
+  }
+  periods_df
+}
+
+get_total_periods <- function(df_init_data, df_fichas) {
+  total_periods <- data.frame()
+  for(i in 1:nrow(df_fichas)) {
+    total_periods <- bind_rows(total_periods, get_periods_df(df_init_data, df_fichas[i,]))
+  }
+  total_periods
 }
 
 loadMunicipios <- function() {
@@ -61,8 +120,7 @@ loadMunicipios <- function() {
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
 }
 
-df_fichas <- read.csv("shiny/fichas.csv", encoding = "UTF-8", sep = ";")
-periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",")
+periods <- get_total_periods(df_init_data, df_fichas)
 
 municipios <- loadMunicipios()
 
@@ -94,7 +152,9 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
       output_dir = dir.fichero, 
       output_file = nombre.fichero, 
       params = option_params,
-      output_options = list(lib_dir = paste0('../', dir.fichero, '/libs'))
+      output_options = list(
+        lib_dir = paste0('../', dir.fichero, '/js'),
+        css = paste0('../resources/css/FICHA.css'))
     )
  
   }
@@ -124,7 +184,7 @@ generarFichas <- function(municipios, df_fichas, periods) {
 
 downloadData()
 
-generarFicha(2017, 'demografia', 'A', NA, NA, 35003)
+#generarFicha(2017, 'demografia', 'A', NA, NA, 35003)
 
-#generarFichas(municipios, df_fichas %>% filter(code == 'paro'), periods %>% filter(A > 2003))
+generarFichas(municipios, df_fichas %>% filter(code == 'demografia'), periods)
 
