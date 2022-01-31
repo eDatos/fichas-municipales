@@ -13,10 +13,7 @@ crec_veg;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion
 lugar;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=f0c5c903-5648-4822-80be-8da4d3927b98;demografia ;1
 nacionalidad;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a0df911-8098-4b6b-8002-bbfffa892cbc;demografia ;1
 mes;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97;paro ;0
-parados;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/9de5166a-c9d0-4e56-bf73-42a6e07f5a97/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%7CANNUAL_PUNTUAL_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;paro ;1
-ind_paro_M;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/1b3dffb7-faa4-4b41-931b-68d7d384c706/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D;paro ;1
-ind_paro_H;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/68af63ed-db2b-4825-96be-69d94df6469f/data?representation=GEOGRAPHICAL%2CMEASURE%5BABSOLUTE%5D;paro ;1
-piramide_paro;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=abc2a458-df6a-41eb-bc66-661b6e5c70fb;paro ;1
+parados;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=abc2a458-df6a-41eb-bc66-661b6e5c70fb;paro ;1
 paro_se;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7c423bf5-3b26-4e21-aca3-f3745d461ec2;paro ;1
 paro_sexo_est;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4aa1f89e-bc23-4b31-97a9-55a95fea782f;paro ;1
 afil_r;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ffd9beb1-b9f0-477c-9a44-480397986f84;afiliacion_residencia ;1
