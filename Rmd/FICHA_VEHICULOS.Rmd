@@ -12,8 +12,6 @@ params:
   url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.parque_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
-  url.parque_hab: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_HABITANTE/data?granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.parque_hab_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS_HABITANTE/data?representation=representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9019908a-7837-4af4-bef0-b4cfa226cb15
   url.matr_tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=71de0bba-9447-4c77-8ba5-3e660f535233
 output:
@@ -646,10 +644,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina3.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico3.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina3.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico3.png"), "</div>"))
 }
 ```
 </div>
