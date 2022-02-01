@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35004
+  id_municipio: 38013
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -756,10 +756,10 @@ for(i in 1:data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dime
 
 df_cab_especies$valor <- as.numeric(df_cab_especies$valor)
 df_cab_especies <- df_cab_especies %>% transform(mun = if_else(mun == "38013_2007",  "38013", mun)) %>% 
-    left_join(df_especies_, by = "id_especie")
+  left_join(df_especies_, by = "id_especie")
 
 df_cab_especies_mun <- df_cab_especies %>%
-  filter(mun == municipio_actual$id & año == params$año & especie != "Total") %>% 
+  filter(mun == municipio_actual$id & año == params$año & especie != "Total") %>%
   arrange(-valor)
 
 especie_1 <- df_cab_especies_mun$especie[1]
@@ -771,6 +771,14 @@ especie_1_num <- df_cab_especies_mun$valor[1] %>% format(big.mark = ".", decimal
 especie_2_num <- df_cab_especies_mun$valor[2] %>% format(big.mark = ".", decimal.mark = ",")
 especie_3_num <- df_cab_especies_mun$valor[3] %>% format(big.mark = ".", decimal.mark = ",")
 especie_4_num <- df_cab_especies_mun$valor[4] %>% format(big.mark = ".", decimal.mark = ",")
+
+df_cab_especies_mun <- df_cab_especies %>%
+  filter(mun == municipio_actual$id & año == params$año)
+
+bovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Bovinos")] %>% format(big.mark = ".", decimal.mark = ",")
+caprinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Caprinos")] %>% format(big.mark = ".", decimal.mark = ",")
+ovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Ovinos")] %>% format(big.mark = ".", decimal.mark = ",")
+porcinos_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Porcinos")]] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 
@@ -921,12 +929,16 @@ mapa_comarca_plot
 
 <div class="column highlight" style="padding: 26px 0;">
 <div class="row" style="margin-bottom: 27px;">
-  <div class="column-2">`r get_indicator3(especie_1, especie_1_num, "./img/balanza.png")`</div> 
-  <div class="column-2">`r get_indicator3(especie_2, especie_2_num, "./img/balanza.png")`</div> 
+  <!-- <div class="column-2">`r get_indicator3(especie_1, especie_1_num, "./img/balanza.png")`</div>  -->
+  <!-- <div class="column-2">`r get_indicator3(especie_2, especie_2_num, "./img/balanza.png")`</div>  -->
+  <div class="column-2">`r get_indicator3("Bovinos", bovinos_num, "./img/balanza.png")`</div> 
+  <div class="column-2">`r get_indicator3("Caprinos", caprinos_num, "./img/balanza.png")`</div> 
 </div>
 <div class="row">
-  <div class="column-2">`r get_indicator3(especie_3, especie_3_num, "./img/balanza.png")`</div> 
-  <div class="column-2">`r get_indicator3(especie_4, especie_4_num, "./img/balanza.png")`</div> 
+  <!-- <div class="column-2">`r get_indicator3(especie_3, especie_3_num, "./img/balanza.png")`</div>  -->
+  <!-- <div class="column-2">`r get_indicator3(especie_4, especie_4_num, "./img/balanza.png")`</div>  -->
+  <div class="column-2">`r get_indicator3("Ovinos", ovinos_num, "./img/balanza.png")`</div> 
+  <div class="column-2">`r get_indicator3("Porcinos", porcinos_num, "./img/balanza.png")`</div> 
 </div>
 
 </div>
