@@ -493,7 +493,20 @@ if(Variacion == "NA"){
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
-<div class="barras-c">
+```{r tamaño gráfico de barras, results='asis'}
+if(nrow(df_plot_0) == 2) {
+  tamaño <- 158
+  }else if(nrow(df_plot_0) == 3) {
+    tamaño <- 19
+    }else if(nrow(df_plot_0) == 4) {
+      tamaño <- 240
+      }else if(nrow(df_plot_0) == 5) {
+        tamaño <- 280
+        }else if(nrow(df_plot_0) == 6) {
+          tamaño <- 310
+        }
+```
+<div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
   `r g_senado_mun`
 </div>
 

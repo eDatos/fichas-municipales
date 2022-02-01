@@ -483,7 +483,20 @@ if(Variacion == "NA"){
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 10px;">
-<div class="barras-c">
+```{r tamaño gráfico de barras, results='asis'}
+if(nrow(df_plot) == 2) {
+  tamaño <- 158
+  }else if(nrow(df_plot) == 3) {
+    tamaño <- 198
+    }else if(nrow(df_plot) == 4) {
+      tamaño <- 240
+      }else if(nrow(df_plot) == 5) {
+        tamaño <- 280
+        }else if(nrow(df_plot) == 6) {
+          tamaño <- 310
+        }
+```
+<div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
   `r g_municipales_mun`
 </div>
 
@@ -503,7 +516,6 @@ for (i in 1:nrow(df_representantes)) {
   for (j in 1:df_representantes$repr_elegidos[i]) {
     cat(paste0(
       "<div class='image'><img src='./img/butaca.png'></img></div>"))
-      # "<div class='image'><img src='./img/representantes.png'></img></div>"))
   }
   cat(paste0("</div></div></div>"))
 }
