@@ -1,0 +1,461 @@
+---
+title: ''
+params:
+  id_municipio: 38013
+  año: 2020
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+  url.IBI: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31089A_000001/~latest.json?dim=MEDIDAS:BASE_IMPONIBLE|CUOTA_INTEGRA|CUOTA_LIQUIDA|TIPO_IMPOSITIVO:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) { ifelse(value > 0, "más", "menos") }
+
+"%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 20) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = sub("\\_.*", "", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+# Frontera
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(año %in% c(2008:max(año)) & mun == "38013_1912"),
+                df %>% filter(año %in% c(2001:2007) & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+  
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1:3,]
+}
+```
+
+```{r Gráfico evolución del presupuesto}
+# Estadística del Impuesto sobre los Bienes Inmuebles (IBI en miles de euros).
+data_IBI <- fromJSON(params$url.IBI)
+dI <- length(rep(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                        length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]))) -
+      length(unlist(strsplit(data_IBI[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
+df_IBI <- data.frame(tipo = rep(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                                each = length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                       length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                                       length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                     medidas = rep(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                                   each = length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                                          length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                     mun = rep(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                               each = length(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                     año = rep(data_IBI[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]),
+                     valor = c(unlist(strsplit(data_IBI[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dI)))
+df_IBI$valor <- as.numeric(df_IBI$valor)
+df_IBI$mun <- recode_id_Frontera(df_IBI, 'mun')
+df_IBI_urbano <- df_IBI[with(df_IBI, order(año)), ] %>%
+  filter(tipo == "URBANO" & medidas == "BASE_IMPONIBLE") %>%
+  select(!c(tipo, medidas)) %>%
+  mutate(valor_M = round(valor / 10^3, 1), año = as.integer(año))
+
+related_mun <- df_IBI_urbano %>% filter(año == params$año)
+related_mun <- seleccion_mun(related_mun  %>% select(mun, valor), 'valor')
+
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Base imponible: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Base imponible: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_IBI_urbano, by = "mun") %>%
+  select(id = mun, año, nombre, valor, valor_M) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(año, mun = id, nombre, valor, valor_M) %>% 
+  mutate(tasa =  round(100*((valor / lag(valor)) - 1), 1))
+
+if(params$año == 1990){
+  df <- df %>% filter(año %in% c(1990,1991,1992))
+  }else if(params$año == 1991){
+    df <- df %>% filter(año <= params$año)
+    }else{
+      df <- df %>% filter(año != 1990 & año <= params$año)
+    }
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
+leyenda_poblacion <- df %>% filter(año == params$año) %>%
+  mutate(valor = ifelse(is.na(valor_M), " -", paste0(format(valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
+
+df <- df %>% mutate(
+    tooltip = ifelse(año == params$año,
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor_M), " -", paste0(format(valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor_M), " -", paste0(format(valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")), ' (',año,')'),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    )
+) 
+
+g_line <- ggplot(data = df, aes(x = año)) +
+  geom_line(size = 0.7, aes(y = valor_M, group = nombre, colour = nombre, text = tooltip)) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_x_continuous(breaks = function(x){seq(from = min(df$año), to = max(df$año), by = as.integer((max(df$año)-min(df$año))/3))}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), " mill.")}, n.breaks = 5, limits = c(0, NA))
+
+g_line <- ggplotly(g_line, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(min(df$año), params$año - 18), params$año),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
+  onRender("
+    function(el) {
+      var municipios = document.getElementsByClassName('sp-municipio');
+      var contents = document.getElementsByClassName('sp-content');
+
+      el.on('plotly_hover', function(d) {
+        console.log(d);
+        highlight(d);
+      });
+      
+      el.on('plotly_unhover', function(d) {
+        reset(d);
+      });
+      
+      el.on('plotly_click', function(d) {
+        highlight(d);
+      });
+      
+      function highlight(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x = d.points[point].x;
+              contents[i].innerHTML = d.points[point].text;
+            }
+          }
+        }
+      }
+      
+      function reset(d) {
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var fullTexts = d.points[point].fullData.text;
+              contents[i].innerHTML = fullTexts[fullTexts.length - 1];
+            }
+          }
+        }
+      }
+    }
+  ")
+```
+
+```{r Indicador evolución del presupuesto}
+df_lv <- df %>% 
+  filter(mun == params$id_municipio & año %in% c(params$año, params$año-1))
+
+Base_imponible <-  format(round(df_lv$valor_M[df_lv$año == params$año], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- format(df_lv$tasa[df_lv$año == params$año], big.mark =".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+```
+
+```{r Indicadores}
+df_indicadores <- df_IBI %>%
+  filter(mun == params$id_municipio & año == params$año) %>%
+  mutate(valor_M = round(valor / 10^3, 1)) %>%
+  select(!c(mun,año))
+
+Tipo_impositivo_urbano <- df_indicadores %>%
+  filter(tipo == "URBANO" & medidas == "TIPO_IMPOSITIVO") %>% select(valor) %>% 
+  as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+Base_imponible_rustico <- df_indicadores %>%
+  filter(tipo == "RUSTICO" & medidas == "BASE_IMPONIBLE") %>% select(valor_M) %>% 
+  as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+Tipo_impositivo_rustico <- df_indicadores %>%
+  filter(tipo == "RUSTICO" & medidas == "TIPO_IMPOSITIVO") %>% select(valor) %>% 
+  as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Rankings}
+df_ranking <- df_IBI_urbano %>%
+  select(año, id = mun, valor) %>%
+  filter(año == params$año & !is.na(valor)) %>%
+  inner_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(valor))
+
+rk_canarias <- grep(params$id_municipio, df_ranking$id)
+num_mun_canarias <- nrow(df_ranking)
+percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / sum(df_ranking$valor) * 100, 1),
+                           big.mark=".",decimal.mark = ",", nsmall = 1)
+
+df_ranking_isla <- df_ranking %>% filter(isla == municipio_actual$isla)
+rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
+num_mun_isla <- nrow(df_ranking_isla)
+percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / sum(df_ranking_isla$valor) * 100, 1), 
+                       big.mark=".",decimal.mark = ",", nsmall = 1)
+
+df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
+rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
+num_mun_comarca <- nrow(df_ranking_comarca)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1),
+                          big.mark=".",decimal.mark = ",", nsmall = 1)
+```
+
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator4 = function(title, label, value) {
+  return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
+}
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$año`</h3>
+<h2 style="color: #666; margin: 0;">Base imponible de bienes urbanos</h2>
+<hr>
+
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 64, 34)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
+<h2 style="color: #005980; margin-bottom: 0;">`r Base_imponible` miles de €</h2>
+<div class="linechart">
+  `r g_line`
+</div>
+
+<div id="hover-event-placeholder" class="column-4">
+```{r leyendas, results = "asis"}
+for (i in 1:nrow(leyenda_poblacion)) {
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
+}
+```
+</div>
+</div>
+
+<div class="row" style="margin: 15px 0;">
+```{r Indicadores principales, results='asis'}
+# if(Variacion_Porcentual == "NA" & GAP == "NA"){
+#     cat(paste0(
+#       "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+#     }else{
+#       if(Variacion_Porcentual == "NA" & GAP != "NA"){
+#         cat(paste0(
+#           "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+#         }else{
+#           if(Variacion_Porcentual != "NA" & GAP == "NA"){
+#             cat(paste0(
+#               "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+#           }else{
+#             cat(paste0(
+#               "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+#           }
+#         }
+#     }
+```
+<div class='column-4'> `r get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion)`</div>
+<div class='column-4'> `r get_indicator2('Tipo<br>impositivo<br>urbano', paste0(Tipo_impositivo_urbano, '%'), './img/ingresos-blue.png')`</div>
+<div class='column-4'> `r get_indicator2('Base<br>imponible', paste0(Base_imponible_rustico, '€'), './img/gastos-blue.png')`</div>
+<div class='column-4'> `r get_indicator2('Tipo<br>impositivo<br>rústico', paste0(Tipo_impositivo_rustico, '%'), './img/ingresos-blue.png')`</div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+<div class="column-3">
+  <div class="indicator-map">
+  <div class="image map-canarias">
+```{r} 
+mapa_Canarias_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
+  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_isla_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
+  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_comarca_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_comarca`º </span>en la comarca</p>
+  <p class="label2">de `r num_mun_comarca` municipios (`r percent_comarca`%)</p>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
+
