@@ -4,6 +4,7 @@ library(sf)
 library(tibble)
 library(tidyverse)
 library(jsonlite)
+library(RCurl)
 
 #Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
@@ -140,7 +141,7 @@ periods <- get_total_periods(df_init_data, df_fichas) %>%
 municipios <- loadMunicipios()
 
 generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municipio) {
-  dir.fichero <- paste0("./output/", id_ficha, "/", ano, "/")
+  dir.fichero <- paste0("output/", id_ficha, "/", ano, "/")
   ficha_actual <- df_fichas[df_fichas$code == id_ficha,]
   nombre.fichero <- paste0(id_ficha, "_",
                            ifelse(periodicidad == "M", paste0(periodicidad, mes, "_"), ""),
@@ -169,7 +170,7 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
       params = option_params,
       output_options = list(
         lib_dir = paste0('../', dir.fichero, '/js'),
-        css = paste0('../resources/css/FICHA.css'))
+        css = paste0('../../resources/css/FICHA.css'))
     )
  
   }
