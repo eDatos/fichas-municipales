@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38003
+  id_municipio: 35003
   convocatoria: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
@@ -494,6 +494,8 @@ if(nrow(df_plot) == 2) {
         tamaño <- 280
         }else if(nrow(df_plot) == 6) {
           tamaño <- 310
+        }else{
+          tamaño <- 354
         }
 ```
 <div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
