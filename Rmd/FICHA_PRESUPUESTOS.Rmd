@@ -774,7 +774,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){
     cat(paste0(
-      "<div class='column-2'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+      "<div class='column-2-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
       if(Variacion_Porcentual == "NA" & GAP != "NA"){
         cat(paste0(
