@@ -113,6 +113,18 @@ recode_mun <- function(df, colname) {
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
   df[,colname]
 }
+# Frontera
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(proceso != "CABILDO_2007" & mun == "38013_1912"),
+                df %>% filter(proceso == "CABILDO_2007" & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
 ```
 
 ```{r Municipios relacionados}
@@ -167,6 +179,8 @@ df_participacion <- data.frame(
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
+df_participacion <- recode_Frontera(df_participacion)
+df_participacion$mun <- recode_id_Frontera(df_participacion, 'mun')
 df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
 related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
