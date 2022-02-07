@@ -165,7 +165,7 @@ df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(m
 df_u <- df_u[with(df_u, order(periodo)), ]
 
 related_mun <- df_u %>% filter(periodo == periodo_actual$code)
-related_mun <- seleccion_mun(related_mun %>% select(mun , valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
@@ -173,7 +173,7 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df <- related_mun %>%
-  select(mun = "mun", nombre) %>%
+  select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, nombre, periodo, valor) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
@@ -184,6 +184,9 @@ df <- related_mun %>%
 
 if(substring(periodo_actual$code, 0,4) != 2019){
   df <- df %>% filter(substring(code, 0,4) != 2018)
+  rango <- c(max(0.8, nrow(df[df$mun == params$id_municipio, ]) - 5*4 - 0.2), nrow(df[df$mun == params$id_municipio, ]))
+}else{
+  rango <- c(max(0.8, max(df$order) - 5*4 - 0.2), df$order[df$code == periodo_actual$code & df$mun == params$id_municipio])
 }
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
@@ -207,7 +210,7 @@ df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>%
       )
     )
 
-g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -225,8 +228,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(0.8, nrow(df[df$mun == params$id_municipio, ]) - 5*4 - 0.2), 
-                                df$order[df$code == periodo_actual$code & df$mun == params$id_municipio]),
+                      range = rango,
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -274,9 +276,9 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```{r Indicador evolución de los gastos medios}
 ind_GM <- df %>% filter(mun == params$id_municipio & code %in% c(periodo_actual$code, periodo_tva$code))
 
-Num_GM_num <- ind_GM %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric()
+Num_GM_num <- ind_GM %>% filter(code == periodo_actual$code) %>% select(valor) %>% as.numeric()
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual <- ind_GM %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_GM %>% filter(code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
