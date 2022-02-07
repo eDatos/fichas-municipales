@@ -1,10 +1,18 @@
-code;description;filename;periodicidad
-demografia;Indicadores demográficos;FICHA.Rmd;A
-paro;Paro registrado;FICHA_PARO.Rmd;M
-afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q
-afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q
-presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A
-alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes.Rmd;M
-perfil;Perfil del turista;FICHA_TURISMO_año.Rmd;A
-gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q
-gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q
+code;description;filename;periodicidad;glosario
+demografia;Indicadores demográficos;FICHA.Rmd;A;GLOSARIO_DEMOGR
+paro;Paro registrado;FICHA_PARO.Rmd;M;GLOSARIO_PARO
+afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q;GLOSARIO_AFIL_RESID
+afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q;GLOSARIO_AFIL_COTIZ
+presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A;GLOSARIO_PRESUPUESTOS
+alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes.Rmd;M;GLOSARIO_TURISMO_mes
+perfil;Perfil del turista;FICHA_TURISMO_año.Rmd;A;GLOSARIO_TURISMO_año
+gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO
+gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia
+europeas;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS;A;GLOSARIO_EUROPEAS
+congreso;Resultados de las Elecciones al Congreso;FICHA_CONGRESO;A;GLOSARIO_CONGRESO
+senado;Resultados de las Elecciones al Senado;FICHA_SENADO;A;GLOSARIO_SENADO
+autonomicas;Resultados de las Elecciones Autónomicas;FICHA_AUTONOMICAS;A;GLOSARIO_AUTONOMICAS
+cabildo;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO;A;GLOSARIO_CABILDO
+municipales;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES;A;GLOSARIO_MUNICIPALES
+vehiculos;Parque de vehículos;FICHA_VEHICULOS;M;GLOSARIO_VEHICULOS
+primario;Sector primario;FICHA_PRIMARIO;A;GLOSARIO_PRIMARIO
