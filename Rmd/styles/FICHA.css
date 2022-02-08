@@ -723,7 +723,13 @@ h4, h5 {
   float: center;
   vertical-align: middle;
   width: 100%;
-  padding-left: 10px;
+  padding: 0 110px;
   margin-top: 12px;
   display: grid;
+}
+.indicator5 .label {
+    color: #666;
+    font-size: 13px;
+    padding: 0;
+    text-align: center;
 }

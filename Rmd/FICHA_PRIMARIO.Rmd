@@ -745,7 +745,7 @@ mapa_comarca_plot
 <div class="row">
 <div class="column highlight" style="padding: 10px 0 20px;">
 <div class="row">
-<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_herbaceos_num` ha</p></div></div>
+<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_herbaceos_num` ha</p><hr class='separator'><p class='label'>Superficie cultivada</p></div></div>
 </div>
 <div class="piramide" style="height: 300px">
   `r g_herbaceos`
@@ -755,7 +755,7 @@ mapa_comarca_plot
 
 <div class="column highlight" style="padding: 10px 0 20px;">
 <div class="row">
-<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_leñosos_num` ha</p></div></div>
+<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_leñosos_num` ha</p><hr class='separator'><p class='label'>Superficie cultivada</p></div></div>
 </div>
 <div class="piramide" style="height: 300px">
   `r g_leñosos`
