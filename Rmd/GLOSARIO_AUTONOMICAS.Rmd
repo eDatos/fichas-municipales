@@ -20,7 +20,7 @@ get_indicator_met_ = function(label, description) {
 
 <!-- HTML -->
 <h1>Glosario de conceptos de medida</h1>
-<h2>Resultados de las Elecciones Autonómicas</h2>
+<h2>Resultados de las Elecciones Autonómicas.<br>Circunscripciones insulares</h2>
 <hr>
 
 <div class="row highlight card-columns-3">
