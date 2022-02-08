@@ -18,6 +18,8 @@ output:
   html_document:
     df_print: paged
     css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
 always_allow_html: true
 ---
 
@@ -285,9 +287,12 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');
       var contents = document.getElementsByClassName('sp-content');
-
+      var init_contents = [];
+      for (var i = 0; i < municipios.length; i++) {
+        init_contents[i] = contents[i].innerHTML;
+      }
+      
       el.on('plotly_hover', function(d) {
-        console.log(d);
         highlight(d);
       });
       
@@ -300,6 +305,9 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       });
       
       function highlight(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
+        }
         for (point in d.points) {
           for (var i = 0; i < municipios.length; i++) {
             if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
@@ -311,13 +319,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
       
       function reset(d) {
-        for (point in d.points) {
-          for (var i = 0; i < municipios.length; i++) {
-            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
-              var fullTexts = d.points[point].fullData.text;
-              contents[i].innerHTML = fullTexts[fullTexts.length - 1];
-            }
-          }
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = init_contents[i];
         }
       }
     }
