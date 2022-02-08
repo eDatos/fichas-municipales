@@ -445,7 +445,7 @@ get_indicator4 = function(title, label, value) {
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r convocatoria_actual$convocatoria_formatted`</h3>
+<h3 style="color: #999; margin: 33px 20px 0; float: right;">`r convocatoria_actual$convocatoria_formatted`</h3>
 <h2 style="color: #666; margin: 0;">Resultados de las Elecciones Autonómicas.<br>Circunscripciones insulares</h2>
 <hr>
 
