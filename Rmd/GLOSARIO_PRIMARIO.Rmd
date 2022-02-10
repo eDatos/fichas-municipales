@@ -32,7 +32,7 @@ get_indicator_met_ = function(label, description) {
   `r get_indicator_met_("Superficie cultivada", ".")`
   `r get_indicator_met_("Superficie cultivada de secano", ".")`
   `r get_indicator_met_("Superficie cultivada de regadío", ".")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en los m<sup>2</sup> pertenecientes a un determinado ámbito en un año concreto.")`</div>
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en las hectáreas pertenecientes a un determinado ámbito en un año concreto.")`</div>
 </div>
 
 
