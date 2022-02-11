@@ -19,6 +19,8 @@ output:
   html_document:
     df_print: paged
     css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
 always_allow_html: true
 ---
 
@@ -58,7 +60,7 @@ CL_AREA <- as_list(read_xml(params$url.cl_area))
 
 df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
@@ -153,7 +155,6 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 
 ```{r Gráfico evolución de los gastos medios turísticos}
 # Gastos medios según sexos y grupos de edades por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
-GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
 df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
 colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor')
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
@@ -171,24 +172,27 @@ related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, nombre, periodo, valor) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(code = periodo, id, nombre, valor) %>%
+  select(code = periodo, mun = id, nombre, valor) %>%
   left_join(periodo, by = "code") %>%
   mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
   filter(code <= periodo_actual$code)
 
 if(substring(periodo_actual$code, 0,4) != 2019){
   df <- df %>% filter(substring(code, 0,4) != 2018)
+  rango <- c(max(0.8, nrow(df[df$mun == params$id_municipio, ]) - 5*4 - 0.2), nrow(df[df$mun == params$id_municipio, ]))
+}else{
+  rango <- c(max(0.8, max(df$order) - 5*4 - 0.2), df$order[df$code == periodo_actual$code & df$mun == params$id_municipio])
 }
 
 año_min <- min(as.integer(substring(df$code, 0,4)))
 año_max <- max(as.integer(substring(df$code, 0,4)))
-
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
 df <- df %>%
   mutate(valor_l = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
@@ -208,7 +212,7 @@ df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>%
       )
     )
 
-g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -226,16 +230,18 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(0.8, nrow(df[df$nombre == municipio_actual$municipio, ]) - 5*4 - 0.2), 
-                                df$order[df$code == periodo_actual$code & df$id == params$id_municipio]),
+                      range = rango,
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');
       var contents = document.getElementsByClassName('sp-content');
-
+      var init_contents = [];
+      for (var i = 0; i < municipios.length; i++) {
+        init_contents[i] = contents[i].innerHTML;
+      }
+      
       el.on('plotly_hover', function(d) {
-        console.log(d);
         highlight(d);
       });
       
@@ -248,6 +254,9 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       });
       
       function highlight(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
+        }
         for (point in d.points) {
           for (var i = 0; i < municipios.length; i++) {
             if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
@@ -259,13 +268,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
       
       function reset(d) {
-        for (point in d.points) {
-          for (var i = 0; i < municipios.length; i++) {
-            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
-              var fullTexts = d.points[point].fullData.text;
-              contents[i].innerHTML = fullTexts[fullTexts.length - 1];
-            }
-          }
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = init_contents[i];
         }
       }
     }
@@ -273,11 +277,11 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Indicador evolución de los gastos medios}
-ind_GM <- df %>% filter(id == params$id_municipio & code %in% c(periodo_actual$code, periodo_tva$code))
+ind_GM <- df %>% filter(mun == params$id_municipio & code %in% c(periodo_actual$code, periodo_tva$code))
 
-Num_GM_num <- ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric()
+Num_GM_num <- ind_GM %>% filter(code == periodo_actual$code) %>% select(valor) %>% as.numeric()
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion_Porcentual <- ind_GM %>% filter(id == params$id_municipio & code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_GM %>% filter(code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
 ```
 
@@ -672,7 +676,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    '<div class="column-2">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-2-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
     '<div class="column-3-ind">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))

@@ -26,7 +26,7 @@ get_indicator_met_ = function(label, description) {
 <div class="row highlight card-columns-3">
   `r get_indicator_met_("Matriculaciones", "Número de vehículos matriculados durante el periodo de referencia.")`
   `r get_indicator_met_("Parque de vehículos", "Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes. Se incluyen todos los vehículos de motor, remolques y semirremolques que han obtenido el permiso de circulación. Los ciclomotores no se incluyen en las cifras del parque nacional de vehículos.")`
-  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito en un periodo concreto.")`
+  `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de vehículos pertenecientes a un determinado ámbito en un periodo concreto.")`
   `r get_indicator_met_("Turismos", "Automóviles destinados al transporte de personas que tengan, por lo menos, cuatro ruedas y que tengan, además del asiento del conductor, ocho plazas como máximo.")`
   `r get_indicator_met_("Vehículos", "Se incluyen todos los vehículos de motor que sirven, normalmente, para el transporte de personas o cosas, o de ambas a la vez, o para la tracción de vehículos con aquel fin. También se incluyen los ciclomotores, los vehículos para personas de movilidad reducida, los tranvías, los vehículos especiales y los remolques y semirremolques.")`
 </div>

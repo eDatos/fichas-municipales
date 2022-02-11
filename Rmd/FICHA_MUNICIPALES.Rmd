@@ -14,6 +14,8 @@ output:
   html_document:
     df_print: paged
     css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
 always_allow_html: yes
 ---
 
@@ -113,6 +115,18 @@ recode_mun <- function(df, colname) {
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
   df[,colname]
 }
+# Frontera
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(proceso != "MUNICIPALES_2007" & mun == "38013_1912"),
+                df %>% filter(proceso == "MUNICIPALES_2007" & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
 ```
 
 ```{r Municipios relacionados}
@@ -167,6 +181,8 @@ df_participacion <- data.frame(
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
+df_participacion <- recode_Frontera(df_participacion)
+df_participacion$mun <- recode_id_Frontera(df_participacion, 'mun')
 df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
 related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
@@ -229,12 +245,27 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
     function(el) {
       var municipios = document.getElementsByClassName('sp-municipio');
       var contents = document.getElementsByClassName('sp-content');
-
-      el.on('plotly_hover', function(d) { highlight(d); });
-      el.on('plotly_unhover', function(d) { reset(d); });
-      el.on('plotly_click', function(d) { highlight(d); });
+      var init_contents = [];
+      for (var i = 0; i < municipios.length; i++) {
+        init_contents[i] = contents[i].innerHTML;
+      }
+      
+      el.on('plotly_hover', function(d) {
+        highlight(d);
+      });
+      
+      el.on('plotly_unhover', function(d) {
+        reset(d);
+      });
+      
+      el.on('plotly_click', function(d) {
+        highlight(d);
+      });
       
       function highlight(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
+        }
         for (point in d.points) {
           for (var i = 0; i < municipios.length; i++) {
             if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
@@ -246,13 +277,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
       }
       
       function reset(d) {
-        for (point in d.points) {
-          for (var i = 0; i < municipios.length; i++) {
-            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
-              var fullTexts = d.points[point].fullData.text;
-              contents[i].innerHTML = fullTexts[fullTexts.length - 1];
-            }
-          }
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = init_contents[i];
         }
       }
     }
@@ -505,7 +531,7 @@ if(nrow(df_plot) == 2) {
 </div>
 
 <div class="indicator-title-row">
-  <h3>Representantes elegidos</h3>
+  <h3>Concejales/Concejalas</h3>
 </div>
 
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 40px;">
