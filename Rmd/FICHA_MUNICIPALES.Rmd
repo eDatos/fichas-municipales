@@ -520,9 +520,9 @@ if(nrow(df_plot) == 2) {
         tamaño <- 280
         }else if(nrow(df_plot) == 6) {
           tamaño <- 310
-        }else{
-          tamaño <- 354
-        }
+          }else{
+            tamaño <- 354
+          }
 ```
 <div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
   `r g_municipales_mun`
