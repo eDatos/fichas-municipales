@@ -1,16 +1,11 @@
 library(shiny)
 library(jsonlite)
 library(tibble)
-#library(plyr)
 library(dplyr)
 library(sf)
-#library(funr)
-#library(shinyscreenshot)
 library(xml2)
 library(tidyverse)
 library(bslib)
-#library(RCurl)
-#library(webshot)
 
 addResourcePath("frames", getwd())
 directory.data <- "../data/"
@@ -105,7 +100,7 @@ ui <- fluidPage(
     "function resizeIframe(obj) {
       obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
       var cssLink = document.createElement('link');
-      cssLink.href = '../../www/styles.css'; 
+      cssLink.href = '../../../www/styles.css'; 
       cssLink.rel = 'stylesheet'; 
       cssLink.type = 'text/css'; 
       obj.contentWindow.document.head.appendChild(cssLink);
@@ -130,6 +125,15 @@ server <- function(input, output) {
       select(isla, id_isla) %>% unique %>% deframe
   })
   
+  option_island_2 <- reactive({
+    periods %>% 
+      filter(id_ficha == input$id_ficha_2) %>% 
+      select(id = id_municipio) %>%
+      unique %>%
+      left_join(municipios, by = "id") %>%
+      select(isla, id_isla) %>% unique %>% deframe
+  })
+  
   option_mun <- reactive({ 
     periods %>% 
       filter(id_ficha == input$id_ficha) %>% 
@@ -143,7 +147,7 @@ server <- function(input, output) {
   
   option_mun_2 <- reactive({ 
     periods %>% 
-      filter(id_ficha == input$id_ficha) %>% 
+      filter(id_ficha == input$id_ficha_2) %>% 
       select(id = id_municipio) %>%
       unique %>%
       left_join(municipios, by = "id") %>% 
@@ -198,14 +202,13 @@ server <- function(input, output) {
   })
   
   output$report_2 <- renderUI({
-    dir.fichero <- paste0("./output/",input$año_2, "/")
-    ficha_actual <- df_fichas[df_fichas$code == input$id_ficha_2,]
-    nombre.fichero <- paste0(input$id_ficha_2, "_",
-                             input$año, "_",
-                             ifelse(periodicidad2() == "M", paste0(periodicidad2(), input$mes_2, "_"), ""),
-                             ifelse(periodicidad2() == "Q", paste0(periodicidad2(), as.numeric(input$trimestre_2), "_"), ""),
-                             input$id_municipio_2, ".html")
-    iframe_2 <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+    if(periodicidad2() == "M") {
+      path_fichero <- path_fichero %>% filter(period == input$mes_2)
+    } else if(periodicidad2() == "Q") {
+      path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
+    }
+    iframe_2 <- tags$iframe(src=paste('frames', path_fichero$path, sep= "/"), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
   })
   
   observeEvent(input$download, {
@@ -256,7 +259,12 @@ server <- function(input, output) {
       deframe
   })
   
-  option_year_2 <- reactive({  periods %>% filter(code %in% input$id_ficha_2) %>% select(A) %>% deframe })
+  option_year_2 <- reactive({ 
+    periods %>% 
+      filter(id_ficha %in% input$id_ficha_2 & id_municipio == input$id_municipio_2) %>% 
+      select(A) %>% 
+      deframe 
+  })
  
   option_month <- reactive({
     periods %>% 
@@ -272,19 +280,19 @@ server <- function(input, output) {
   
   option_month_2 <- reactive({
     periods %>% 
-      filter(code %in% input$id_ficha_2 & A %in% input$año_2) %>% 
-      select(M) %>%
+      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
+      select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
-                   id = 1:12),
-        by ='M') %>% 
+                   id = as.character(1:12)),
+        by ='id') %>% 
+      select(M, id) %>%
       deframe
   })
   
   option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
-    
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
       select(id = period) %>%
@@ -299,19 +307,19 @@ server <- function(input, output) {
   
   option_trim_2 <- reactive({
     periods %>% 
-      filter(code %in% input$id_ficha_2 & A %in% input$año_2) %>% 
-      select(mes = Q) %>%
+      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
+      select(id = period) %>%
       left_join(
         data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c(3, 6, 9, 12),
+                   id = c("3", "6", "9", "12"),
                    Q = paste0("Trimestre ", seq(1:4))),
-        by ='mes') %>% 
+        by ='id') %>% 
       select(Q, id) %>%
       deframe
   })
   
   output$select_island <- renderUI({ selectInput("id_isla", h3("Isla"), choices = option_island()) })
-  output$select_island_2 <- renderUI({ selectInput("id_isla_2", "", choices = option_island()) })
+  output$select_island_2 <- renderUI({ selectInput("id_isla_2", "", choices = option_island_2()) })
   
   output$select_mun <- renderUI({ selectInput("id_municipio", h3("Municipio"), choices = option_mun()) })
   output$select_mun_2 <- renderUI({ selectInput("id_municipio_2", "", choices = option_mun_2()) })
