@@ -84,7 +84,7 @@ get_periods_from_files <- function(df_fichas) {
             path = output_filepaths) %>%
             transform(id_municipio = sub(paste0(".*", id_ficha, "_.*_"), "", filename), period = sub(paste0(".*", id_ficha, "_"), "", filename)) %>%
             transform(id_municipio = sub(".html", "", id_municipio), period = sub("_.*.html", "", period)) %>% 
-            transform(period = sub("Q", "", period)) %>% 
+            transform(period = sub("Q|M", "", period)) %>% 
             select(-filename)
         }
         output_periods <- rbind(
@@ -112,8 +112,6 @@ ui <- fluidPage(
     }"
   )),
   htmlOutput('header'),
-  
-  #downloadButton(outputId = "downloader", label = "Download PDF"),
   uiOutput("fichas"),
   htmlOutput('footer'),
 )
@@ -121,8 +119,6 @@ ui <- fluidPage(
 server <- function(input, output) {
   df_fichas <- data.frame(code = list.dirs(path = directory.output, recursive = F, full.names = F)) %>% left_join(read.csv("fichas.csv", sep = ";"), by = "code") %>% filter(!is.na(periodicidad))
   periods <- get_periods_from_files(df_fichas)
-#  periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",")
-  
   municipios <- loadMunicipios()
   
   option_island <- reactive({
@@ -171,7 +167,6 @@ server <- function(input, output) {
     ficha_actual$periodicidad
   })
   
-
   periodicidad2 <- reactive({
     ficha_actual <- df_fichas[df_fichas$code == input$id_ficha_2,]
     ficha_actual$periodicidad
@@ -266,11 +261,12 @@ server <- function(input, output) {
   option_month <- reactive({
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
-      select(M = period) %>%
+      select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
-               id = 1:12),
-        by ='M') %>% 
+               id = as.character(1:12)),
+        by ='id') %>% 
+      select(M, id) %>%
     deframe
   })
   
@@ -361,15 +357,6 @@ server <- function(input, output) {
       column(1, actionButton(inputId = "minus", label = "Quitar ficha"))
       #column(1, actionButton("download", "Descargar"))
     )
-    
-    #fluidRow(
-    #  column(3, selectInput("id_municipio_2", h3("Municipio"), choices = municipios)),
-    #  column(3, selectInput("año_2", h3("Año"), choices = seq(2001, 2020), selected = 2020)),
-    #  conditionalPanel(condition = 'output.periodicidad_2 == "M"', column(3, selectInput("mes_2", h3("Mes"), choices = seq(1, 12), selected = 1))),
-    #  conditionalPanel(condition = 'output.periodicidad_2 == "Q"', column(3, selectInput("trimestre_2", h3("Trimestre"), choices = seq(1, 4), selected = 1))),
-    #  column(1, actionButton(inputId = "minus", label = "Quitar ficha")),
-    #  column(1, actionButton("download_2", "Descargar"))
-    #)
   )
   
   getLayout1 <- function() {
