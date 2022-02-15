@@ -1,0 +1,9 @@
+"0","df_estr_part_gastos_mun <- df_estr_partidas_mun %>% filter(substring(id_partida, 0,1) == ""G"") %>% arrange(-valor) %>% top_n(5, valor)"
+"0",""
+"0","df_otros_G <- df_estr_partidas_mun %>% filter(substring(id_partida, 0,1) == ""G"" & id_partida %notin% df_estr_part_gastos_mun$id_partida)"
+"0",""
+"0","df_part_gastos_mun <- rbind(df_estr_part_gastos_mun, c(""G_otros"", sum(df_otros_G$valor, na.rm = NA), rep(""Resto de los gastos"", 2)))"
+"0","df_part_gastos_mun$valor <- as.numeric(df_part_gastos_mun$valor)"
+"2","Error in `$<-.data.frame`(`*tmp*`, valor, value = numeric(0)) : 
+  replacement has 0 rows, data has 1
+"

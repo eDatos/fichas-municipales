@@ -1,0 +1,35 @@
+"0","CL_AREA <- as_list(read_xml(params$url.cl_area))"
+"0",""
+"0","df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% "
+"0","  unnest_wider('codes') %>%"
+"0","  transform(name = lapply(name, '[[', 2)) %>%"
+"0","  unnest(cols = names(.)) %>%"
+"0","  unnest(cols = names(.)) %>%"
+"0","  readr::type_convert() %>%"
+"0","  mutate(parent = gsub(""^.*)."", """", parent)) %>%"
+"0","  select(code = id, value = name, parent)"
+"1","
+[36m--[39m [1m[1mColumn specification[1m[22m [36m-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------[39m
+cols(
+  id = [31mcol_character()[39m,
+  urn = [31mcol_character()[39m,
+  name = [31mcol_character()[39m,
+  parent = [31mcol_character()[39m
+)
+
+"
+"0","df_CL_AREA_mun <- df_CL_AREA %>% "
+"0","  select(id = code, municipio = value, code = parent) %>%"
+"0","  filter(substring(id, 0,2) != ""ES"") %>% "
+"0","  transform(id = if_else(substring(id, 0,5) == ""38013"",  ""38013"", id)) %>%"
+"0","  filter(nchar(id) > 0 & !grepl(""("", municipio, fixed = TRUE)) %>%"
+"0","  left_join(df_CL_AREA, by=""code"") %>%"
+"0","  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% "
+"0","  left_join(df_CL_AREA, by=""code"") %>% "
+"0","  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% "
+"0","  left_join(df_CL_AREA, by=""code"") %>% "
+"0","  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% "
+"0","  left_join(df_CL_AREA, by=""code"") %>% "
+"0","  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)"
+"0",""
+"0","municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]"

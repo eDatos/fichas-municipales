@@ -1,0 +1,13 @@
+"0","# Presupuesto liquidado. Gastos por habitante. Ayuntamientos. 2002-2019"
+"0","ind_Gastos <- fromJSON(params$url.gastos)"
+"0",""
+"0","df_ind_Gastos <- data.frame(mun = rep(names(ind_Gastos[[""dimension""]][[""GEOGRAPHICAL""]][[""representation""]][[""index""]]),"
+"0","                                      each=ind_Gastos[[""dimension""]][[""TIME""]][[""representation""]][[""size""]]),"
+"0","                            año = names(ind_Gastos[[""dimension""]][[""TIME""]][[""representation""]][[""index""]]),"
+"0","                            valor = as.numeric(ind_Gastos[[""observation""]]))"
+"0","df_ind_Gastos <- recode_Frontera(df_ind_Gastos)"
+"1","Joining, by = c(""mun"", ""año"", ""valor"")
+"
+"0","df_ind_Gastos$mun <- recode_id_Frontera(df_ind_Gastos, 'mun')"
+"0",""
+"0","Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ""."", decimal.mark = "","", nsmall = 1) %>% as.character()"

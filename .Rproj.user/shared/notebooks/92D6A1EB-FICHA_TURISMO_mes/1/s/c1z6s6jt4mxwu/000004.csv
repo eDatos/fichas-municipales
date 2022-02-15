@@ -1,0 +1,10 @@
+"0","data_mes <- fromJSON(params$url.mes_t)"
+"0",""
+"0","mes <- data.frame(code = data_mes[[""dimension""]][[""TIME""]][[""representation""]][[""code""]],"
+"0","                  periodo = data_mes[[""dimension""]][[""TIME""]][[""representation""]][[""title""]][[""es""]])"
+"0",""
+"0","mes <- mes %>% "
+"0","  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, "" ""), '[[', 2)), "" "", unlist(lapply(strsplit(periodo, "" ""), '[[', 1)))) %>% "
+"0","  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))"
+"2","Error in FUN(X[[i]], ...) : subscript out of bounds
+"

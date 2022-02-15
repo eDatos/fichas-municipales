@@ -1,0 +1,4 @@
+"0","df_localizacion_$nombre <- recode_mun(df_localizacion_, 'nombre')
+"
+"2","The following `from` values were not present in `x`: Valsequillo, Santa María de Guía, Santa Lucía, Pinar de El Hierro, El, Fuencaliente, Laguna (La), San Miguel, Vilaflor, Güimar, Icod de Los Vinos, San Juan de La Rambla
+"

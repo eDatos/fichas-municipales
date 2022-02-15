@@ -1,0 +1,6 @@
+"0","df_lv <- df %>% "
+"0","  filter(mun == params$id_municipio & año %in% c(params$año, params$año-1))"
+"0",""
+"0","Num_Presupuesto <-  format(round(df_lv$valor_M[df_lv$año == params$año], 1), big.mark = ""."", decimal.mark = "","", nsmall = 1)"
+"0","Variacion_Porcentual <- format(df_lv$tasa[df_lv$año == params$año], big.mark =""."", decimal.mark = "","", nsmall = 1) %>% as.character()"
+"0","Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == ""más"", './img/up.png', './img/down.png')"
