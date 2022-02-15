@@ -6,3 +6,7 @@
 /shiny/print/*
 /Rmd/*.html
 .Rproj.user
+/app_cache/
+.RDataTmp
+/Rmd/*_files
+/Rmd/libs/*

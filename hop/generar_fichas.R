@@ -121,9 +121,9 @@ loadMunicipios <- function() {
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
 }
 
-
 downloadData()
-periods <- get_total_periods(df_init_data, df_fichas) %>%
+
+periods <- get_total_periods(df_init_data, df_fichas %>% filter(!description %like% "Elecciones")) %>%
   left_join(
     data.frame(
       M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -198,9 +198,7 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-downloadData()
+#generarFicha(2021, 'afiliacion_cotizacion', 'Q', NA, 6, 35023)
 
-#generarFicha(2017, 'demografia', 'A', NA, NA, 35003)
-
-generarFichas(municipios, df_fichas %>% filter(code == 'demografia'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'vehiculos'), periods)
 

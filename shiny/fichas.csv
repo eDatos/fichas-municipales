@@ -8,11 +8,11 @@ alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes.Rmd;M;GLOSARIO_TURISMO_m
 perfil;Perfil del turista;FICHA_TURISMO_año.Rmd;A;GLOSARIO_TURISMO_año
 gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO
 gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia
-europeas;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS;A;GLOSARIO_EUROPEAS
-congreso;Resultados de las Elecciones al Congreso;FICHA_CONGRESO;A;GLOSARIO_CONGRESO
-senado;Resultados de las Elecciones al Senado;FICHA_SENADO;A;GLOSARIO_SENADO
-autonomicas;Resultados de las Elecciones Autónomicas;FICHA_AUTONOMICAS;A;GLOSARIO_AUTONOMICAS
-cabildo;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO;A;GLOSARIO_CABILDO
-municipales;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES;A;GLOSARIO_MUNICIPALES
-vehiculos;Parque de vehículos;FICHA_VEHICULOS;M;GLOSARIO_VEHICULOS
-primario;Sector primario;FICHA_PRIMARIO;A;GLOSARIO_PRIMARIO
+europeas;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS.Rmd;A;GLOSARIO_EUROPEAS
+congreso;Resultados de las Elecciones al Congreso;FICHA_CONGRESO.Rmd;A;GLOSARIO_CONGRESO
+senado;Resultados de las Elecciones al Senado;FICHA_SENADO.Rmd;A;GLOSARIO_SENADO
+autonomicas;Resultados de las Elecciones Autónomicas;FICHA_AUTONOMICAS.Rmd;A;GLOSARIO_AUTONOMICAS
+cabildo;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO.Rmd;A;GLOSARIO_CABILDO
+municipales;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES.Rmd;A;GLOSARIO_MUNICIPALES
+vehiculos;Parque de vehículos;FICHA_VEHICULOS.Rmd;M;GLOSARIO_VEHICULOS
+primario;Sector primario;FICHA_PRIMARIO.Rmd;A;GLOSARIO_PRIMARIO
