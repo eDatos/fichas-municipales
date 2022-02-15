@@ -20,27 +20,13 @@ df_init_data <-  read.csv("init-data.csv", sep = ";") %>%
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
 
-downloadData <- function() {
-  for (i in 1:nrow(df_init_data)) {
-    if(file.exists(df_init_data$filepath[i])) {
-      next
-    }
-    print(paste0('Download resource: ', df_init_data$name[i]))
-    if(df_init_data$extension[i] == "json") {
-      write(getURL( df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
-    } else {
-      download.file(df_init_data$url[i], df_init_data$filepath[i])
-    }
-  }
-}
-
 loadMunicipios <- function() {
   file <- paste0(directory.data, df_init_data[df_init_data$name == 'cl_area',]$name, '.', df_init_data[df_init_data$name == 'cl_area',]$extension)
   CL_AREA <- as_list(read_xml(file))
   
   df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
     unnest_wider('codes') %>%
-    transform(name = lapply(name, '[[', 2)) %>% # x) { df_CL_AREA["name"][[c(1,x)]][[2]]}) %>% 
+    transform(name = lapply(name, '[[', 2)) %>%
     unnest(cols = names(.)) %>%
     unnest(cols = names(.)) %>%
     readr::type_convert() %>%
@@ -65,8 +51,52 @@ loadMunicipios <- function() {
     arrange(provincia)
   
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
-  #return(deframe(df_CL_AREA_mun %>% select(municipio, id)))
 }
+
+get_periods_from_files <- function(df_fichas) {
+  output_fichas <- data.frame(code = list.dirs(path = directory.output, recursive = F, full.names = F)) %>% left_join(df_fichas, by = "code") %>% filter(!is.na(periodicidad))
+  
+  output_periods <- data.frame() #row.names = c("id_ficha", "A", "M", "Q", "O"))
+  for(ficha_index in 1:nrow(output_fichas)) {
+    id_ficha <- output_fichas$code[ficha_index]
+    output_A <- data.frame(A = list.dirs(paste(directory.output, id_ficha, sep = "/"), recursive = F, full.names = F)) %>% filter(startsWith(A, "2"))
+    for(A_index in 1:nrow(output_A)) {
+      A <- output_A$A[A_index]
+      output_filenames <- list.files(paste(directory.output, id_ficha, A, sep = "/"), recursive = F, full.names = F, pattern = "*.html")
+      output_filepaths <- list.files(paste(directory.output, id_ficha, A, sep = "/"), recursive = F, full.names = T, pattern = "*.html")
+      if(!is_empty(output_filenames)) {
+        #Anual
+        if(output_fichas$periodicidad[ficha_index] =="A") {
+          output_municipio <- data.frame(
+            id_ficha = id_ficha,
+            A = A,
+            period = NA,
+            filename = output_filenames,
+            path = output_filepaths) %>%
+            transform(id_municipio = sub(paste0(".*", id_ficha, "_"), "", filename)) %>%
+            transform(id_municipio = sub(".html", "", id_municipio)) %>% 
+            select(-filename)
+        } else {
+          output_municipio <- data.frame(
+            id_ficha = id_ficha,
+            A = A,
+            filename = output_filenames,
+            path = output_filepaths) %>%
+            transform(id_municipio = sub(paste0(".*", id_ficha, "_.*_"), "", filename), period = sub(paste0(".*", id_ficha, "_"), "", filename)) %>%
+            transform(id_municipio = sub(".html", "", id_municipio), period = sub("_.*.html", "", period)) %>% 
+            transform(period = sub("Q", "", period)) %>% 
+            select(-filename)
+        }
+        output_periods <- rbind(
+          output_periods, 
+          output_municipio
+        )
+        
+      }
+    }
+  }
+  output_periods
+}  
 
 ui <- fluidPage(
   theme = bs_theme(version = 4, bootswatch = "lumen"),
@@ -89,19 +119,42 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  downloadData()
-  df_fichas <- read.csv("fichas.csv", sep = ";")
-  periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",") #get_total_periods(df_init_data, df_fichas)
-  #periods <- get_total_periods(df_init_data, df_fichas)
+  df_fichas <- data.frame(code = list.dirs(path = directory.output, recursive = F, full.names = F)) %>% left_join(read.csv("fichas.csv", sep = ";"), by = "code") %>% filter(!is.na(periodicidad))
+  periods <- get_periods_from_files(df_fichas)
+#  periods <- read.csv(paste0(directory.data,"periods.csv"), sep=",")
   
   municipios <- loadMunicipios()
   
   option_island <- reactive({
-    municipios %>% select(isla, id_isla) %>% unique %>% deframe
+    periods %>% 
+      filter(id_ficha == input$id_ficha) %>% 
+      select(id = id_municipio) %>%
+      unique %>%
+      left_join(municipios, by = "id") %>%
+      select(isla, id_isla) %>% unique %>% deframe
   })
   
-  option_mun <- reactive({ municipios %>% filter(id_isla %in% input$id_isla) %>% select(municipio, id) %>% deframe })
-  option_mun_2 <- reactive({ municipios %>% filter(id_isla %in% input$id_isla_2) %>% select(municipio, id) %>% deframe })
+  option_mun <- reactive({ 
+    periods %>% 
+      filter(id_ficha == input$id_ficha) %>% 
+      select(id = id_municipio) %>%
+      unique %>%
+      left_join(municipios, by = "id") %>% 
+      filter(id_isla %in% input$id_isla) %>% 
+      select(municipio, id) %>% 
+      deframe 
+  })
+  
+  option_mun_2 <- reactive({ 
+    periods %>% 
+      filter(id_ficha == input$id_ficha) %>% 
+      select(id = id_municipio) %>%
+      unique %>%
+      left_join(municipios, by = "id") %>% 
+      filter(id_isla %in% input$id_isla_2) %>% 
+      select(municipio, id) %>% 
+      deframe 
+  })
   
   fichas <- df_fichas %>% select(description, code) %>% deframe
   
@@ -140,30 +193,13 @@ server <- function(input, output) {
   })
   
   output$report <- renderUI({
-    dir.fichero <- paste0("./output/",input$año, "/")
-    ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
-    nombre.fichero <- paste0(input$id_ficha, "_",
-                             input$año, "_",
-                             ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
-                             ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
-                             input$id_municipio, ".html")
-    if(!dir.exists(dir.fichero)) {
-      dir.create(dir.fichero)
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+    if(periodicidad() == "M") {
+      path_fichero <- path_fichero %>% filter(period == input$mes)
+    } else if(periodicidad() == "Q") {
+      path_fichero <- path_fichero %>% filter(period == input$trimestre)
     }
-    if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
-      option_params <- list(año = as.numeric(input$año), id_municipio = as.numeric(input$id_municipio))
-      if(periodicidad() == "M") {
-        option_params <- append(option_params, list(mes = as.numeric(input$mes)))
-      }
-      if(periodicidad() == "Q") {
-        #option_params <- append(option_params, list(mes = as.numeric(input$trimestre)*3))
-        option_params <- append(option_params, list(mes = as.numeric(input$trimestre)))
-      }
-      
-      params <- append(option_params, (df_init_data[grepl(input$id_ficha, df_init_data$fichas, fixed = TRUE),] %>% select(param.name, filepath) %>% deframe %>% as.list))
-      renderFicha(paste0(directory.rmd, ficha_actual$filename), nombre.fichero, dir.fichero, params)
-    }
-    iframe <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", path_fichero$path, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
   })
   
   output$report_2 <- renderUI({
@@ -174,21 +210,6 @@ server <- function(input, output) {
                              ifelse(periodicidad2() == "M", paste0(periodicidad2(), input$mes_2, "_"), ""),
                              ifelse(periodicidad2() == "Q", paste0(periodicidad2(), as.numeric(input$trimestre_2), "_"), ""),
                              input$id_municipio_2, ".html")
-    if(!dir.exists(dir.fichero)) {
-      dir.create(dir.fichero)
-    }
-    if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
-      option_params <- list(año = as.numeric(input$año_2), id_municipio = as.numeric(input$id_municipio_2))
-      if(periodicidad2() == "M") {
-        option_params <- append(option_params, list(mes = as.numeric(input$mes_2)))
-      }
-      if(periodicidad2() == "Q") {
-        option_params <- append(option_params, list(mes = as.numeric(input$trimestre_2)*3))
-      }
-      
-      params <- append(option_params, (df_init_data[grepl(input$id_ficha_2, df_init_data$fichas, fixed = TRUE),] %>% select(param.name, filepath) %>% deframe %>% as.list))
-      renderFicha(paste0(directory.rmd, ficha_actual$filename), nombre.fichero, dir.fichero, params)
-    }
     iframe_2 <- tags$iframe(src=paste0('frames/', dir.fichero, nombre.fichero), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
   })
   
@@ -233,13 +254,19 @@ server <- function(input, output) {
         }
     )
 
-  option_year <- reactive({  periods %>% filter(code %in% input$id_ficha) %>% select(A) %>% deframe })
+  option_year <- reactive({
+    periods %>% 
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio) %>% 
+      select(A) %>% 
+      deframe
+  })
+  
   option_year_2 <- reactive({  periods %>% filter(code %in% input$id_ficha_2) %>% select(A) %>% deframe })
  
   option_month <- reactive({
     periods %>% 
-    filter(code %in% input$id_ficha & A %in% input$año) %>% 
-    select(M) %>%
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
+      select(M = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
                id = 1:12),
@@ -261,14 +288,15 @@ server <- function(input, output) {
   option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
+    
     periods %>% 
-      filter(code %in% input$id_ficha & A %in% input$año) %>% 
-      select(mes = Q) %>%
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
+      select(id = period) %>%
       left_join(
         data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c(3, 6, 9, 12),
+                   id = c("3", "6", "9", "12"),
                    Q = paste0("Trimestre ", seq(1:4))),
-        by ='mes') %>% 
+        by ='id') %>% 
       select(Q, id) %>%
       deframe
   })
@@ -309,9 +337,9 @@ server <- function(input, output) {
   
   output$ficha_params <- renderUI (
     fluidRow(
+      column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
-      column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_year")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
@@ -323,9 +351,9 @@ server <- function(input, output) {
   
   output$ficha_params_2 <- renderUI (
     fluidRow(
+      column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
       column(2, uiOutput("select_mun_2")),
-      column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_year_2")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
@@ -365,76 +393,6 @@ server <- function(input, output) {
   }
   
   output$fichas <- getLayout1()
-  
-  renderFicha <- function(rmd, name, dir, param_list) {
-  print(param_list)
-    rmarkdown::render(
-      rmd, 
-      output_dir = dir, 
-      output_file = name, 
-      params = param_list
-    )
-  }
-}
-
-
-get_resource_period_list <- function(init_data_row) {
-  source <- fromJSON(init_data_row$filepath) 
-  result <- NULL
-  if(grepl("/api/", init_data_row$url, fixed = T)) {
-    result <- names(source[["dimension"]][["TIME"]][["representation"]]$index)
-    if(is.null(result)) {
-      result <- source[["dimension"]][["TIME"]][["representation"]]$title$es
-      if(is.null(result)) {
-        result <- source$metadata$temporalCoverages$item$id
-      }
-    }
-  } else {
-    result <- source$categories$labels[[which(source$categories$variable == source$temporals)]]
-  }
-  if(any(grepl("-", result))) {
-    result <- data.frame(code = result) %>% 
-      left_join(fromJSON(df_init_data[df_init_data$name == 'mes', ]$filepath)[["dimension"]][["TIME"]][["representation"]], by = "code") %>%
-      filter(!is.na(title$es))
-    result <- result$title$es
-  }
-  result
-}
-
-get_resources_period <- function(df_init_data) {
-  result <- get_resource_period_list(df_init_data[1, ])
-  for(i in 2:nrow(df_init_data)) {
-    result <- intersect(result, get_resource_period_list(df_init_data[i, ]))
-  }
-  result
-}
-
-get_periods_df <- function(df_init_data, df_fichas_row) {
-  periods <- get_resources_period(df_init_data[df_init_data[df_fichas_row['code']] == 1 & df_init_data['periodico'] == 1, ])
-  time_period <- df_fichas_row$periodicidad
-  if(time_period =='A') {
-    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA)
-  } else if(time_period == 'Q') {
-    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
-      mutate(A = strsplit(A, split = ' ')) %>% 
-      unnest_wider('A') %>% 
-      select(code, A = ...1, Q = ...2, M) %>%
-      filter(Q %in% c("Marzo", "Junio", "Septiembre", "Diciembre"))
-  } else if(time_period == 'M') {
-    periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
-      mutate(A = strsplit(A, split = ' ')) %>% 
-      unnest_wider('A') %>% 
-      select(code, A = ...1, Q, M = ...2)
-  }
-  periods_df
-}
-
-get_total_periods <- function(df_init_data, df_fichas) {
-  total_periods <- data.frame()
-  for(i in 1:nrow(df_fichas)) {
-    total_periods <- bind_rows(total_periods, get_periods_df(df_init_data, df_fichas[i,]))
-  }
-  total_periods
 }
 
 shinyApp(ui = ui, server = server)
