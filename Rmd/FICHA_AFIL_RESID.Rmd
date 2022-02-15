@@ -6,10 +6,10 @@ params:
   mes: 6
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.afil_r: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ffd9beb1-b9f0-477c-9a44-480397986f84
   url.afil_ae_r: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d1b462a5-c6c6-4469-bf81-0fde7f2b887a
   url.piramide_r: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=eb719ad5-ab9e-4591-9cdc-8f7628df9beb
-  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
 output:
   html_document:
     df_print: paged

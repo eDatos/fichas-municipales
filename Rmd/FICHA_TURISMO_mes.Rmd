@@ -4,14 +4,13 @@ params:
   id_municipio: 35024
   año: 2021
   mes: 6
-  url.mes_t: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/5ac41241-1008-4495-bc24-04d478deac2a
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
-  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.viajeros_lugar: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48
   url.estancia_m: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY]
-  url.tasa_ocupacion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/ac286c1a-f70a-4888-9679-bd973250c824/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.ADR: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d17b4953-73fe-4dcb-91e2-b63890eecd9f
+  url.tasa_ocupacion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_PLAZAS_OCUPACION/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.ADR: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_TARIFA_ADR/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.aloj_isla: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b4de650c-10d8-4202-b678-58f597b1b040
   url.hotel: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=2457b2ce-c6c1-46d5-9c85-59cd4b9b076d
   url.extrahoteleros: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=76147e33-158b-4df0-ac5d-447de68ad3ef
@@ -43,10 +42,12 @@ signo <- function(value) {
 ```
 
 ```{r Mes}
-data_mes <- fromJSON(params$url.mes_t)
+viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
 
-mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
-                  periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]])
+mes <- data.frame(code = viajeros_lugar[["categories"]][["codes"]][[4]],
+                  periodo = viajeros_lugar[["categories"]][["labels"]][[4]]) %>%
+  filter(substring(code, 5,5) == "M") %>%
+  transform(code = gsub("M", "-", code))
 
 mes <- mes %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
@@ -154,8 +155,6 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población turística}
-# Pernoctaciones, viajeros entrados y viajeros alojados según lugares de residencia por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M__.
-viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
 df_u_ <- cbind(data.frame(do.call('rbind', viajeros_lugar[["data"]][["dimCodes"]])), viajeros_lugar[["data"]][["Valor"]])
 colnames(df_u_) <- c('ind', 'lugar', 'mun', 'periodo', 'valor')
 df_u_$ind <- factor(df_u_$ind, levels=viajeros_lugar[["categories"]][["codes"]][[1]], labels=viajeros_lugar[["categories"]][["labels"]][[1]])
@@ -297,7 +296,7 @@ estancia_media <- fromJSON(params$url.estancia_m)
 
 df_estancia_media <- data.frame(
   mun = rep(names(estancia_media[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                     each=length(estancia_media[["dimension"]][["TIME"]][["representation"]][["index"]])),
+            each=length(estancia_media[["dimension"]][["TIME"]][["representation"]][["index"]])),
   mes = rep(names(estancia_media[["dimension"]][["TIME"]][["representation"]][["index"]]),
             times=length(estancia_media[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
   valor = estancia_media[["observation"]])
@@ -312,8 +311,7 @@ tasa_ocupacion <- fromJSON(params$url.tasa_ocupacion)
 
 df_tasa_ocupacion <- data.frame(
   mun = rep(names(tasa_ocupacion[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-            
-                     each=length(tasa_ocupacion[["dimension"]][["TIME"]][["representation"]][["index"]])),
+            each=length(tasa_ocupacion[["dimension"]][["TIME"]][["representation"]][["index"]])),
   mes = rep(names(tasa_ocupacion[["dimension"]][["TIME"]][["representation"]][["index"]]),
             times=length(tasa_ocupacion[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
   valor = tasa_ocupacion[["observation"]])
@@ -325,19 +323,16 @@ Tasa_ocupacion <- df_tasa_ocupacion %>% filter(mes == mes_actual$code & mun == p
 ```{r Indicador ADR}
 # Tarifa media diaria (ADR), ingresos por habitación disponible (RevPAR) e ingresos totales por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
 ADR <- fromJSON(params$url.ADR)
-df_ADR <- cbind(data.frame(do.call('rbind', ADR[["data"]][["dimCodes"]])), ADR[["data"]][["Valor"]])
-colnames(df_ADR) <- c('ind', 'mun', 'periodo', 'valor')
-df_ADR$ind <- factor(df_ADR$ind, levels=ADR[["categories"]][["codes"]][[1]], labels=ADR[["categories"]][["labels"]][[1]])
-df_ADR$mun <- factor(df_ADR$mun, levels=ADR[["categories"]][["codes"]][[2]], labels=ADR[["categories"]][["labels"]][[2]])
-df_ADR$periodo <- factor(df_ADR$periodo, levels=ADR[["categories"]][["codes"]][[3]], labels=ADR[["categories"]][["labels"]][[3]])
+
+df_ADR <- data.frame(
+  mun = rep(names(ADR[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+            each=length(ADR[["dimension"]][["TIME"]][["representation"]][["index"]])),
+  mes = rep(names(ADR[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            times=length(ADR[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
+  valor = ADR[["observation"]])
 df_ADR$valor <- as.numeric(df_ADR$valor)
-df_ADR$mun <- recode_mun(df_ADR, 'mun')
 
-df_ADR_mun <- df_ADR %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
-  select(ind, valor)
-
-ADR <- df_ADR_mun$valor[which(df_ADR_mun$ind == "Tarifa media por habitación mensual (ADR)")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+ADR <- df_ADR %>% filter(mes == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Rankings}

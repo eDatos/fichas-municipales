@@ -7,7 +7,7 @@ params:
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
-  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicatorsSystems/C00067A/indicatorsInstances/6daf4220-c08f-431c-8383-a0a7daa87da7
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.matricula: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
