@@ -9,4 +9,5 @@
 /app_cache/
 .RDataTmp
 /Rmd/*_files
-/Rmd/libs/*
+/Rmd/libs/
+
