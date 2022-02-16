@@ -42,8 +42,12 @@
 .logo-fecam, .logo-istac {
   display: none;
 }
-#ficha_params .row {
+.params-row {
   border: 2px solid #D5EDFA;
   border-radius: 20px;
   margin: 20px;
+  padding: 0 20px;
+}
+.params-row > div[class^="col-sm-"] {
+  margin: auto;
 }

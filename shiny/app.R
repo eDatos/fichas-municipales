@@ -104,7 +104,26 @@ ui <- fluidPage(
       cssLink.rel = 'stylesheet'; 
       cssLink.type = 'text/css'; 
       obj.contentWindow.document.head.appendChild(cssLink);
-    }"
+    }
+    
+    function resizeGlosarioIframe(obj) {
+      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
+      var cssLink = document.createElement('link');
+      cssLink.href = '../../www/styles.css'; 
+      cssLink.rel = 'stylesheet'; 
+      cssLink.type = 'text/css'; 
+      obj.contentWindow.document.head.appendChild(cssLink);
+    }
+    
+    function resizeAyudaIframe(obj) {
+      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
+      var cssLink = document.createElement('link');
+      cssLink.href = '../www/styles.css'; 
+      cssLink.rel = 'stylesheet'; 
+      cssLink.type = 'text/css'; 
+      obj.contentWindow.document.head.appendChild(cssLink);
+    }
+    "
   )),
   htmlOutput('header'),
   uiOutput("fichas"),
@@ -209,6 +228,20 @@ server <- function(input, output) {
       path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
     }
     iframe_2 <- tags$iframe(src=paste('frames', path_fichero$path, sep= "/"), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
+  })
+  
+  output$glosario <- renderUI({
+    ficha <- df_fichas %>% filter(code == input$id_ficha)
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
+  })
+  
+  output$glosario_2 <- renderUI({
+    ficha <- df_fichas %>% filter(code == input$id_ficha_2)
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
+  })
+  
+  output$ayuda <- renderUI({
+    iframe <- tags$iframe(src=paste("frames", "output", "MODULO_AYUDA.html", sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeAyudaIframe(this)")
   })
   
   observeEvent(input$download, {
@@ -337,35 +370,93 @@ server <- function(input, output) {
   output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2()) })
   
   observeEvent(eventExpr = input$plus, handlerExpr = { output$fichas <- getLayout2() })
-  observeEvent(eventExpr = input$minus, handlerExpr = { output$fichas <- getLayout1() })
+  observeEvent(eventExpr = input$plus_3, handlerExpr = { output$fichas <- getLayout4() })
+  observeEvent(eventExpr = input$minus_2, handlerExpr = { output$fichas <- getLayout1() })
+  observeEvent(eventExpr = input$minus_4, handlerExpr = { output$fichas <- getLayout3() })
+  observeEvent(eventExpr = input$ver_glosario, handlerExpr = { output$fichas <- getLayout3() })
+  observeEvent(eventExpr = input$ver_glosario_2, handlerExpr = { output$fichas <- getLayout4() })
+  observeEvent(eventExpr = input$ocultar_glosario_3, handlerExpr = { output$fichas <- getLayout1() })
+  observeEvent(eventExpr = input$ocultar_glosario_4, handlerExpr = { output$fichas <- getLayout2() })
+  observeEvent(eventExpr = input$ayuda, handlerExpr = { output$fichas <- getLayout5() })
   
   output$ficha_params <- renderUI (
-    fluidRow(
+    fluidRow(class = "params-row",
       column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
-      column(2, uiOutput("select_year")),
+      column(1, uiOutput("select_year")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(1, actionButton(inputId = "plus", label = "Añadir ficha"))
+      column(2, actionButton(inputId = "plus", icon = icon("plus"), label = ""), actionButton("ver_glosario", label = "Ver glosario"), actionButton("ayuda", icon = icon("question"), label = ""))
       #column(1, actionButton("download", "Descargar"))
     )
   )
   
   output$ficha_params_2 <- renderUI (
-    fluidRow(
+    fluidRow(class = "params-row",
+      column(3, uiOutput("select_ficha")),
+      column(2, uiOutput("select_island")),
+      column(2, uiOutput("select_mun")),
+      column(1, uiOutput("select_year")),
+      column(2, 
+             conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
+             conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
+      #column(1, actionButton("download", "Descargar"))
+      column(2),
+      
       column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
       column(2, uiOutput("select_mun_2")),
-      column(2, uiOutput("select_year_2")),
+      column(1, uiOutput("select_year_2")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
-      column(1, actionButton(inputId = "minus", label = "Quitar ficha"))
+      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), actionButton("ver_glosario_2", label = "Ver glosario"))
       #column(1, actionButton("download", "Descargar"))
     )
   )
+  
+  output$ficha_params_3 <- renderUI (
+    fluidRow(class = "params-row",
+             column(3, uiOutput("select_ficha")),
+             column(2, uiOutput("select_island")),
+             column(2, uiOutput("select_mun")),
+             column(1, uiOutput("select_year")),
+             column(2, 
+                    conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
+                    conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
+             column(2, actionButton(inputId = "plus_3", icon = icon("plus"), label = ""), actionButton("ocultar_glosario_3", label = "Ocultar glosario"))
+             #column(1, actionButton("download", "Descargar"))
+    )
+  )
+  
+  
+  output$ficha_params_4 <- renderUI (
+    fluidRow(class = "params-row",
+             column(3, uiOutput("select_ficha")),
+             column(2, uiOutput("select_island")),
+             column(2, uiOutput("select_mun")),
+             column(1, uiOutput("select_year")),
+             column(2, 
+                    conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
+                    conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
+             #column(1, actionButton("download", "Descargar"))
+             column(2),
+             
+             column(3, uiOutput("select_ficha_2")),
+             column(2, uiOutput("select_island_2")),
+             column(2, uiOutput("select_mun_2")),
+             column(1, uiOutput("select_year_2")),
+             column(2, 
+                    conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
+                    conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
+             column(2, actionButton(inputId = "minus_4", icon = icon("minus"), label = ""), actionButton("ocultar_glosario_4", label = "Ocultar glosario"))
+             #column(1, actionButton("download", "Descargar"))
+    )
+  )
+  
+  output$ficha_params_5 <- renderUI (fluidRow(column(1), column(5, actionButton(inputId = "minus_2", label = "Cerrar ayuda")), column(6)))
   
   getLayout1 <- function() {
     renderUI (
@@ -379,10 +470,40 @@ server <- function(input, output) {
   getLayout2 <- function() {
     renderUI (
       fluidRow(
-        column(12, uiOutput("ficha_params")),
         column(12, uiOutput("ficha_params_2")),
         column(6, htmlOutput('report')),
         column(6, htmlOutput('report_2'))
+      )
+    ) 
+  }
+
+  getLayout3 <- function() {
+    renderUI (
+      fluidRow(
+        column(12, uiOutput("ficha_params_3")),
+        column(6, htmlOutput('report')),
+        column(6, htmlOutput('glosario'))
+      )
+    ) 
+  }
+  
+  getLayout4 <- function() {
+    renderUI (
+      fluidRow(
+        column(12, uiOutput("ficha_params_4")),
+        column(6, htmlOutput('report')),
+        column(6, htmlOutput('report_2')),
+        column(6, htmlOutput('glosario')),
+        column(6, htmlOutput('glosario_2'))
+      )
+    ) 
+  }
+  
+  getLayout5 <- function() {
+    renderUI (
+      fluidRow(
+        column(12, uiOutput("ficha_params_5")),
+        column(12, htmlOutput('ayuda'))
       )
     ) 
   }

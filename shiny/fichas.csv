@@ -1,18 +1,18 @@
 code;description;filename;periodicidad;glosario
-demografia;Indicadores demográficos;FICHA.Rmd;A;GLOSARIO_DEMOGR
-paro;Paro registrado;FICHA_PARO.Rmd;M;GLOSARIO_PARO
-afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q;GLOSARIO_AFIL_RESID
-afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q;GLOSARIO_AFIL_COTIZ
-presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A;GLOSARIO_PRESUPUESTOS
-alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes.Rmd;M;GLOSARIO_TURISMO_mes
-perfil;Perfil del turista;FICHA_TURISMO_año.Rmd;A;GLOSARIO_TURISMO_año
-gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO
-gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia
-europeas;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS.Rmd;A;GLOSARIO_EUROPEAS
-congreso;Resultados de las Elecciones al Congreso;FICHA_CONGRESO.Rmd;A;GLOSARIO_CONGRESO
-senado;Resultados de las Elecciones al Senado;FICHA_SENADO.Rmd;A;GLOSARIO_SENADO
-autonomicas;Resultados de las Elecciones Autónomicas;FICHA_AUTONOMICAS.Rmd;A;GLOSARIO_AUTONOMICAS
-cabildo;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO.Rmd;A;GLOSARIO_CABILDO
-municipales;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES.Rmd;A;GLOSARIO_MUNICIPALES
-vehiculos;Parque de vehículos;FICHA_VEHICULOS.Rmd;M;GLOSARIO_VEHICULOS
-primario;Sector primario;FICHA_PRIMARIO.Rmd;A;GLOSARIO_PRIMARIO
+demografia;Indicadores demográficos;FICHA.Rmd;A;GLOSARIO_DEMOGR.html
+paro;Paro registrado;FICHA_PARO.Rmd;M;GLOSARIO_PARO.html
+afiliacion_residencia;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;Q;GLOSARIO_AFIL_RESID.html
+afiliacion_cotizacion;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;Q;GLOSARIO_AFIL_COTIZ.html
+presupuestos;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A;GLOSARIO_PRESUPUESTOS.html
+alojamientos;Alojamientos turísticos;FICHA_TURISMO_mes.Rmd;M;GLOSARIO_TURISMO_mes.html
+perfil;Perfil del turista;FICHA_TURISMO_año.Rmd;A;GLOSARIO_TURISMO_año.html
+gm_turista;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO.html
+gmt_dia;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia.html
+europeas;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS.Rmd;A;GLOSARIO_EUROPEAS.html
+congreso;Resultados de las Elecciones al Congreso;FICHA_CONGRESO.Rmd;A;GLOSARIO_CONGRESO.html
+senado;Resultados de las Elecciones al Senado;FICHA_SENADO.Rmd;A;GLOSARIO_SENADO.html
+autonomicas;Resultados de las Elecciones Autónomicas;FICHA_AUTONOMICAS.Rmd;A;GLOSARIO_AUTONOMICAS.html
+cabildo;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO.Rmd;A;GLOSARIO_CABILDO.html
+municipales;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES.Rmd;A;GLOSARIO_MUNICIPALES.html
+vehiculos;Parque de vehículos;FICHA_VEHICULOS.Rmd;M;GLOSARIO_VEHICULOS.html
+primario;Sector primario;FICHA_PRIMARIO.Rmd;A;GLOSARIO_PRIMARIO.html
