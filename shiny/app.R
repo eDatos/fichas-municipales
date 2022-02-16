@@ -6,6 +6,7 @@ library(sf)
 library(xml2)
 library(tidyverse)
 library(bslib)
+library(RCurl)
 
 addResourcePath("frames", getwd())
 directory.data <- "../data/"
@@ -244,47 +245,6 @@ server <- function(input, output) {
     iframe <- tags$iframe(src=paste("frames", "output", "MODULO_AYUDA.html", sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeAyudaIframe(this)")
   })
   
-  observeEvent(input$download, {
-    dir.fichero <- paste0("./output/",input$año, "/")
-    ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
-    nombre.fichero <- paste0(input$id_ficha, "_",
-                             input$año, "_",
-                             ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
-                             ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
-                             input$id_municipio, ".html")
-    webshot(url = paste0(dir.fichero, nombre.fichero), file = "test.png", cliprect = "viewport")
-    #shinyapp <- shiny::shinyAppDir(appdir)
-    #appshot(shinyapp, "01_hello_app.png", selector = "#report")
-  })
-  observeEvent(input$download_2, {
-    screenshot(selector = "#report_2", filename =  paste0("ficha_", input$año_2, "_", input$id_municipio_2))
-  })
-  
-  output$downloader <- downloadHandler(
-      "results_from_shiny.pdf",
-      content = 
-        function(file)
-        {
-          dir.fichero <- paste0("../output/",input$año, "/")
-          ficha_actual <- df_fichas[df_fichas$code == input$id_ficha,]
-          nombre.fichero <- paste0(input$id_ficha, "_",
-                                   input$año, "_",
-                                   ifelse(periodicidad() == "M", paste0(periodicidad(), input$mes, "_"), ""),
-                                   ifelse(periodicidad() == "Q", paste0(periodicidad(), as.numeric(input$trimestre), "_"), ""),
-                                   input$id_municipio, ".html")
-          print(paste0(dir.fichero, nombre.fichero))
-          rmarkdown::render(
-            input = "print/pdf.Rmd",
-            output_file = "built_report.pdf",
-            params = list(html.file = paste0(dir.fichero, nombre.fichero))
-          ) 
-          readBin(con = "print/built_report.pdf", 
-                  what = "raw",
-                  n = file.info("print/built_report.pdf")[, "size"]) %>%
-            writeBin(con = file)
-        }
-    )
-
   option_year <- reactive({
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio) %>% 
@@ -379,6 +339,58 @@ server <- function(input, output) {
   observeEvent(eventExpr = input$ocultar_glosario_4, handlerExpr = { output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$ayuda, handlerExpr = { output$fichas <- getLayout5() })
   
+  output$pdf <- downloadHandler(
+    filename = function() {
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+      if(periodicidad() == "M") {
+        path_fichero <- path_fichero %>% filter(period == input$mes)
+      } else if(periodicidad() == "Q") {
+        path_fichero <- path_fichero %>% filter(period == input$trimestre)
+      }
+      path_fichero <- strsplit(x = sub("html", "pdf", path_fichero$path), split="/")[[1]]
+      path_fichero[length(path_fichero)]
+    },
+    content = function(con) {
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+      if(periodicidad() == "M") {
+        path_fichero <- path_fichero %>% filter(period == input$mes)
+      } else if(periodicidad() == "Q") {
+        path_fichero <- path_fichero %>% filter(period == input$trimestre)
+      }
+      
+      filename <- sub("html", "pdf", path_fichero$path)
+      print(filename)
+      file.copy(filename, con)
+    },
+    contentType = "application/PDF"
+  )
+  
+  output$pdf_2 <- downloadHandler(
+    filename = function() {
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+      if(periodicidad2() == "M") {
+        path_fichero <- path_fichero %>% filter(period == input$mes_2)
+      } else if(periodicidad2() == "Q") {
+        path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
+      }
+      path_fichero <- strsplit(x = sub("html", "pdf", path_fichero$path), split="/")[[1]]
+      path_fichero[length(path_fichero)]
+    },
+    content = function(con) {
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+      if(periodicidad2() == "M") {
+        path_fichero <- path_fichero %>% filter(period == input$mes_2)
+      } else if(periodicidad2() == "Q") {
+        path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
+      }
+      
+      filename <- sub("html", "pdf", path_fichero$path)
+      print(filename)
+      file.copy(filename, con)
+    },
+    contentType = "application/PDF"
+  )
+  
   output$ficha_params <- renderUI (
     fluidRow(class = "params-row",
       column(3, uiOutput("select_ficha")),
@@ -388,8 +400,11 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(2, actionButton(inputId = "plus", icon = icon("plus"), label = ""), actionButton("ver_glosario", label = "Ver glosario"), actionButton("ayuda", icon = icon("question"), label = ""))
-      #column(1, actionButton("download", "Descargar"))
+      column(2, 
+             actionButton(inputId = "plus", icon = icon("plus"), label = ""), 
+             actionButton("ver_glosario", label = "Ver glosario"), 
+             downloadButton("pdf", "PDF"),
+             actionButton("ayuda", icon = icon("question"), label = ""))
     )
   )
   
@@ -402,8 +417,7 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      #column(1, actionButton("download", "Descargar"))
-      column(2),
+      column(2, downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = "")),
       
       column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
@@ -412,8 +426,8 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
-      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), actionButton("ver_glosario_2", label = "Ver glosario"))
-      #column(1, actionButton("download", "Descargar"))
+      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), actionButton("ver_glosario_2", label = "Ver glosario"),
+             downloadButton("pdf_2", "PDF"))
     )
   )
   
@@ -426,8 +440,8 @@ server <- function(input, output) {
              column(2, 
                     conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
                     conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-             column(2, actionButton(inputId = "plus_3", icon = icon("plus"), label = ""), actionButton("ocultar_glosario_3", label = "Ocultar glosario"))
-             #column(1, actionButton("download", "Descargar"))
+             column(2, actionButton(inputId = "plus_3", icon = icon("plus"), label = ""), actionButton("ocultar_glosario_3", label = "Ocultar glosario"),
+                    downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = ""))
     )
   )
   
@@ -441,8 +455,7 @@ server <- function(input, output) {
              column(2, 
                     conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
                     conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-             #column(1, actionButton("download", "Descargar"))
-             column(2),
+             column(2, downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = "")),
              
              column(3, uiOutput("select_ficha_2")),
              column(2, uiOutput("select_island_2")),
@@ -451,8 +464,8 @@ server <- function(input, output) {
              column(2, 
                     conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
                     conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
-             column(2, actionButton(inputId = "minus_4", icon = icon("minus"), label = ""), actionButton("ocultar_glosario_4", label = "Ocultar glosario"))
-             #column(1, actionButton("download", "Descargar"))
+             column(2, actionButton(inputId = "minus_4", icon = icon("minus"), label = ""), actionButton("ocultar_glosario_4", label = "Ocultar glosario"),
+                    downloadButton("pdf2", "PDF"))
     )
   )
   
