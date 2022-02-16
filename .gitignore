@@ -10,4 +10,4 @@
 .RDataTmp
 /Rmd/*_files
 /Rmd/libs/
-
+/output/*
