@@ -527,9 +527,10 @@ df_hoteles$mun <- factor(df_hoteles$mun, levels=hoteles[["categories"]][["codes"
 df_hoteles$periodo <- factor(df_hoteles$periodo, levels=hoteles[["categories"]][["codes"]][[4]], labels=hoteles[["categories"]][["labels"]][[4]])
 df_hoteles$valor <- as.numeric(df_hoteles$valor)
 df_hoteles$mun <- recode_mun(df_hoteles, 'mun')
-df_hoteles <- df_hoteles %>% mutate(ind = recode(ind, "Establecimientos hoteleros abiertos" = "Establecimientos"),
-                                    ind = recode(ind, "Plazas ofertadas" = "Plazas"),
-                                    ind = recode(ind, "Habitaciones disponibles" = "Habitaciones/Apartamentos"))
+df_hoteles <- df_hoteles %>% 
+  transform(ind = recode(ind, "Establecimientos hoteleros abiertos" = "Establecimientos")) %>%
+  transform(ind = recode(ind, "Plazas ofertadas" = "Plazas")) %>%
+  transform(ind = recode(ind, "Habitaciones disponibles" = "Habitaciones/Apartamentos"))
 
 df_hoteles_mun <- df_hoteles %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
@@ -545,9 +546,10 @@ df_extrahoteleros$mun <- factor(df_extrahoteleros$mun, levels=extrahoteleros[["c
 df_extrahoteleros$periodo <- factor(df_extrahoteleros$periodo, levels=extrahoteleros[["categories"]][["codes"]][[4]], labels=extrahoteleros[["categories"]][["labels"]][[4]])
 df_extrahoteleros$valor <- as.numeric(df_extrahoteleros$valor)
 df_extrahoteleros$mun <- recode_mun(df_extrahoteleros, 'mun')
-df_extrahoteleros <- df_extrahoteleros %>% mutate(ind = recode(ind, "Establecimientos abiertos" = "Establecimientos"),
-                                                  ind = recode(ind, "Plazas ofertadas" = "Plazas"),
-                                                  ind = recode(ind, "Apartamentos disponibles" = "Habitaciones/Apartamentos"))
+df_extrahoteleros <- df_extrahoteleros %>%
+  transform(ind = recode(ind, "Establecimientos abiertos" = "Establecimientos")) %>%
+  transform(ind = recode(ind, "Plazas ofertadas" = "Plazas")) %>%
+  transform(ind = recode(ind, "Apartamentos disponibles" = "Habitaciones/Apartamentos"))
 
 df_extrahoteleros_mun <- df_extrahoteleros %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
