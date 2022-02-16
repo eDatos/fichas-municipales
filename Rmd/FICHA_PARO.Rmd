@@ -9,7 +9,7 @@ params:
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.parados: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=abc2a458-df6a-41eb-bc66-661b6e5c70fb
-  # url.parados_piramide: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E59021A_000008/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:SEXO:M|F:EDAD:Y_LT20|Y20T24|Y25T29|Y30T34|Y35T39|Y40T44|Y45T49|Y50T54|Y55T59|Y_GE60&lang=es
+  url.parados_piramide: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E59021A_000008/~latest.json?&lang=es
   url.paro_se: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7c423bf5-3b26-4e21-aca3-f3745d461ec2
   # url.paro_se: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E59021A_000009/~latest.json?dim=SEXO:M|F:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:ACTIVIDAD_ECONOMICA:A4_01|A4_02|A4_03|A21_07|A21_09|A4_04_O&lang=es
   url.paro_sexo_est: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=4aa1f89e-bc23-4b31-97a9-55a95fea782f
@@ -60,15 +60,26 @@ get_nombre <- function(nombre) {
 ```
 
 ```{r Mes}
-parados <- fromJSON(params$url.parados)
+parados <- fromJSON(params$url.parados_piramide)
 
-mes <- data.frame(code = parados[["categories"]][["codes"]][[2]],
-                  periodo = parados[["categories"]][["labels"]][[2]]) %>%
-  transform(code = gsub("M", "-", code))
-
-mes <- mes %>% 
+mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+  mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>% 
+  transform(periodo = gsub("-M01", " Enero", periodo)) %>%
+  transform(periodo = gsub("-M02", " Febrero", periodo)) %>%
+  transform(periodo = gsub("-M03", " Marzo", periodo)) %>%
+  transform(periodo = gsub("-M04", " Abril", periodo)) %>%
+  transform(periodo = gsub("-M05", " Mayo", periodo)) %>%
+  transform(periodo = gsub("-M06", " Junio", periodo)) %>%
+  transform(periodo = gsub("-M07", " Julio", periodo)) %>%
+  transform(periodo = gsub("-M08", " Agosto", periodo)) %>%
+  transform(periodo = gsub("-M09", " Septiembre", periodo)) %>%
+  transform(periodo = gsub("-M10", " Octubre", periodo)) %>%
+  transform(periodo = gsub("-M11", " Noviembre", periodo)) %>%
+  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>% 
+  transform(code = gsub("M", "", code)) %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 7,9)) == params$mes)
 ```
 
@@ -178,17 +189,35 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población parada}
-df_parados <- cbind(data.frame(do.call('rbind', parados[["data"]][["dimCodes"]])), parados[["data"]][["Valor"]])
-colnames(df_parados) <- c('mun', 'periodo', 'gredad', 'sexo', 'valor')
-df_parados$periodo <- factor(df_parados$periodo , levels=parados[["categories"]][["codes"]][[2]])
-df_parados$gredad <- ordered(df_parados$gredad, levels = parados[["categories"]][["codes"]][[3]], labels=parados[["categories"]][["labels"]][[3]])
-df_parados$sexo <- factor(df_parados$sexo , levels=parados[["categories"]][["codes"]][[4]], labels=parados[["categories"]][["labels"]][[4]])
-df_parados$valor <- as.numeric(df_parados$valor)
+df_parados <- data.frame(
+  periodo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  mun = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  sexo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_gredad = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+               times = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(parados[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-df_parados <- df_parados %>% transform(periodo = gsub("M", "-", periodo))
+df_edad <- data.frame(
+  id_gredad = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  gredad = vector(mode = "character", length = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
 
-Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
-Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
+for(i in 1:nrow(df_edad)) {
+  df_edad$gredad[i] <- parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_parados <- df_parados %>% 
+  right_join(df_edad, by = "id_gredad") %>%
+  transform(periodo = gsub("M", "", periodo))
+df_parados$valor <- df_parados$valor %>% as.numeric()
+df_parados <- recode_Frontera(df_parados)
+df_parados$mun <- recode_id_Frontera(df_parados, 'mun')
+
+
+Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "Total" & sexo == "_T") %>% select(valor) %>% as.numeric()
+Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "_T") %>% select(valor) %>% as.numeric()
 
 df_u <- df_parados %>% filter(substring(mun, 0,2) != "ES" & gredad == "TOTAL" & sexo == "AMBOS SEXOS") %>%
   select(mun, periodo, valor) %>%
