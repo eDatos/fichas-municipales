@@ -188,11 +188,16 @@ generarFichas <- function(municipios, df_fichas, periods) {
       periods_filtered <- periods %>% filter(code %in% id_ficha)
       for(period_index in 1:nrow(periods_filtered)) {
         period <- periods_filtered[period_index,]
+        skip_to_next <- FALSE
         tryCatch(
           {generarFicha(period$A, id_ficha, periodicidad, period$M, period$Q, id_municipio)},
-          error = {},
+          error = function(e) {
+            print(paste('Error:', period$A, id_ficha, periodicidad, period$M, period$Q, id_municipio, sep = ', '))
+            skip_to_next <<- TRUE
+            },
           finally = {print(paste('Processed:', period$A, id_ficha, periodicidad, period$M, period$Q, id_municipio, sep = ', '))}
         )
+        if(skip_to_next) { next }
       }
     }
   }
@@ -200,5 +205,5 @@ generarFichas <- function(municipios, df_fichas, periods) {
 
 #generarFicha(2021, 'afiliacion_cotizacion', 'Q', NA, 6, 35023)
 
-generarFichas(municipios, df_fichas %>% filter(code == 'vehiculos'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'perfil'), periods)
 
