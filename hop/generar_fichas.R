@@ -123,7 +123,7 @@ loadMunicipios <- function() {
 
 downloadData()
 
-periods <- get_total_periods(df_init_data, df_fichas %>% filter(!description %like% "Elecciones")) %>%
+periods <- get_total_periods(df_init_data, df_fichas %>% filter(!code %in% c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales"))) %>%
   left_join(
     data.frame(
       M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),

@@ -4,6 +4,7 @@ params:
   id_municipio: 35012
   año: 2020
   trimestre: 4
+  mes: NA
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -160,7 +161,7 @@ colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
 df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categories"]][["codes"]][[2]], labels=GM_sexo_edad[["categories"]][["labels"]][[2]])
 df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
-df_GM_sexo_edad$valor <- as.numeric(df_GM_sexo_edad$valor) %>% round(0)
+df_GM_sexo_edad$valor <- round(as.numeric(df_GM_sexo_edad$valor), 0)
 df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(periodo, 5,5) == "Q") %>% 
   select(mun, periodo, valor)
 df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
@@ -372,10 +373,11 @@ df_GM_ni$nivel <- factor(df_GM_ni$nivel, levels=GM_ni[["categories"]][["codes"]]
 df_GM_ni$mun <- factor(df_GM_ni$mun, levels=GM_ni[["categories"]][["codes"]][[3]], labels=GM_ni[["categories"]][["labels"]][[3]])
 df_GM_ni$valor <- as.numeric(df_GM_ni$valor) %>% round(0)
 df_GM_ni$mun <- recode_mun(df_GM_ni, 'mun')
-df_GM_ni <- df_GM_ni %>% mutate(nivel = recode(nivel, "Menos de 25.000€" = "< 25.000 €"),
-                                nivel = recode(nivel, "25.000€ - 49.999€" = "25.000 € - 49.999 €"),
-                                nivel = recode(nivel, "50.000€ - 74.999€" = "50.000 € - 74.999 €"),
-                                nivel = recode(nivel, "75.000€ o más" = "> 74.999 €"))
+df_GM_ni <- df_GM_ni %>%
+  mutate(nivel = recode(nivel, "Menos de 25.000€" = "< 25.000 €")) %>%
+  mutate(nivel = recode(nivel, "25.000€ - 49.999€" = "25.000 € - 49.999 €")) %>%
+  mutate(nivel = recode(nivel, "50.000€ - 74.999€" = "50.000 € - 74.999 €")) %>%
+  mutate(nivel = recode(nivel, "75.000€ o más" = "> 74.999 €"))
 
 df_GM_ni_mun <- df_GM_ni %>%
   filter(ind == "Gasto por turista" & nivel != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -437,9 +439,10 @@ df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["co
 df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
 df_GM_ne$valor <- as.numeric(df_GM_ne$valor) %>% round(0)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
-df_GM_ne <- df_GM_ne %>% mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios o primarios"),
-                                estudios = recode(estudios, "Estudios secundarios" = "Secundarios"),
-                                estudios = recode(estudios, "Estudios superiores" = "Superiores"))
+df_GM_ne <- df_GM_ne %>%
+  mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios o primarios")) %>%
+  mutate(estudios = recode(estudios, "Estudios secundarios" = "Secundarios")) %>%
+  mutate(estudios = recode(estudios, "Estudios superiores" = "Superiores"))
 
 df_GM_ne_mun <- df_GM_ne %>%
   filter(ind == "Gasto por turista" & estudios != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -521,9 +524,10 @@ df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"
 df_GM_np$mun <- factor(df_GM_np$mun, levels=GM_np[["categories"]][["codes"]][[3]], labels=GM_np[["categories"]][["labels"]][[3]])
 df_GM_np$valor <- as.numeric(df_GM_np$valor) %>% round(0)
 df_GM_np$mun <- recode_mun(df_GM_np, 'mun')
-df_GM_np <- df_GM_np %>% mutate(noches = recode(noches, "De 1 a 7 noches" = "1 - 7"),
-                                noches = recode(noches, "De 8 a 15 noches" = "8 - 15"),
-                                noches = recode(noches, "Más de 15 noches" = "&gt; 15"))
+df_GM_np <- df_GM_np %>%
+  mutate(noches = recode(noches, "De 1 a 7 noches" = "1 - 7")) %>%
+  mutate(noches = recode(noches, "De 8 a 15 noches" = "8 - 15")) %>%
+  mutate(noches = recode(noches, "Más de 15 noches" = "&gt; 15"))
 
 df_GM_np_mun <- df_GM_np %>%
   filter(ind == "Gasto por turista" & noches != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
@@ -584,9 +588,10 @@ df_GM_pt$paquete <- factor(df_GM_pt$paquete, levels=GM_pt[["categories"]][["code
 df_GM_pt$mun <- factor(df_GM_pt$mun, levels=GM_pt[["categories"]][["codes"]][[2]], labels=GM_pt[["categories"]][["labels"]][[2]])
 df_GM_pt$valor <- as.numeric(df_GM_pt$valor) %>% round(0)
 df_GM_pt$mun <- recode_mun(df_GM_pt, 'mun')
-df_GM_pt <- df_GM_pt %>% mutate(paquete = recode(paquete, "TOTAL" = "Paquete turístico"),
-                                paquete = recode(paquete, "Con servicios extras" = "Paquete con servicios extras"),
-                                paquete = recode(paquete, "Sin servicios extras" = "Paquete sin servicios extras"))
+df_GM_pt <- df_GM_pt %>%
+  mutate(paquete = recode(paquete, "TOTAL" = "Paquete turístico")) %>%
+  mutate(paquete = recode(paquete, "Con servicios extras" = "Paquete con servicios extras")) %>%
+  mutate(paquete = recode(paquete, "Sin servicios extras" = "Paquete sin servicios extras"))
 
 df_GM_pt_mun <- df_GM_pt %>%
   filter(mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 

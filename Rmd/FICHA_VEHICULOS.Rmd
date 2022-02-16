@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35007
+  id_municipio: 35003
   año: 2021
-  mes: 11
+  mes: 3
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -47,7 +47,7 @@ get_nombre <- function(nombre) {
   result <- ""
   line.char <- 0
   for(word.index in 1:length(string_list)) {
-    if((line.char + nchar(string_list[word.index])) < 17) {
+    if((line.char + nchar(string_list[word.index])) < 18) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
@@ -426,6 +426,7 @@ g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = reorder(veh, order), fil
   guides(fill = FALSE) +
   scale_fill_manual(values = col) +
   theme(axis.text.x = element_text(),
+        axis.text.y = element_text(size = 8),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -457,17 +458,21 @@ df_combustibles_mun <- df_tipos %>%
 df_combustibles_mun <- df_combustibles_mun %>%
   mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
 
+resto <- sum(df_combustibles_mun %>%
+               filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico")) %>%
+               select(valor))
+
 porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
 porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
 porc_gasolina_diesel <- porc_gasolina + porc_diesel
 porc_electrico <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Eléctrico")]
-porc_otros <- 100 - porc_gasolina - porc_diesel - porc_electrico
+porc_otros <- ifelse(resto == 0, 0, 100 - porc_gasolina - porc_diesel - porc_electrico)
 
 porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric
 porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric
 porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric
 porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric
-porc_otros_l <- round(porc_otros, 1) %>% as.numeric
+porc_otros_l <- ifelse(resto == 0, 0, round(100 - porc_gasolina_l - porc_diesel_l - porc_electrico_l, 1)) %>% as.numeric
 ```
 
 ```{r Progress-bar Otros tipos de combustible}
@@ -485,17 +490,21 @@ tipo_2 <- df_combustibles_otros$combustible[2]
 tipo_3 <- df_combustibles_otros$combustible[3]
 tipo_4 <- df_combustibles_otros$combustible[4]
 
+resto_ <- sum(df_combustibles_mun %>%
+               filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico", as.character(tipo_1), as.character(tipo_2), as.character(tipo_3), as.character(tipo_4))) %>%
+               select(valor))
+
 porc_1 <- df_combustibles_otros$porcentaje_barra[1]
 porc_2 <- df_combustibles_otros$porcentaje_barra[2]
 porc_3 <- df_combustibles_otros$porcentaje_barra[3]
 porc_4 <- df_combustibles_otros$porcentaje_barra[4]
-porc_o <- 100 - porc_1 - porc_2 - porc_3 - porc_4
+porc_o <- ifelse(resto_ == 0, 0, 100 - porc_1 - porc_2 - porc_3 - porc_4)
 
 porc_1_l <- round(df_combustibles_otros$porcentaje[1], 1) %>% as.numeric
 porc_2_l <- round(df_combustibles_otros$porcentaje[2], 1) %>% as.numeric
 porc_3_l <- round(df_combustibles_otros$porcentaje[3], 1) %>% as.numeric
 porc_4_l <- round(df_combustibles_otros$porcentaje[4], 1) %>% as.numeric
-porc_o_l <- round(porc_otros_l - porc_1_l - porc_2_l - porc_3_l - porc_4_l, 1) %>% as.numeric
+porc_o_l <- ifelse(resto_ == 0, 0, round(porc_otros_l - porc_1_l - porc_2_l - porc_3_l - porc_4_l, 1)) %>% as.numeric
 ```
 
 ```{r Matriculaciones}
@@ -542,9 +551,11 @@ df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["
                                 labels=paste0(substring(data_matr_tipos[["categories"]][["codes"]][[3]], 0,4), "-", substring(data_matr_tipos[["categories"]][["codes"]][[3]], 6,7)))
 df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
 df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
-df_matr_tipos <- df_matr_tipos %>% filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>% 
-  mutate(veh = trimws(veh),
-         veh = paste0(substring(veh, 0,1), tolower(substring(veh, 2,100))))
+df_matr_tipos <- df_matr_tipos %>%
+  filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>%
+  transform(veh = trimws(veh)) %>%
+  transform(veh = str_to_sentence(veh)) %>%
+  transform(veh = gsub("Vehiculos especiales", "Vehículos especiales", veh))
 
 rk_matr_tipos_mun <- df_matr_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
@@ -606,6 +617,7 @@ g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = reorder(veh, order), f
   guides(fill = FALSE) +
   scale_fill_manual(values = col) +
   theme(axis.text.x = element_text(),
+        axis.text.y = element_text(size = 8),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
@@ -720,8 +732,8 @@ mapa_comarca_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding-top: 40px;">
-<div class="piramide" style="height: 320px;">
+<div class="column highlight" style="padding-top: 40px; padding-bottom: 26px;">
+<div class="piramide" style="height: 300px;">
   `r g_vehiculos`
 </div>
 
@@ -834,16 +846,16 @@ if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
 <div class="progress-bar-container">
 
 ```{r, results='asis'}
-if(porc_2_l == 0 & porc_3_l == 0 & porc_4_l == 0 & porc_o_l == 0){
+if(porc_2 == 0 & porc_3 == 0 & porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progress-bar-blue-0' style='width:", porc_1, "%'>"))
-}else if(porc_3_l == 0 & porc_4_l == 0 & porc_o_l == 0){
+}else if(porc_3 == 0 & porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue6' style='width:", porc_2, "%'>"))
-}else if(porc_4_l == 0 & porc_o_l == 0){
+}else if(porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue3' style='width:", porc_2, "%'></div><div class='progress-bar-blue6' style='width:", porc_3, "%'>"))
-}else if(porc_o_l == 0){
+}else if(porc_o == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue3' style='width:", porc_2, "%'></div><div class='progress-bar-blue4' style='width:", porc_3, "%'></div><div class='progress-bar-blue6' style='width:", porc_4, "%'>"))
 }else{
@@ -856,16 +868,16 @@ if(porc_2_l == 0 & porc_3_l == 0 & porc_4_l == 0 & porc_o_l == 0){
 
 <div class="legend-vertical-container" style="margin-top: 60px;">
 ```{r, results='asis'}
-if(porc_2_l == 0 & porc_3_l == 0 & porc_4_l == 0 & porc_o_l == 0){
+if(porc_2 == 0 & porc_3 == 0 & porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_3_l == 0 & porc_4_l == 0 & porc_o_l == 0){
+}else if(porc_3 == 0 & porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_4_l == 0 & porc_o_l == 0){
+}else if(porc_4 == 0 & porc_o == 0){
   cat(paste0(
     "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_3, " (", format(porc_3_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_o_l == 0){
+}else if(porc_o == 0){
   cat(paste0(
     "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo_3, " (", format(porc_3_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_4, " (", format(porc_4_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
 }else{
