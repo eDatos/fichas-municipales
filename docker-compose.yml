@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  proxy:
+    build: proxy
+    image: proxy
+    container_name: proxy
+    ports:
+      - 443:443
+    volumes:
+      - ./proxy/logs:/var/log/nginx
+    depends_on:
+      - shiny
+  shiny:
+    build: .
+    container_name: shiny
+    volumes:
+      - ./:/srv/shiny-server/sta-mun/
+      - ./logs:/var/log/shiny-server
+      - ./conf/shiny-server.conf:/etc/shiny-server/shiny-server.conf
