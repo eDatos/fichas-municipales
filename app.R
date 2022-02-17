@@ -9,8 +9,8 @@ library(bslib)
 library(RCurl)
 
 addResourcePath("frames", getwd())
-directory.data <- "../data/"
-directory.rmd <- "../Rmd/"
+directory.data <- "data/"
+directory.rmd <- "Rmd/"
 directory.output <- "output"
 df_init_data <-  read.csv("init-data.csv", sep = ";") %>% 
   transform(filepath = paste0(directory.data, name, '.', extension),
@@ -128,7 +128,7 @@ ui <- fluidPage(
   )),
   htmlOutput('header'),
   uiOutput("fichas"),
-  htmlOutput('footer'),
+  htmlOutput('footer')
 )
 
 server <- function(input, output) {
@@ -200,15 +200,17 @@ server <- function(input, output) {
   outputOptions(output, "periodicidad_2", suspendWhenHidden = FALSE)
   
   output$header <- renderUI({
-    header.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.header.url.json")
-    header.html <- getURL(paste0(header.json$value, '?appName=Fichas%20municipales'))
-    HTML(header.html)
+    #header.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.header.url.json")
+    #header.html <- getURL(paste0(header.json$value, '?appName=Fichas%20municipales'))
+    #header.html <- getURL('https://www3-pre.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/header/header.html')
+    includeHTML('www/header.html')
   })
-
+  
   output$footer <- renderUI({
-    footer.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.footer.url.json")
-    footer.html <- getURL(footer.json$value)
-    HTML(footer.html)
+    #footer.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.footer.url.json")
+    #footer.html <- getURL(footer.json$value)
+    #footer.html <- getURL('https://www3-pre.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/footer/footer.html')
+    includeHTML('www/footer.html')
   })
   
   output$report <- renderUI({
@@ -286,27 +288,31 @@ server <- function(input, output) {
   option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
-    periods %>% 
-      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
-      select(id = period) %>%
-      left_join(
-        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c("3", "6", "9", "12"),
-                   Q = paste0("Trimestre ", seq(1:4))),
-        by ='id') %>% 
+    current_periods <- periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% select(id = period)
+    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_selected <- trim_M_periods
+    if(all(current_periods$id <= 4)) {
+      trim_selected <- trim_Q_periods 
+    }
+
+    current_periods %>%
+      left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
       deframe
   })
   
   option_trim_2 <- reactive({
-    periods %>% 
+    current_periods <- periods%>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
-      select(id = period) %>%
-      left_join(
-        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c("3", "6", "9", "12"),
-                   Q = paste0("Trimestre ", seq(1:4))),
-        by ='id') %>% 
+      select(id = period)
+    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_selected <- data.frame(ifelse(current_periods$id > 4, trim_M_periods, trim_Q_periods))[,1:2]
+    names(trim_selected) <- names(trim_M_periods)
+    
+    current_periods %>%
+      left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
       deframe
   })

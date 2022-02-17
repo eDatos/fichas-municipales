@@ -8,8 +8,6 @@ params:
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
-  url.matricula: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
-  url.matricula_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.parque_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9019908a-7837-4af4-bef0-b4cfa226cb15
@@ -322,8 +320,7 @@ df_Tur_Parque <- data.frame(
 df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
 
 Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
-Num_Tur_Parque <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>% round(0) %>% 
-  format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+Num_Tur_Parque <- Num_Tur_Parque_num %>% round(0) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
@@ -507,39 +504,6 @@ porc_4_l <- round(df_combustibles_otros$porcentaje[4], 1) %>% as.numeric
 porc_o_l <- ifelse(resto_ == 0, 0, round(porc_otros_l - porc_1_l - porc_2_l - porc_3_l - porc_4_l, 1)) %>% as.numeric
 ```
 
-```{r Matriculaciones}
-# Número de vehículos matriculados durante el periodo de referencia.
-data_matr <- fromJSON(params$url.matricula)
-
-df_matr <- data.frame(
-  mun = rep(names(data_matr[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=data_matr[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  mes = rep(names(data_matr[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=data_matr[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(data_matr[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(data_matr[["observation"]]), 1))
-df_matr$valor <- as.numeric(df_matr$valor)
-
-Num_Matriculaciones_num <- df_matr %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
-Num_Matriculaciones <- df_matr %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
-  format(big.mark = ".", decimal.mark = ",")
-
-# Número de turismos matriculados durante el periodo de referencia.
-data_matr_turismos <- fromJSON(params$url.matricula_tur)
-
-df_matr_turismos <- data.frame(
-  mun = rep(names(data_matr_turismos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["size"]] * data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  mes = rep(names(data_matr_turismos[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(data_matr_turismos[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(data_matr_turismos[["observation"]]), 1))
-df_matr_turismos$valor <- as.numeric(df_matr_turismos$valor)
-
-Num_Matr_turismos <- df_matr_turismos %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric() %>%
-  format(big.mark = ".", decimal.mark = ",")
-```
-
 ```{r Matriculaciones Tipos}
 data_matr_tipos <- fromJSON(params$url.matr_tipos)
 
@@ -551,6 +515,10 @@ df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["
                                 labels=paste0(substring(data_matr_tipos[["categories"]][["codes"]][[3]], 0,4), "-", substring(data_matr_tipos[["categories"]][["codes"]][[3]], 6,7)))
 df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
 df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
+
+Num_Matriculaciones_num <- df_matr_tipos %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric()
+Num_Matriculaciones_C <- df_matr_tipos %>% filter(mun == "CANARIAS" & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric()
+
 df_matr_tipos <- df_matr_tipos %>%
   filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>%
   transform(veh = trimws(veh)) %>%
@@ -567,7 +535,6 @@ rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_m
 rk_matr_tipos_mun <- rk_matr_tipos_mun %>%
   mutate(order = as.integer(order(rk_matr_tipos_mun$valor, decreasing = FALSE)))
 
-Num_Matriculaciones_C <- df_matr %>% filter(mun == "ES70" & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
 df_matr_tipos_mun <- df_matr_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>% select(!c(mun, periodo))
 df_matr_tipos_C <- df_matr_tipos %>%
@@ -719,7 +686,7 @@ mapa_comarca_plot
 </div>
 
 <div class="indicator-title-row">
-  <h3>Tipos de vehículos</h3>
+  <h3>Tipos de vehículo</h3>
 </div>
 
 <div class="row">
