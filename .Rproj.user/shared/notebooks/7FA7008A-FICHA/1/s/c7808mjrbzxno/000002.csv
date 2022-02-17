@@ -1,8 +1,0 @@
-"0","data_edadm <- fromJSON(params$url.edad_media)"
-"0","df_edadm <- data.frame("
-"0","  mun = rep(names(data_edadm[[""dimension""]][[""GEOGRAPHICAL""]][[""representation""]][[""index""]]),"
-"0","                  each=data_edadm[[""dimension""]][[""TIME""]][[""representation""]][[""size""]]),"
-"0","  año = names(data_edadm[[""dimension""]][[""TIME""]][[""representation""]][[""index""]]),"
-"0","  valor = as.numeric(data_edadm[[""observation""]]))"
-"0",""
-"0","edad_media <- df_edadm %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ""."", decimal.mark = "","", nsmall = 1)"

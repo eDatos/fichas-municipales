@@ -1,7 +1,0 @@
-"0","## Viajeros entrados en alojamientos turísticos. 2009"
-"0","ind_viaj <- df %>% filter(id == params$id_municipio & code %in% c(mes_actual$code, mes_tva$code))"
-"0",""
-"0","Num_Viajeros_num <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(valor) %>% as.numeric()"
-"0","Num_Viajeros <- Num_Viajeros_num %>% format(big.mark = ""."", decimal.mark = "","")"
-"0","Variacion_Porcentual <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(tasa) %>% as.numeric() %>% format(big.mark = ""."", decimal.mark = "","", nsmall = 1)"
-"0","Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == ""más"", './img/up.png', './img/down.png')"

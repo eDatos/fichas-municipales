@@ -1,1 +1,0 @@
-"0","GAP <- format(round(((df_lv$valor_M[df_lv$año == params$año]) - (df_lv$valor_inicial[df_lv$año == params$año])), 1), big.mark = ""."", decimal.mark = "","", nsmall = 1) %>% as.character()"

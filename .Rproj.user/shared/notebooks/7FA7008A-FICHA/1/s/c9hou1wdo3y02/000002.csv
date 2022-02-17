@@ -1,5 +1,0 @@
-"0","TBM <- (df_mortalidad %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric) / 100 %>% format(big.mark = ""."", decimal.mark = "","", nsmall = 1)
-"
-"2","Error in (df_mortalidad %>% filter(mun == params$id_municipio & año ==  : 
-  non-numeric argument to binary operator
-"
