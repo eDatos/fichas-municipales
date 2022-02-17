@@ -200,15 +200,17 @@ server <- function(input, output) {
   outputOptions(output, "periodicidad_2", suspendWhenHidden = FALSE)
   
   output$header <- renderUI({
-    header.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.header.url.json")
-    header.html <- getURL(paste0(header.json$value, '?appName=Fichas%20municipales'))
-    HTML(header.html)
+    #header.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.header.url.json")
+    #header.html <- getURL(paste0(header.json$value, '?appName=Fichas%20municipales'))
+    #header.html <- getURL('https://www3-pre.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/header/header.html')
+    includeHTML('www/header.html')
   })
-
+  
   output$footer <- renderUI({
-    footer.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.footer.url.json")
-    footer.html <- getURL(footer.json$value)
-    HTML(footer.html)
+    #footer.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.footer.url.json")
+    #footer.html <- getURL(footer.json$value)
+    #footer.html <- getURL('https://www3-pre.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/footer/footer.html')
+    includeHTML('www/footer.html')
   })
   
   output$report <- renderUI({
