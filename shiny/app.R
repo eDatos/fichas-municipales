@@ -288,27 +288,29 @@ server <- function(input, output) {
   option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
-    periods %>% 
-      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
-      select(id = period) %>%
-      left_join(
-        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c("3", "6", "9", "12"),
-                   Q = paste0("Trimestre ", seq(1:4))),
-        by ='id') %>% 
+    current_periods <- periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% select(id = period)
+    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_selected <- data.frame(ifelse(current_periods$id > 4, trim_M_periods, trim_Q_periods))
+    names(trim_selected) <- names(trim_M_periods)
+    
+    current_periods %>%
+      left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
       deframe
   })
   
   option_trim_2 <- reactive({
-    periods %>% 
+    current_periods <- periods%>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
-      select(id = period) %>%
-      left_join(
-        data.frame(mes = c("Marzo", "Junio", "Septiembre", "Diciembre"),
-                   id = c("3", "6", "9", "12"),
-                   Q = paste0("Trimestre ", seq(1:4))),
-        by ='id') %>% 
+      select(id = period)
+    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_selected <- data.frame(ifelse(current_periods$id > 4, trim_M_periods, trim_Q_periods))
+    names(trim_selected) <- names(trim_M_periods)
+    
+    current_periods %>%
+      left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
       deframe
   })
