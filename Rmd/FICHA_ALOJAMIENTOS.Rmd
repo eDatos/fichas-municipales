@@ -603,10 +603,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Estancia<br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia</br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia<br>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br>diaria', ADR, './img/euro.png'), "</div>"))
 }
 ```
 </div>
@@ -685,8 +685,8 @@ if(Plazas_Hoteles == "NA" & Plazas_extrahoteleros != "NA"){
 </div>
 
 <div class="row" style="margin: 14px 0 6px;">
-  <div class="column-2">`r get_indicator3s('Canarias respecto</br>a España', paste0(peso_Canarias_Esp, "%"))`</div>
-  <div class="column-2">`r get_indicator3s('Canarias respecto</br>al total', paste0(peso_Canarias_Tot, "%"))`</div>
+  <div class="column-2">`r get_indicator3s('Canarias respecto<br>a España', paste0(peso_Canarias_Esp, "%"))`</div>
+  <div class="column-2">`r get_indicator3s('Canarias respecto<br>al total', paste0(peso_Canarias_Tot, "%"))`</div>
 </div>
 </div>
 
