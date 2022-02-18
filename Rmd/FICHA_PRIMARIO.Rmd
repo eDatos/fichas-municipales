@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 35007
-  año: 2015
+  id_municipio: 35016
+  año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -388,11 +388,9 @@ df_herbaceos_C <- df_herbaceos %>%
   filter(mun == "ES70" & cultivo %in% rk_herbaceos_mun$cultivo) %>%
   select(cultivo, valor)
 df_herbaceos_mun <- df_herbaceos_mun %>%
-  # mutate(porcentaje = df_herbaceos_mun$valor / sum(df_herbaceos_mun$valor) * 100,
   mutate(porcentaje = df_herbaceos_mun$valor / sup_herbaceos_num * 100,
          valor_Canarias = df_herbaceos_C$valor,
          porcentaje_Canarias = df_herbaceos_C$valor / sup_herbaceos_C * 100)
-         # porcentaje_Canarias = df_herbaceos_C$valor / sum(df_herbaceos_C$valor) * 100)
 
 df_herbaceos_mun$name_cultivo <- ""
 for(i in 1:nrow(df_herbaceos_mun)) {
@@ -509,11 +507,9 @@ df_leñosos_C <- df_leñosos %>%
   filter(mun == "ES70" & cultivo %in% rk_leñosos_mun$cultivo) %>%
   select(cultivo, valor)
 df_leñosos_mun <- df_leñosos_mun %>%
-  # mutate(porcentaje = df_leñosos_mun$valor / sum(df_leñosos_mun$valor) * 100,
   mutate(porcentaje = df_leñosos_mun$valor / sup_leñosos_num * 100,
          valor_Canarias = df_leñosos_C$valor,
          porcentaje_Canarias = df_leñosos_C$valor / sup_leñosos_C * 100)
-         # porcentaje_Canarias = df_leñosos_C$valor / sum(df_leñosos_C$valor) * 100)
 
 df_leñosos_mun$name_cultivo <- ""
 for(i in 1:nrow(df_leñosos_mun)) {
@@ -626,11 +622,9 @@ df_exp_especies_C <- df_exp_especies %>%
   filter(mun == "ES70") %>%
   select(especie, valor)
 df_exp_especies_mun <- df_exp_especies_mun %>%
-  # mutate(porcentaje = df_exp_especies_mun$valor / sum(df_exp_especies_mun$valor) * 100,
   mutate(porcentaje = df_exp_especies_mun$valor / Num_exp_especies * 100,
          valor_Canarias = df_exp_especies_C$valor,
          porcentaje_Canarias = df_exp_especies_C$valor / Num_exp_especies_C * 100)
-         # porcentaje_Canarias = df_exp_especies_C$valor / sum(df_exp_especies_C$valor) * 100)
 
 df_exp_especies_plot <- df_exp_especies_mun %>%
   mutate(label = "|")
@@ -870,8 +864,12 @@ mapa_comarca_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="padding-top: 20px;">
-<div class="piramide" style="height: 240px">
+<div class="column highlight">
+<div class="row">
+<div class='indicator5'><div class='indicator-content'><p class='value'>`r Num_exp_especies`</p><hr class='separator'><p class='label'>Explotaciones</p></div></div>
+</div>
+
+<div class="piramide" style="height: 240px; padding-top: 20px;">
   `r g_exp_especies`
 </div>
 
@@ -892,10 +890,12 @@ mapa_comarca_plot
   <div class="column-2">`r get_indicator3("Ovinos", ovinos_num, "./img/ovino.png")`</div>
   <div class="column-2">`r get_indicator3("Porcinos", porcinos_num, "./img/porcino.png")`</div>
 </div>
+<div class="row" style="margin-bottom: 30px;">
+  <div class="column-2" style="height: 50px;">`r get_indicator3("Gallinas", gallinas_num, "./img/gallina.png")`</div>
+  <div class="column-2" style="height: 50px;">`r get_indicator3("Colmenas", abejas_num, "./img/abeja.png")`</div>
+</div>
 <div class="row">
-  <div class="column-3-ind" style="height: 50px;">`r get_indicator3("Gallinas", gallinas_num, "./img/gallina.png")`</div>
-  <div class="column-3-ind" style="height: 50px;">`r get_indicator3("Abejas", abejas_num, "./img/abeja.png")`</div>
-  <div class="column-3-ind" style="height: 50px;">`r get_indicator3("Conejos", conejos_num, "./img/conejo.png")`</div>
+  <div style="height: 50px;">`r get_indicator3("Conejos", conejos_num, "./img/conejo.png")`</div>
 </div>
 </div>
 
