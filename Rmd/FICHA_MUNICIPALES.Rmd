@@ -496,10 +496,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion == "NA"){
   cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de<br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de</br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }
 ```
 </div>

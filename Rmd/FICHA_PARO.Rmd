@@ -612,10 +612,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    '</div><div class="column-3-ind">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '</div><div class="column-3-ind">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad</br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">', get_indicator2("Tasa de<br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>

@@ -782,10 +782,10 @@ if(Variacion_Porcentual == "NA" & GAP == "NA"){
         }else{
           if(Variacion_Porcentual != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+              "<div class='column-3-ind'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }

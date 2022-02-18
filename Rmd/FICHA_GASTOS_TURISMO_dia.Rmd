@@ -683,7 +683,7 @@ if(Variacion_Porcentual == "NA"){
     '<div class="column-2-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3-ind">', get_indicator2("Tasa de</br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3-ind">', get_indicator2("Tasa de<br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
