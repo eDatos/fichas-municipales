@@ -5,15 +5,17 @@ library(tibble)
 library(tidyverse)
 library(jsonlite)
 library(RCurl)
+library(data.table)
+
 
 #Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
 directory.rmd <- "Rmd/"
 directory.output <- "output"
-df_init_data <-  read.csv("shiny/init-data.csv", encoding = "UTF-8", sep = ";") %>% 
+df_init_data <-  read.csv("init-data.csv", encoding = "UTF-8", sep = ";") %>% 
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
-df_fichas <- read.csv("shiny/fichas.csv", encoding = "UTF-8", sep = ";")
+df_fichas <- read.csv("fichas.csv", encoding = "UTF-8", sep = ";")
 
 downloadData <- function() {
   for (i in 1:nrow(df_init_data)) {
@@ -169,7 +171,7 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
       output_file = nombre.fichero, 
       params = option_params,
       output_options = list(
-        lib_dir = paste0('../', dir.fichero, '/js'),
+        lib_dir = paste0('../', dir.fichero, 'js'),
         css = paste0('../../resources/css/FICHA.css'))
     )
  
