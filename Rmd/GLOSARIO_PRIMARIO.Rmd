@@ -23,15 +23,14 @@ get_indicator_met_ = function(label, description) {
 <h2>Sector primario</h2>
 <hr>
 
-<div class="row highlight card-columns-4">
-  `r get_indicator_met_("Cabezas de ganado", ".")`
-  `r get_indicator_met_("Cultivos herbáceos", ".")`
-  `r get_indicator_met_("Cultivos leñosos", ".")`
-  `r get_indicator_met_("Explotaciones ganaderas", ".")`
-  `r get_indicator_met_("Ganadería", "Animales de producción pertenecientes a la explotación o criados por la misma incluidos los trashumantes y el ganado en régimen de integración o contrato.")`
-  `r get_indicator_met_("Superficie cultivada", ".")`
-  `r get_indicator_met_("Superficie cultivada de secano", ".")`
-  `r get_indicator_met_("Superficie cultivada de regadío", ".")`
+<div class="row highlight card-columns-3">
+  `r get_indicator_met_("Cabezas de ganado", "Unidad de cualquier tipo de ganado.")`
+  `r get_indicator_met_("Cultivos herbáceos", "Cultivos constituidos por aquellas plantas cuya parte aérea tiene consistencia herbácea. Incluye cereales para grano, leguminosas para grano, cultivos industriales, tubérculos de consumo humano, cultivos forrajeros, hortalizas, flores y plantas ornamentales.")`
+  `r get_indicator_met_("Cultivos leñosos", "Cultivos constituidos por aquellas plantas cuya parte aérea tiene consistencia leñosa. Incluye cítricos y frutales no cítricos, viñedo y olivar entre otros.")`
+  `r get_indicator_met_("Explotación ganadera", "Cualquier instalación, construcción o, en el caso de cría al aire libre, cualquier lugar en el que se tengan, críen, manejen o se expongan al público animales de producción, con o sin fines lucrativos que estén inscritas en el Registro de Explotaciones Ganaderas de Canarias (REGAC).")`
+  `r get_indicator_met_("Superficie cultivada", ".Superficie que corresponde a la superficie total sembrada, pero después de la recolección; excluye las superficies destruidas (por ejemplo, por catástrofes naturales).<br/>Nota: Hay que tener en cuenta que cuando una misma parcela se siembra con distintos cultivos durante un mismo periodo de tiempo (cultivos sucesivos), la superficie cultivada se cuenta una vez por cada uno de los cultivos.")`
+  `r get_indicator_met_("Superficie cultivada de secano", "Sistema de cultivo en el cual el aporte de agua para las plantas depende exclusivamente de las precipitaciones atmosféricas.")`
+  `r get_indicator_met_("Superficie cultivada de regadío", "Sistema de cultivo en el que se provee de agua a la tierra, distinta de la lluvia, para mejorar los pastos o la producción de los cultivos.")`
   `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en las hectáreas pertenecientes a un determinado ámbito en un año concreto.")`</div>
 </div>
 
