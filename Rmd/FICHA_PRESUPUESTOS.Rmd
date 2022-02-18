@@ -45,7 +45,7 @@ get_nombre <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br>", string_list[word.index])
+      result <- paste0(result, "<br/>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -480,9 +480,9 @@ df_part_gastos_mun$id_partida <- ordered(df_part_gastos_mun$id_partida, levels =
 
 df_part_gastos_mun <- df_part_gastos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
@@ -544,9 +544,9 @@ df_part_ingresos_mun$id_partida <- ordered(df_part_ingresos_mun$id_partida, leve
 
 df_part_ingresos_mun <- df_part_ingresos_mun %>% transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
@@ -641,9 +641,9 @@ df_gastos_programas_mun <- df_gastos_programas_mun %>%
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>% transform(hovertext = paste0(
     "<b>", programa, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
     )
   )
@@ -774,18 +774,18 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){
     cat(paste0(
-      "<div class='column-2-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+      "<div class='column-2-ind'>", get_indicator2('Ingresos<br/>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Gastos<br/>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
     }else{
       if(Variacion_Porcentual == "NA" & GAP != "NA"){
         cat(paste0(
-          "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+          "<div class='column-3-ind'>", get_indicator2('Ingresos<br/>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br/>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br/>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
         }else{
           if(Variacion_Porcentual != "NA" & GAP == "NA"){
             cat(paste0(
-              "<div class='column-3-ind'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+              "<div class='column-3-ind'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br/>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br/>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+              "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br/>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br/>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br/>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
         }
     }

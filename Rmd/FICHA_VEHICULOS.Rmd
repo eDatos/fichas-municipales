@@ -49,7 +49,7 @@ get_nombre <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br>", string_list[word.index])
+      result <- paste0(result, "<br/>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -393,10 +393,10 @@ df_vehiculos_plot <- df_vehiculos_plot %>%
   arrange(desc(order))
 
 df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(veh), "</b><br>",
+  "<b>", trimws(veh), "</b><br/>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
@@ -554,10 +554,10 @@ df_matr_tipos_plot <- df_matr_tipos_plot %>%
   arrange(desc(order))
 
 df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(veh), "</b><br>",
+  "<b>", trimws(veh), "</b><br/>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
@@ -635,10 +635,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br/>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos</br></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br/>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
 }
 ```
 </div>

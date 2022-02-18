@@ -306,11 +306,11 @@ df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Pobl_num, valor_Canarias
 
 df_mun <- df_mun %>% transform(
   hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", gredad," años</b><br>"), ""),
-    "<br><b>", sexo, "</b>",
-    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    ifelse(sexo == "Hombres", paste0("<b>", gredad," años</b><br/>"), ""),
+    "<br/><b>", sexo, "</b>",
+    "<br/>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
+    "<br/>Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje_Canarias)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
@@ -499,8 +499,8 @@ df_nacionalidad_mun_sexo$nacionalidad <- ordered(df_nacionalidad_mun_sexo$nacion
 df_nacionalidad_mun_sexo <- df_nacionalidad_mun_sexo %>% transform(hovertext = paste0(
   hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(nacionalidad),"</b>"), ""),
-    "<br><b>", sexo, "</b>",
-    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    "<br/><b>", sexo, "</b>",
+    "<br/>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
     )
   ))
@@ -601,10 +601,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Edad</br>media', edad_media, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Edad<br/>media', edad_media, './img/family.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de</br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Edad</br>media', edad_media, './img/family.png'), "</div><div class='column-4'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-4'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Edad<br/>media', edad_media, './img/family.png'), "</div><div class='column-4'>", get_indicator2(paste0('Mujeres</p><p class="label" style="color: #999;">', Num_Mujeres), paste0(Percent_Mujeres, '%'), './img/female.png'), "</div><div class='column-4'>", get_indicator2(paste0('Hombres</p><p class="label" style="color: #999;">', Num_Hombres), paste0(Percent_Hombres, '%'), './img/male.png'), "</div>"))
 }
 ```
 </div>
@@ -676,7 +676,7 @@ mapa_comarca_plot
 if(max(df_nacimientos$año) == params$año-1 | max(df_mortalidad$año) == params$año-1 | max(df_crec_veg$año) == params$año-1 | max(df_id_depen$año) == params$año-1 | max(df_emd_mujer$año) == params$año-1 | max(df_emd_mujer$año) == params$año-1){
   cat(paste0("<div class='row' style='margin-top: 28px;'></div>"))
 }else{
-  cat(paste0("<div class='column-3'>", get_indicator3('Tasa de</br>natalidad</br>', paste0(TBN, '‰'),'./img/natalidad.png'), "</div><div class='column-3'>", get_indicator3('Tasa de</br>mortalidad</br>', paste0(TBM, '‰'),'./img/muerte.png'), "</div><div class='column-3'>", get_indicator3('Crecimiento</br>vegetativo', Crec_veg,'./img/balanza.png'), "</div><div class='column-3'>", get_indicator3('Índice de</br>dependencia', paste0(id_dep, "%"),'./img/dependencia.png'), "</div><div class='column-3'>", get_indicator3('Edad media</br>defunción', emd_mujer,'./img/female-black.png'), "</div><div class='column-3'>", get_indicator3('Edad media</br>defunción', emd_hombre,'./img/male-black.png'), "</div>"))
+  cat(paste0("<div class='column-3'>", get_indicator3('Tasa de<br/>natalidad<br/>', paste0(TBN, '‰'),'./img/natalidad.png'), "</div><div class='column-3'>", get_indicator3('Tasa de<br/>mortalidad<br/>', paste0(TBM, '‰'),'./img/muerte.png'), "</div><div class='column-3'>", get_indicator3('Crecimiento<br/>vegetativo', Crec_veg,'./img/balanza.png'), "</div><div class='column-3'>", get_indicator3('Índice de<br/>dependencia', paste0(id_dep, "%"),'./img/dependencia.png'), "</div><div class='column-3'>", get_indicator3('Edad media<br/>defunción', emd_mujer,'./img/female-black.png'), "</div><div class='column-3'>", get_indicator3('Edad media<br/>defunción', emd_hombre,'./img/male-black.png'), "</div>"))
 }
 ```
 </div>
