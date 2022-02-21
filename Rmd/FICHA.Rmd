@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 35034
-  año: 2019
+  año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -388,7 +388,8 @@ df_nacimientos <- data.frame(
   mun = rep(names(data_nacimientos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
             each=data_nacimientos[["dimension"]][["TIME"]][["representation"]][["size"]]),
   año = names(data_nacimientos[["dimension"]][["TIME"]][["representation"]][["index"]]),
-  valor = as.numeric(data_nacimientos[["observation"]]))
+  valor = as.numeric(data_nacimientos[["observation"]])) %>%
+  filter(!is.na(valor))
 
 df_nacimientos_mun <- df_nacimientos %>% filter(año == params$año & mun == params$id_municipio)
 
@@ -402,7 +403,8 @@ df_mortalidad <- data.frame(
   mun = rep(names(data_mortalidad[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_mortalidad[["dimension"]][["TIME"]][["representation"]][["size"]]),
   año = names(data_mortalidad[["dimension"]][["TIME"]][["representation"]][["index"]]),
-  valor = as.numeric(data_mortalidad[["observation"]]))
+  valor = as.numeric(data_mortalidad[["observation"]])) %>%
+  filter(!is.na(valor))
 
 # Tasas por mil habitantes con un decimal:
 TBM <- ((df_mortalidad %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric) / 100) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -415,16 +417,19 @@ df_crec_veg <- cbind(data.frame(do.call('rbind', data_crec_veg[["data"]][["dimCo
 colnames(df_crec_veg) <- c('mun', 'año', 'valor')
 df_crec_veg$año <- as.numeric(df_crec_veg$año)
 df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
+df_crec_veg <- df_crec_veg  %>%
+  filter(!is.na(valor))
 
 Crec_veg <- df_crec_veg %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
 ```{r Índice de dependencia}
 id_depen <- fromJSON(params$url.dependencia)
-
 df_id_depen <- cbind(data.frame(do.call('rbind', id_depen[["data"]][["dimCodes"]])),id_depen[["data"]][["Valor"]])
 colnames(df_id_depen) <- c('mun', 'año', 'valor')
 df_id_depen$valor <- as.numeric(df_id_depen$valor)
+df_id_depen <- df_id_depen %>%
+  filter(!is.na(valor))
 
 id_dep <- round(df_id_depen %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor), 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
@@ -435,7 +440,8 @@ df_emd_mujer <- data.frame(
   mun = rep(names(data_emd_mujer[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_emd_mujer[["dimension"]][["TIME"]][["representation"]][["size"]]),
   año = names(data_emd_mujer[["dimension"]][["TIME"]][["representation"]][["index"]]),
-  valor = as.numeric(data_emd_mujer[["observation"]]))
+  valor = as.numeric(data_emd_mujer[["observation"]])) %>%
+  filter(!is.na(valor))
 
 emd_mujer <- df_emd_mujer %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
@@ -444,14 +450,14 @@ df_emd_hombre <- data.frame(
   mun = rep(names(data_emd_hombre[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_emd_hombre[["dimension"]][["TIME"]][["representation"]][["size"]]),
   año = names(data_emd_hombre[["dimension"]][["TIME"]][["representation"]][["index"]]),
-  valor = as.numeric(data_emd_hombre[["observation"]]))
+  valor = as.numeric(data_emd_hombre[["observation"]])) %>%
+  filter(!is.na(valor))
 
 emd_hombre <- df_emd_hombre %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Población según sexos y nacionalidades}
 data_nacionalidad <- fromJSON(params$url.nacionalidad)
-
 df_nacionalidad <- cbind(data.frame(do.call('rbind', data_nacionalidad[["data"]][["dimCodes"]])), data_nacionalidad[["data"]][["Valor"]])
 colnames(df_nacionalidad) <- c('mun', 'nacionalidad', 'año', 'sexo', 'valor')
 df_nacionalidad$mun <- factor(df_nacionalidad$mun, levels=data_nacionalidad[["categories"]][["codes"]][[1]], labels=data_nacionalidad[["categories"]][["labels"]][[1]])
