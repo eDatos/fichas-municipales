@@ -1,31 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:codes xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" kind="structuralResources#codes" total="718" selfLink="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes">
-    <sr:code kind="structuralResources#code">
-        <cdomain:id>GASTOS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Gastos</cdomain:text>
-        </cdomain:name>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
-        <cdomain:id>GASTOS_OPERACIONES_NO_FINANCIERAS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_NO_FINANCIERAS"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Gastos operaciones no financieras</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</sr:parent>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
-        <cdomain:id>GASTOS_OPERACIONES_CORRIENTES</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_CORRIENTES</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_CORRIENTES"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Gastos operaciones corrientes</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
-    </sr:code>
+<sr:codes xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" kind="structuralResources#codes" total="718" limit="1000" offset="0" selfLink="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/~latest/codes?limit=1000&amp;offset=0">
     <sr:code kind="structuralResources#code">
         <cdomain:id>G_1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).G_1</cdomain:urn>
@@ -2133,15 +2107,6 @@
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).G_50</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>GASTOS_OPERACIONES_CAPITAL</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_CAPITAL</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_CAPITAL"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Gastos operaciones capital</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
         <cdomain:id>G_6</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).G_6</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/G_6"/>
@@ -2743,15 +2708,6 @@
             <cdomain:text xml:lang="es">Transferencias capital al exterior</cdomain:text>
         </cdomain:name>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).G_7</sr:parent>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
-        <cdomain:id>GASTOS_OPERACIONES_FINANCIERAS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_FINANCIERAS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_FINANCIERAS"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Gastos operaciones financieras</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>G_8</cdomain:id>
@@ -3393,30 +3349,48 @@
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).G_94</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>INGRESOS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS"/>
+        <cdomain:id>GASTOS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS"/>
         <cdomain:name>
-            <cdomain:text xml:lang="es">Ingresos</cdomain:text>
+            <cdomain:text xml:lang="es">Gastos</cdomain:text>
         </cdomain:name>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>INGRESOS_OPERACIONES_NO_FINANCIERAS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_NO_FINANCIERAS"/>
+        <cdomain:id>GASTOS_OPERACIONES_CAPITAL</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_CAPITAL</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_CAPITAL"/>
         <cdomain:name>
-            <cdomain:text xml:lang="es">Ingresos operaciones no financieras</cdomain:text>
+            <cdomain:text xml:lang="es">Gastos operaciones capital</cdomain:text>
         </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</sr:parent>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>INGRESOS_OPERACIONES_CORRIENTES</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_CORRIENTES</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_CORRIENTES"/>
+        <cdomain:id>GASTOS_OPERACIONES_CORRIENTES</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_CORRIENTES</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_CORRIENTES"/>
         <cdomain:name>
-            <cdomain:text xml:lang="es">Ingresos operaciones corrientes</cdomain:text>
+            <cdomain:text xml:lang="es">Gastos operaciones corrientes</cdomain:text>
         </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>GASTOS_OPERACIONES_FINANCIERAS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_FINANCIERAS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_FINANCIERAS"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Gastos operaciones financieras</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>GASTOS_OPERACIONES_NO_FINANCIERAS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS_OPERACIONES_NO_FINANCIERAS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/GASTOS_OPERACIONES_NO_FINANCIERAS"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Gastos operaciones no financieras</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).GASTOS</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>I_1</cdomain:id>
@@ -5372,15 +5346,6 @@
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).I_59</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>INGRESOS_OPERACIONES_CAPITAL</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_CAPITAL</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_CAPITAL"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Ingresos operaciones capital</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
         <cdomain:id>I_6</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).I_6</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/I_6"/>
@@ -5939,15 +5904,6 @@
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).I_7</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
-        <cdomain:id>INGRESOS_OPERACIONES_FINANCIERAS</cdomain:id>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_FINANCIERAS</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_FINANCIERAS"/>
-        <cdomain:name>
-            <cdomain:text xml:lang="es">Ingresos operaciones financieras</cdomain:text>
-        </cdomain:name>
-        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</sr:parent>
-    </sr:code>
-    <sr:code kind="structuralResources#code">
         <cdomain:id>I_8</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).I_8</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/I_8"/>
@@ -6416,6 +6372,50 @@
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).I_94</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
+        <cdomain:id>INGRESOS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Ingresos</cdomain:text>
+        </cdomain:name>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>INGRESOS_OPERACIONES_CAPITAL</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_CAPITAL</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_CAPITAL"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Ingresos operaciones capital</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>INGRESOS_OPERACIONES_CORRIENTES</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_CORRIENTES</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_CORRIENTES"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Ingresos operaciones corrientes</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>INGRESOS_OPERACIONES_FINANCIERAS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_FINANCIERAS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_FINANCIERAS"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Ingresos operaciones financieras</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>INGRESOS_OPERACIONES_NO_FINANCIERAS</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS_OPERACIONES_NO_FINANCIERAS</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/INGRESOS_OPERACIONES_NO_FINANCIERAS"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">Ingresos operaciones no financieras</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001).INGRESOS</sr:parent>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
         <cdomain:id>_N</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001)._N</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/_N"/>
@@ -6438,8 +6438,8 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001)._U</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/_U"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">No data/unknown</cdomain:text>
             <cdomain:text xml:lang="es">Dato desconocido</cdomain:text>
+            <cdomain:text xml:lang="en">No data/unknown</cdomain:text>
         </cdomain:name>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -6456,8 +6456,8 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA(01.001)._Z</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/01.001/codes/_Z"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">Not applicable</cdomain:text>
             <cdomain:text xml:lang="es">No aplicable</cdomain:text>
+            <cdomain:text xml:lang="en">Not applicable</cdomain:text>
         </cdomain:name>
     </sr:code>
 </sr:codes>
