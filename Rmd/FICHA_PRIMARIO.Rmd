@@ -51,7 +51,7 @@ get_nombre <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br>", string_list[word.index])
+      result <- paste0(result, "<br/>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -407,10 +407,10 @@ df_herbaceos_plot <- df_herbaceos_plot %>%
   arrange(desc(cultivo))
 
 df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
-  "<b>", cultivo, "</b><br>",
+  "<b>", cultivo, "</b><br/>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -526,10 +526,10 @@ df_leñosos_plot <- df_leñosos_plot %>%
   arrange(desc(cultivo))
 
 df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(cultivo), "</b><br>",
+  "<b>", trimws(cultivo), "</b><br/>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -632,10 +632,10 @@ df_exp_especies_plot <- df_exp_especies_mun %>%
 df_exp_especies_plot$especie <- ordered(df_exp_especies_plot$especie, levels = order_especies)
 
 df_exp_especies_plot <- df_exp_especies_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(especie), "</b><br>",
+  "<b>", trimws(especie), "</b><br/>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -758,10 +758,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2(paste0('Secano<br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-2-ind'>", get_indicator2(paste0('Regadío<br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2(paste0('Secano<br/></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-2-ind'>", get_indicator2(paste0('Regadío<br/></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2(paste0('Secano<br></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Regadío<br></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2(paste0('Secano<br/></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Regadío<br/></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
 }
 ```
 </div>

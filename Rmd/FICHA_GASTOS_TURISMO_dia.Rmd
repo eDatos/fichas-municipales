@@ -394,8 +394,8 @@ df_GMd_ni_plot$nivel <- ordered(df_GMd_ni_plot$nivel, levels = df_GMd_ni_plot$ni
 
 df_GMd_ni_plot <- df_GMd_ni_plot %>% transform(hovertext = paste0(
     "<b>", nivel, "</b>",
-    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -440,7 +440,7 @@ df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]
 df_GM_ne$valor <- as.numeric(df_GM_ne$valor) %>% round(1)
 df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
 df_GM_ne <- df_GM_ne %>%
-  mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios<br>o primarios")) %>%
+  mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios<br/>o primarios")) %>%
   mutate(estudios = recode(estudios, "Estudios secundarios" = "Secundarios")) %>%
   mutate(estudios = recode(estudios, "Estudios superiores" = "Superiores"))
 
@@ -458,8 +458,8 @@ df_GMd_ne_plot <- df_GMd_ne_mun %>%
 
 df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
-    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -543,8 +543,8 @@ df_GMd_np_plot <- df_GMd_np_mun %>%
 
 df_GMd_np_plot <- df_GMd_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
-    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -611,8 +611,8 @@ df_GMd_pais_plot <- df_GMd_pais_mun %>%
 
 df_GMd_pais_plot <- df_GMd_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
-    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -683,7 +683,7 @@ if(Variacion_Porcentual == "NA"){
     '<div class="column-2-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-3-ind">', get_indicator2("Tasa de<br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+    '<div class="column-3-ind">', get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
 }
 ```
 </div>

@@ -233,7 +233,7 @@ g_line <- ggplot(data = df, aes(x = code, y = Valor, group = Municipio, colour =
   scale_size_manual(values = c(1, 0.1, 0.1))+
   scale_x_discrete(breaks = function(x){paste0(2006:2021,"-M03")}, labels = function(x){substr(x, 0, 4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6) #+
-  # labs(colour = " ", caption = paste0("<b>Municipio: ", df$Municipio, "<br>Gasto por habitante: ", format(df$Valor, big.mark = ".", decimal.mark = ","), "</b>"))
+  # labs(colour = " ", caption = paste0("<b>Municipio: ", df$Municipio, "<br/>Gasto por habitante: ", format(df$Valor, big.mark = ".", decimal.mark = ","), "</b>"))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
@@ -408,8 +408,8 @@ df_intervalos_mun <- df_intervalos_mun %>% mutate(
 
 g_intervalos <- ggplot(data = df_intervalos_mun, aes(y = intervalo, x = valor, fill = intervalo, name = NULL,
                                                text = paste0("Intervalo de asalariados: ", intervalo,
-                                                             "<br>Nº de empresas: ", format(valor, big.mark = ".", decimal.mark = ","),
-                                                             "<br>(", format(porcentaje, big.mark = ".", decimal.mark = ","), " % del total de empresas)"))) +
+                                                             "<br/>Nº de empresas: ", format(valor, big.mark = ".", decimal.mark = ","),
+                                                             "<br/>(", format(porcentaje, big.mark = ".", decimal.mark = ","), " % del total de empresas)"))) +
   geom_bar(stat = "identity", alpha = 0.65, width = 0.99) +
   theme_minimal() +
   guides(fill = guide_legend(title = " ")) +
@@ -538,7 +538,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row">
-<div class="column-3">`r get_indicator2(paste0(Variacion_empresas, " ", Signo_Variacion, " que en</br>el último trimestre"), paste0(Variacion_Porcentual_empresas, "%"), Imagen_Variacion)`</div>
+<div class="column-3">`r get_indicator2(paste0(Variacion_empresas, " ", Signo_Variacion, " que en<br/>el último trimestre"), paste0(Variacion_Porcentual_empresas, "%"), Imagen_Variacion)`</div>
 <div class="column-3">`r get_indicator2(paste0("Personas físicas</p><p class='label' style='color: #999;'>", Num_emp_fisica), paste0(Percent_emp_fisica, "%"), "./img/persona-fisica.png")`</div>
 <div class="column-3">`r get_indicator2(paste0("Personas jurídicas</p><p class='label' style='color: #999;'>", Num_emp_juridica), paste0(Percent_emp_juridica, "%"), "./img/persona-juridica.png")`</div>
 </div>
@@ -611,7 +611,7 @@ mapa_comarca_plot
 <div class="column-2">`r get_indicator3("Construcción", paste0(tasa.construccion, '%'), "./img/construccion.png")`</div>
 <div class="column-2">`r get_indicator3("Hostelería", paste0(tasa.hosteleria, '%'), "./img/hosteleria.png")`</div>
 <div class="column-2">`r get_indicator3("Comercio", paste0(tasa.comercio, '%'), "./img/comercio.png")`</div>
-<div class="column-2" style="margin-bottom: 0;">`r get_indicator3("Resto de<br>servicios", paste0(tasa.resto_servicios, '%'), "./img/resto-servicios-2.png")`</div>
+<div class="column-2" style="margin-bottom: 0;">`r get_indicator3("Resto de<br/>servicios", paste0(tasa.resto_servicios, '%'), "./img/resto-servicios-2.png")`</div>
 
 </div>
 </div>

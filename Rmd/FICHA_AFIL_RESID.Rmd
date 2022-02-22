@@ -469,16 +469,16 @@ df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>%
             porcentaje_Canarias = if_else(sexo == " Hombres", -porcentaje_Canarias, porcentaje_Canarias))
 
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(sector), "</b><br>"), ""),
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(sector), "</b><br/>"), ""),
     "<b>", sexo, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
     " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
-df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br>servicios"))
+df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br/>servicios"))
 
 g_afil_ae_sexo_mun <- ggplot(df_afil_ae_sexo_mun, aes(x = ae, fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
@@ -539,10 +539,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    '</div><div class="column-3-ind">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '</div><div class="column-3-ind">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de<br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">', get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Afil_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Afil_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
@@ -648,8 +648,8 @@ mapa_comarca_plot
 </div>
 
 <div class="progressbar-legend-container">
-  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Asalariados<br>`r format(Peso_afil_asal, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
-  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Autónomos<br>`r format(Peso_afil_auton, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Asalariados<br/>`r format(Peso_afil_asal, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Autónomos<br/>`r format(Peso_afil_auton, big.mark = ".", decimal.mark = ",", nsmall = 1)`%</div></div>
 </div>
 </div>
 </div>

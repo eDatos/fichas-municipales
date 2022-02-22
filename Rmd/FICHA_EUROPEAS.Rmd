@@ -47,7 +47,7 @@ get_nombre_partido <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br>", string_list[word.index])
+      result <- paste0(result, "<br/>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -414,9 +414,9 @@ df_plot <- df_plot %>% left_join(df_plot_C, by = "candidatura") %>% mutate(label
 
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
-  "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
+  "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_C, big.mark = ".", decimal.mark = ",")), " votos",
+  "<br/>Canarias: ", trimws(format(valor_C, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje_C, 1), big.mark = ".", decimal.mark = ",")), "%)"
   ))
 
@@ -490,10 +490,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion == "NA"){
   cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2('Tasa de<br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
+    "<div class='column-2-ind'>", get_indicator2('Tasa de<br/>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Variación', Variacion, Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br/>abstención', Tasa_abstencion, './img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Electores', Num_Electores, './img/sobre.png'), "</div>"))
 }
 ```
 </div>
