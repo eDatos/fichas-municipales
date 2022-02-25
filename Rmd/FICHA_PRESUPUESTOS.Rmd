@@ -12,8 +12,6 @@ params:
   url.gastos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PRESUPUESTO_AYUNTAMIENTOS_LIQUIDADO_GASTO_HABITANTE/data?representation=MEASURE%5BABSOLUTE%5D
   url.presupuesto_2: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000002/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:GASTOS:PRESUPUESTO_PROGRAMA_GASTOS:0|1|2|3|4|9&lang=es
   url.presupuesto_3: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_000003/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:MEDIDAS:AHORRO_BRUTO|AHORRO_BRUTO_PORCENTAJE|AHORRO_NETO|AHORRO_NETO_PORCENTAJE|CARGA_FINANCIERA|CARGA_FINANCIERA_PORCENTAJE&lang=es
-  url.partida_codes: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/~latest/codes?limit=100000
-  url.partida_codes_: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_PPTOS_ES_EELL_ESTRUCTURA_ECONOMICA/~latest/codes
 output:
   html_document:
     df_print: paged
@@ -389,7 +387,7 @@ df_ind_Gastos$mun <- recode_id_Frontera(df_ind_Gastos, 'mun')
 Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
-```{r Diferencia entre el presupuesto ejecutado y el incial}
+```{r Diferencia entre el presupuesto ejecutado y el inicial}
 GAP <- format(round(((df_lv$valor_M[df_lv$año == params$año]) - (df_lv$valor_inicial[df_lv$año == params$año])), 1), big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
@@ -409,31 +407,12 @@ df_estr_partidas <- data.frame(
   valor = c(unlist(strsplit(data_estr_partidas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dp)))
 df_estr_partidas$valor <- as.integer(df_estr_partidas$valor)
 df_estr_partidas$mun <- recode_id_Frontera(df_estr_partidas, 'mun')
+df_estr_partidas$id_partida <- factor(df_estr_partidas$id_partida)
 
 df_estr_partidas_mun <- df_estr_partidas %>% filter(mun == params$id_municipio & id_partida %notin% c("GASTOS", "INGRESOS")) %>% select(!mun)
 
-CL_PARTIDA <- as_list(read_xml(params$url.partida_codes))
-
-df_CL_PARTIDA <- tibble::as_tibble(CL_PARTIDA) %>% 
-  unnest_wider('codes') %>%
-  unnest(cols = names(.)) %>%
-  unnest(cols = names(.)) %>%
-  readr::type_convert() %>%
-  select(id, partida = name)
-
-df_CL_PARTIDA_dos <- df_CL_PARTIDA %>%
-  filter(nchar(id) == 4) %>%
-  select(id_partida = id, partida)
-
-url_partidas <- paste0(params$url.partida_codes_, "/", df_estr_partidas_mun$id_partida)
-
-df_partidas <- data.frame(matrix(ncol = 2, nrow = length(df_estr_partidas_mun$id_partida), dimnames = list(NULL, c("id_partida", "shortName"))))
-for(i in 1:length(df_estr_partidas_mun$id_partida)) {
-  df_partidas$id_partida[i] <- as_list(read_xml(url_partidas[i]))$code$id[[1]]
-  df_partidas$shortName[i] <- as_list(read_xml(url_partidas[i]))$code$shortName$text[[1]]
-}
-df_partidas_ <- df_partidas %>% inner_join(df_CL_PARTIDA_dos, by = "id_partida")
-df_estr_partidas_mun <- df_estr_partidas_mun %>% inner_join(df_partidas_, by = "id_partida")
+df_partidas <- read.csv2("C://Users//ext-eyebmar//Desktop//G//partidas.csv", encoding = "windows-1252")
+df_estr_partidas_mun <- df_estr_partidas_mun %>% inner_join(df_partidas, by = "id_partida")
 ```
 
 ```{r Estructura por partidas Denominador}
@@ -444,7 +423,7 @@ ep_total_I <- df_ep_total %>% filter(id_partida == "INGRESOS") %>% select(valor)
 df_estr_partidas_C <- df_estr_partidas %>% 
   group_by(id_partida) %>% 
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
-  inner_join(df_CL_PARTIDA_dos, by = "id_partida") %>%
+  inner_join(df_partidas, by = "id_partida") %>%
   select(id_partida, valor_Canarias)
 
 df_ep_total_C <- df_estr_partidas %>% filter(id_partida %in% c("GASTOS", "INGRESOS")) %>% 
