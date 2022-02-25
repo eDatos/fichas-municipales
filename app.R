@@ -2,7 +2,6 @@ library(shiny)
 library(jsonlite)
 library(tibble)
 library(dplyr)
-library(sf)
 library(xml2)
 library(tidyverse)
 library(bslib)
@@ -137,6 +136,10 @@ server <- function(input, output) {
   municipios <- loadMunicipios()
   
   option_island <- reactive({
+    shiny::validate(
+      need(input$id_ficha != "", label = "Seleccionar ficha...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha) %>% 
       select(id = id_municipio) %>%
@@ -146,6 +149,10 @@ server <- function(input, output) {
   })
   
   option_island_2 <- reactive({
+    shiny::validate(
+      need(input$id_ficha_2 != "", "Seleccionar ficha...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha_2) %>% 
       select(id = id_municipio) %>%
@@ -154,7 +161,12 @@ server <- function(input, output) {
       select(isla, id_isla) %>% unique %>% deframe
   })
   
-  option_mun <- reactive({ 
+  option_mun <- reactive({
+    shiny::validate(
+      need(input$id_ficha != "", "Seleccionar ficha..."),
+      need(input$id_isla != "", "Seleccionar isla...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha) %>% 
       select(id = id_municipio) %>%
@@ -166,6 +178,11 @@ server <- function(input, output) {
   })
   
   option_mun_2 <- reactive({ 
+    shiny::validate(
+      need(input$id_ficha_2 != "", "Seleccionar ficha..."),
+      need(input$id_isla_2 != "", "Seleccionar isla...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha_2) %>% 
       select(id = id_municipio) %>%
@@ -198,7 +215,7 @@ server <- function(input, output) {
   
   outputOptions(output, "periodicidad", suspendWhenHidden = FALSE)
   outputOptions(output, "periodicidad_2", suspendWhenHidden = FALSE)
-  
+
   output$header <- renderUI({
     #header.json <- fromJSON("https://datos.canarias.es/api/estadisticas/cmetadata/v1.0/properties/metamac.app.style.header.url.json")
     #header.html <- getURL(paste0(header.json$value, '?appName=Fichas%20municipales'))
@@ -214,31 +231,49 @@ server <- function(input, output) {
   })
   
   output$report <- renderUI({
+    shiny::validate(
+      need(input$id_ficha != "", ""),
+      need(input$año != "", ""),
+      need(input$id_municipio != "", "")
+    )
+    
     path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
     if(periodicidad() == "M") {
+      shiny::validate(need(input$mes != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes)
     } else if(periodicidad() == "Q") {
+      shiny::validate(need(input$trimestre != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$trimestre)
     }
     iframe <- tags$iframe(src=paste("frames", path_fichero$path, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
   })
   
   output$report_2 <- renderUI({
+    shiny::validate(
+      need(input$id_ficha_2 != "", ""),
+      need(input$año_2 != "", ""),
+      need(input$id_municipio_2 != "", "")
+    )
+    
     path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
     if(periodicidad2() == "M") {
+      shiny::validate(need(input$mes_2 != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes_2)
     } else if(periodicidad2() == "Q") {
+      shiny::validate(need(input$trimestre_2 != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
     }
     iframe_2 <- tags$iframe(src=paste('frames', path_fichero$path, sep= "/"), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
   })
   
   output$glosario <- renderUI({
+    shiny::validate(need(input$id_ficha != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha)
     iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
   })
   
   output$glosario_2 <- renderUI({
+    shiny::validate(need(input$id_ficha_2 != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha_2)
     iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
   })
@@ -248,6 +283,11 @@ server <- function(input, output) {
   })
   
   option_year <- reactive({
+    shiny::validate(
+      need(input$id_ficha != "", "Seleccionar ficha..."),
+      need(input$id_municipio != "", "Seleccionar municipio...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio) %>% 
       select(A) %>% 
@@ -255,6 +295,11 @@ server <- function(input, output) {
   })
   
   option_year_2 <- reactive({ 
+    shiny::validate(
+      need(input$id_ficha_2 != "", "Seleccionar ficha..."),
+      need(input$id_municipio_2 != "", "Seleccionar municipio...")
+    )
+    
     periods %>% 
       filter(id_ficha %in% input$id_ficha_2 & id_municipio == input$id_municipio_2) %>% 
       select(A) %>% 
@@ -262,6 +307,12 @@ server <- function(input, output) {
   })
  
   option_month <- reactive({
+    shiny::validate(
+      need(input$id_ficha != "", "Seleccionar ficha..."),
+      need(input$id_municipio != "", "Seleccionar municipio..."),
+      need(input$año != "", "Seleccionar año...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
       select(id = period) %>%
@@ -274,6 +325,12 @@ server <- function(input, output) {
   })
   
   option_month_2 <- reactive({
+    shiny::validate(
+      need(input$id_ficha_2 != "", "Seleccionar ficha..."),
+      need(input$id_municipio_2 != "", "Seleccionar municipio..."),
+      need(input$año_2 != "", "Seleccionar año...")
+    )
+    
     periods %>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
       select(id = period) %>%
@@ -288,7 +345,15 @@ server <- function(input, output) {
   option_ficha <- reactive({df_fichas %>% select(description, code) %>% deframe})
   
   option_trim <- reactive({
-    current_periods <- periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% select(id = period)
+    shiny::validate(
+      need(input$id_ficha != "", "Seleccionar ficha..."),
+      need(input$id_isla != "", "Seleccionar isla..."),
+      need(input$año != "", "Seleccionar año...")
+    )
+    
+    current_periods <- periods %>% 
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
+      select(id = period)
     trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
     trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
     trim_selected <- trim_M_periods
@@ -303,14 +368,21 @@ server <- function(input, output) {
   })
   
   option_trim_2 <- reactive({
+    shiny::validate(
+      need(input$id_ficha_2 != "", "Seleccionar ficha..."),
+      need(input$id_isla_2 != "", "Seleccionar isla..."),
+      need(input$año_2 != "", "Seleccionar año...")
+    )
+    
     current_periods <- periods%>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
       select(id = period)
     trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
     trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
-    trim_selected <- data.frame(ifelse(current_periods$id > 4, trim_M_periods, trim_Q_periods))[,1:2]
-    names(trim_selected) <- names(trim_M_periods)
-    
+    trim_selected <- trim_M_periods
+    if(all(current_periods$id <= 4)) {
+      trim_selected <- trim_Q_periods 
+    }
     current_periods %>%
       left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
@@ -326,8 +398,8 @@ server <- function(input, output) {
   output$select_ficha <- renderUI({ selectInput('id_ficha', h3('Ficha'), choices=option_ficha()) })
   output$select_ficha_2 <- renderUI({ selectInput('id_ficha_2', "", choices=option_ficha()) })
   
-  output$select_year <- renderUI({ selectInput("año", h3("Año"), choices = option_year()) })
-  output$select_year_2 <- renderUI({ selectInput("año_2", "", choices = option_year_2()) })
+  output$select_year <- renderUI({ selectInput("año", h3("Año"), choices = option_year(), selected=1) })
+  output$select_year_2 <- renderUI({ selectInput("año_2", "", choices = option_year_2(), selected=1) })
   
   output$select_month <- renderUI({ selectInput("mes", h3("Periodo"), choices = option_month()) })
   output$select_month_2 <- renderUI({ selectInput("mes_2", "", choices = option_month_2()) })
@@ -402,15 +474,16 @@ server <- function(input, output) {
       column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
-      column(1, uiOutput("select_year")),
+      column(2, uiOutput("select_year")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(2, 
+      column(1, 
              actionButton(inputId = "plus", icon = icon("plus"), label = ""), 
-             actionButton("ver_glosario", label = "Ver glosario"), 
-             downloadButton("pdf", "PDF"),
-             actionButton("ayuda", icon = icon("question"), label = ""))
+             #actionButton("ver_glosario", icon = icon("info"), label = ""), 
+             downloadButton("pdf", "PDF")
+             #actionButton("ayuda", icon = icon("question"), label = "")
+             )
     )
   )
   
@@ -423,7 +496,8 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(2, downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = "")),
+      column(2, downloadButton("pdf", "PDF") #, actionButton("ayuda", icon = icon("question"), label = "")
+             ),
       
       column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
@@ -432,7 +506,7 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
-      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), actionButton("ver_glosario_2", label = "Ver glosario"),
+      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), #actionButton("ver_glosario_2", label = "Ver glosario"),
              downloadButton("pdf_2", "PDF"))
     )
   )
@@ -446,8 +520,9 @@ server <- function(input, output) {
              column(2, 
                     conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
                     conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-             column(2, actionButton(inputId = "plus_3", icon = icon("plus"), label = ""), actionButton("ocultar_glosario_3", label = "Ocultar glosario"),
-                    downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = ""))
+             column(2, actionButton(inputId = "plus_3", icon = icon("plus"), label = ""), #actionButton("ocultar_glosario_3", label = "Ocultar glosario"),
+                    downloadButton("pdf", "PDF")#, actionButton("ayuda", icon = icon("question"), label = "")
+                    )
     )
   )
   
@@ -461,7 +536,8 @@ server <- function(input, output) {
              column(2, 
                     conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
                     conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-             column(2, downloadButton("pdf", "PDF"), actionButton("ayuda", icon = icon("question"), label = "")),
+             column(2, downloadButton("pdf", "PDF")#, actionButton("ayuda", icon = icon("question"), label = "")
+                    ),
              
              column(3, uiOutput("select_ficha_2")),
              column(2, uiOutput("select_island_2")),
@@ -528,6 +604,7 @@ server <- function(input, output) {
   }
   
   output$fichas <- getLayout1()
+  
 }
 
 shinyApp(ui = ui, server = server)
