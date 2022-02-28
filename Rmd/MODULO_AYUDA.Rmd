@@ -21,6 +21,8 @@ output:
   html_document:
     df_print: paged
     css: styles/MODULO.css
+    self_contained: false
+    lib_dir: "resources/js"
 always_allow_html: yes
 ---
 

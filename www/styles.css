@@ -54,11 +54,14 @@
 .container-fluid {
   padding: 0;
 }
+.container-fluid.main-container {
+  padding: 30px;
+}
 #fichas {
   padding-left: 15px;
   padding-right: 15px;
 }
-body {
+.params-row {
   font-family: 'Roboto' !important;
 }
 .shiny-input-container:not(.shiny-input-container-inline) {

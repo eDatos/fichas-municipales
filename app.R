@@ -1,3 +1,10 @@
+#*******************************************************#
+#* COMPARADOR INTERACTIVO DE FICHAS MUNICIPALES
+#* Desarrollado por: Luis Manuel Pérez Geraldino
+#* Fecha versión: Diciembre 2021.
+#* Plataforma: R-Shiny
+#*******************************************************#
+#*
 library(shiny)
 library(jsonlite)
 library(tibble)
