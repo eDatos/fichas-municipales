@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  año: 2018
-  mes: 1
+  año: 2009
+  mes: 3
   id_municipio: 35023
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -254,7 +254,11 @@ df <- related_mun %>%
   select(mun = id, code, nombre, valor) %>%
   left_join(mes, by = "code") %>%
   transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 12)) - 1), 1), NA)) %>% 
-  filter(code <= mes_actual$code & order > 12)
+  filter(order < mes_actual$order+1)
+
+if(substring(mes_actual$code, 0,4) != 2009){
+  df <- df %>% filter(order > 12)
+  }
 
 leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
   mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
@@ -269,8 +273,16 @@ df <- df %>% mutate(
                              ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
               )
   )
-  
-g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
+
+if(substring(mes_actual$code, 0,4) != 2009){
+  line_range_min = max(0.8, nrow(df[df$nombre == municipio_actual$municipio, ]) - 5*12)
+  line_range_max = nrow(df[df$nombre == municipio_actual$municipio, ])
+  }else{
+    line_range_min = max(max(df$order) - 5*12 - 12, min(df$order))
+    line_range_max = max(max(df$order) - 12, max(df$order))
+  }
+
+g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line() +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -280,7 +292,7 @@ g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = no
         panel.grid.minor.x = element_blank(),
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
-  scale_size_manual(values = c(1, 0.1, 0.1))+
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
   scale_x_discrete(breaks = function(x){ paste0(2006:2021, "-01") }, labels = function(x){substr(x, 0, 4) }) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
@@ -288,7 +300,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"), list("pan2d"), list("resetScale2d"), list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(max(df$order) - 5*12 - 12, min(df$order) - 12), max(df$order) - 12),
+                      range = c(line_range_min, line_range_max),
                       rangeslider = list(type = "date", thickness=0.04))) %>%
   onRender("
     function(el) {
@@ -380,7 +392,7 @@ df_mun <- df_mun %>% transform(
   )
 )
 
-g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad,order), fill = sexo, group = sexo, text = hovertext)) +
+g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, aes(y = porcentaje)) + 
   geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias, text = "")) +
   coord_flip() + 
@@ -611,10 +623,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    '</div><div class="column-3-ind">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '</div><div class="column-3-ind">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de<br>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">', get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
