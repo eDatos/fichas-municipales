@@ -79,7 +79,7 @@ get_periods_from_files <- function(df_fichas) {
             path = output_filepaths) %>%
             transform(id_municipio = sub(paste0(".*", id_ficha, "_.*_"), "", filename), period = sub(paste0(".*", id_ficha, "_"), "", filename)) %>%
             transform(id_municipio = sub(".html", "", id_municipio), period = sub("_.*.html", "", period)) %>% 
-            transform(period = sub("Q|M", "", period)) %>% 
+            transform(period = as.numeric(sub("Q|M", "", period))) %>% 
             select(-filename)
         }
         output_periods <- rbind(
@@ -145,7 +145,8 @@ server <- function(input, output) {
       select(id = id_municipio) %>%
       unique %>%
       left_join(municipios, by = "id") %>%
-      select(isla, id_isla) %>% unique %>% deframe
+      select(isla, id_isla) %>% unique %>% 
+      arrange(isla) %>% deframe
   })
   
   option_island_2 <- reactive({
@@ -158,7 +159,8 @@ server <- function(input, output) {
       select(id = id_municipio) %>%
       unique %>%
       left_join(municipios, by = "id") %>%
-      select(isla, id_isla) %>% unique %>% deframe
+      select(isla, id_isla) %>% unique %>% 
+      arrange(isla) %>% deframe
   })
   
   option_mun <- reactive({
@@ -174,6 +176,7 @@ server <- function(input, output) {
       left_join(municipios, by = "id") %>% 
       filter(id_isla %in% input$id_isla) %>% 
       select(municipio, id) %>% 
+      arrange(municipio) %>%
       deframe 
   })
   
@@ -190,6 +193,7 @@ server <- function(input, output) {
       left_join(municipios, by = "id") %>% 
       filter(id_isla %in% input$id_isla_2) %>% 
       select(municipio, id) %>% 
+      arrange(municipio) %>%
       deframe 
   })
   
@@ -318,10 +322,11 @@ server <- function(input, output) {
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
-               id = as.character(1:12)),
+               id = 1:12),
         by ='id') %>% 
       select(M, id) %>%
-    deframe
+      arrange(id) %>%
+      deframe
   })
   
   option_month_2 <- reactive({
@@ -336,9 +341,10 @@ server <- function(input, output) {
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
-                   id = as.character(1:12)),
+                   id = 1:12),
         by ='id') %>% 
       select(M, id) %>%
+      arrange(id) %>%
       deframe
   })
   
@@ -354,8 +360,8 @@ server <- function(input, output) {
     current_periods <- periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
       select(id = period)
-    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
-    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
+    trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
     trim_selected <- trim_M_periods
     if(all(current_periods$id <= 4)) {
       trim_selected <- trim_Q_periods 
@@ -364,6 +370,7 @@ server <- function(input, output) {
     current_periods %>%
       left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
+      arrange(id) %>%
       deframe
   })
   
@@ -377,8 +384,8 @@ server <- function(input, output) {
     current_periods <- periods%>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
       select(id = period)
-    trim_M_periods <- data.frame(id = c("3", "6", "9", "12"), Q = paste0("Trimestre ", seq(1:4)))
-    trim_Q_periods <- data.frame(id = c("1", "2", "3", "4"), Q = paste0("Trimestre ", seq(1:4)))
+    trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
+    trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
     trim_selected <- trim_M_periods
     if(all(current_periods$id <= 4)) {
       trim_selected <- trim_Q_periods 
@@ -386,6 +393,7 @@ server <- function(input, output) {
     current_periods %>%
       left_join(trim_selected, by ='id') %>% 
       select(Q, id) %>%
+      arrange(id) %>%
       deframe
   })
   
