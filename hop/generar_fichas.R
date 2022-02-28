@@ -7,7 +7,6 @@ library(jsonlite)
 library(RCurl)
 library(data.table)
 
-
 #Sys.setenv(RSTUDIO_PANDOC="/Applications/RStudio.app/Contents/MacOS/pandoc")
 directory.data <- "data/"
 directory.rmd <- "Rmd/"
@@ -46,8 +45,10 @@ get_resource_period_list <- function(init_data_row) {
     result <- source$categories$labels[[which(source$categories$variable == source$temporals)]]
   }
   if(any(grepl("-", result))) {
-    result <- data.frame(code = result) %>% 
-      left_join(fromJSON(df_init_data[df_init_data$name == 'mes', ]$filepath)[["dimension"]][["TIME"]][["representation"]], by = "code") %>%
+    result <- data.frame(code = sub("-M", "-", result)) %>% 
+      left_join(fromJSON('https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARO_REGISTRADO')[["dimension"]][["TIME"]][["representation"]], 
+        by = "code"
+      ) %>%
       filter(!is.na(title$es))
     result <- result$title$es
   }
@@ -125,7 +126,7 @@ loadMunicipios <- function() {
 
 downloadData()
 
-periods <- get_total_periods(df_init_data, df_fichas %>% filter(!code %in% c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales"))) %>%
+periods <- get_total_periods(df_init_data, df_fichas %>% filter(code == "paro_registrado")) %>% #%in% c("Elecciones", "presupuest"))) %>%
   left_join(
     data.frame(
       M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -205,7 +206,7 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-#generarFicha(2021, 'afiliacion_cotizacion', 'Q', NA, 6, 35023)
+generarFicha(2021, 'alojamientos_turisticos', 'M', 5, NA, 35024)
 
-generarFichas(municipios, df_fichas %>% filter(code == 'perfil'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods)
 
