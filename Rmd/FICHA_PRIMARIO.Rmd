@@ -18,8 +18,8 @@ output:
   html_document:
     df_print: paged
     css: styles/FICHA.css
-    # self_contained: false
-    # lib_dir: libs
+    self_contained: false
+    lib_dir: libs
 always_allow_html: yes
 ---
 
@@ -51,7 +51,7 @@ get_nombre <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br/>", string_list[word.index])
+      result <- paste0(result, "<br>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -407,10 +407,10 @@ df_herbaceos_plot <- df_herbaceos_plot %>%
   arrange(desc(cultivo))
 
 df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
-  "<b>", cultivo, "</b><br/>",
+  "<b>", cultivo, "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -426,23 +426,30 @@ df_herbaceos_plot <- df_herbaceos_plot %>%
 
 if(nrow(df_herbaceos_plot)/2 == 8){
   col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
+  size_text <- 6
   }else if(nrow(df_herbaceos_plot)/2 == 7){
     col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+    size_text <- 7
     }else if(nrow(df_herbaceos_plot)/2 == 6){
       col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+      size_text <- 8
       }else if(nrow(df_herbaceos_plot)/2 == 5){
         col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
+        size_text <- 9
         }else if(nrow(df_herbaceos_plot)/2 == 4){
           col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
+          size_text <- 10
           }else if(nrow(df_herbaceos_plot)/2 == 3){
             col <- c("#8CD2EA", "#008BD0", "#005980")
+            size_text <- 15
             }else if(nrow(df_herbaceos_plot)/2 == 2){
               col <- c("#8CD2EA", "#005980")
+              size_text <- 20
             }
 
 g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 6, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  geom_text(size = size_text, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +
@@ -526,10 +533,10 @@ df_leñosos_plot <- df_leñosos_plot %>%
   arrange(desc(cultivo))
 
 df_leñosos_plot <- df_leñosos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(cultivo), "</b><br/>",
+  "<b>", trimws(cultivo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
   " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -543,25 +550,32 @@ df_leñosos_plot <- df_leñosos_plot %>%
   rbind(df_leñosos_0) %>% 
   filter(valor != 0)
 
-if(nrow(df_herbaceos_plot)/2 == 8){
+if(nrow(df_leñosos_plot)/2 == 8){
   col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-  }else if(nrow(df_herbaceos_plot)/2 == 7){
+  size_text <- 6
+  }else if(nrow(df_leñosos_plot)/2 == 7){
     col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-    }else if(nrow(df_herbaceos_plot)/2 == 6){
+    size_text <- 7
+    }else if(nrow(df_leñosos_plot)/2 == 6){
       col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      }else if(nrow(df_herbaceos_plot)/2 == 5){
+      size_text <- 8
+      }else if(nrow(df_leñosos_plot)/2 == 5){
         col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
-        }else if(nrow(df_herbaceos_plot)/2 == 4){
+        size_text <- 9
+        }else if(nrow(df_leñosos_plot)/2 == 4){
           col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
-          }else if(nrow(df_herbaceos_plot)/2 == 3){
+          size_text <- 10
+          }else if(nrow(df_leñosos_plot)/2 == 3){
             col <- c("#8CD2EA", "#008BD0", "#005980")
-            }else if(nrow(df_herbaceos_plot)/2 == 2){
+            size_text <- 15
+            }else if(nrow(df_leñosos_plot)/2 == 2){
               col <- c("#8CD2EA", "#005980")
+              size_text <- 20
             }
 
 g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 6, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  geom_text(size = size_text, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
   theme_minimal() +
   labs(title = "", x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +
@@ -632,10 +646,10 @@ df_exp_especies_plot <- df_exp_especies_mun %>%
 df_exp_especies_plot$especie <- ordered(df_exp_especies_plot$especie, levels = order_especies)
 
 df_exp_especies_plot <- df_exp_especies_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(especie), "</b><br/>",
+  "<b>", trimws(especie), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
