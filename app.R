@@ -397,22 +397,28 @@ server <- function(input, output) {
       deframe
   })
   
-  output$select_island <- renderUI({ selectInput("id_isla", h3("Isla"), choices = option_island()) })
+  output$header_island <- renderUI({ h3("Isla") })
+  output$select_island <- renderUI({ selectInput("id_isla", "", choices = option_island()) })
   output$select_island_2 <- renderUI({ selectInput("id_isla_2", "", choices = option_island_2()) })
   
-  output$select_mun <- renderUI({ selectInput("id_municipio", h3("Municipio"), choices = option_mun()) })
+  output$header_mun <- renderUI({ h3("Municipio") })
+  output$select_mun <- renderUI({ selectInput("id_municipio", "", choices = option_mun()) })
   output$select_mun_2 <- renderUI({ selectInput("id_municipio_2", "", choices = option_mun_2()) })
   
-  output$select_ficha <- renderUI({ selectInput('id_ficha', h3('Ficha'), choices=option_ficha()) })
+  output$header_ficha <- renderUI({ h3('Ficha') })
+  output$select_ficha <- renderUI({ selectInput('id_ficha', "", choices=option_ficha()) })
   output$select_ficha_2 <- renderUI({ selectInput('id_ficha_2', "", choices=option_ficha()) })
   
-  output$select_year <- renderUI({ selectInput("año", h3("Año"), choices = option_year(), selected=1) })
+  output$header_year <- renderUI({ h3("Año") })
+  output$select_year <- renderUI({ selectInput("año", "", choices = option_year(), selected=1) })
   output$select_year_2 <- renderUI({ selectInput("año_2", "", choices = option_year_2(), selected=1) })
   
-  output$select_month <- renderUI({ selectInput("mes", h3("Periodo"), choices = option_month()) })
+  output$header_month <- renderUI({ h3("Periodo") })
+  output$select_month <- renderUI({ selectInput("mes", "", choices = option_month()) })
   output$select_month_2 <- renderUI({ selectInput("mes_2", "", choices = option_month_2()) })
   
-  output$select_trim <- renderUI({ selectInput("trimestre", h3("Periodo"), choices = option_trim()) })
+  output$header_trim <- renderUI({ h3("Periodo") })
+  output$select_trim <- renderUI({ selectInput("trimestre", "", choices = option_trim()) })
   output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2()) })
   
   observeEvent(eventExpr = input$plus, handlerExpr = { output$fichas <- getLayout2() })
@@ -479,6 +485,16 @@ server <- function(input, output) {
   
   output$ficha_params <- renderUI (
     fluidRow(class = "params-row",
+      column(3, uiOutput("header_ficha")),
+      column(2, uiOutput("header_island")),
+      column(2, uiOutput("header_mun")),
+      column(2, uiOutput("header_year")),
+      column(2, 
+             conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("header_month")),
+             conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("header_trim"))
+      ),
+      column(1, actionButton(inputId = "plus", icon = icon("plus"), label = "")),
+      
       column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
@@ -486,36 +502,40 @@ server <- function(input, output) {
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(1, 
-             actionButton(inputId = "plus", icon = icon("plus"), label = ""), 
-             #actionButton("ver_glosario", icon = icon("info"), label = ""), 
-             downloadButton("pdf", "PDF")
-             #actionButton("ayuda", icon = icon("question"), label = "")
-             )
+      column(1, downloadButton("pdf", "PDF"))
     )
   )
   
   output$ficha_params_2 <- renderUI (
     fluidRow(class = "params-row",
+      column(3, uiOutput("header_ficha")),
+      column(2, uiOutput("header_island")),
+      column(2, uiOutput("header_mun")),
+      column(2, uiOutput("header_year")),
+      column(2, 
+            conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("header_month")),
+            conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("header_trim"))
+      ),
+      column(1, actionButton(inputId = "minus_2", icon = icon("minus"), label = "")),
+      
       column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
-      column(1, uiOutput("select_year")),
+      column(2, uiOutput("select_year")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
              conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
-      column(2, downloadButton("pdf", "PDF") #, actionButton("ayuda", icon = icon("question"), label = "")
+      column(1, downloadButton("pdf", "PDF") 
              ),
       
       column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
       column(2, uiOutput("select_mun_2")),
-      column(1, uiOutput("select_year_2")),
+      column(2, uiOutput("select_year_2")),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
-      column(2, actionButton(inputId = "minus_2", icon = icon("minus"), label = ""), #actionButton("ver_glosario_2", label = "Ver glosario"),
-             downloadButton("pdf_2", "PDF"))
+      column(1, downloadButton("pdf_2", "PDF"))
     )
   )
   
