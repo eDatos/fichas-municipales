@@ -61,3 +61,6 @@
 body {
   font-family: 'Roboto' !important;
 }
+.shiny-input-container:not(.shiny-input-container-inline) {
+  width: 100%;
+}
