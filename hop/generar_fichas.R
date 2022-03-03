@@ -66,7 +66,7 @@ get_resources_period <- function(df_init_data) {
 get_periods_df <- function(df_init_data, df_fichas_row) {
   periods <- get_resources_period(df_init_data[grepl(df_fichas_row['code'], df_init_data[,'fichas'], fixed = T) & df_init_data['periodico'] == 1, ])
   time_period <- df_fichas_row$periodicidad
-  if(time_period =='A') {
+  if(time_period == 'A') {
     periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA)
   } else if(time_period == 'Q') {
     periods_df <- data.frame(code = df_fichas_row$code, A = periods, Q = NA, M = NA) %>%
@@ -126,20 +126,45 @@ loadMunicipios <- function() {
 
 downloadData()
 
-periods <- get_total_periods(df_init_data, df_fichas %>% filter(code == "paro_registrado")) %>% #%in% c("Elecciones", "presupuest"))) %>%
+periods <- get_total_periods(df_init_data,
+                             # df_fichas %>% filter(code == "demografia")) %>%
+                             df_fichas %>%
+                               filter(code %in% c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
+                                                  "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
+                                                  "parque_vehiculos", "sector_primario"))) %>%
   left_join(
     data.frame(
       M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
       id_M = 1:12
     ),
-    by ='M') %>% 
+    by = 'M') %>% 
   left_join(
     data.frame(
       Q = c("Marzo", "Junio", "Septiembre", "Diciembre", "Primer trimestre", "Segundo trimestre", "Tercer trimestre", "Cuarto trimestre"),
       id_Q = c(3, 6, 9, 12, 1, 2, 3, 4)
     ),
-    by ='Q') %>%
+    by = 'Q') %>%
   select (code, A, Q = id_Q, M = id_M)
+
+electorales <- data.frame(
+  c(df_init_data %>%
+      filter(substring(name, 0,18) == "parlamento_europeo" | substring(name, 0,8) == "congreso" | substring(name, 0,6) == "senado" |
+             substring(name, 0,11) == "autonomicas" | substring(name, 0,7) == "cabildo" | substring(name, 0,11) == "municipales") %>%
+      select(name))) %>%
+  transform(name = gsub("parlamento_europeo", "europeas", name)) %>%
+  mutate(code = unlist(lapply(strsplit(name, "_"), '[[', 1)),
+         A = unlist(lapply(strsplit(name, "_"), '[[', 2))) %>%
+  filter(A != "participacion") %>%
+  transform(A = gsub("a", "_ABRIL", A)) %>%
+  transform(A = gsub("n", "_NOVIEMBRE", A)) %>%
+  select(!name)
+
+periods <- periods %>%
+  filter(code %notin% c("afiliacion_residencia", "afiliacion_cotizacion", "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")) %>%
+  full_join(periods %>% filter(code %in% c("afiliacion_residencia", "afiliacion_cotizacion") & A != "2012"), by = c("code", "A", "Q", "M")) %>% 
+  full_join(periods %>% filter(code == "alojamientos_turisticos" & A != "2009"), by = c("code", "A", "Q", "M")) %>% 
+  full_join(periods %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia") & A != "2018"), by = c("code", "A", "Q", "M")) %>%
+  full_join(electorales, by = c("code", "A"))
 
 municipios <- loadMunicipios()
 
@@ -154,7 +179,7 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
     dir.create(dir.fichero)
   }
   if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
-    option_params <- list(año = as.numeric(ano), id_municipio = as.numeric(id_municipio))
+    option_params <- list(año = as.character(ano), id_municipio = as.numeric(id_municipio))
     if(periodicidad == "M") {
       option_params <- append(option_params, list(mes = as.numeric(mes)))
     }
@@ -206,7 +231,16 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-generarFicha(2021, 'alojamientos_turisticos', 'M', 5, NA, 35024)
+generarFicha("2016", 'congreso', 'A', NA, NA, 35001)
 
-generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods)
+generarFichas(municipios %>% filter(id == 35016), df_fichas %>% filter(code == 'paro_registrado'), periods %>% filter(M == 1))
+generarFichas(municipios %>% filter(id == 35034), df_fichas %>% filter(code == 'perfil_turista'), periods %>% filter(Q == 12))
+generarFichas(municipios %>% filter(id == 35002), df_fichas %>% filter(code == 'municipales'), periods)
+
+c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
+  "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
+  "parque_vehiculos", "sector_primario")
+c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales")
+
+generarFichas(municipios, df_fichas %>% filter(code == 'congreso'), periods)
 
