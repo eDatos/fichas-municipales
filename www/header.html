@@ -552,6 +552,9 @@
         #istac-app-header-content i {
             margin-right: 5px;
         }
+        .active {
+          background-color: #0072A2 !important;
+        }
     </style>
 
 
@@ -573,6 +576,31 @@
             document.getElementById(NAVBAR_ID).classList.remove("istac-navbar-internal");
         }
     }
+    
+    function activeCss(active) {
+      var elements = ["ver_fichas", "ver_glosario", "ver_ayuda"]
+      
+      for(let i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        var x = document.getElementById(element);
+        if(element == active) {
+          x.classList.add("active");
+        } else {
+          x.classList.remove("active");
+        }
+      }
+    }
+    
+    function showElementId(id) {
+      var x = document.getElementById(id);
+      x.style.display = "block";
+    }
+    
+    function hideElementId(id) {
+      var x = document.getElementById(id);
+      x.style.display = "none";
+    }
+    
 </script>
 
 <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script></head><body><div class="istac-header">
@@ -601,33 +629,36 @@
     </div>
     
         <div class="istac-app-header istac-title-bar" id="title-bar">
-            <a href="https://www3.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/header/header.html?appName=Fichas%20municipales">
+            <a href="https://www3.gobiernodecanarias.org/aplicaciones/appsistac/organisations/istac/common/header/header.html?appName=Municipios%20en%20cifras">
                 <h1 class="istac-app-header-title">
                     <i class="fa fa-istac-home"></i>
-                    <span>Fichas municipales</span>
+                    <span>Municipios en cifras</span>
                 </h1>
             </a>
             <div class="istac-app-header-content" id="istac-app-header-content">
                <nav class="navigation">
                 <div class="collapsable-menu account avatar account avatar" id="">
                  <ul class="">
-                  <li>
-                      <button id="ayuda" type="button" class="action-button shiny-bound-input btn-nav">
+                   <li>
+                      <button id="ver_fichas" type="button" class="action-button shiny-bound-input btn-nav active" onclick="activeCss('ver_fichas')">
+                        <i class="fa fa-bars" role="presentation" aria-label="bars icon"></i>
+                        Fichas
+                      </button>
+                    </li>
+                    <li>
+                        <button id="ver_glosario" type="button" class="action-button shiny-bound-input btn-nav" onclick="activeCss('ver_glosario')">
+                          <i class="fa fa-info" role="presentation" aria-label="info icon"></i> Glosarios
+                        </button>
+                    </li>
+                    <li>
+                      <button id="ver_ayuda" type="button" class="action-button shiny-bound-input btn-nav" onclick="activeCss('ver_ayuda')">
                         <i class="fa fa-question" role="presentation" aria-label="question icon"></i>
                         Ayuda
                       </button>
-                  </li>
-                  <li>
-                      <button id="ver_glosario" type="button" class="action-button shiny-bound-input btn-nav">
-                        <i class="fa fa-info" role="presentation" aria-label="info icon"></i> Glosarios
-                      </button>
-                  </li>
+                    </li>
                  </ul>
                 </div>
                </nav>
-               
-                
-            
               </div>
             
         </div>

@@ -43,8 +43,8 @@
   display: none;
 }
 .params-row {
-  border: 2px solid #D5EDFA;
-  border-radius: 20px;
+  border: 1px solid #59656e;
+  border-radius: 15px;
   margin: 20px;
   padding: 0 20px;
 }
@@ -66,4 +66,14 @@
 }
 .shiny-input-container:not(.shiny-input-container-inline) {
   width: 100%;
+}
+.add-ficha button, .params-row h3 {
+  margin-top: 20px !important;
+}
+.glosario-row {
+  margin-top: 30px;
+}
+.glosario-row > div[class^="col-sm-"] > div {
+  display: table;
+  margin: auto;
 }
