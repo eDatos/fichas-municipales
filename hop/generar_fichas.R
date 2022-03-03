@@ -179,7 +179,12 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
     dir.create(dir.fichero)
   }
   if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
-    option_params <- list(año = as.character(ano), id_municipio = as.numeric(id_municipio))
+    option_params <- list(id_municipio = as.numeric(id_municipio))
+    if(code %in% c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales")) {
+      option_params <- append(option_params, list(año = as.character(ano)))
+    }else{
+      option_params <- append(option_params, list(año = as.numeric(ano)))
+    }
     if(periodicidad == "M") {
       option_params <- append(option_params, list(mes = as.numeric(mes)))
     }
