@@ -47,7 +47,7 @@ get_nombre_partido <- function(nombre) {
       result <- paste0(result, " ", string_list[word.index])
       line.char <- line.char + 1 + nchar(string_list[word.index])
     } else {
-      result <- paste0(result, "<br/>", string_list[word.index])
+      result <- paste0(result, "<br>", string_list[word.index])
       line.char <- nchar(string_list[word.index])
     }
   }
@@ -408,7 +408,7 @@ if(df_plot$valor[which(df_plot$candidatura == "Otros")] == 0){
 
 df_plot <- df_plot %>% transform(hovertext = paste0(
   "<b>", name_partido, " </b>",
-  "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
+  "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " votos",
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   ))
 

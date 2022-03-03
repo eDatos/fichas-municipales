@@ -163,6 +163,7 @@ df_afil$nacionalidad <- factor(df_afil$nacionalidad, levels=data_afil[["categori
 df_afil$sexo <- factor(df_afil$sexo, levels=data_afil[["categories"]][["codes"]][[5]], labels=data_afil[["categories"]][["labels"]][[5]])
 df_afil$valor <- as.integer(df_afil$valor)
 df_afil <- df_afil %>%
+  transform(sexo = trimws(sexo)) %>%
   filter(substring(periodo, 5,8) %in% c("M03", "M06", "M09", "M12") & substring(mun, 0,2) != "ES")
 
 df_u <- df_afil %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS" & nacionalidad == "TOTAL") %>%
@@ -279,6 +280,7 @@ colnames(df_piramide) <- c('mun', 'gredad', 'periodo', 'sexo', 'valor')
 df_piramide$periodo <- factor(df_piramide$periodo, levels = piramide[["categories"]][["codes"]][[3]], labels=piramide[["categories"]][["labels"]][[3]])
 df_piramide$sexo <- factor(df_piramide$sexo, levels=piramide[["categories"]][["codes"]][[4]], labels=piramide[["categories"]][["labels"]][[4]])
 df_piramide$valor <- as.numeric(df_piramide$valor)
+df_piramide <- df_piramide %>% transform(sexo = trimws(sexo))
 
 Num_Afil_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$periodo & gredad == "_T" & sexo == "AMBOS SEXOS") %>%
   select(valor) %>%  as.numeric()
@@ -290,7 +292,7 @@ Num_Afil_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & periodo == mes_a
   select(valor) %>%  as.numeric()
 df_piramide_plot <- df_piramide %>% filter(periodo == mes_actual$periodo & gredad != "_T" & sexo != "AMBOS SEXOS") %>%
   select(gredad, sexo, valor, mun) %>%
-  transform(valor = if_else(sexo == " Hombres", -valor, valor)) %>%
+  transform(valor = if_else(sexo == "Hombres", -valor, valor)) %>%
   transform(gredad = ifelse(gredad == "Y_GE60", ">59", ifelse(grepl("T", gredad, fixed = TRUE), gsub("T", "-", substring(gredad, 2, 6)), gredad))) %>%
   transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>% 
   transform(order = if_else(gredad == ">59", 60, order)) %>%
@@ -299,14 +301,25 @@ df_Canarias <- df_piramide_plot %>% filter(mun == "CANARIAS")
 df_mun <- df_piramide_plot %>% filter(mun == municipio_actual$municipio)
 df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Afil_num, valor_Canarias = df_Canarias$valor, porcentaje_Canarias = df_Canarias$valor / Num_Afil_Canarias)
 
-g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo, group = sexo)) +
+df_mun <- df_mun %>% transform(
+  hovertext = paste0(
+    ifelse(sexo == "Hombres", paste0("<b>", gredad," años</b><br>"), ""),
+    "<br><b>", sexo, "</b>",
+    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)",
+    "<br>Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
+  )
+)
+
+g_piramide <- ggplot(data = df_mun, aes(x = reorder(gredad, order), fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, aes(y = porcentaje)) + 
   geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias)) +
   coord_flip() +
   theme_minimal() +
   labs(x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +
-  scale_fill_manual(values = c(" Mujeres" = "#8CD2EA", " Hombres" = "#005980")) +
+  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
   theme(axis.text.x = element_text(),
         axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
@@ -357,10 +370,10 @@ df_afil_sexo_mun <- df_afil %>%
   filter(mun == params$id_municipio & sl == "TOTAL DE AFILIACIONES" & sexo != "AMBOS SEXOS" & periodo == mes_actual$code & nacionalidad == "TOTAL") %>%
   select(sexo, valor)
 
-Num_Afil_M <- df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-Percent_Mujeres <- round(df_afil_sexo_mun %>% filter(sexo == " Mujeres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Num_Afil_H <- df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
-Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == " Hombres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Num_Afil_M <- df_afil_sexo_mun %>% filter(sexo == "Mujeres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
+Percent_Mujeres <- round(df_afil_sexo_mun %>% filter(sexo == "Mujeres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Num_Afil_H <- df_afil_sexo_mun %>% filter(sexo == "Hombres") %>% select(valor) %>% format(big.mark = ".", decimal.mark = ",") %>% as.character()
+Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == "Hombres") %>% select(valor) / Num_Afil_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Rankings territoriales}
@@ -420,7 +433,8 @@ df_afil_ae$sexo <- factor(df_afil_ae$sexo, levels=data_afil_ae[["categories"]][[
 df_afil_ae$valor <- as.numeric(df_afil_ae$valor)
 df_afil_ae$mun <- recode_mun(df_afil_ae, 'mun')
 
-df_afil_ae <- df_afil_ae %>% 
+df_afil_ae <- df_afil_ae %>%
+  transform(sexo = trimws(sexo)) %>%
   mutate(ae = recode(ae, " A. Agricultura, ganadería, silvicultura y pesca" = "Agricultura"),
          ae = recode(ae, " B. Industrias extractivas" = "Industria"),
          ae = recode(ae, " C. Industria manufacturera" = "Industria"),
@@ -465,20 +479,20 @@ df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>%
   mutate(porcentaje = df_afil_ae_sexo_mun$valor / Num_Afil_num * 100,
          valor_Canarias = df_afil_Canarias$valor, 
          porcentaje_Canarias = df_afil_Canarias$valor / Num_Afil_Canarias * 100) %>%
-  transform(porcentaje = if_else(sexo == " Hombres", -porcentaje, porcentaje),
-            porcentaje_Canarias = if_else(sexo == " Hombres", -porcentaje_Canarias, porcentaje_Canarias))
+  transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje),
+            porcentaje_Canarias = if_else(sexo == "Hombres", -porcentaje_Canarias, porcentaje_Canarias))
 
 df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(sector), "</b><br/>"), ""),
-    "<b>", sexo, "</b>",
-    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(ae), "</b><br>"), ""),
+    "<br><b>", sexo, "</b>",
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
     " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
 
-df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br/>servicios"))
+df_afil_ae_sexo_mun <- df_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br>servicios"))
 
 g_afil_ae_sexo_mun <- ggplot(df_afil_ae_sexo_mun, aes(x = ae, fill = sexo, group = sexo, text = hovertext)) +
   geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
@@ -487,7 +501,7 @@ g_afil_ae_sexo_mun <- ggplot(df_afil_ae_sexo_mun, aes(x = ae, fill = sexo, group
   theme_minimal() +
   labs(x = NULL, y = NULL, colour = " ") +
   guides(fill = FALSE) +
-  scale_fill_manual(values = c(" Mujeres" = "#8CD2EA", " Hombres" = "#005980")) +
+  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
   theme(axis.line = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
