@@ -210,17 +210,18 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
 }
 
 generarFichas <- function(municipios, df_fichas, periods) {
-  municipios_filtered <- municipios %>% select(id)
-  for(municipio_index in 1:nrow(municipios_filtered)) {
-    id_municipio <- municipios_filtered[municipio_index, 'id']
-    fichas_filtered <- df_fichas %>% select(code)
-    for(ficha_index in 1:nrow(fichas_filtered)) {
-      id_ficha <- fichas_filtered[ficha_index, 'code']
-      ficha_actual <- df_fichas %>% filter(code %in% id_ficha)
-      periodicidad <- ficha_actual$periodicidad
-      periods_filtered <- periods %>% filter(code %in% id_ficha)
-      for(period_index in 1:nrow(periods_filtered)) {
-        period <- periods_filtered[period_index,]
+  
+  fichas_filtered <- df_fichas %>% select(code)
+  for(ficha_index in 1:nrow(fichas_filtered)) {
+    id_ficha <- fichas_filtered[ficha_index, 'code']
+    ficha_actual <- df_fichas %>% filter(code %in% id_ficha)
+    periodicidad <- ficha_actual$periodicidad
+    periods_filtered <- periods %>% filter(code %in% id_ficha)
+    for(period_index in 1:nrow(periods_filtered)) {
+      period <- periods_filtered[period_index,]
+      municipios_filtered <- municipios %>% select(id)
+      for(municipio_index in 1:nrow(municipios_filtered)) {
+        id_municipio <- municipios_filtered[municipio_index, 'id']
         skip_to_next <- FALSE
         tryCatch(
           {generarFicha(period$A, id_ficha, periodicidad, period$M, period$Q, id_municipio)},
