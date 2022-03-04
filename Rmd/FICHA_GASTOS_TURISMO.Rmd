@@ -394,8 +394,8 @@ df_GM_ni_plot$nivel <- ordered(df_GM_ni_plot$nivel, levels = df_GM_ni_plot$nivel
 
 df_GM_ni_plot <- df_GM_ni_plot %>% transform(hovertext = paste0(
     "<b>", nivel, "</b>",
-    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -458,8 +458,8 @@ df_GM_ne_plot <- df_GM_ne_mun %>%
 
 df_GM_ne_plot <- df_GM_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
-    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -543,8 +543,8 @@ df_GM_np_plot <- df_GM_np_mun %>%
 
 df_GM_np_plot <- df_GM_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
-    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -609,8 +609,8 @@ df_GM_pt_plot$paquete <- ordered(df_GM_pt_plot$paquete, levels = df_GM_pt_plot$p
 
 df_GM_pt_plot <- df_GM_pt_plot %>% transform(hovertext = paste0(
     "<b>", paquete, "</b>",
-    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 
@@ -677,8 +677,8 @@ df_GM_pais_plot <- df_GM_pais_mun %>%
 
 df_GM_pais_plot <- df_GM_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
-    "<br/>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
-    "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
     )
   )
 

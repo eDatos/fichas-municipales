@@ -360,9 +360,9 @@ df_turismo_pais_mun <- df_turismo_pais_mun %>%
 df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>% transform(hovertext = paste0(
-    ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br/>"), ""),
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(pais), "</b><br>"), ""),
     "<b>", sexo, "</b>",
-    "<br/>",trimws(format(valor, big.mark = ".", decimal.mark = ",")),
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -422,10 +422,10 @@ df_turismo_aloj_plot <- df_turismo_aloj_mun %>%
 df_turismo_aloj_plot$tipo <- ordered(df_turismo_aloj_plot$tipo, levels = df_turismo_aloj_plot$tipo[5:1])
 
 df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(tipo), "</b><br/>",
+  "<b>", trimws(tipo), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
@@ -545,10 +545,10 @@ df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
   mutate(label = "|")
 
 df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(estudios), "</b><br/>",
+  "<b>", trimws(estudios), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br/>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
   )
 )
