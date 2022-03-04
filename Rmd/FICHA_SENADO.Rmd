@@ -2,18 +2,18 @@
 title: ''
 params:
   id_municipio: 38001
-  convocatoria: 2019_NOVIEMBRE
+  año: 2000
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
-  url.senado_2019_n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000036/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901&lang=es
-  url.senado_2019_a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000027/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901&lang=es
+  url.senado_2019n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000036/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901&lang=es
+  url.senado_2019a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000027/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013_2007|38048|38901&lang=es
   url.senado_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000011/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.senado_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000010/~latest.json?dim=TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
   url.senado_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000006/~latest.json?dim=TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
   url.senado_2008: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000019/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|38901|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.senado_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000020/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.senado_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000022/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES708|35004|35010|35018|35024|35028|35029|35034|ES703|38013|38048|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.senado_participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PROCESO_ELECTORAL:SENADO_2019_NOVIEMBRE|SENADO_2019_ABRIL|SENADO_2016|SENADO_2015|SENADO_2011|SENADO_2008|SENADO_2004|SENADO_2000&lang=es
+  url.participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901&lang=es
 output:
   html_document:
     df_print: paged
@@ -60,7 +60,7 @@ get_nombre_partido <- function(nombre) {
 ```
 
 ```{r Convocatoria}
-data_participacion <- fromJSON(params$url.senado_participacion)
+data_participacion <- fromJSON(params$url.participacion)
 
 convocatoria <- data.frame(
     code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -70,20 +70,16 @@ for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dim
 }
 
 convocatoria_senado <- convocatoria %>% 
-  filter(substring(code, 0,7) == "SENADO_") %>% 
-  transform(url = paste0("url.", tolower(substring(code, 0,13))))
+  filter(substring(code, 0,7) == "SENADO_") %>%
+  transform(url = paste0("url.", tolower(substring(code, 0,11)), tolower(substring(code, 13,13))))
 convocatoria_senado <- convocatoria_senado %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_senado), decreasing = TRUE)),
-         convocatoria_formatted = ifelse(substring(code, 8,11) == "2019",
-                                         paste0(substring(code, 13,13), tolower(substring(code, 14,21)), " ", substring(code, 8,11)),
-                                         paste0(substring(code, 8,11))),
-         convocatoria_axis = ifelse(substring(code, 8,11) == "2019",
-                                    paste0(tolower(substring(code, 13,15)), " ", substring(code, 8,11)),
-                                    paste0(substring(code, 8,11))))
+         convocatoria_formatted = trimws(paste0(substring(code, 13,13), tolower(substring(code, 14,24)), " ", substring(code, 8,11))),
+         convocatoria_axis = trimws(paste0(tolower(substring(code, 13,15)), " ", substring(code, 8,11))))
 convocatoria_senado <- convocatoria_senado %>% arrange(order)
 convocatoria_senado$code <- factor(convocatoria_senado$code, levels = convocatoria_senado$code)
 
-convocatoria_actual <- convocatoria_senado %>% filter(substring(code, 8,21) == params$convocatoria)
+convocatoria_actual <- convocatoria_senado %>% filter(substring(code, 8,21) == params$año)
 convocatoria_tva <- convocatoria_senado[convocatoria_senado$order == convocatoria_senado[convocatoria_actual$code == convocatoria_senado$code, ]$order - 1, ]
 ```
 
@@ -177,7 +173,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                         length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
-      length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+                        length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
@@ -192,6 +188,9 @@ df_participacion <- data.frame(
 df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
 df_participacion <- recode_Frontera(df_participacion)
 df_participacion$mun <- recode_id_Frontera(df_participacion, 'mun')
+df_participacion <- df_participacion %>%
+  filter(substring(proceso, 0,7) == "SENADO_" &
+         proceso %notin% c("SENADO_1977", "SENADO_1979", "SENADO_1982", "SENADO_1986", "SENADO_1989", "SENADO_1993", "SENADO_1996"))
 df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
 
 related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
@@ -333,7 +332,7 @@ dR <- length(rep(data_senado[["data"]][["dimensions"]][["dimension"]][["represen
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
-if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 2000)){
+if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 2000)){
   df_senado <- data.frame(
     medida = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -349,7 +348,7 @@ if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 
   for(i in 1:data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
     df_partido$name_partido[i] <- data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$convocatoria == 2011){
+    if(params$año == 2011){
       df_senado <- data.frame(
         mun = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -365,7 +364,7 @@ if(params$convocatoria %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2008, 2004, 
       for(i in 1:data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_senado[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$convocatoria == 2015){
+        if(params$año == 2015){
           df_senado <- data.frame(
             mun = rep(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                               each = length(data_senado[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
