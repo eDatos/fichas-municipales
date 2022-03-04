@@ -340,7 +340,7 @@ div.level3 {
 .linechart {
     height: 270px; 
     float: left;
-    width: 66%;
+    width: 64%;
 }
 .linechart-placeholder {
   display: table;
@@ -358,6 +358,7 @@ div.level3 {
 #hover-event-placeholder {
   height: 250px;
   display: inline-grid;
+	margin-left: 2%;
 }
 .sp-municipio {
   color: #666;
