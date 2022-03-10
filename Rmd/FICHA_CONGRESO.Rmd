@@ -539,14 +539,16 @@ if(Variacion == "NA"){
 if(nrow(df_plot_0) == 2) {
   tamaño <- 158
   }else if(nrow(df_plot_0) == 3) {
-    tamaño <- 19
+    tamaño <- 198
     }else if(nrow(df_plot_0) == 4) {
       tamaño <- 240
       }else if(nrow(df_plot_0) == 5) {
         tamaño <- 280
         }else if(nrow(df_plot_0) == 6) {
           tamaño <- 310
-        }
+          }else{
+            tamaño <- 354
+          }
 ```
 <div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
   `r g_congreso_mun`
