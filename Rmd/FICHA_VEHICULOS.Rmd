@@ -455,26 +455,43 @@ df_combustibles_mun <- df_tipos %>%
 df_combustibles_mun <- df_combustibles_mun %>%
   mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
 
-resto <- sum(df_combustibles_mun %>%
-               filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico")) %>%
-               select(valor))
+valor_gasolina <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Gasolina")]
+valor_diesel <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Diésel")]
+valor_electrico <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Eléctrico")]
+valor_otros <- sum(df_combustibles_mun %>%
+                     filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico")) %>%
+                     select(valor))
+
+vehiculos_unidad <- function(valor){
+  if(valor == 1){
+    valor <- paste0(valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0), " vehículo)")
+  } else {
+    valor <- paste0(valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0), " vehículos)")
+  }
+}
+
+valor_gasolina_l <- vehiculos_unidad(valor_gasolina)
+valor_diesel_l <- vehiculos_unidad(valor_diesel)
+valor_electrico_l <- vehiculos_unidad(valor_electrico)
+valor_otros_l <- vehiculos_unidad(ifelse(valor_otros == 0, 0, valor_otros))
 
 porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
 porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
 porc_gasolina_diesel <- porc_gasolina + porc_diesel
 porc_electrico <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Eléctrico")]
-porc_otros <- ifelse(resto == 0, 0, 100 - porc_gasolina - porc_diesel - porc_electrico)
+porc_otros <- ifelse(valor_otros == 0, 0, 100 - porc_gasolina - porc_diesel - porc_electrico)
 
-porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric
-porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric
-porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric
-porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric
-porc_otros_l <- ifelse(resto == 0, 0, round(100 - porc_gasolina_l - porc_diesel_l - porc_electrico_l, 1)) %>% as.numeric
+# porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+# porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+# porc_otros_l <- ifelse(valor_otros == 0, 0, round(porc_otros, 1)) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 ```
 
 ```{r Progress-bar Otros tipos de combustible}
+lista_tipos <- c("Otros", "Gasolina", "Diésel", "Eléctrico")
 df_combustibles_otros <- df_combustibles_mun %>%
-  filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico", "Otros")) %>%
+  filter(combustible %notin% lista_tipos) %>%
   top_n(4) %>% 
   arrange(-valor)
 
@@ -482,26 +499,33 @@ df_combustibles_otros <- df_combustibles_otros %>%
   mutate(porcentaje_barra = df_combustibles_otros$valor / sum(df_combustibles_otros$valor) * 100,
          porcentaje = df_combustibles_otros$valor / Num_Vehiculos * 100)
 
-tipo_1 <- df_combustibles_otros$combustible[1]
-tipo_2 <- df_combustibles_otros$combustible[2]
-tipo_3 <- df_combustibles_otros$combustible[3]
-tipo_4 <- df_combustibles_otros$combustible[4]
+for (i in 1:nrow(df_combustibles_otros)) {
+  if(df_combustibles_otros$porcentaje[i] >= 0.1) {
+    lista_tipos <- c(lista_tipos, as.character(df_combustibles_otros$combustible[i]))
+  }
+}
+lista_tipos <- lista_tipos[2:length(lista_tipos)]
 
-resto_ <- sum(df_combustibles_mun %>%
-               filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico", as.character(tipo_1), as.character(tipo_2), as.character(tipo_3), as.character(tipo_4))) %>%
-               select(valor))
+df_combustibles_resto <- df_combustibles_mun %>%
+  filter(combustible %notin% lista_tipos)
 
-porc_1 <- df_combustibles_otros$porcentaje_barra[1]
-porc_2 <- df_combustibles_otros$porcentaje_barra[2]
-porc_3 <- df_combustibles_otros$porcentaje_barra[3]
-porc_4 <- df_combustibles_otros$porcentaje_barra[4]
-porc_o <- ifelse(resto_ == 0, 0, 100 - porc_1 - porc_2 - porc_3 - porc_4)
+tipo <- c()
+for (i in 1:(10-nrow(df_combustibles_resto))) {
+  tipo[i] <- as.character(df_combustibles_otros$combustible[i])
+}
 
-porc_1_l <- round(df_combustibles_otros$porcentaje[1], 1) %>% as.numeric
-porc_2_l <- round(df_combustibles_otros$porcentaje[2], 1) %>% as.numeric
-porc_3_l <- round(df_combustibles_otros$porcentaje[3], 1) %>% as.numeric
-porc_4_l <- round(df_combustibles_otros$porcentaje[4], 1) %>% as.numeric
-porc_o_l <- ifelse(resto_ == 0, 0, round(porc_otros_l - porc_1_l - porc_2_l - porc_3_l - porc_4_l, 1)) %>% as.numeric
+porc <- c()
+valor_l <- c()
+for (i in 1:length(tipo)) {
+  porc[i] <- df_combustibles_otros$porcentaje_barra[i]
+  valor_l[i] <- vehiculos_unidad(df_combustibles_otros$valor[i])
+}
+
+if(sum(df_combustibles_resto$valor) != 0) {
+  tipo[i+1] <- "Resto de tipos de combustible"
+  porc[i+1] <- sum(df_combustibles_resto$valor) / sum(df_combustibles_otros$valor) * 100
+  valor_l[i+1] <- vehiculos_unidad(sum(df_combustibles_resto$valor))
+}
 ```
 
 ```{r Matriculaciones Tipos}
@@ -525,11 +549,20 @@ df_matr_tipos <- df_matr_tipos %>%
   transform(veh = str_to_sentence(veh)) %>%
   transform(veh = gsub("Vehiculos especiales", "Vehículos especiales", veh))
 
-rk_matr_tipos_mun <- df_matr_tipos %>%
-  filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
-  arrange(desc(veh)) %>%
-  arrange(valor) %>%
-  select(veh, valor)
+if(Num_Matriculaciones_num == 0) {
+  rk_matr_tipos_mun <- df_matr_tipos %>%
+    filter(mun == "CANARIAS" & periodo == mes_actual$code) %>%
+    arrange(desc(veh)) %>%
+    arrange(valor) %>%
+    select(veh, valor)
+  } else {
+    rk_matr_tipos_mun <- df_matr_tipos %>%
+      filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
+      arrange(desc(veh)) %>%
+      arrange(valor) %>%
+      select(veh, valor)
+  }
+
 rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_mun$veh)
 
 rk_matr_tipos_mun <- rk_matr_tipos_mun %>%
@@ -556,7 +589,7 @@ df_matr_tipos_plot <- df_matr_tipos_plot %>%
 df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
   "<b>", trimws(veh), "</b><br>",
   trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
+  " (", ifelse(is.nan(porcentaje), "0,0", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ","))), "%)",
   "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
   " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
@@ -635,10 +668,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br/>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br/>+ diesel", paste0(porc_gasolina_diesel_l, '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(porc_electrico_l, '%'), "./img/electrico.png"), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br/>+ diesel", paste0(format(porc_gasolina_diesel_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(format(porc_electrico_l, big.mark = ".", decimal.mark = ",", nsmall = 1), '%'), "./img/electrico.png"), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br/>+ diesel", paste0(porc_gasolina_diesel_l, '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(porc_electrico_l, '%'), "./img/electrico.png"), "</div>"))
 }
 ```
 </div>
@@ -750,13 +783,10 @@ if(porc_otros == 0){
 }
 
 altura_resto <- 220
-for(i in 1:4) {
-  if(df_combustibles_otros[i,]$valor == 0){
+for(i in 1:5) {
+  if(is.na(valor_l[i])){
     altura_resto <- altura_resto - 20
   }
-}
-if(porc_o == 0){
-  altura_resto <- altura_resto - 20
 }
 
 altura <- max(altura_total, altura_resto)
@@ -766,16 +796,16 @@ altura <- max(altura_total, altura_resto)
 <div class="progress-bar-container">
 
 ```{r, results='asis'}
-if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
+if(valor_diesel_l == 0 & valor_electrico_l == 0 & valor_otros_l == 0){
   cat(paste0(
     "<div class='progress-bar-blue-0' style='width:", porc_gasolina, "%'>"))
-}else if(porc_electrico_l == 0 & porc_otros_l == 0){
+}else if(valor_electrico_l == 0 & valor_otros_l == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue6' style='width:", porc_diesel, "%'>"))
-}else if(porc_otros_l == 0){
+}else if(valor_otros_l == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue3' style='width:", porc_diesel, "%'></div><div class='progress-bar-blue6' style='width:", porc_electrico, "%'>"))
-}else if(porc_electrico_l == 0){
+}else if(valor_electrico_l == 0){
   cat(paste0(
     "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue3' style='width:", porc_diesel, "%'></div><div class='progress-bar-blue6' style='width:", porc_otros, "%'>"))
 }else{
@@ -788,21 +818,21 @@ if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
 
 <div class="legend-vertical-container" style="margin-top: 60px;">
 ```{r, results='asis'}
-if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
+if(valor_diesel_l == 0 & valor_electrico_l == 0 & valor_otros_l == 0){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>Gasolina (", format(porc_gasolina_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_electrico_l == 0 & porc_otros_l == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>Gasolina (", valor_gasolina_l))
+}else if(valor_electrico_l == 0 & valor_otros_l == 0){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", format(porc_gasolina_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Diésel (", format(porc_diesel_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_otros_l == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Diésel (", valor_diesel_l))
+}else if(valor_otros_l == 0){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", format(porc_gasolina_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", format(porc_diesel_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Eléctrico (", format(porc_electrico_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_electrico_l == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Eléctrico (", valor_electrico_l))
+}else if(valor_electrico_l == 0){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", format(porc_gasolina_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", format(porc_diesel_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", format(porc_otros_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", valor_otros_l))
 }else{
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", format(porc_gasolina_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", format(porc_diesel_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>Eléctrico (", format(porc_electrico_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", format(porc_otros_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>Eléctrico (", valor_electrico_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", valor_otros_l))
 }
 ```
   </div></div>
@@ -813,21 +843,21 @@ if(porc_diesel_l == 0 & porc_electrico_l == 0 & porc_otros_l == 0){
 <div class="progress-bar-container">
 
 ```{r, results='asis'}
-if(porc_2 == 0 & porc_3 == 0 & porc_4 == 0 & porc_o == 0){
+if(length(tipo) == 1){
   cat(paste0(
-    "<div class='progress-bar-blue-0' style='width:", porc_1, "%'>"))
-}else if(porc_3 == 0 & porc_4 == 0 & porc_o == 0){
+    "<div class='progress-bar-blue-0' style='width:", porc[1], "%'>"))
+}else if(length(tipo) == 2){
   cat(paste0(
-    "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue6' style='width:", porc_2, "%'>"))
-}else if(porc_4 == 0 & porc_o == 0){
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue6' style='width:", porc[2], "%'>"))
+}else if(length(tipo) == 3){
   cat(paste0(
-    "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue3' style='width:", porc_2, "%'></div><div class='progress-bar-blue6' style='width:", porc_3, "%'>"))
-}else if(porc_o == 0){
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue6' style='width:", porc[3], "%'>"))
+}else if(length(tipo) == 4){
   cat(paste0(
-    "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue3' style='width:", porc_2, "%'></div><div class='progress-bar-blue4' style='width:", porc_3, "%'></div><div class='progress-bar-blue6' style='width:", porc_4, "%'>"))
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue4' style='width:", porc[3], "%'></div><div class='progress-bar-blue6' style='width:", porc[4], "%'>"))
 }else{
   cat(paste0(
-    "<div class='progress-bar-blue1' style='width:", porc_1, "%'></div><div class='progress-bar-blue3' style='width:", porc_2, "%'></div><div class='progress-bar-blue4' style='width:", porc_3, "%'></div><div class='progress-bar-blue5' style='width:", porc_4, "%'></div><div class='progress-bar-blue6' style='width:", porc_o, "%'>"))
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue4' style='width:", porc[3], "%'></div><div class='progress-bar-blue5' style='width:", porc[4], "%'></div><div class='progress-bar-blue6' style='width:", porc[5], "%'>"))
 }
 ```
   </div>
@@ -835,21 +865,21 @@ if(porc_2 == 0 & porc_3 == 0 & porc_4 == 0 & porc_o == 0){
 
 <div class="legend-vertical-container" style="margin-top: 60px;">
 ```{r, results='asis'}
-if(porc_2 == 0 & porc_3 == 0 & porc_4 == 0 & porc_o == 0){
+if(length(tipo) == 1){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_3 == 0 & porc_4 == 0 & porc_o == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>", tipo[1], " (", valor_l[1]))
+}else if(length(tipo) == 2){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_4 == 0 & porc_o == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[2], " (", valor_l[2]))
+}else if(length(tipo) == 3){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_3, " (", format(porc_3_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
-}else if(porc_o == 0){
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[3], " (", valor_l[3]))
+}else if(length(tipo) == 4){
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo_3, " (", format(porc_3_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo_4, " (", format(porc_4_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo[3], " (", valor_l[3], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[4], " (", valor_l[4]))
 }else{
   cat(paste0(
-    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo_1, " (", format(porc_1_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo_2, " (", format(porc_2_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo_3, " (", format(porc_3_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue5'></div><div class='sp-content'>", tipo_4, " (", format(porc_4_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", format(porc_o_l, big.mark = '.', decimal.mark = ',', nsmall = 1), "%)"))
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo[3], " (", valor_l[3], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue5'></div><div class='sp-content'>", tipo[4], " (", valor_l[4], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[5], " (", valor_l[5], ")"))
 }
 ```
   </div></div>
