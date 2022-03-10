@@ -411,7 +411,7 @@ df_estr_partidas$id_partida <- factor(df_estr_partidas$id_partida)
 
 df_estr_partidas_mun <- df_estr_partidas %>% filter(mun == params$id_municipio & id_partida %notin% c("GASTOS", "INGRESOS")) %>% select(!mun)
 
-df_partidas <- read.csv2("C://Users//ext-eyebmar//Desktop//G//partidas.csv", encoding = "windows-1252")
+df_partidas <- read.csv2("../partidas.csv", encoding = "windows-1252")
 df_estr_partidas_mun <- df_estr_partidas_mun %>% inner_join(df_partidas, by = "id_partida")
 ```
 
