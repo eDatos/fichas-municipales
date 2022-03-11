@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
-  año: 2020
+  id_municipio: 38037
+  año: 2021
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -358,7 +358,8 @@ df_turismo_pais_mun <- df_turistas %>%
   select(sexo, pais, valor)
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>%
-  mutate(porcentaje = df_turismo_pais_mun$valor / Num_Turistas_num * 100) %>% 
+  mutate(porcentaje = if_else(is.na(valor), 0, df_turismo_pais_mun$valor / Num_Turistas_num * 100)) %>% 
+  transform(valor = if_else(is.na(valor), 0, valor)) %>%
   transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje))
 df_turismo_pais_mun$pais <- ordered(df_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
 
