@@ -157,7 +157,7 @@ seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución del empleo registrado}
+```{r Gráfico evolución de las afiliaciones según residencia}
 df_afil <- cbind(data.frame(do.call('rbind', data_afil[["data"]][["dimCodes"]])), data_afil[["data"]][["Valor"]])
 colnames(df_afil) <- c('mun', 'sl', 'nacionalidad',  'periodo', 'sexo', 'valor')
 df_afil$sl <- factor(df_afil$sl, levels=data_afil[["categories"]][["codes"]][[2]], labels=data_afil[["categories"]][["labels"]][[2]])

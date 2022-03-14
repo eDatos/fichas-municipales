@@ -157,7 +157,7 @@ seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución del empleo registrado}
+```{r Gráfico evolución de las afiliaciones según cotización}
 df_afil <- cbind(data.frame(do.call('rbind', data_afil[["data"]][["dimCodes"]])), data_afil[["data"]][["Valor"]])
 colnames(df_afil) <- c('mun', 'sl', 'nacionalidad',  'periodo', 'sexo', 'valor')
 df_afil$sl <- factor(df_afil$sl, levels=data_afil[["categories"]][["codes"]][[2]], labels=data_afil[["categories"]][["labels"]][[2]])
@@ -274,8 +274,8 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Pirámide afiliaciones según residencia por edad y sexo}
-# Afiliaciones según edades y sexos. Municipios de residencia por periodos.
+```{r Pirámide afiliaciones según cotización por edad y sexo}
+# Afiliaciones según edades y sexos. Municipios de cotización por periodos.
 piramide <- fromJSON(params$url.piramide_c)
 df_piramide <- cbind(data.frame(do.call('rbind', piramide[["data"]][["dimCodes"]])), piramide[["data"]][["Valor"]])
 colnames(df_piramide) <- c('mun', 'gredad', 'periodo', 'sexo', 'valor')
@@ -339,7 +339,7 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
   style(hoverinfo = "skip", traces = c(3, 4))
 ```
 
-```{r Edad media afiliaciones según residencia}
+```{r Edad media afiliaciones según cotización}
 df_edad_media <- df_piramide %>% 
   filter(mun == municipio_actual$municipio & periodo == mes_actual$periodo, gredad != "_T" & sexo == "AMBOS SEXOS") %>%
   transform(gredad = ifelse(gredad == "Y_GE60", ">59", ifelse(grepl("T", gredad, fixed = TRUE), gsub("T", "-", substring(gredad, 2, 6)), gredad))) %>%
