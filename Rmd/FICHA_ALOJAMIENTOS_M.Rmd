@@ -7,13 +7,12 @@ params:
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
-  url.viajeros_lugar: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=d7482433-d3db-4228-bbf0-0196a02d0f48
-  url.estancia_m: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_ESTANCIAS_MEDIAS/data?representation=MEASURE[ABSOLUTE]&granularity=TIME[MONTHLY]
+  url.viajeros_lugar: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00065A_000036/~latest.json?dim=MEDIDAS:ESTANCIA_MEDIA|VIAJEROS_ALOJADOS:TERRITORIO:ES70|ES708|35004|35010|35024|35028|35034|ES704|35003|35014|35015|35017|35030|ES705|35012|35016|35019|ES709|38001|38006|38017|38019|38023|38028|38035|38038|38040|ES706|38003|38036|38049|38050|ES707|38009|38014|38024|38027|38037|38045|ES703|38013_2007|38048|38901&lang=es
   url.tasa_ocupacion: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_PLAZAS_OCUPACION/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.ADR: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/ALOJATUR_TARIFA_ADR/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
   url.aloj_isla: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b4de650c-10d8-4202-b678-58f597b1b040
-  url.hotel: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=2457b2ce-c6c1-46d5-9c85-59cd4b9b076d
-  url.extrahoteleros: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=76147e33-158b-4df0-ac5d-447de68ad3ef
+  url.hotel: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00065A_000001/~latest.json?dim=TERRITORIO:35004|35024|35028|35034|35003|35014|35015|35017|35030|35012|35016|35019|38001|38006|38017|38019|38023|38028|38035|38038|38040|38036|38049|38050|38009|38014|38024|38037|38013_2007|38048:MEDIDAS:ESTABLECIMIENTOS|HABITACIONES|PLAZAS:ALOJAMIENTO_TURISTICO_CATEGORIA:_T&lang=es
+  url.apartamentos: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00065A_000002/~latest.json?dim=TERRITORIO:35010|35024|35028|35034|35003|35014|35015|35012|35016|35019|38001|38006|38017|38028|38035|38040|38003|38036|38049|38009|38014|38024|38027|38037|38045|38013_2007|38048|38901:MEDIDAS:ESTABLECIMIENTOS|HABITACIONES|PLAZAS:ALOJAMIENTO_TURISTICO_CATEGORIA:_T&lang=es
 output:
   html_document:
     df_print: paged
@@ -46,13 +45,25 @@ signo <- function(value) {
 ```{r Mes}
 viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
 
-mes <- data.frame(code = viajeros_lugar[["categories"]][["codes"]][[3]],
-                  periodo = viajeros_lugar[["categories"]][["labels"]][[3]]) %>%
-  filter(substring(code, 5,5) == "M") %>%
-  transform(code = gsub("M", "-", code))
+mes <- data.frame(code = viajeros_lugar[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+  filter(substring(code, 5,6) == "-M") %>%
+  mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
+  transform(periodo = gsub("-M01", " Enero", periodo)) %>%
+  transform(periodo = gsub("-M02", " Febrero", periodo)) %>%
+  transform(periodo = gsub("-M03", " Marzo", periodo)) %>%
+  transform(periodo = gsub("-M04", " Abril", periodo)) %>%
+  transform(periodo = gsub("-M05", " Mayo", periodo)) %>%
+  transform(periodo = gsub("-M06", " Junio", periodo)) %>%
+  transform(periodo = gsub("-M07", " Julio", periodo)) %>%
+  transform(periodo = gsub("-M08", " Agosto", periodo)) %>%
+  transform(periodo = gsub("-M09", " Septiembre", periodo)) %>%
+  transform(periodo = gsub("-M10", " Octubre", periodo)) %>%
+  transform(periodo = gsub("-M11", " Noviembre", periodo)) %>%
+  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>% 
+  transform(code = gsub("M", "", code)) %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1))))
 
 mes <- mes %>% 
-  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
@@ -94,6 +105,12 @@ recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gra
 recode_mun <- function(df, colname) {
   df[,colname] = trimws(df[,colname])
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+# Frontera
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
   df[,colname]
 }
 ```
@@ -158,25 +175,44 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población turística}
-df_u_ <- cbind(data.frame(do.call('rbind', viajeros_lugar[["data"]][["dimCodes"]])), viajeros_lugar[["data"]][["Valor"]])
-colnames(df_u_) <- c('ind', 'lugar', 'periodo', 'mun', 'valor')
-df_u_$ind <- factor(df_u_$ind, levels=viajeros_lugar[["categories"]][["codes"]][[1]], labels=viajeros_lugar[["categories"]][["labels"]][[1]])
-df_u_$lugar <- factor(df_u_$lugar, levels=viajeros_lugar[["categories"]][["codes"]][[2]], labels=viajeros_lugar[["categories"]][["labels"]][[2]])
-df_u_$valor <- as.numeric(df_u_$valor)
-df_u_ <- df_u_ %>% mutate(lugar = recode(lugar, " TOTAL RESIDENTES EN ESPAÑA" = "España"))
+df_viajeros <- data.frame(
+  ind = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                   length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  mun = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  periodo = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_lugar = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+                 times = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(viajeros_lugar[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-df_u_ <- df_u_ %>% filter(substring(periodo, 5,5) == "M")
-df_u_$periodo <- paste0(substring(df_u_$periodo, 0,4), "-", substring(df_u_$periodo, 6,7))
-df_u <- df_u_ %>% filter(lugar == "TOTAL LUGARES DE RESIDENCIA" & ind == "Viajeros alojados") %>% select(mun, periodo, valor)
+df_lugar <- data.frame(
+  id_lugar = viajeros_lugar[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],
+  lugar = vector(mode = "character", length = viajeros_lugar[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][5]))
 
-num_Canarias_total <- df_u %>% filter(mun == "ES70" & periodo == mes_actual$code) %>% select(valor) %>% as.numeric()
-num_Isla_total <- df_u %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code) %>% select(valor) %>% as.numeric()
+for(i in 1:nrow(df_lugar)) {
+  df_lugar$lugar[i] <- viajeros_lugar[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[i]][["value"]]
+}
 
-df_u <- df_u[with(df_u, order(periodo)), ]
-df_u <- df_u %>%
-  filter(substring(mun, 0,1) == "3") %>% 
-  arrange(periodo) %>% 
-  select(mun, periodo, valor)
+df_viajeros <- df_viajeros %>%
+  filter(substring(periodo, 5,6) == "-M") %>%
+  right_join(df_lugar, by = "id_lugar") %>%
+  transform(periodo = gsub("M", "", periodo)) %>%
+  select(!id_lugar)
+df_viajeros$valor <- df_viajeros$valor %>% as.numeric()
+df_viajeros$mun <- recode_id_Frontera(df_viajeros, 'mun')
+
+num_Isla_total <- df_viajeros %>% filter(ind == "VIAJEROS_ALOJADOS" & mun == municipio_actual$id_isla & periodo == mes_actual$code & lugar == "Total") %>% select(valor) %>% as.numeric()
+num_Canarias_total <- df_viajeros %>% filter(ind == "VIAJEROS_ALOJADOS" & mun == "ES70" & periodo == mes_actual$code & lugar == "Total") %>% select(valor) %>% as.numeric()
+
+df_viajeros <- df_viajeros[with(df_viajeros, order(periodo)), ]
+df_u <- df_viajeros %>%
+  filter(ind == "VIAJEROS_ALOJADOS" & substring(mun, 0,2) != "ES" & lugar == "Total") %>%
+  select(mun, periodo, valor) %>%
+  arrange(periodo)
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
@@ -284,7 +320,6 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Indicador evolución de los viajeros}
-## Viajeros entrados en alojamientos turísticos. 2009
 ind_viaj <- df %>% filter(id == params$id_municipio & code %in% c(mes_actual$code, mes_tva$code))
 
 Num_Viajeros_num <- ind_viaj %>% filter(id == params$id_municipio & code == mes_actual$code) %>% select(valor) %>% as.numeric()
@@ -294,22 +329,12 @@ Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png'
 ```
 
 ```{r Indicador Estancia Media}
-# Estancia media de los viajeros en hoteles y apartamentos turísticos. 2021-M_.
-estancia_media <- fromJSON(params$url.estancia_m)
-
-df_estancia_media <- data.frame(
-  mun = rep(names(estancia_media[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-            each=length(estancia_media[["dimension"]][["TIME"]][["representation"]][["index"]])),
-  mes = rep(names(estancia_media[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            times=length(estancia_media[["dimension"]][["MEASURE"]][["representation"]][["index"]])),
-  valor = estancia_media[["observation"]])
-df_estancia_media$valor <- as.numeric(df_estancia_media$valor)
-
-Num_estancia_media <- df_estancia_media %>% filter(mes == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Estancia_media <- df_viajeros %>%
+  filter(ind == "ESTANCIA_MEDIA" & mun == params$id_municipio & periodo == mes_actual$code & lugar == "Total") %>%
+  select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Indicador Tasa de Ocupación}
-# Tasa de ocupación por plazas en hoteles y apartamentos turísticos. 2009-M01 a 2021-M_.
 tasa_ocupacion <- fromJSON(params$url.tasa_ocupacion)
 
 df_tasa_ocupacion <- data.frame(
@@ -320,11 +345,12 @@ df_tasa_ocupacion <- data.frame(
   valor = tasa_ocupacion[["observation"]])
 df_tasa_ocupacion$valor <- as.numeric(df_tasa_ocupacion$valor)
 
-Tasa_ocupacion <- df_tasa_ocupacion %>% filter(mes == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Tasa_ocupacion <- df_tasa_ocupacion %>%
+  filter(mes == mes_actual$code & mun == params$id_municipio) %>%
+  select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Indicador ADR}
-# Tarifa media diaria (ADR), ingresos por habitación disponible (RevPAR) e ingresos totales por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
 ADR <- fromJSON(params$url.ADR)
 
 df_ADR <- data.frame(
@@ -335,7 +361,9 @@ df_ADR <- data.frame(
   valor = ADR[["observation"]])
 df_ADR$valor <- as.numeric(df_ADR$valor)
 
-ADR <- df_ADR %>% filter(mes == mes_actual$code & mun == params$id_municipio) %>% select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+ADR <- df_ADR %>%
+  filter(mes == mes_actual$code & mun == params$id_municipio) %>%
+  select(valor) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Rankings}
@@ -357,9 +385,9 @@ percent_isla <- format(round(df_tur_mun$valor / num_Isla_total * 100, 1), big.ma
 ```
 
 ```{r Barras Lugar}
-df_viajeros_lugar <- df_u_ %>% 
-  filter(periodo == mes_actual$code & ind == "Viajeros alojados" & 
-         lugar %notin% c("TOTAL LUGARES DE RESIDENCIA", " TOTAL RESIDENTES EN EL EXTRANJERO", "  Canarias", "  Residentes en España excepto Canarias")) %>%
+df_viajeros_lugar <- df_viajeros %>% 
+  filter(ind == "VIAJEROS_ALOJADOS" & periodo == mes_actual$code &
+           lugar %notin% c("Total", "Otros países o territorios del mundo (excluida España)", "  Canarias", "  Residentes en España excepto Canarias")) %>%
   select(mun, lugar, valor)
 
 df_viajeros_lugar_mun <- df_viajeros_lugar %>% filter(mun == params$id_municipio)
@@ -421,29 +449,20 @@ g_viajeros_lugar <- ggplotly(g_viajeros_lugar, tooltip = c("text")) %>%
   style(hoverinfo = "skip", traces = c(9:17))
 ```
 
-```{r Indicadores Lugar/Islas}
-df_mun <- df_u_ %>%
-  filter(mun == params$id_municipio & periodo == mes_actual$code & ind == "Viajeros alojados") %>%
+```{r Indicadores Lugar}
+df_mun <- df_viajeros %>%
+  filter(mun == params$id_municipio & periodo == mes_actual$code & ind == "VIAJEROS_ALOJADOS") %>%
   select(lugar, valor)
 df_viajeros_nacionalidad_mun <- df_mun %>%
-  filter(lugar %in% c("España", " TOTAL RESIDENTES EN EL EXTRANJERO"))
+  filter(lugar %in% c("España", "Mundo (excluida España)"))
 df_viajeros_nacionalidad_mun <- df_viajeros_nacionalidad_mun %>%
   mutate(porcentaje = df_viajeros_nacionalidad_mun$valor / Num_Viajeros_num * 100)
 
 peso_española <- df_viajeros_nacionalidad_mun$porcentaje[which(df_viajeros_nacionalidad_mun$lugar == "España")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-peso_extranjera <- df_viajeros_nacionalidad_mun$porcentaje[which(df_viajeros_nacionalidad_mun$lugar == " TOTAL RESIDENTES EN EL EXTRANJERO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-
-df_viajeros_canarios_mun <- df_mun %>%
-  filter(lugar %in% c("  Canarias", "España", "TOTAL LUGARES DE RESIDENCIA"))
-df_viajeros_canarios_mun <- df_viajeros_canarios_mun %>%
-  mutate(porcentaje = df_viajeros_canarios_mun$valor[which(df_viajeros_canarios_mun$lugar == "  Canarias")] / df_viajeros_canarios_mun$valor * 100)
-
-peso_Canarias_Esp <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "España")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-peso_Canarias_Tot <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "TOTAL LUGARES DE RESIDENCIA")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+peso_extranjera <- df_viajeros_nacionalidad_mun$porcentaje[which(df_viajeros_nacionalidad_mun$lugar == "Mundo (excluida España)")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
 ```
 
 ```{r Barras Islas}
-# Pernoctaciones, viajeros entrados y viajeros alojados según islas de residencia de Canarias por municipios de alojamiento de Canarias y periodos
 aloj_isla <- fromJSON(params$url.aloj_isla)
 df_aloj_isla <- cbind(data.frame(do.call('rbind', aloj_isla[["data"]][["dimCodes"]])), aloj_isla[["data"]][["Valor"]])
 colnames(df_aloj_isla) <- c('ind', 'lugar', 'mun', 'periodo', 'valor')
@@ -455,9 +474,9 @@ df_aloj_isla$valor <- as.numeric(df_aloj_isla$valor)
 df_aloj_isla$mun <- recode_mun(df_aloj_isla, 'mun')
 df_aloj_isla <- df_aloj_isla %>% transform(lugar = gsub("Residencia en ", "", lugar))
 
-num_viajeros_islas_mun <- df_u_ %>%
+num_viajeros_islas_mun <- df_viajeros %>%
   filter(mun == params$id_municipio & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar == "  Canarias") %>% select(valor) %>% as.numeric()
-num_viajeros_islas_C <- df_u_ %>%
+num_viajeros_islas_C <- df_viajeros %>%
   filter(mun == "ES70" & periodo == mes_actual$code & ind == "Viajeros alojados" & lugar == "  Canarias") %>% select(valor) %>% as.numeric()
 
 rk_aloj_isla_mun <- df_aloj_isla %>%
@@ -519,8 +538,17 @@ g_aloj_isla <- ggplotly(g_aloj_isla, tooltip = c("text")) %>%
   style(hoverinfo = "skip", traces = c(8:14))
 ```
 
+```{r Indicadores Islas}
+df_viajeros_canarios_mun <- df_mun %>%
+  filter(lugar %in% c("  Canarias", "España", "Total"))
+df_viajeros_canarios_mun <- df_viajeros_canarios_mun %>%
+  mutate(porcentaje = df_viajeros_canarios_mun$valor[which(df_viajeros_canarios_mun$lugar == "  Canarias")] / df_viajeros_canarios_mun$valor * 100)
+
+peso_Canarias_Esp <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "España")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+peso_Canarias_Tot <- df_viajeros_canarios_mun$porcentaje[which(df_viajeros_canarios_mun$lugar == "Total")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+```
+
 ```{r Tipos de alojamiento}
-# Establecimientos hoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
 hoteles <- fromJSON(params$url.hotel)
 df_hoteles <- cbind(data.frame(do.call('rbind', hoteles[["data"]][["dimCodes"]])), hoteles[["data"]][["Valor"]])
 colnames(df_hoteles) <- c('ind', 'cat', 'mun', 'periodo', 'valor')
@@ -539,8 +567,7 @@ df_hoteles_mun <- df_hoteles %>%
   filter(cat == "TOTAL CATEGORÍAS" & mun == municipio_actual$municipio & periodo == mes_actual$periodo) %>% 
   select(ind, valor_hoteles = valor)
 
-# Establecimientos extrahoteleros abiertos, plazas ofertadas y habitaciones disponibles según categorías por municipios de alojamiento de Canarias y periodos. 2009M01 a 2021M04.
-extrahoteleros <- fromJSON(params$url.extrahoteleros)
+extrahoteleros <- fromJSON(params$url.apartamentos)
 df_extrahoteleros <- cbind(data.frame(do.call('rbind', extrahoteleros[["data"]][["dimCodes"]])), extrahoteleros[["data"]][["Valor"]])
 colnames(df_extrahoteleros) <- c('ind', 'cat', 'mun', 'periodo', 'valor')
 df_extrahoteleros$ind <- factor(df_extrahoteleros$ind, levels=extrahoteleros[["categories"]][["codes"]][[1]], labels=extrahoteleros[["categories"]][["labels"]][[1]])
@@ -606,10 +633,10 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Estancia<br/>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br/>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br/>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-3-ind'>", get_indicator2('Estancia<br/>media', Estancia_media, './img/cama.png'), "</div><div class='column-3-ind'>", get_indicator2('Tasa de<br/>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Tarifa media<br/>diaria', ADR, './img/euro.png'), "</div>"))
 }else{
   cat(paste0(
-    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia<br/>media', Num_estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br/>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br/>diaria', ADR, './img/euro.png'), "</div>"))
+    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Estancia<br/>media', Estancia_media, './img/cama.png'), "</div><div class='column-4'>", get_indicator2('Tasa de<br/>ocupación', Tasa_ocupacion,'./img/percent-blue.png'), "</div><div class='column-4'>", get_indicator2('Tarifa media<br/>diaria', ADR, './img/euro.png'), "</div>"))
 }
 ```
 </div>
