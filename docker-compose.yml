@@ -15,6 +15,6 @@ services:
     build: .
     container_name: shiny
     volumes:
-      - ./:/srv/shiny-server/fichas-municipales
+      - ./:/srv/shiny-server/aplicaciones/appsistac/fichas-municipales
       - ./logs:/var/log/shiny-server
       - ./conf/shiny-server.conf:/etc/shiny-server/shiny-server.conf
