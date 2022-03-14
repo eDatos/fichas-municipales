@@ -108,8 +108,9 @@ municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
 
 ```{r Normalización de municipios} 
-recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
-recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
 recode_mun <- function(df, colname) {
   df[,colname] = trimws(df[,colname])
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
@@ -510,14 +511,16 @@ if(Variacion == "NA"){
 if(nrow(df_plot_0) == 2) {
   tamaño <- 158
   }else if(nrow(df_plot_0) == 3) {
-    tamaño <- 19
+    tamaño <- 198
     }else if(nrow(df_plot_0) == 4) {
       tamaño <- 240
       }else if(nrow(df_plot_0) == 5) {
         tamaño <- 280
         }else if(nrow(df_plot_0) == 6) {
           tamaño <- 310
-        }
+          }else{
+            tamaño <- 354
+          }
 ```
 <div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
   `r g_europeas_mun`

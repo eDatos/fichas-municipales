@@ -28,7 +28,9 @@ list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "p
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
+```
 
+```{r funciones, include=FALSE}
 signo <- function(value) {
   if (value > 0){sign <- "más"} else {sign <- "menos"}
   return(sign)
@@ -80,8 +82,8 @@ municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
 ```
 
 ```{r Normalización de municipios} 
-recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla")
-recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla")
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
 
 recode_mun <- function(df, colname) {
   df[,colname] = trimws(df[,colname])
@@ -155,7 +157,7 @@ seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución del empleo registrado}
+```{r Gráfico evolución de las afiliaciones según residencia}
 df_afil <- cbind(data.frame(do.call('rbind', data_afil[["data"]][["dimCodes"]])), data_afil[["data"]][["Valor"]])
 colnames(df_afil) <- c('mun', 'sl', 'nacionalidad',  'periodo', 'sexo', 'valor')
 df_afil$sl <- factor(df_afil$sl, levels=data_afil[["categories"]][["codes"]][[2]], labels=data_afil[["categories"]][["labels"]][[2]])

@@ -180,10 +180,10 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
   }
   if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
     option_params <- list(id_municipio = as.numeric(id_municipio))
-    if(code %in% c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales")) {
-      option_params <- append(option_params, list(año = as.character(ano)))
-    }else{
+    if(nchar(ano) == 4) {
       option_params <- append(option_params, list(año = as.numeric(ano)))
+    }else{
+      option_params <- append(option_params, list(año = as.character(ano)))
     }
     if(periodicidad == "M") {
       option_params <- append(option_params, list(mes = as.numeric(mes)))
@@ -237,16 +237,15 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-generarFicha("2016", 'congreso', 'A', NA, NA, 35001)
+# generarFicha(2019, 'perfil_turista', 'A', NA, NA, 35001)
 
-generarFichas(municipios %>% filter(id == 35016), df_fichas %>% filter(code == 'paro_registrado'), periods %>% filter(M == 1))
-generarFichas(municipios %>% filter(id == 35034), df_fichas %>% filter(code == 'perfil_turista'), periods %>% filter(Q == 12))
-generarFichas(municipios %>% filter(id == 35002), df_fichas %>% filter(code == 'municipales'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_residencia'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_cotizacion'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A %notin% c(2019:2021)))
+generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A %notin% c(2021)))
 
-c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
-  "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
-  "parque_vehiculos", "sector_primario")
-c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales")
-
-generarFichas(municipios, df_fichas %>% filter(code == 'congreso'), periods)
+# c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
+#   "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
+#   "parque_vehiculos", "sector_primario")
+# c("europeas", "congreso", "senado", "autonomicas", "cabildo", "municipales")
 
