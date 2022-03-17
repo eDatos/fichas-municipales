@@ -18,7 +18,7 @@ addResourcePath("frames", getwd())
 directory.data <- "data/"
 directory.rmd <- "Rmd/"
 directory.output <- "output"
-df_init_data <-  read.csv("init-data.csv", sep = ";") %>% 
+df_init_data <-  read.csv("init-data.csv", sep = ";", encoding = "UTF-8") %>% 
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
 
@@ -140,7 +140,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  df_fichas <- data.frame(code = list.dirs(path = directory.output, recursive = F, full.names = F)) %>% left_join(read.csv("fichas.csv", sep = ";"), by = "code") %>% filter(!is.na(periodicidad))
+  df_fichas <- data.frame(code = list.dirs(path = directory.output, recursive = F, full.names = F)) %>% left_join(read.csv("fichas.csv", sep = ";", encoding = "UTF-8"), by = "code") %>% filter(!is.na(periodicidad))
   periods <- get_periods_from_files(df_fichas)
   municipios <- loadMunicipios()
   
@@ -257,7 +257,7 @@ server <- function(input, output) {
         return(TRUE)
       }
     } else if(periodicidad == "A") {
-      if(!is.null(input$año_2) && input$año_2 != 0 && input$año2 != "") {
+      if(!is.null(input$anio_2) && input$anio_2 != 0 && input$anio_2 != "") {
         return(TRUE)
       }
     }
@@ -286,11 +286,11 @@ server <- function(input, output) {
   output$report <- renderUI({
     shiny::validate(
       need(input$id_ficha != "", ""),
-      need(input$año != "", ""),
+      need(input$anio != "", ""),
       need(input$id_municipio != "", "")
     )
     
-    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
     if(periodicidad() == "M") {
       shiny::validate(need(input$mes != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes)
@@ -304,11 +304,11 @@ server <- function(input, output) {
   output$report_2 <- renderUI({
     shiny::validate(
       need(input$id_ficha_2 != "", ""),
-      need(input$año_2 != "", ""),
+      need(input$anio_2 != "", ""),
       need(input$id_municipio_2 != "", "")
     )
     
-    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
     if(periodicidad2() == "M") {
       shiny::validate(need(input$mes_2 != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes_2)
@@ -366,11 +366,11 @@ server <- function(input, output) {
     shiny::validate(
       need(input$id_ficha != "", ""),
       need(input$id_municipio != "", ""),
-      need(input$año != "", "Seleccionar año...")
+      need(input$anio != "", "Seleccionar año...")
     )
     
     periods %>% 
-      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$anio) %>% 
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -385,11 +385,11 @@ server <- function(input, output) {
     shiny::validate(
       need(input$id_ficha_2 != "", ""),
       need(input$id_municipio_2 != "", ""),
-      need(input$año_2 != "", "Seleccionar año...")
+      need(input$anio_2 != "", "Seleccionar año...")
     )
     
     periods %>% 
-      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
+      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$anio_2) %>% 
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -409,11 +409,11 @@ server <- function(input, output) {
     shiny::validate(
       need(input$id_ficha != "", ""),
       need(input$id_isla != "", ""),
-      need(input$año != "", "Seleccionar año...")
+      need(input$anio != "", "Seleccionar año...")
     )
     
     current_periods <- periods %>% 
-      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$año) %>% 
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$anio) %>% 
       select(id = period)
     trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
     trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
@@ -433,11 +433,11 @@ server <- function(input, output) {
     shiny::validate(
       need(input$id_ficha_2 != "", ""),
       need(input$id_isla_2 != "", ""),
-      need(input$año_2 != "", "Seleccionar año...")
+      need(input$anio_2 != "", "Seleccionar año...")
     )
     
     current_periods <- periods%>% 
-      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$año_2) %>% 
+      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$anio_2) %>% 
       select(id = period)
     trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
     trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
@@ -467,8 +467,8 @@ server <- function(input, output) {
   output$select_ficha_2 <- renderUI({ selectInput('id_ficha_2', "", choices=option_ficha_2(), selected = 1) })
   
   output$header_year <- renderUI({ h3("Año") })
-  output$select_year <- renderUI({ selectInput("año", "", choices = option_year(), selected=1) })
-  output$select_year_2 <- renderUI({ selectInput("año_2", "", choices = option_year_2(), selected=1) })
+  output$select_year <- renderUI({ selectInput("anio", "", choices = option_year(), selected=1) })
+  output$select_year_2 <- renderUI({ selectInput("anio_2", "", choices = option_year_2(), selected=1) })
   
   output$header_month <- renderUI({ h3("Periodo") })
   output$select_month <- renderUI({ selectInput("mes", "", choices = option_month()) })
@@ -502,11 +502,11 @@ server <- function(input, output) {
 
   observeEvent(eventExpr = input$mes_2, handlerExpr = { if(periodicidad2() == "M" && input$mes_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$trimestre_2, handlerExpr = { if(periodicidad2() == "Q" && input$trimestre_2 != "") output$fichas <- getLayout2() })
-  observeEvent(eventExpr = input$año_2, handlerExpr = { if(periodicidad2() == "A" && input$año_2 != "") output$fichas <- getLayout2() })
+  observeEvent(eventExpr = input$anio_2, handlerExpr = { if(periodicidad2() == "A" && input$anio_2 != "") output$fichas <- getLayout2() })
 
   output$pdf <- downloadHandler(
     filename = function() {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
       if(periodicidad() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes)
       } else if(periodicidad() == "Q") {
@@ -516,7 +516,7 @@ server <- function(input, output) {
       path_fichero[length(path_fichero)]
     },
     content = function(con) {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$año & id_municipio == input$id_municipio))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
       if(periodicidad() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes)
       } else if(periodicidad() == "Q") {
@@ -532,7 +532,7 @@ server <- function(input, output) {
   
   output$pdf_2 <- downloadHandler(
     filename = function() {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
       if(periodicidad2() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes_2)
       } else if(periodicidad2() == "Q") {
@@ -542,7 +542,7 @@ server <- function(input, output) {
       path_fichero[length(path_fichero)]
     },
     content = function(con) {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$año_2 & id_municipio == input$id_municipio_2))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
       if(periodicidad2() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes_2)
       } else if(periodicidad2() == "Q") {
