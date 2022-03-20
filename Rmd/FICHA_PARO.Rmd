@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  año: 2019
-  mes: 9
+  año: 2022
+  mes: 2
   id_municipio: 38013
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -194,13 +194,16 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución de la población parada}
 df_parados <- data.frame(
   periodo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   mun = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) * length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   id_sexo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   id_gredad = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-               times = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+                  times = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(parados[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 df_edad <- data.frame(
@@ -237,6 +240,9 @@ Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual
 df_u <- df_parados %>% filter(substring(mun, 0,2) != "ES" & gredad == "Total" & sexo == "Ambos sexos") %>%
   select(mun, periodo, valor) %>%
   arrange(periodo)
+
+año_max <- max(substring(df_u$periodo, 0,4)) %>% as.numeric
+año_min <- min(substring(df_u$periodo, 0,4)) %>% as.numeric
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(related_mun  %>% select(mun, valor), 'valor')
@@ -293,7 +299,7 @@ g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nom
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){ paste0(2006:2021, "-01") }, labels = function(x){substr(x, 0, 4) }) +
+  scale_x_discrete(breaks = function(x){ paste0(año_min:año_max, "-01") }, labels = function(x){substr(x, 0, 4) }) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
