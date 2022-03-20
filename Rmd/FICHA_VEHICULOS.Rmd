@@ -307,6 +307,10 @@ Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric()
 Num_Veh_Parque <- df_lv %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+if(df_lv$tasa == 0){
+  diferencia <- Num_Vehiculos - df$valor[which(df$id == params$id_municipio & df$code == mes_tva$code)]
+  Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+}
 
 # Número de turismos en circulación según datos del parque de vehículos elaborado por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
 data_Tur_Parque <- fromJSON(params$url.parque_tur)

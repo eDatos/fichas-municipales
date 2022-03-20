@@ -280,6 +280,10 @@ Num_Pobl_num <- df_lv$valor %>% as.numeric()
 Num_Pobl <- Num_Pobl_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+if(df_lv$tasa == 0){
+  diferencia <- Num_Pobl_num - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+  Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+}
 ```
 
 ```{r Pirámide por edad y sexo}
