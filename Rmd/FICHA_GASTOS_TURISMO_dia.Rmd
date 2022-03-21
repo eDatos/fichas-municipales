@@ -1,10 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35012
-  año: 2021
-  mes: NA
-  trimestre: 3
+  id_municipio: 35017
+  año: 2019
+  trimestre: 1
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -287,6 +286,13 @@ Num_GM_num <- ind_GM %>% filter(code == periodo_actual$code) %>% select(valor) %
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion_Porcentual <- ind_GM %>% filter(code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+if(Variacion_Porcentual != "NA"){
+  Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  if(ind_GM$tasa[which(ind_GM$code == periodo_actual$code)] == 0){
+    diferencia <- Num_GM_num - ind_GM$valor[which(ind_GM$code == periodo_tva$code)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }
+}
 ```
 
 ```{r Indicadores Gastos Medios}
@@ -392,7 +398,8 @@ df_GM_ni_Canarias <- df_GM_ni %>%
 
 df_GMd_ni_plot <- df_GMd_ni_mun %>%
   mutate(valor_Canarias = df_GM_ni_Canarias$valor,
-         label = "|")
+         label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 df_GMd_ni_plot$nivel <- ordered(df_GMd_ni_plot$nivel, levels = df_GMd_ni_plot$nivel)
 
 df_GMd_ni_plot <- df_GMd_ni_plot %>% transform(hovertext = paste0(
@@ -457,7 +464,8 @@ df_GMd_ne_Canarias <- df_GM_ne %>%
 df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
 
 df_GMd_ne_plot <- df_GMd_ne_mun %>%
-  mutate(label = "|")
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 
 df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
     "<b>", estudios, "</b>",
@@ -542,7 +550,8 @@ df_GMd_np_Canarias <- df_GM_np %>%
 df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
 
 df_GMd_np_plot <- df_GMd_np_mun %>%
-  mutate(label = "|")
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 
 df_GMd_np_plot <- df_GMd_np_plot %>% transform(hovertext = paste0(
     "<b>", noches, "</b>",
@@ -610,7 +619,8 @@ df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$p
 
 df_GMd_pais_plot <- df_GMd_pais_mun %>%
   mutate(valor_Canarias = df_GMd_pais_Canarias$valor,
-         label = "|")
+         label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 
 df_GMd_pais_plot <- df_GMd_pais_plot %>% transform(hovertext = paste0(
     "<b>", pais, "</b>",
