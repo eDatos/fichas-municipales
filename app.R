@@ -344,7 +344,7 @@ server <- function(input, output) {
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio) %>% 
       select(A) %>% 
-      deframe
+      deframe %>% unique
   })
   
   option_year_2 <- reactive({ 
@@ -359,7 +359,7 @@ server <- function(input, output) {
       select(A, id) %>% 
       rbind(data.frame(A = " Seleccione...", id = "")) %>% 
       arrange(A) %>%
-      deframe 
+      deframe %>% unique
   })
  
   option_month <- reactive({
@@ -467,15 +467,15 @@ server <- function(input, output) {
   output$select_ficha_2 <- renderUI({ selectInput('id_ficha_2', "", choices=option_ficha_2(), selected = 1) })
   
   output$header_year <- renderUI({ h3("Año") })
-  output$select_year <- renderUI({ selectInput("anio", "", choices = option_year(), selected=1) })
+  output$select_year <- renderUI({ selectInput("anio", "", choices = option_year(), selected = option_year()[length(option_year())]) })
   output$select_year_2 <- renderUI({ selectInput("anio_2", "", choices = option_year_2(), selected=1) })
   
   output$header_month <- renderUI({ h3("Periodo") })
-  output$select_month <- renderUI({ selectInput("mes", "", choices = option_month()) })
+  output$select_month <- renderUI({ selectInput("mes", "", choices = option_month(), selected = option_month()[length(option_month())]) })
   output$select_month_2 <- renderUI({ selectInput("mes_2", "", choices = option_month_2(), selected = 0) })
   
   output$header_trim <- renderUI({ h3("Periodo") })
-  output$select_trim <- renderUI({ selectInput("trimestre", "", choices = option_trim()) })
+  output$select_trim <- renderUI({ selectInput("trimestre", "", choices = option_trim(), selected = option_trim()[length(option_trim())]) })
   output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2(), selected = 0) })
   
   observeEvent(eventExpr = input$ver_fichas, handlerExpr = 
