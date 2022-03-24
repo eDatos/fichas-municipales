@@ -97,30 +97,6 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
-) %>% st_sf
-
-palette <- c('#8CD2EA', '#005980')
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -327,6 +303,30 @@ df_GM_sexo_edad_C <- df_GM_sexo_edad %>%
 
 Gasto_por_turista_d_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Gasto_por_turista_d_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Rankings}

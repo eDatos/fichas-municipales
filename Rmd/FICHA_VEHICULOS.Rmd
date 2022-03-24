@@ -112,40 +112,6 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-palette <- c('#8CD2EA', '#005980')
-
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
-) %>% 
-  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
-  st_sf
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -331,6 +297,40 @@ df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
 Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric
 Num_Tur_Parque <- Num_Tur_Parque_num %>% round(0) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Mapas}
+palette <- c('#8CD2EA', '#005980')
+
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% 
+  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
+  st_sf
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Rankings}
