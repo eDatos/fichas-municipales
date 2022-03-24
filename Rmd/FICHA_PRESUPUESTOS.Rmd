@@ -221,6 +221,7 @@ df_u <- df_u[with(df_u, order(año)), ] %>%
 
 related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template_I <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
@@ -330,6 +331,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df %>% filter(mun == params$id_municipio & año == params$año)
 
 Num_Presupuesto_num <- df_lv$valor_M %>% as.numeric
+if(is.na(Num_Presupuesto_num)) {stop("Error: indicador principal desconocido")}
 Num_Presupuesto <- Num_Presupuesto_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion_Porcentual <- df_lv$tasa %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 if(Variacion_Porcentual != "NA"){

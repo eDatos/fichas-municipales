@@ -191,6 +191,7 @@ df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
@@ -288,6 +289,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 superficie_cultivada_num <- df_lv$valor
+if(is.na(superficie_cultivada_num)) {stop("Error: indicador principal desconocido")}
 superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){
@@ -475,7 +477,7 @@ g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo,
 
 g_herbaceos <- ggplotly(g_herbaceos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_herbaceos_plot)/2+1):24))
 ```
 
@@ -601,7 +603,7 @@ g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, l
 
 g_leñosos <- ggplotly(g_leñosos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_leñosos_plot)/2+1):24))
 ```
 
@@ -690,7 +692,7 @@ g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = especie, fill = es
 
 g_exp_especies <- ggplotly(g_exp_especies, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_exp_especies_plot)/2+1):46))
 ```
 

@@ -192,6 +192,7 @@ df_u <- df_viajeros %>%
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas alojadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas alojadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"

@@ -173,6 +173,7 @@ df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
@@ -277,6 +278,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 Num_Pobl_num <- df_lv$valor %>% as.numeric
+if(is.na(Num_Pobl_num)) {stop("Error: indicador principal desconocido")}
 Num_Pobl <- Num_Pobl_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){

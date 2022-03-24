@@ -192,6 +192,7 @@ df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_P
 
 related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 min_code <- min(df_u$proceso)
 df <- related_mun %>%
@@ -298,6 +299,7 @@ leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
 df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(ind, valor)
 
 Tasa_participacion_num <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric
+if(is.na(Tasa_participacion_num)) {stop("Error: indicador principal desconocido")}
 Tasa_participacion <- Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
   as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)

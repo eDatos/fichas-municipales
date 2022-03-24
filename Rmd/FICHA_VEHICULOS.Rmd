@@ -198,6 +198,7 @@ año_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric
 
 related_mun <- df_u %>% filter(mes == mes_actual$code & mun != "ES70")
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
@@ -302,6 +303,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df_u %>% filter(mun == params$id_municipio & mes == mes_actual$code)
 
 Num_Vehiculos_num <- df_lv %>% select(valor) %>% as.numeric
+if(is.na(Num_Vehiculos_num)) {stop("Error: indicador principal desconocido")}
 Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){

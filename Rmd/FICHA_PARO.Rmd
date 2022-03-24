@@ -247,6 +247,7 @@ año_min <- min(substring(df_u$periodo, 0,4)) %>% as.numeric
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
@@ -357,6 +358,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df %>% filter(code == mes_actual$code & mun == params$id_municipio)
 
 Num_Paro_num <- df_lv$valor %>% as.numeric
+if(is.na(Num_Paro_num)) {stop("Error: indicador principal desconocido")}
 Num_Paro <- Num_Paro_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){

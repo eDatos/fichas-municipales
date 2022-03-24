@@ -172,6 +172,7 @@ df_u <- df_afil %>% filter(sl == "TOTAL DE AFILIACIONES" & sexo == "AMBOS SEXOS"
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(df_localizacion, related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
@@ -277,6 +278,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 df_lv <- df %>% filter(code == mes_actual$code & mun == params$id_municipio)
 
 Num_Afil_num <- df_lv$valor %>% as.numeric
+if(is.na(Num_Afil_num)) {stop("Error: indicador principal desconocido")}
 Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 if(Variacion_Porcentual != "NA"){
