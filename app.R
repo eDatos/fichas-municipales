@@ -105,7 +105,11 @@ ui <- fluidPage(
   includeCSS("www/styles.css"),
   tags$script(HTML(
     "function resizeIframe(obj) {
-      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
+      var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      //obj.parentElement.style.height = obj.style.height;
+      obj.style.transform = 'scale(' + scale + ')';
+      //console.log(Math.min(1, obj.offsetWidth / 940));
       var cssLink = document.createElement('link');
       cssLink.href = '../../../www/styles.css'; 
       cssLink.rel = 'stylesheet'; 
@@ -114,7 +118,10 @@ ui <- fluidPage(
     }
     
     function resizeGlosarioIframe(obj) {
-      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
+      var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      //obj.parentElement.style.height = obj.style.height;
+      obj.style.transform = 'scale(' + scale + ')';
       var cssLink = document.createElement('link');
       cssLink.href = '../../www/styles.css'; 
       cssLink.rel = 'stylesheet'; 
@@ -123,7 +130,10 @@ ui <- fluidPage(
     }
     
     function resizeAyudaIframe(obj) {
-      obj.style.height = (obj.contentWindow.document.documentElement.scrollHeight + 100) + 'px';
+      var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      //obj.parentElement.style.height = obj.style.height;
+      obj.style.transform = 'scale(' + scale + ')';
       var cssLink = document.createElement('link');
       cssLink.href = '../www/styles.css'; 
       cssLink.rel = 'stylesheet'; 
@@ -298,7 +308,7 @@ server <- function(input, output) {
       shiny::validate(need(input$trimestre != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$trimestre)
     }
-    iframe <- tags$iframe(src=paste("frames", path_fichero$path, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", path_fichero$path, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeIframe(this)")
   })
   
   output$report_2 <- renderUI({
@@ -316,7 +326,7 @@ server <- function(input, output) {
       shiny::validate(need(input$trimestre_2 != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$trimestre_2)
     }
-    iframe_2 <- tags$iframe(src=paste('frames', path_fichero$path, sep= "/"), frameborder="0", scrolling="no", style = "width: 100%; border: 0; margin: 0 auto; display: block;", onload="resizeIframe(this)")
+    iframe_2 <- tags$iframe(src=paste('frames', path_fichero$path, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeIframe(this)")
   })
   
   output$glosario <- renderUI({
