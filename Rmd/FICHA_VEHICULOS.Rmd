@@ -3,7 +3,7 @@ title: ''
 params:
   id_municipio: 35003
   año: 2021
-  mes: 3
+  mes: 11
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -157,7 +157,7 @@ df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
-  
+
 distancias_mun <- data.frame(
   mun = df_localizacion$mun,
   nombre = df_localizacion$nombre,
@@ -182,9 +182,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución}
-# Número de vehículos en circulación según datos del parque de vehículos elaborados por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
 data_u <- fromJSON(params$url.parque)
-
 df_u <- data.frame(
   mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
                   each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
@@ -195,8 +193,8 @@ df_u <- data.frame(
   spread(medida, valor) %>%
   select(mun, mes, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
 
-año_min <- min(df_u$mes) %>% substring(0,4) %>% as.numeric()
-año_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric()
+año_min <- min(df_u$mes) %>% substring(0,4) %>% as.numeric
+año_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric
 
 related_mun <- df_u %>% filter(mes == mes_actual$code & mun != "ES70")
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
@@ -300,19 +298,23 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicadores}
+```{r Número de vehículos y su variación porcentual}
 df_lv <- df_u %>% filter(mun == params$id_municipio & mes == mes_actual$code)
 
-Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric()
-Num_Veh_Parque <- df_lv %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
-if(df_lv$tasa == 0){
-  diferencia <- Num_Vehiculos - df$valor[which(df$id == params$id_municipio & df$code == mes_tva$code)]
-  Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+Num_Vehiculos_num <- df_lv %>% select(valor) %>% as.numeric
+Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion_Porcentual != "NA"){
+  if(df_lv$tasa == 0){
+    diferencia <- Num_Vehiculos_num - df$valor[which(df$id == params$id_municipio & df$code == mes_tva$code)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
 }
+```
 
-# Número de turismos en circulación según datos del parque de vehículos elaborado por la Dirección General de Tráfico. La fecha de referencia es el último día de cada mes.
+```{r Otros indicadores}
 data_Tur_Parque <- fromJSON(params$url.parque_tur)
 
 df_Tur_Parque <- data.frame(
@@ -324,9 +326,9 @@ df_Tur_Parque <- data.frame(
   valor = as.numeric(data_Tur_Parque[["observation"]]))
 df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
 
-Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric()
+Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric
 Num_Tur_Parque <- Num_Tur_Parque_num %>% round(0) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
-Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Rankings}
@@ -336,7 +338,7 @@ df_ranking <- df_u %>%
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 
-Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code) %>% select(valor) %>% as.numeric()
+Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code) %>% select(valor) %>% as.numeric
 
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
 num_mun_canarias <- nrow(df_ranking)
@@ -385,7 +387,7 @@ df_vehiculos_C <- df_tipos %>%
   filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
   select(veh, valor)
 df_vehiculos_mun <- df_vehiculos_mun %>%
-  mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos * 100,
+  mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos_num * 100,
          valor_Canarias = df_vehiculos_C$valor,
          porcentaje_Canarias = df_vehiculos_C$valor / Num_vehiculos_Canarias * 100)
 
@@ -450,7 +452,7 @@ rk_combustibles_mun <- df_tipos %>%
   filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
   arrange(valor) %>%
   select(combustible, valor)
-rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos * 100)
+rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos_num * 100)
 rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
 
 df_combustibles_mun <- df_tipos %>%
@@ -458,7 +460,7 @@ df_combustibles_mun <- df_tipos %>%
   select(combustible, valor)
 
 df_combustibles_mun <- df_combustibles_mun %>%
-  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos * 100)
+  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos_num * 100)
 
 valor_gasolina <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Gasolina")]
 valor_diesel <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Diésel")]
@@ -488,8 +490,8 @@ porc_otros <- ifelse(valor_otros == 0, 0, 100 - porc_gasolina - porc_diesel - po
 
 # porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 # porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
-porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
-porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 # porc_otros_l <- ifelse(valor_otros == 0, 0, round(porc_otros, 1)) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
 ```
 
@@ -502,7 +504,7 @@ df_combustibles_otros <- df_combustibles_mun %>%
 
 df_combustibles_otros <- df_combustibles_otros %>%
   mutate(porcentaje_barra = df_combustibles_otros$valor / sum(df_combustibles_otros$valor) * 100,
-         porcentaje = df_combustibles_otros$valor / Num_Vehiculos * 100)
+         porcentaje = df_combustibles_otros$valor / Num_Vehiculos_num * 100)
 
 for (i in 1:nrow(df_combustibles_otros)) {
   if(df_combustibles_otros$porcentaje[i] >= 0.1) {
@@ -545,8 +547,8 @@ df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["
 df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
 df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
 
-Num_Matriculaciones_num <- df_matr_tipos %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric()
-Num_Matriculaciones_C <- df_matr_tipos %>% filter(mun == "CANARIAS" & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric()
+Num_Matriculaciones_num <- df_matr_tipos %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric
+Num_Matriculaciones_C <- df_matr_tipos %>% filter(mun == "CANARIAS" & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric
 
 df_matr_tipos <- df_matr_tipos %>%
   filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>%
@@ -656,7 +658,7 @@ get_indicator2 = function(label, value, image) {
 margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
 ```
 <div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
-<h2 style="color: #005980; margin-bottom: 0;">`r Num_Veh_Parque` vehículos</h2>
+<h2 style="color: #005980; margin-bottom: 0;">`r Num_Vehiculos` vehículos</h2>
 <div class="linechart">
   `r g_line`
 </div>

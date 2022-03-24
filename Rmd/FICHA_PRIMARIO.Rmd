@@ -284,13 +284,19 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicador evolución de la población}
+```{r Valor de la superficie cultivada y su variación porcentual}
 df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 superficie_cultivada_num <- df_lv$valor
 superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+if(Variacion_Porcentual != "NA"){
+  Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  if(df_lv$tasa == 0){
+    diferencia <- superficie_cultivada_num - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }
+}
 ```
 
 ```{r Indicador Secano}
@@ -302,7 +308,7 @@ df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICA
                         valor = round(as.numeric(data_secano[["observation"]]), 1))
 df_secano$mun <- recode_id_Frontera(df_secano, 'mun')
 
-sup_secano_num <- df_secano %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_secano_num <- df_secano %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric
 sup_secano <- sup_secano_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_secano <- round(sup_secano_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
@@ -316,14 +322,14 @@ df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHI
                          valor = round(as.numeric(data_regadio[["observation"]]), 1))
 df_regadio$mun <- recode_id_Frontera(df_regadio, 'mun')
 
-sup_regadio_num <- df_regadio %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_regadio_num <- df_regadio %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric
 sup_regadio <- sup_regadio_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_regadio <- round(sup_regadio_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Rankings}
-sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & año == params$año) %>% select(valor) %>% as.numeric()
-sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric()
+sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & año == params$año) %>% select(valor) %>% as.numeric
+sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric
 
 df_ranking <- df_u %>%
   select(id = mun, año, valor) %>%
@@ -358,10 +364,10 @@ df_herbaceos$valor <- as.numeric(df_herbaceos$valor)
 df_herbaceos$mun <- recode_id_Frontera(df_herbaceos, 'mun')
 
 sup_herbaceos_num <- df_herbaceos %>%
-  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 sup_herbaceos <- sup_herbaceos_num %>% format(big.mark = ".", decimal.mark = ",")
 sup_herbaceos_C <- df_herbaceos %>%
-  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 
 percent_herbaceos <- round(sup_herbaceos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_herbaceos_C <- round(sup_herbaceos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -484,10 +490,10 @@ df_leñosos$valor <- as.numeric(df_leñosos$valor)
 df_leñosos$mun <- recode_id_Frontera(df_leñosos, 'mun')
 
 sup_leñosos_num <- df_leñosos %>%
-  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 sup_leñosos <- sup_leñosos_num %>% format(big.mark = ".", decimal.mark = ",")
 sup_leñosos_C <- df_leñosos %>%
-  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 
 percent_leñosos <- round(sup_leñosos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_leñosos_C <- round(sup_leñosos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -613,9 +619,9 @@ df_exp_especies_$mun <- recode_id_Frontera(df_exp_especies_, 'mun')
 df_exp_especies_$valor <- as.numeric(df_exp_especies_$valor)
 
 Num_exp_especies <- df_exp_especies_ %>%
-  filter(mun == municipio_actual$id & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric()
+  filter(mun == municipio_actual$id & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric
 Num_exp_especies_C <- df_exp_especies_ %>%
-  filter(mun == "ES70" & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric
 
 df_especies <- data.frame(
   id_especie = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],

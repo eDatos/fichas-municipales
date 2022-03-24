@@ -142,7 +142,6 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de la población turística}
-# Turistas según grupos de edades y sexos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turistas <- fromJSON(params$url.turistas)
 df_turistas <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
 colnames(df_turistas) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
@@ -153,9 +152,9 @@ df_turistas$año <- as.integer(df_turistas$año)
 df_turistas$valor <- as.numeric(df_turistas$valor)
 
 num_Canarias_total <- df_turistas %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
-  select(valor) %>% as.numeric()
+  select(valor) %>% as.numeric
 num_Isla_total <- df_turistas %>% filter(mun == municipio_actual$id_isla & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>%
-  select(valor) %>% as.numeric()
+  select(valor) %>% as.numeric
 
 df_u <- df_turistas %>% filter(gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & substring(mun, 6,7) == "_3") %>%
   transform(mun = substr(mun, 7, 12)) %>% 
@@ -262,17 +261,23 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicador evolución de los turistas}
-ind_turistas <- df %>% filter(id == params$id_municipio & año %in% c(params$año, params$año-1))
+```{r Número de turistas y su variación porcentual}
+ind_turistas <- df %>% filter(id == params$id_municipio & año == params$año)
 
-Num_Turistas_num <- ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric()
+Num_Turistas_num <- ind_turistas$valor %>% as.numeric
 Num_Turistas <- Num_Turistas_num %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual <- ind_turistas %>% filter(id == params$id_municipio & año == params$año) %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+Variacion_Porcentual <- ind_turistas$tasa %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion_Porcentual != "NA"){
+  if(ind_turistas$tasa == 0){
+    diferencia <- Num_Turistas_num - df$valor[which(df$id == params$id_municipio & df$año == params$año-1)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
+}
 ```
 
 ```{r Indicador Estancia media}
-# Estancia media según niveles de ingresos. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_estancia <- fromJSON(params$url.estancia)
 df_turismo_estancia <- cbind(data.frame(do.call('rbind', turismo_estancia[["data"]][["dimCodes"]])), turismo_estancia[["data"]][["Valor"]])
 colnames(df_turismo_estancia) <- c('nivel', 'mun', 'periodo', 'valor')
@@ -284,7 +289,7 @@ df_turismo_estancia$mun <- recode_mun(df_turismo_estancia, 'mun')
 
 Num_estancia_media <- df_turismo_estancia %>%
   filter(nivel == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
-  select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+  select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Rankings}
@@ -396,7 +401,6 @@ g_turismo_pais <- ggplotly(g_turismo_pais, tooltip = c("text")) %>%
 ```
 
 ```{r Tipos de alojamiento}
-# Turistas según tipos de alojamiento por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_sl_aloj <- fromJSON(params$url.sl_aloj)
 df_turismo_sl_aloj <- cbind(data.frame(do.call('rbind', turismo_sl_aloj[["data"]][["dimCodes"]])), turismo_sl_aloj[["data"]][["Valor"]])
 colnames(df_turismo_sl_aloj) <- c('sl', 'tipo', 'mun', 'periodo', 'valor')
@@ -417,12 +421,13 @@ df_turismo_aloj_C <- df_turismo_sl_aloj %>%
   filter(mun == "CANARIAS" & tipo != "TOTAL" & sl == "TOTAL" & periodo == params$año) %>% 
   select(tipo, valor)
 df_turismo_aloj_mun <- df_turismo_aloj_mun %>%
-  mutate(porcentaje = df_turismo_aloj_mun$valor / Num_Turistas_num * 100,
+  mutate(porcentaje = if_else(is.na(valor), 0, df_turismo_aloj_mun$valor / Num_Turistas_num * 100),
          valor_Canarias = df_turismo_aloj_C$valor,
          porcentaje_Canarias = df_turismo_aloj_C$valor / num_Canarias_total * 100)
 
 df_turismo_aloj_plot <- df_turismo_aloj_mun %>%
-  mutate(label = "|")
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 df_turismo_aloj_plot$tipo <- ordered(df_turismo_aloj_plot$tipo, levels = df_turismo_aloj_plot$tipo[5:1])
 
 df_turismo_aloj_plot <- df_turismo_aloj_plot %>% transform(hovertext = paste0(
@@ -466,7 +471,6 @@ g_turismo_aloj <- ggplotly(g_turismo_aloj, tooltip = c("text")) %>%
 ```
 
 ```{r Niveles de ingresos}
-# Turistas según niveles de ingresos por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_ingresos <- fromJSON(params$url.ingresos_t)
 df_turismo_ingresos <- cbind(data.frame(do.call('rbind', turismo_ingresos[["data"]][["dimCodes"]])), turismo_ingresos[["data"]][["Valor"]])
 colnames(df_turismo_ingresos) <- c('nivel', 'pais', 'mun', 'periodo', 'valor')
@@ -499,7 +503,6 @@ porc_Turistas_mas50_l <- round(porc_Turistas_mas50, 1) %>% as.numeric
 ```
 
 ```{r Propósito principal}
-# Turistas según el propósito principal del viaje por tipos de alojamiento. Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_proposito <- fromJSON(params$url.proposito)
 df_turismo_proposito <- cbind(data.frame(do.call('rbind', turismo_proposito[["data"]][["dimCodes"]])), turismo_proposito[["data"]][["Valor"]])
 colnames(df_turismo_proposito) <- c('proposito', 'tipo', 'mun', 'periodo', 'valor')
@@ -518,8 +521,7 @@ df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_
 Percent_Vacaciones <- df_turismo_proposito$porcentaje[which(df_turismo_proposito$proposito == "Vacaciones")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Nivel educativo}
-# Turistas según nivel educativo por países de residencia. Municipios turísticos de Canarias y periodos. 2018 a 2020.
+```{r Niveles educativos}
 turismo_educacion <- fromJSON(params$url.educacion)
 df_turismo_educacion <- cbind(data.frame(do.call('rbind', turismo_educacion[["data"]][["dimCodes"]])), turismo_educacion[["data"]][["Valor"]])
 colnames(df_turismo_educacion) <- c('estudios', 'pais', 'mun', 'periodo', 'valor')
@@ -541,12 +543,13 @@ df_turismo_educacion_C <- df_turismo_educacion %>%
   filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
   select(estudios, valor)
 df_turismo_educacion_mun <- df_turismo_educacion_mun %>%
-  mutate(porcentaje = df_turismo_educacion_mun$valor / Num_Turistas_num * 100,
+  mutate(porcentaje = if_else(is.na(valor), 0, df_turismo_educacion_mun$valor / Num_Turistas_num * 100),
          valor_Canarias = df_turismo_educacion_C$valor,
          porcentaje_Canarias = df_turismo_educacion_C$valor / num_Canarias_total * 100)
 
 df_turismo_educacion_plot <- df_turismo_educacion_mun %>%
-  mutate(label = "|")
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
 
 df_turismo_educacion_plot <- df_turismo_educacion_plot %>% transform(hovertext = paste0(
   "<b>", trimws(estudios), "</b><br>",
@@ -589,7 +592,6 @@ g_turismo_educacion <- ggplotly(g_turismo_educacion, tooltip = c("text")) %>%
 ```
 
 ```{r Motivaciones principales}
-# Motivaciones principales para sus vacaciones","Tipos de alojamiento","Municipios". Municipios turísticos de Canarias y periodos. 2018 a 2020.
 turismo_motiv <- fromJSON(params$url.motivacion)
 df_turismo_motiv <- cbind(data.frame(do.call('rbind', turismo_motiv[["data"]][["dimCodes"]])), turismo_motiv[["data"]][["Valor"]])
 colnames(df_turismo_motiv) <- c('motiv', 'tipo', 'mun', 'periodo', 'valor')
