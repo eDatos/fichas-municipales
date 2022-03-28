@@ -181,7 +181,7 @@ df_participacion <- data.frame(
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
     proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
-df_participacion$valor <- df_participacion$valor %>% as.numeric() %>% round(1)
+df_participacion$valor <- df_participacion$valor %>% as.numeric %>% round(1)
 df_participacion <- recode_Frontera(df_participacion)
 df_participacion$mun <- recode_id_Frontera(df_participacion, 'mun')
 df_participacion <- df_participacion %>%
@@ -191,6 +191,7 @@ df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_P
 
 related_mun <- df_u %>% filter(proceso == convocatoria_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 min_code <- min(df_u$proceso)
 df <- related_mun %>%
@@ -203,7 +204,7 @@ df <- related_mun %>%
   transform(variacion = ifelse(code == min_code, NA, round((valor - lag(valor)), 1)))
 
 if(convocatoria_actual$code == min_code){
-  df <- df %>% filter(convocatoria_formatted  %in% c(2007,2011,2015))
+  df <- df %>% filter(convocatoria_formatted %in% c(2007,2011,2015))
   }else{
     df <- df %>% filter(order <= convocatoria_actual$order)
   }
@@ -296,26 +297,28 @@ leyenda_poblacion <- df %>% filter(code == convocatoria_actual$code) %>%
 ```{r Indicadores}
 df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio & proceso == convocatoria_actual$code) %>% select(ind, valor)
 
-Tasa_participacion <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric() %>%  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_participacion_num <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric
+if(is.na(Tasa_participacion_num)) {stop("Error: indicador principal desconocido")}
+Tasa_participacion <- Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
-  as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+  as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Imagen_Variacion <- ifelse(signo(Variacion) == "más", './img/up.png', './img/down.png')
 
-Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric() %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
-Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
+Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
-Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 
-Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
-Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",")
+Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 
-Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_validos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_nulos <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_NULOS") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_candidatura <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Data Resultados}

@@ -97,30 +97,6 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
-) %>% st_sf
-
-palette <- c('#8CD2EA', '#005980')
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -132,7 +108,7 @@ df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
-  
+
 distancias_mun <- data.frame(
   mun = df_localizacion$mun,
   nombre = df_localizacion$nombre,
@@ -157,7 +133,6 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución de los gastos medios turísticos}
-# Gastos medios según sexos y grupos de edades por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
 colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor')
 df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
@@ -171,6 +146,7 @@ df_u <- df_u[with(df_u, order(periodo)), ]
 
 related_mun <- df_u %>% filter(periodo == periodo_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
@@ -279,17 +255,19 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicador evolución de los gastos medios}
-ind_GM <- df %>% filter(mun == params$id_municipio & code %in% c(periodo_actual$code, periodo_tva$code))
+```{r Valor del gasto medio y su variación porcentual}
+ind_GM <- df %>% filter(mun == params$id_municipio & code == periodo_actual$code)
 
-Num_GM_num <- ind_GM %>% filter(code == periodo_actual$code) %>% select(valor) %>% as.numeric()
+Num_GM_num <- ind_GM$valor %>% as.numeric
+if(is.na(Num_GM_num)) {stop("Error: indicador principal desconocido")}
 Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual <- ind_GM %>% filter(code == periodo_actual$code) %>% select(tasa) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_GM$tasa %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){
-  Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
   if(ind_GM$tasa[which(ind_GM$code == periodo_actual$code)] == 0){
     diferencia <- Num_GM_num - ind_GM$valor[which(ind_GM$code == periodo_tva$code)]
     Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
   }
 }
 ```
@@ -327,6 +305,30 @@ Gasto_por_turista_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gre
 Gasto_por_turista_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+```
+
 ```{r Rankings}
 df_ranking <- df_u %>%
   select(id = mun, periodo, valor) %>%
@@ -346,7 +348,6 @@ percent_isla <- format(round(df_tur_mun$valor / sum(df_tur_isla$valor, na.rm = T
 ```
 
 ```{r Indicadores Gastos Medios Situación laboral}
-# Gastos medios según situación laboral por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_sl <- fromJSON(params$url.GM_sl)
 df_GM_sl <- cbind(data.frame(do.call('rbind', GM_sl[["data"]][["dimCodes"]])), GM_sl[["data"]][["Valor"]])
 colnames(df_GM_sl) <- c('ind', 'sl','mun', 'periodo', 'valor')
@@ -372,7 +373,6 @@ Gasto_tur_sl_NAct_C <- df_GM_sl_C$valor[which(df_GM_sl_C$sl == "Inactivos")] %>%
 ```
 
 ```{r Barras Gastos Medios Niveles de ingresos}
-# Gastos medios según niveles de ingresos por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_ni <- fromJSON(params$url.GM_ni)
 df_GM_ni <- cbind(data.frame(do.call('rbind', GM_ni[["data"]][["dimCodes"]])), GM_ni[["data"]][["Valor"]])
 colnames(df_GM_ni) <- c('ind', 'nivel','mun', 'periodo', 'valor')
@@ -439,7 +439,6 @@ g_GM_ni <- ggplotly(g_GM_ni, tooltip = c("text")) %>%
 ```
 
 ```{r Barras Gastos Medios Nivel educativo}
-# Gastos medios según nivel educativo por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_ne <- fromJSON(params$url.GM_ne)
 df_GM_ne <- cbind(data.frame(do.call('rbind', GM_ne[["data"]][["dimCodes"]])), GM_ne[["data"]][["Valor"]])
 colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
@@ -505,7 +504,6 @@ g_GM_ne <- ggplotly(g_GM_ne, tooltip = c("text")) %>%
 ```
 
 ```{r Indicadores Gastos Medios Tipos de alojamiento}
-# Gastos medios según tipos de alojamiento por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_ta <- fromJSON(params$url.GM_ta)
 df_GM_ta <- cbind(data.frame(do.call('rbind', GM_ta[["data"]][["dimCodes"]])), GM_ta[["data"]][["Valor"]])
 colnames(df_GM_ta) <- c('ind', 'tipo','mun', 'periodo', 'valor')
@@ -525,7 +523,6 @@ Gasto_tur_ta_otr <- df_GM_ta_mun$valor[which(df_GM_ta_mun$tipo == "Otros alojami
 ```
 
 ```{r Barras Gastos Medios Noches pernoctadas}
-# Gastos medios según noches pernoctadas por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_np <- fromJSON(params$url.GM_np)
 df_GM_np <- cbind(data.frame(do.call('rbind', GM_np[["data"]][["dimCodes"]])), GM_np[["data"]][["Valor"]])
 colnames(df_GM_np) <- c('ind', 'noches','mun', 'periodo', 'valor')
@@ -591,7 +588,6 @@ g_GM_np <- ggplotly(g_GM_np, tooltip = c("text")) %>%
 ```
 
 ```{r Barras Gastos Medios Paquete turístico}
-# Gastos medios por turista del paquete turístico por municipios turísticos de Canarias y periodos. 2018Q1 a 2021Q1.
 GM_pt <- fromJSON(params$url.GM_pt)
 df_GM_pt <- cbind(data.frame(do.call('rbind', GM_pt[["data"]][["dimCodes"]])), GM_pt[["data"]][["Valor"]])
 colnames(df_GM_pt) <- c('paquete','mun', 'periodo', 'valor')
@@ -658,7 +654,6 @@ g_GM_pt <- ggplotly(g_GM_pt, tooltip = c("text")) %>%
 ```
 
 ```{r Barras Gastos Medios País}
-# Gastos medios, incluyendo desgloses del gasto, según países de residencia por periodos
 GM_pais <- fromJSON(params$url.GM_pais)
 df_GM_pais <- cbind(data.frame(do.call('rbind', GM_pais[["data"]][["dimCodes"]])), GM_pais[["data"]][["Valor"]])
 colnames(df_GM_pais) <- c('ind', 'pais', 'mun', 'periodo', 'valor')

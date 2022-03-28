@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
-  año: 2020
+  id_municipio: 38901
+  año: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.mapa_2007: https://datos.canarias.es/catalogos/estadisticas/dataset/03f5044c-6d40-4c09-84db-eaf9d6681b48/resource/d765c56b-a67d-46e2-800e-5c9a1e9138f0/download/municipios_20170101_antes2007.json
@@ -87,41 +87,6 @@ recode_mun <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-palette <- c('#8CD2EA', '#005980')
-
-url_mapa <- ifelse(params$año < 2007, params$url.mapa_2007, params$url.mapa)
-mapa_Canarias <- st_read(url_mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
-) %>% 
-  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
-  st_sf
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -133,7 +98,7 @@ df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
-  
+
 distancias_mun <- data.frame(
   mun = df_localizacion$mun,
   nombre = df_localizacion$nombre,
@@ -173,6 +138,7 @@ df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
@@ -273,16 +239,20 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicador evolución de la población}
+```{r Valor de la población y su variación porcentual}
 df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
-Num_Pobl_num <- df_lv$valor %>% as.numeric()
+Num_Pobl_num <- df_lv$valor %>% as.numeric
+if(is.na(Num_Pobl_num)) {stop("Error: indicador principal desconocido")}
 Num_Pobl <- Num_Pobl_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
-if(df_lv$tasa == 0){
-  diferencia <- Num_Pobl_num - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
-  Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+if(Variacion_Porcentual != "NA"){
+  if(df_lv$tasa == 0){
+    diferencia <- Num_Pobl_num - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
 }
 ```
 
@@ -295,10 +265,10 @@ df_piramide$valor <- as.numeric(df_piramide$valor)
 df_piramide$año <- as.numeric(df_piramide$año)
 df_piramide$gredad <- ordered(df_piramide$gredad, levels = piramide[["categories"]][["codes"]][[2]])
 
-Num_Pobl_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>%  as.numeric()
+Num_Pobl_Isla <- df_piramide %>% filter(mun == municipio_actual$id_isla & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>% as.numeric
 df_piramide$mun <- factor(df_piramide$mun , levels=piramide[["categories"]][["codes"]][[1]], labels=piramide[["categories"]][["labels"]][[1]])
 df_piramide$mun <- recode_mun(df_piramide, 'mun')
-Num_Pobl_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>%  as.numeric()
+Num_Pobl_Canarias <- df_piramide %>% filter(mun == "CANARIAS" & gredad == "T" & sexo == "AMBOS SEXOS" & año == params$año) %>% select(valor) %>% as.numeric
 
 df_piramide_plot <- df_piramide %>% filter(gredad %notin% c("T","0 a 14","65 ó más","15 a 64") & sexo != "AMBOS SEXOS" & año == params$año) %>%
   select(gredad, sexo, valor, mun)%>%
@@ -345,6 +315,41 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
               layout(margin = list(t=10), hovermode = "y unified") %>%
               config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
               style(hoverinfo = "skip", traces = c(3, 4))
+```
+
+```{r Mapas}
+palette <- c('#8CD2EA', '#005980')
+
+url_mapa <- ifelse(params$año < 2007, params$url.mapa_2007, params$url.mapa)
+mapa_Canarias <- st_read(url_mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
+) %>% 
+  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
+  st_sf
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Rankings}
@@ -424,7 +429,7 @@ df_crec_veg <- cbind(data.frame(do.call('rbind', data_crec_veg[["data"]][["dimCo
 colnames(df_crec_veg) <- c('mun', 'año', 'valor')
 df_crec_veg$año <- as.numeric(df_crec_veg$año)
 df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
-df_crec_veg <- df_crec_veg  %>%
+df_crec_veg <- df_crec_veg %>%
   filter(!is.na(valor))
 
 Crec_veg <- df_crec_veg %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
@@ -482,8 +487,8 @@ df_nacionalidad_mun <- df_nacionalidad %>% filter(mun == municipio_actual$munici
   select(nacionalidad, valor)
 df_nacionalidad_mun <- cbind(df_nacionalidad_mun, porcentaje = round(df_nacionalidad_mun$valor / df_nacionalidad_mun$valor[1] * 100, 2))
 
-peso_españoles <- df_nacionalidad_mun %>% filter(nacionalidad == "ESPAÑA") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>%  as.character()
-peso_extranjeros <- df_nacionalidad_mun %>% filter(nacionalidad == "EXTRANJERO") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+peso_españoles <- df_nacionalidad_mun %>% filter(nacionalidad == "ESPAÑA") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+peso_extranjeros <- df_nacionalidad_mun %>% filter(nacionalidad == "EXTRANJERO") %>% select(porcentaje) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Barras nacionalidades}
@@ -501,7 +506,7 @@ if(length(ranking_nacionalidad_mun$nacionalidad) > 10){
 }
 
 Num_total_extr <- df_nacionalidad %>% 
-  filter(mun == municipio_actual$municipio & nacionalidad == "EXTRANJERO" & año == params$año & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric()
+  filter(mun == municipio_actual$municipio & nacionalidad == "EXTRANJERO" & año == params$año & sexo == "AMBOS SEXOS") %>% select(valor) %>% as.numeric
 df_nacionalidad_mun_sexo <- df_nacionalidad %>%
   filter(mun == municipio_actual$municipio & nacionalidad %in% ranking_nacionalidad_mun$nacionalidad & año == params$año & sexo !="AMBOS SEXOS") %>% 
   arrange(valor)

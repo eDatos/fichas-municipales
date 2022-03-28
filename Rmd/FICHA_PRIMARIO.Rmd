@@ -104,40 +104,6 @@ recode_id_Frontera <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-palette <- c('#8CD2EA', '#005980')
-
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
-) %>% 
-  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
-  st_sf
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -191,6 +157,7 @@ df_u$año <- as.integer(df_u$año)
 
 related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
@@ -284,13 +251,20 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ") 
 ```
 
-```{r Indicador evolución de la población}
+```{r Valor de la superficie cultivada y su variación porcentual}
 df_lv <- df_u %>% filter(año == params$año & mun == params$id_municipio)
 
 superficie_cultivada_num <- df_lv$valor
+if(is.na(superficie_cultivada_num)) {stop("Error: indicador principal desconocido")}
 superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+if(Variacion_Porcentual != "NA"){
+  Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  if(df_lv$tasa == 0){
+    diferencia <- superficie_cultivada_num - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }
+}
 ```
 
 ```{r Indicador Secano}
@@ -302,7 +276,7 @@ df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICA
                         valor = round(as.numeric(data_secano[["observation"]]), 1))
 df_secano$mun <- recode_id_Frontera(df_secano, 'mun')
 
-sup_secano_num <- df_secano %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_secano_num <- df_secano %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric
 sup_secano <- sup_secano_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_secano <- round(sup_secano_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
@@ -316,14 +290,48 @@ df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHI
                          valor = round(as.numeric(data_regadio[["observation"]]), 1))
 df_regadio$mun <- recode_id_Frontera(df_regadio, 'mun')
 
-sup_regadio_num <- df_regadio %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric()
+sup_regadio_num <- df_regadio %>% filter(año == params$año & mun == params$id_municipio) %>% select(valor) %>% as.numeric
 sup_regadio <- sup_regadio_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_regadio <- round(sup_regadio_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
+```{r Mapas}
+palette <- c('#8CD2EA', '#005980')
+
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% 
+  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
+  st_sf
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
+```
+
 ```{r Rankings}
-sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & año == params$año) %>% select(valor) %>% as.numeric()
-sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric()
+sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & año == params$año) %>% select(valor) %>% as.numeric
+sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & año == params$año) %>% select(valor) %>% as.numeric
 
 df_ranking <- df_u %>%
   select(id = mun, año, valor) %>%
@@ -358,10 +366,10 @@ df_herbaceos$valor <- as.numeric(df_herbaceos$valor)
 df_herbaceos$mun <- recode_id_Frontera(df_herbaceos, 'mun')
 
 sup_herbaceos_num <- df_herbaceos %>%
-  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 sup_herbaceos <- sup_herbaceos_num %>% format(big.mark = ".", decimal.mark = ",")
 sup_herbaceos_C <- df_herbaceos %>%
-  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 
 percent_herbaceos <- round(sup_herbaceos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_herbaceos_C <- round(sup_herbaceos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -469,7 +477,7 @@ g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo,
 
 g_herbaceos <- ggplotly(g_herbaceos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_herbaceos_plot)/2+1):24))
 ```
 
@@ -484,10 +492,10 @@ df_leñosos$valor <- as.numeric(df_leñosos$valor)
 df_leñosos$mun <- recode_id_Frontera(df_leñosos, 'mun')
 
 sup_leñosos_num <- df_leñosos %>%
-  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == params$id_municipio & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 sup_leñosos <- sup_leñosos_num %>% format(big.mark = ".", decimal.mark = ",")
 sup_leñosos_C <- df_leñosos %>%
-  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
 
 percent_leñosos <- round(sup_leñosos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 percent_leñosos_C <- round(sup_leñosos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
@@ -595,7 +603,7 @@ g_leñosos <- ggplot(data = df_leñosos_plot, aes(y = cultivo, fill = cultivo, l
 
 g_leñosos <- ggplotly(g_leñosos, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_leñosos_plot)/2+1):24))
 ```
 
@@ -613,9 +621,9 @@ df_exp_especies_$mun <- recode_id_Frontera(df_exp_especies_, 'mun')
 df_exp_especies_$valor <- as.numeric(df_exp_especies_$valor)
 
 Num_exp_especies <- df_exp_especies_ %>%
-  filter(mun == municipio_actual$id & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric()
+  filter(mun == municipio_actual$id & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric
 Num_exp_especies_C <- df_exp_especies_ %>%
-  filter(mun == "ES70" & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric()
+  filter(mun == "ES70" & año == params$año & id_especie == "_T") %>% select(valor) %>% as.numeric
 
 df_especies <- data.frame(
   id_especie = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
@@ -684,7 +692,7 @@ g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = especie, fill = es
 
 g_exp_especies <- ggplotly(g_exp_especies, tooltip = c("text")) %>%
   layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage")))  %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c((nrow(df_exp_especies_plot)/2+1):46))
 ```
 

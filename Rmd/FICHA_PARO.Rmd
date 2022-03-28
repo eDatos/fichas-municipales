@@ -2,7 +2,7 @@
 title: ''
 params:
   año: 2022
-  mes: 2
+  mes: 1
   id_municipio: 38013
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -78,6 +78,7 @@ mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][
 mes <- mes %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
 
 ```{r Municipio actual}
@@ -126,36 +127,6 @@ recode_id_Frontera <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
-) %>% st_sf
-
-palette <- c('#8CD2EA', '#005980')
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -167,7 +138,7 @@ df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
-  
+
 distancias_mun <- data.frame(
   mun = df_localizacion$mun,
   nombre = df_localizacion$nombre,
@@ -231,11 +202,11 @@ df_parados <- df_parados %>%
   right_join(df_sexo, by = "id_sexo") %>%
   transform(periodo = gsub("M", "", periodo)) %>%
   select(!c(id_gredad, id_sexo))
-df_parados$valor <- df_parados$valor %>% as.numeric()
+df_parados$valor <- df_parados$valor %>% as.numeric
 df_parados$mun <- recode_id_Frontera(df_parados, 'mun')
 
-Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric()
-Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric()
+Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric
+Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric
 
 df_u <- df_parados %>% filter(substring(mun, 0,2) != "ES" & gredad == "Total" & sexo == "Ambos sexos") %>%
   select(mun, periodo, valor) %>%
@@ -245,7 +216,8 @@ año_max <- max(substring(df_u$periodo, 0,4)) %>% as.numeric
 año_min <- min(substring(df_u$periodo, 0,4)) %>% as.numeric
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
-related_mun <- seleccion_mun(related_mun  %>% select(mun, valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
@@ -353,13 +325,20 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Valor de la población parada y su variación porcentual}
-# Paro registrado. Mes.
 df_lv <- df %>% filter(code == mes_actual$code & mun == params$id_municipio)
 
 Num_Paro_num <- df_lv$valor %>% as.numeric
+if(is.na(Num_Paro_num)) {stop("Error: indicador principal desconocido")}
 Num_Paro <- Num_Paro_num %>% format(big.mark = ".", decimal.mark = ",")
-Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric() %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion_Porcentual != "NA"){
+  if(df_lv$tasa == 0){
+    diferencia <- Num_Paro_num - df$valor[which(df$mun == params$id_municipio & df$code == mes_tva$code)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
+}
 ```
 
 ```{r Indicadores por sexos}
@@ -422,6 +401,36 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
   layout(margin = list(t=10), hovermode = "y unified") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(3, 4))
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Rankings}

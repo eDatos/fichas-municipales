@@ -110,36 +110,6 @@ recode_id_Frontera <- function(df, colname) {
 }
 ```
 
-```{r Mapas}
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
-) %>% st_sf
-
-palette <- c('#8CD2EA', '#005980')
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
 ```{r Municipios relacionados}
 datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
@@ -220,7 +190,8 @@ df_u <- df_u[with(df_u, order(año)), ] %>%
   mutate(valor_M = round(valor / 10^6, 1), año = as.integer(año))
 
 related_mun <- df_u %>% filter(año == params$año)
-related_mun <- seleccion_mun(related_mun  %>% select(mun, valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template_I <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
@@ -326,13 +297,51 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   ")
 ```
 
-```{r Indicador evolución del presupuesto}
-df_lv <- df %>% 
-  filter(mun == params$id_municipio & año %in% c(params$año, params$año-1))
+```{r Valor del presupuesto y su variación porcentual}
+df_lv <- df %>% filter(mun == params$id_municipio & año == params$año)
 
-Num_Presupuesto <-  format(round(df_lv$valor_M[df_lv$año == params$año], 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion_Porcentual <- format(df_lv$tasa[df_lv$año == params$año], big.mark =".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+Num_Presupuesto_num <- df_lv$valor_M %>% as.numeric
+if(is.na(Num_Presupuesto_num)) {stop("Error: indicador principal desconocido")}
+Num_Presupuesto <- Num_Presupuesto_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- df_lv$tasa %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+if(Variacion_Porcentual != "NA"){
+  if(df_lv$tasa == 0){
+    diferencia <- df_lv$valor[which(df_lv$año == params$año)] - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
+}
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == params$id_municipio), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id))
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
 ```
 
 ```{r Rankings}
@@ -371,7 +380,7 @@ df_ind_Ingresos <- data.frame(mun = rep(names(ind_Ingresos[["dimension"]][["GEOG
 df_ind_Ingresos <- recode_Frontera(df_ind_Ingresos)
 df_ind_Ingresos$mun <- recode_id_Frontera(df_ind_Ingresos, 'mun')
 
-Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Gastos por habitante}
@@ -385,11 +394,11 @@ df_ind_Gastos <- data.frame(mun = rep(names(ind_Gastos[["dimension"]][["GEOGRAPH
 df_ind_Gastos <- recode_Frontera(df_ind_Gastos)
 df_ind_Gastos$mun <- recode_id_Frontera(df_ind_Gastos, 'mun')
 
-Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric() %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Diferencia entre el presupuesto ejecutado y el inicial}
-GAP <- format(round(((df_lv$valor_M[df_lv$año == params$año]) - (df_lv$valor_inicial[df_lv$año == params$año])), 1), big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+GAP <- format(round(((df_lv$valor_M[df_lv$año == params$año]) - (df_lv$valor_inicial[df_lv$año == params$año])), 1), big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Estructura según partidas}
@@ -418,8 +427,8 @@ df_estr_partidas_mun <- df_estr_partidas_mun %>% inner_join(df_partidas, by = "i
 
 ```{r Estructura por partidas Denominador}
 df_ep_total <- df_estr_partidas %>% filter(mun == params$id_municipio & id_partida %in% c("GASTOS", "INGRESOS"))
-ep_total_G <- df_ep_total %>% filter(id_partida == "GASTOS") %>% select(valor) %>% as.numeric()
-ep_total_I <- df_ep_total %>% filter(id_partida == "INGRESOS") %>% select(valor) %>% as.numeric()
+ep_total_G <- df_ep_total %>% filter(id_partida == "GASTOS") %>% select(valor) %>% as.numeric
+ep_total_I <- df_ep_total %>% filter(id_partida == "INGRESOS") %>% select(valor) %>% as.numeric
 
 df_estr_partidas_C <- df_estr_partidas %>% 
   group_by(id_partida) %>% 
@@ -432,8 +441,8 @@ df_ep_total_C <- df_estr_partidas %>% filter(id_partida %in% c("GASTOS", "INGRES
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
   select(id_partida, valor_Canarias)
 
-ep_total_G_C <- df_ep_total_C %>% filter(id_partida == "GASTOS") %>% select(valor_Canarias) %>% as.numeric()
-ep_total_I_C <- df_ep_total_C %>% filter(id_partida == "INGRESOS") %>% select(valor_Canarias) %>% as.numeric()
+ep_total_G_C <- df_ep_total_C %>% filter(id_partida == "GASTOS") %>% select(valor_Canarias) %>% as.numeric
+ep_total_I_C <- df_ep_total_C %>% filter(id_partida == "INGRESOS") %>% select(valor_Canarias) %>% as.numeric
 ```
 
 ```{r Barras Estructura Gastos por partidas}
@@ -684,7 +693,7 @@ df_presupuestos <- data.frame(
   medida = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                times = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = c(unlist(strsplit(data_ind_presupuestos[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, ds)))
-df_presupuestos$valor <- df_presupuestos$valor %>% as.numeric()
+df_presupuestos$valor <- df_presupuestos$valor %>% as.numeric
 df_presupuestos <- recode_Frontera(df_presupuestos)
 df_presupuestos$mun <- recode_id_Frontera(df_presupuestos, 'mun')
 
@@ -692,18 +701,18 @@ df_presupuestos_mun <- df_presupuestos %>%
   filter(año == params$año & mun == params$id_municipio) %>%
   select(!c(año, mun))
 
-Percent_Ahorro_Bruto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_BRUTO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Percent_Ahorro_Neto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_NETO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Percent_Carga_Fin <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "CARGA_FINANCIERA_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Percent_Ahorro_Bruto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_BRUTO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Percent_Ahorro_Neto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_NETO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Percent_Carga_Fin <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "CARGA_FINANCIERA_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 
 # En millones de €:
 df_presupuestos_mill <- df_presupuestos_mun %>%
   filter(medida %in% c("AHORRO_BRUTO", "AHORRO_NETO", "CARGA_FINANCIERA")) %>% 
   mutate(valor_mill = valor / 10^6)
 
-Num_Ahorro_Bruto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_BRUTO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Num_Ahorro_Neto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_NETO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
-Num_Carga_Fin <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "CARGA_FINANCIERA")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character()
+Num_Ahorro_Bruto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_BRUTO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Ahorro_Neto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_NETO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Carga_Fin <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "CARGA_FINANCIERA")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 
