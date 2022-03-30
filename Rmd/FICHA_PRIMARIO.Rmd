@@ -139,7 +139,7 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 }
 ```
 
-```{r Gráfico evolución de la población turística}
+```{r Gráfico evolución de la superficie cultivada}
 data_u <- fromJSON(params$url.cultivada)
 df_u_ <- data.frame(
   mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),

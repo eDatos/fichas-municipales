@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 35001
-  año: 2016
+  año: 2019_NOVIEMBRE
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.congreso_2019n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
@@ -204,7 +204,7 @@ df <- related_mun %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(code = proceso, valor, Municipio = id, nombre) %>%
+  select(code = proceso, valor, id, nombre) %>%
   left_join(convocatoria_congreso, by = "code") %>%
   transform(variacion = ifelse(code == min_code, NA, round((valor - lag(valor)), 1)))
 
@@ -305,9 +305,11 @@ df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio &
 Tasa_participacion_num <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric
 if(is.na(Tasa_participacion_num)) {stop("Error: indicador principal desconocido")}
 Tasa_participacion <- Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
-  as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion) == "más", './img/up.png', './img/down.png')
+Variacion_num <- df %>% filter(id == params$id_municipio & code == convocatoria_actual$code) %>% select(variacion) %>% as.numeric
+Variacion <- Variacion_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion != "NA"){
+  Imagen_Variacion <- ifelse(signo(Variacion_num) == "más", './img/up.png', './img/down.png')
+}
 
 Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)

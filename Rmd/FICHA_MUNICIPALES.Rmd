@@ -199,7 +199,7 @@ df <- related_mun %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, proceso, valor, nombre) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(code = proceso, valor, Municipio = id, nombre) %>%
+  select(code = proceso, valor, id, nombre) %>%
   left_join(convocatoria_municipales, by = "code") %>%
   transform(variacion = ifelse(code == min_code, NA, round((valor - lag(valor)), 1)))
 
@@ -301,9 +301,11 @@ df_participacion_mun <- df_participacion %>% filter(mun == params$id_municipio &
 Tasa_participacion_num <- df_participacion_mun %>% filter(ind == "TASA_PARTICIPACION") %>% select(valor) %>% as.numeric
 if(is.na(Tasa_participacion_num)) {stop("Error: indicador principal desconocido")}
 Tasa_participacion <- Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion <- df %>% filter(nombre == municipio_actual$municipio & code == convocatoria_actual$code) %>% select(variacion) %>%
-  as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Imagen_Variacion <- ifelse(signo(Variacion) == "más", './img/up.png', './img/down.png')
+Variacion_num <- df %>% filter(id == params$id_municipio & code == convocatoria_actual$code) %>% select(variacion) %>% as.numeric
+Variacion <- Variacion_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion != "NA"){
+  Imagen_Variacion <- ifelse(signo(Variacion_num) == "más", './img/up.png', './img/down.png')
+}
 
 Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)

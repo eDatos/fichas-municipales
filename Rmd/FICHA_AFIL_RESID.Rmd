@@ -42,13 +42,14 @@ signo <- function(value) {
 ```{r Mes}
 data_afil <- fromJSON(params$url.afil_r)
 mes <- data.frame(code = data_afil[["categories"]][["codes"]][[4]],
-                  periodo = data_afil[["categories"]][["labels"]][[4]])
+                  periodo = data_afil[["categories"]][["labels"]][[4]]) %>%
+  filter(substring(code, 5,7) %in% c("M03", "M06", "M09", "M12"))
 
-mes <- mes %>% 
-  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
+mes <- mes %>%
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>%
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
-mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 4, ]
 ```
 
 ```{r Municipio actual}
