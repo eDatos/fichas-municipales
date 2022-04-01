@@ -61,14 +61,27 @@ get_periods_from_files <- function(df_fichas) {
   output_periods <- data.frame() #row.names = c("id_ficha", "A", "M", "Q", "O"))
   for(ficha_index in 1:nrow(output_fichas)) {
     id_ficha <- output_fichas$code[ficha_index]
-    output_A <- data.frame(A = list.dirs(paste(directory.output, id_ficha, sep = "/"), recursive = F, full.names = F)) %>% filter(startsWith(A, "2"))
+    if(output_fichas$periodicidad[ficha_index] =="O") {
+      output_A <- data.frame(A = list.dirs(paste(directory.output, id_ficha, sep = "/"), recursive = F, full.names = F))
+    } else {
+      output_A <- data.frame(A = list.dirs(paste(directory.output, id_ficha, sep = "/"), recursive = F, full.names = F)) %>% filter(startsWith(A, "2"))
+    }
     for(A_index in 1:nrow(output_A)) {
       A <- output_A$A[A_index]
       output_filenames <- list.files(paste(directory.output, id_ficha, A, sep = "/"), recursive = F, full.names = F, pattern = "*.html")
       output_filepaths <- list.files(paste(directory.output, id_ficha, A, sep = "/"), recursive = F, full.names = T, pattern = "*.html")
       if(!is_empty(output_filenames)) {
-        #Anual
-        if(output_fichas$periodicidad[ficha_index] =="A") {
+        if(output_fichas$periodicidad[ficha_index] =="O") {
+          output_municipio <- data.frame(
+            id_ficha = id_ficha,
+            A = NA,
+            period = A,
+            filename = output_filenames,
+            path = output_filepaths) %>%
+            transform(id_municipio = sub(paste0(".*", id_ficha, "_"), "", filename)) %>%
+            transform(id_municipio = sub(".html", "", id_municipio)) %>% 
+            select(-filename)
+        } else if(output_fichas$periodicidad[ficha_index] =="A") {
           output_municipio <- data.frame(
             id_ficha = id_ficha,
             A = A,
@@ -89,12 +102,11 @@ get_periods_from_files <- function(df_fichas) {
             transform(period = as.numeric(sub("Q|M", "", period))) %>% 
             select(-filename)
         }
-        output_periods <- rbind(
-          output_periods, 
-          output_municipio
-        )
-        
       }
+      output_periods <- rbind(
+        output_periods, 
+        output_municipio
+      )
     }
   }
   output_periods
@@ -270,6 +282,10 @@ server <- function(input, output) {
       if(!is.null(input$anio_2) && input$anio_2 != 0 && input$anio_2 != "") {
         return(TRUE)
       }
+    } else if(periodicidad == "O") {
+      if(!is.null(input$period_2) && input$period_2 != 0 && input$period_2 != "") {
+        return(TRUE)
+      }
     }
     return(FALSE)
   })
@@ -296,11 +312,20 @@ server <- function(input, output) {
   output$report <- renderUI({
     shiny::validate(
       need(input$id_ficha != "", ""),
-      need(input$anio != "", ""),
       need(input$id_municipio != "", "")
     )
     
-    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio))
+    
+    if(periodicidad() == "O") {
+      need(input$period != "", "")
+      print(path_fichero)
+      print(input$period)
+      path_fichero <- (path_fichero %>% filter(period == input$period))
+    } else {
+      need(input$anio != "", "")
+      path_fichero <- (path_fichero %>% filter(A == input$anio))
+    }
     if(periodicidad() == "M") {
       shiny::validate(need(input$mes != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes)
@@ -314,11 +339,17 @@ server <- function(input, output) {
   output$report_2 <- renderUI({
     shiny::validate(
       need(input$id_ficha_2 != "", ""),
-      need(input$anio_2 != "", ""),
       need(input$id_municipio_2 != "", "")
     )
     
-    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
+    path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2))
+    if(periodicidad2() == "O") {
+      need(input$period_2 != "", "")
+      path_fichero <- (path_fichero %>% filter(period == input$period_2))
+    } else {
+      need(input$anio_2 != "", "")
+      path_fichero <- (path_fichero %>% filter(A == input$anio_2))
+    }
     if(periodicidad2() == "M") {
       shiny::validate(need(input$mes_2 != "", ""))
       path_fichero <- path_fichero %>% filter(period == input$mes_2)
@@ -464,6 +495,33 @@ server <- function(input, output) {
       deframe
   })
   
+  option_period <- reactive({
+    shiny::validate(
+      need(input$id_ficha != "", ""),
+      need(input$id_isla != "", ""),
+      need(input$id_municipio != "", "Seleccionar municipio...")
+    )
+    
+    current_periods <- periods %>% 
+      filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio) %>% 
+      select(id = period) %>%
+      arrange(id) %>%
+      deframe
+  })
+  option_period_2 <- reactive({
+    shiny::validate(
+      need(input$id_ficha_2 != "", ""),
+      need(input$id_isla_2 != "", ""),
+      need(input$id_municipio_2 != "", "Seleccionar municipio...")
+    )
+    
+    current_periods <- periods %>% 
+      filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2) %>% 
+      select(id = period, O) %>%
+      arrange(id) %>%
+      deframe
+  })
+  
   output$header_island <- renderUI({ h3("Isla") })
   output$select_island <- renderUI({ selectInput("id_isla", "", choices = option_island()) })
   output$select_island_2 <- renderUI({ selectInput("id_isla_2", "", choices = option_island_2(), selected = 1) })
@@ -488,6 +546,10 @@ server <- function(input, output) {
   output$select_trim <- renderUI({ selectInput("trimestre", "", choices = option_trim(), selected = option_trim()[length(option_trim())]) })
   output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2(), selected = 0) })
   
+  output$header_period <- renderUI({ h3("Periodo") })
+  output$select_period <- renderUI({ selectInput("period", "", choices = option_period(), selected = option_period()[length(option_period())]) })
+  output$select_trim_2 <- renderUI({ selectInput("period_2", "", choices = option_period_2(), selected = 0) })
+  
   observeEvent(eventExpr = input$ver_fichas, handlerExpr = 
                  { 
                    output$tab <- renderText ({"fichas"});
@@ -509,14 +571,20 @@ server <- function(input, output) {
                  }
               )
   observeEvent(eventExpr = input$ver_ayuda, handlerExpr = { output$tab <- renderText ({"ayuda"}); output$fichas <- getLayout5(); })
-
   observeEvent(eventExpr = input$mes_2, handlerExpr = { if(periodicidad2() == "M" && input$mes_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$trimestre_2, handlerExpr = { if(periodicidad2() == "Q" && input$trimestre_2 != "") output$fichas <- getLayout2() })
+  observeEvent(eventExpr = input$period_2, handlerExpr = { if(periodicidad2() == "O" && input$period_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$anio_2, handlerExpr = { if(periodicidad2() == "A" && input$anio_2 != "") output$fichas <- getLayout2() })
 
   output$pdf <- downloadHandler(
     filename = function() {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio))
+      
+      if(periodicidad() == "O") {
+        path_fichero <- (periods %>% filter(O == input$period))
+      } else {
+        path_fichero <- (periods %>% filter(A == input$anio))
+      }
       if(periodicidad() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes)
       } else if(periodicidad() == "Q") {
@@ -526,7 +594,13 @@ server <- function(input, output) {
       path_fichero[length(path_fichero)]
     },
     content = function(con) {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & A == input$anio & id_municipio == input$id_municipio))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio))
+      
+      if(periodicidad() == "O") {
+        path_fichero <- (periods %>% filter(O == input$period))
+      } else {
+        path_fichero <- (periods %>% filter(A == input$anio))
+      }
       if(periodicidad() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes)
       } else if(periodicidad() == "Q") {
@@ -542,7 +616,13 @@ server <- function(input, output) {
   
   output$pdf_2 <- downloadHandler(
     filename = function() {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2))
+      
+      if(periodicidad2() == "O") {
+        path_fichero <- (periods %>% filter(O == input$period_2))
+      } else {
+        path_fichero <- (periods %>% filter(A == input$anio_2))
+      }
       if(periodicidad2() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes_2)
       } else if(periodicidad2() == "Q") {
@@ -552,7 +632,13 @@ server <- function(input, output) {
       path_fichero[length(path_fichero)]
     },
     content = function(con) {
-      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & A == input$anio_2 & id_municipio == input$id_municipio_2))
+      path_fichero <- (periods %>% filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2))
+      
+      if(periodicidad2() == "O") {
+        path_fichero <- (periods %>% filter(O == input$period_2))
+      } else {
+        path_fichero <- (periods %>% filter(A == input$anio_2))
+      }
       if(periodicidad2() == "M") {
         path_fichero <- path_fichero %>% filter(period == input$mes_2)
       } else if(periodicidad2() == "Q") {
@@ -599,30 +685,33 @@ server <- function(input, output) {
       column(3, uiOutput("header_ficha")),
       column(2, uiOutput("header_island")),
       column(2, uiOutput("header_mun")),
-      column(2, uiOutput("header_year")),
+      column(2, conditionalPanel(condition = 'output.periodicidad != "O"', uiOutput("header_year"))),
       column(2, 
             conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("header_month")),
-            conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("header_trim"))
+            conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("header_trim")),
+            conditionalPanel(condition = 'output.periodicidad == "O"', uiOutput("header_period"))
       ),
       column(1),
       
       column(3, uiOutput("select_ficha")),
       column(2, uiOutput("select_island")),
       column(2, uiOutput("select_mun")),
-      column(1, uiOutput("select_year")),
+      column(1, conditionalPanel(condition = 'output.periodicidad != "O"', uiOutput("select_year"))),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("select_month")),
-             conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim"))),
+             conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("select_trim")),
+             conditionalPanel(condition = 'output.periodicidad == "O"', uiOutput("select_period"))),
       column(2, downloadButton("pdf", "Descargar PDF") 
              ),
       
       column(3, uiOutput("select_ficha_2")),
       column(2, uiOutput("select_island_2")),
       column(2, uiOutput("select_mun_2")),
-      column(1, uiOutput("select_year_2")),
+      column(1, conditionalPanel(condition = 'output.periodicidad_2 != "O"', uiOutput("select_year_2"))),
       column(2, 
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
-             conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2"))),
+             conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2")),
+             conditionalPanel(condition = 'output.periodicidad_2 == "O"', uiOutput("select_period_2"))),
       column(2, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_2", "Descargar PDF")))
     )
   )
