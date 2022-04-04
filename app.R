@@ -109,7 +109,7 @@ get_periods_from_files <- function(df_fichas) {
       )
     }
   }
-  output_periods
+  output_periods %>% unique
 }  
 
 ui <- fluidPage(
@@ -319,8 +319,6 @@ server <- function(input, output) {
     
     if(periodicidad() == "O") {
       need(input$period != "", "")
-      print(path_fichero)
-      print(input$period)
       path_fichero <- (path_fichero %>% filter(period == input$period))
     } else {
       need(input$anio != "", "")
@@ -412,6 +410,7 @@ server <- function(input, output) {
     
     periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$anio) %>% 
+      transform(period = as.numeric(period)) %>%
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -431,6 +430,7 @@ server <- function(input, output) {
     
     periods %>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$anio_2) %>% 
+      transform(period = as.numeric(period)) %>%
       select(id = period) %>%
       left_join(
         data.frame(M = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
@@ -455,6 +455,7 @@ server <- function(input, output) {
     
     current_periods <- periods %>% 
       filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio & A == input$anio) %>% 
+      transform(period = as.numeric(period)) %>%
       select(id = period)
     trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
     trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
@@ -479,6 +480,7 @@ server <- function(input, output) {
     
     current_periods <- periods%>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2 & A == input$anio_2) %>% 
+      transform(period = as.numeric(period)) %>%
       select(id = period)
     trim_M_periods <- data.frame(id = seq(3, 12, 3), Q = paste0("Trimestre ", 1:4))
     trim_Q_periods <- data.frame(id = 1:4, Q = paste0("Trimestre ", 1:4))
@@ -517,7 +519,7 @@ server <- function(input, output) {
     
     current_periods <- periods %>% 
       filter(id_ficha == input$id_ficha_2 & id_municipio == input$id_municipio_2) %>% 
-      select(id = period, O) %>%
+      select(id = period) %>%
       arrange(id) %>%
       deframe
   })
@@ -538,17 +540,15 @@ server <- function(input, output) {
   output$select_year <- renderUI({ selectInput("anio", "", choices = option_year(), selected = option_year()[length(option_year())]) })
   output$select_year_2 <- renderUI({ selectInput("anio_2", "", choices = option_year_2(), selected=1) })
   
-  output$header_month <- renderUI({ h3("Periodo") })
   output$select_month <- renderUI({ selectInput("mes", "", choices = option_month(), selected = option_month()[length(option_month())]) })
   output$select_month_2 <- renderUI({ selectInput("mes_2", "", choices = option_month_2(), selected = 0) })
   
-  output$header_trim <- renderUI({ h3("Periodo") })
   output$select_trim <- renderUI({ selectInput("trimestre", "", choices = option_trim(), selected = option_trim()[length(option_trim())]) })
   output$select_trim_2 <- renderUI({ selectInput("trimestre_2", "", choices = option_trim_2(), selected = 0) })
   
   output$header_period <- renderUI({ h3("Periodo") })
   output$select_period <- renderUI({ selectInput("period", "", choices = option_period(), selected = option_period()[length(option_period())]) })
-  output$select_trim_2 <- renderUI({ selectInput("period_2", "", choices = option_period_2(), selected = 0) })
+  output$select_period_2 <- renderUI({ selectInput("period_2", "", choices = option_period_2(), selected = 0) })
   
   observeEvent(eventExpr = input$ver_fichas, handlerExpr = 
                  { 
@@ -575,7 +575,18 @@ server <- function(input, output) {
   observeEvent(eventExpr = input$trimestre_2, handlerExpr = { if(periodicidad2() == "Q" && input$trimestre_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$period_2, handlerExpr = { if(periodicidad2() == "O" && input$period_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$anio_2, handlerExpr = { if(periodicidad2() == "A" && input$anio_2 != "") output$fichas <- getLayout2() })
-
+  
+  observeEvent(eventExpr = input$clean, handlerExpr = {
+    updateTextInput(inputId = 'id_ficha_2', value = "")
+    updateTextInput(inputId = 'id_isla_2', value = "")
+    updateTextInput(inputId = 'municipio_2', value = "")
+    updateTextInput(inputId = 'anio_2', value = "")
+    updateTextInput(inputId = 'mes_2', value = "")
+    updateTextInput(inputId = 'trimestre_2', value = "")
+    updateTextInput(inputId = 'period_2', value = "")
+    output$fichas <- getLayout1()
+  })
+  
   output$pdf <- downloadHandler(
     filename = function() {
       path_fichero <- (periods %>% filter(id_ficha == input$id_ficha & id_municipio == input$id_municipio))
@@ -685,12 +696,8 @@ server <- function(input, output) {
       column(3, uiOutput("header_ficha")),
       column(2, uiOutput("header_island")),
       column(2, uiOutput("header_mun")),
-      column(2, conditionalPanel(condition = 'output.periodicidad != "O"', uiOutput("header_year"))),
-      column(2, 
-            conditionalPanel(condition = 'output.periodicidad == "M"', uiOutput("header_month")),
-            conditionalPanel(condition = 'output.periodicidad == "Q"', uiOutput("header_trim")),
-            conditionalPanel(condition = 'output.periodicidad == "O"', uiOutput("header_period"))
-      ),
+      column(2, uiOutput("header_year")),
+      column(2, uiOutput("header_period")),
       column(1),
       
       column(3, uiOutput("select_ficha")),
@@ -712,13 +719,17 @@ server <- function(input, output) {
              conditionalPanel(condition = 'output.periodicidad_2 == "M"', uiOutput("select_month_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "Q"', uiOutput("select_trim_2")),
              conditionalPanel(condition = 'output.periodicidad_2 == "O"', uiOutput("select_period_2"))),
-      column(2, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_2", "Descargar PDF")))
+      column(2, 
+             conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"',
+                                     downloadButton("pdf_2", "Descargar PDF"), 
+                                     actionButton("clean", icon = icon("trash"), "")
+                              ),
+             )
     )
   )
   
   output$glosario_params <- renderUI (
     fluidRow(class = "glosario-row",
-             column(12, conditionalPanel(condition = 'output.need_layout_2_fichas != "TRUE"', downloadButton("pdf_3", "Descargar PDF"))),
              column(6, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_3", "Descargar PDF"))),
              column(6, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_4", "Descargar PDF")))
     )
