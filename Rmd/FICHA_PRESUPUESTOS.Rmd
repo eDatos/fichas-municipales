@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35034
+  id_municipio: 35016
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -61,7 +61,7 @@ url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/
 ```{r Municipio actual}
 CL_AREA <- as_list(read_xml(params$url.cl_area))
 
-df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
   unnest_wider('codes') %>%
   transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
@@ -70,18 +70,18 @@ df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
   mutate(parent = gsub("^.*).", "", parent)) %>%
   select(code = id, value = name, parent)
 
-df_CL_AREA_mun <- df_CL_AREA %>% 
+df_CL_AREA_mun <- df_CL_AREA %>%
   select(id = code, municipio = value, code = parent) %>%
-  filter(substring(id, 0,2) != "ES") %>% 
+  filter(substring(id, 0,2) != "ES") %>%
   transform(id = sub("\\_.*", "", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
-  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
 
 municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
@@ -115,13 +115,13 @@ datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
                               nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
                               latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
-                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>%
   filter(substring(mun, 0,2) != "ES")
 df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
-  
+
 distancias_mun <- data.frame(
   mun = df_localizacion$mun,
   nombre = df_localizacion$nombre,
@@ -155,11 +155,12 @@ dI <- length(rep(data_I[["data"]][["dimensions"]][["dimension"]][["representatio
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
-df_I <- data.frame(año = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                             each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
-                   mun = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                             times = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   valor = c(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dI)))
+df_I <- data.frame(
+  año = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  mun = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            times = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
+  valor = c(unlist(strsplit(data_I[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dI)))
 df_I$valor <- as.numeric(df_I$valor)
 df_I <- recode_Frontera(df_I)
 df_I$mun <- recode_id_Frontera(df_I, 'mun')
@@ -169,7 +170,7 @@ df_I <- df_I[with(df_I, order(año)), ] %>%
   transform(mun = paste0(municipio_actual$municipio, "_inicial")) %>%
   filter(año <= params$año)
 
-# Liquidación del presupuesto consolidado de ingresos y gastos de las Entidades Locales según capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años 2002-2019 [tabla1]
+# Liquidación del presupuesto consolidado de ingresos y gastos de las Entidades Locales según capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años [tabla1]
 data_u <- fromJSON(params$url.presupuesto_1)
 
 du <- length(rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
@@ -178,11 +179,12 @@ du <- length(rep(data_u[["data"]][["dimensions"]][["dimension"]][["representatio
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
-df_u <- data.frame(año = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                             each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
-                   mun = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                             times = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
-                   valor = c(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, du)))
+df_u <- data.frame(
+  año = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  mun = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            times = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
+  valor = c(unlist(strsplit(data_u[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, du)))
 df_u$valor <- as.numeric(df_u$valor)
 df_u <- recode_Frontera(df_u)
 df_u$mun <- recode_id_Frontera(df_u, 'mun')
@@ -193,46 +195,43 @@ related_mun <- df_u %>% filter(año == params$año)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
-leyenda.template_I <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content_I <- "<span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
-
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
   select(id = mun, año, nombre, valor, valor_M) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(año, mun = id, nombre, valor, valor_M) %>% 
+  select(año, mun = id, nombre, valor, valor_M) %>%
   mutate(tasa =  round(100*((valor / lag(valor)) - 1), 1), año = as.integer(año)) %>%
   filter(año != min(año) & año <= params$año)
 
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+leyenda.template_I <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content_I <- "<span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
-df <- left_join(df, df_I %>% select(año, valor_inicial = valor_M), by = "año") %>% 
+df <- df %>%
+  left_join(df_I %>% select(año, valor_inicial = valor_M), by = "año") %>%
   mutate(valor_inicial_l = ifelse(is.na(valor_inicial), " -", paste0(format(valor_inicial, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
          valor_l = ifelse(is.na(valor_M), " -", paste0(format(valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
          tasa_l = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
 
+df <- df %>% mutate(
+  tooltip = ifelse(año == params$año,
+                   ifelse(mun == params$id_municipio,
+                          sprintf(leyenda.content_I, nombre, valor_inicial_l, valor_l, tasa_l),
+                          sprintf(leyenda.content, nombre, valor_l, tasa_l)
+                          ),
+                   ifelse(mun == params$id_municipio,
+                          sprintf(leyenda.content_I, nombre, paste0(valor_inicial_l, ' (',año,')'), valor_l, tasa_l),
+                          sprintf(leyenda.content, nombre, paste0(valor_l, ' (',año,')'), tasa_l)
+                          )
+                   )
+  )
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
 leyenda_poblacion <- df %>% filter(año == params$año) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
-
-df <- df %>%
-  mutate(
-    tooltip = ifelse(
-      año == params$año,
-      ifelse(
-        mun == params$id_municipio,
-        sprintf(leyenda.content_I, nombre, valor_inicial_l, valor_l, tasa_l),
-        sprintf(leyenda.content, nombre, valor_l, tasa_l)
-        ),
-      ifelse(
-        mun == params$id_municipio,
-        sprintf(leyenda.content_I, nombre, paste0(valor_inicial_l, ' (',año,')'), valor_l, tasa_l),
-        sprintf(leyenda.content, nombre, paste0(valor_l, ' (',año,')'), tasa_l)
-        )
-      )
-    )
 
 g_line <- ggplot(data = df, aes(x = año)) +
   geom_line(size = 0.7, aes(y = valor_M, group = nombre, colour = nombre, text = tooltip)) +
@@ -348,53 +347,54 @@ mapa_comarca_plot <- tm_shape(mapa_comarca) +
 df_ranking <- df_u %>%
   select(año, id = mun, valor) %>%
   filter(año == params$año & !is.na(valor)) %>%
-  inner_join(df_CL_AREA_mun, by = "id") %>% 
+  inner_join(df_CL_AREA_mun, by = "id") %>%
   arrange(desc(valor))
 
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
 num_mun_canarias <- nrow(df_ranking)
-percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / sum(df_ranking$valor) * 100, 1),
-                           big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / sum(df_ranking$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_ranking_isla <- df_ranking %>% filter(isla == municipio_actual$isla)
 rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
 num_mun_isla <- nrow(df_ranking_isla)
-percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / sum(df_ranking_isla$valor) * 100, 1), 
-                       big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / sum(df_ranking_isla$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
 rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
 num_mun_comarca <- nrow(df_ranking_comarca)
-percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1),
-                          big.mark=".",decimal.mark = ",", nsmall = 1)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".",decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Ingresos por habitante}
-# Presupuesto liquidado. Ingresos por habitante. Ayuntamientos. 2002-2019
+# Presupuesto liquidado. Ingresos por habitante. Ayuntamientos.
 ind_Ingresos <- fromJSON(params$url.ingresos_p)
 
-df_ind_Ingresos <- data.frame(mun = rep(names(ind_Ingresos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                        each=ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                              año = names(ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["index"]]),
-                              valor = as.numeric(ind_Ingresos[["observation"]]))
+df_ind_Ingresos <- data.frame(
+  mun = rep(names(ind_Ingresos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+            each=ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["size"]]),
+  año = names(ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+  valor = as.numeric(ind_Ingresos[["observation"]]))
 df_ind_Ingresos <- recode_Frontera(df_ind_Ingresos)
 df_ind_Ingresos$mun <- recode_id_Frontera(df_ind_Ingresos, 'mun')
 
-Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>%
+  as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Gastos por habitante}
-# Presupuesto liquidado. Gastos por habitante. Ayuntamientos. 2002-2019
+# Presupuesto liquidado. Gastos por habitante. Ayuntamientos.
 ind_Gastos <- fromJSON(params$url.gastos)
 
-df_ind_Gastos <- data.frame(mun = rep(names(ind_Gastos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                      each=ind_Gastos[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                            año = names(ind_Gastos[["dimension"]][["TIME"]][["representation"]][["index"]]),
-                            valor = as.numeric(ind_Gastos[["observation"]]))
+df_ind_Gastos <- data.frame(
+  mun = rep(names(ind_Gastos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+            each=ind_Gastos[["dimension"]][["TIME"]][["representation"]][["size"]]),
+  año = names(ind_Gastos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+  valor = as.numeric(ind_Gastos[["observation"]]))
 df_ind_Gastos <- recode_Frontera(df_ind_Gastos)
 df_ind_Gastos$mun <- recode_id_Frontera(df_ind_Gastos, 'mun')
 
-Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>%
+  as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Diferencia entre el presupuesto ejecutado y el inicial}
@@ -430,14 +430,15 @@ df_ep_total <- df_estr_partidas %>% filter(mun == params$id_municipio & id_parti
 ep_total_G <- df_ep_total %>% filter(id_partida == "GASTOS") %>% select(valor) %>% as.numeric
 ep_total_I <- df_ep_total %>% filter(id_partida == "INGRESOS") %>% select(valor) %>% as.numeric
 
-df_estr_partidas_C <- df_estr_partidas %>% 
-  group_by(id_partida) %>% 
+df_estr_partidas_C <- df_estr_partidas %>%
+  group_by(id_partida) %>%
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
   inner_join(df_partidas, by = "id_partida") %>%
   select(id_partida, valor_Canarias)
 
-df_ep_total_C <- df_estr_partidas %>% filter(id_partida %in% c("GASTOS", "INGRESOS")) %>% 
-  group_by(id_partida) %>% 
+df_ep_total_C <- df_estr_partidas %>%
+  filter(id_partida %in% c("GASTOS", "INGRESOS")) %>%
+  group_by(id_partida) %>%
   summarise(valor_Canarias = sum(valor, na.rm = NA)) %>%
   select(id_partida, valor_Canarias)
 
@@ -470,14 +471,14 @@ df_part_gastos_mun <- df_part_gastos_mun %>%
 
 df_part_gastos_mun$id_partida <- ordered(df_part_gastos_mun$id_partida, levels = c("G_otros", df_estr_part_gastos_mun$id_partida[5:1]))
 
-df_part_gastos_mun <- df_part_gastos_mun %>% transform(hovertext = paste0(
+df_part_gastos_mun <- df_part_gastos_mun %>%
+  transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
     "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-    )
-  )
+    ))
 
 df_part_gastos_mun_0 <- df_part_gastos_mun %>% transform(porcentaje = 0,
                                                          porcentaje_Canarias = 0,
@@ -534,14 +535,14 @@ df_part_ingresos_mun <- df_part_ingresos_mun %>%
 
 df_part_ingresos_mun$id_partida <- ordered(df_part_ingresos_mun$id_partida, levels = c("I_otros", df_estr_part_ingresos_mun$id_partida[5:1]))
 
-df_part_ingresos_mun <- df_part_ingresos_mun %>% transform(hovertext = paste0(
+df_part_ingresos_mun <- df_part_ingresos_mun %>%
+  transform(hovertext = paste0(
     "<b>", partida, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
     "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-    )
-  )
+    ))
 
 df_part_ingresos_mun_0 <- df_part_ingresos_mun %>% transform(porcentaje = 0,
                                                              porcentaje_Canarias = 0,
@@ -573,7 +574,7 @@ g_estr_part_ingresos <- ggplotly(g_estr_part_ingresos, tooltip = c("text")) %>%
 ```
 
 ```{r Barras Gastos por programas}
-# Liquidación del presupuesto consolidado de gastos de las Entidades Locales según estructura funcional, capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años 2010-2020 [tabla2]
+# Liquidación del presupuesto consolidado de gastos de las Entidades Locales según estructura funcional, capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años [tabla2]
 data_gastos_programas <- fromJSON(params$url.presupuesto_2)
 
 df_programa <- data.frame(
@@ -616,13 +617,13 @@ df_gastos_programas$mun <- recode_id_Frontera(df_gastos_programas, 'mun')
 df_gastos_programas_mun <- df_gastos_programas %>% filter(año == params$año & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(name_programa, valor)
 
 df_gastos_programas_C <- df_gastos_programas %>%
-  filter(año == params$año) %>% 
-  group_by(name_programa) %>% 
+  filter(año == params$año) %>%
+  group_by(name_programa) %>%
   summarise(valor = sum(valor, na.rm = NA)) %>%
   select(name_programa, valor_Canarias = valor)
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>%
-  left_join(df_gastos_programas_C, by = "name_programa") %>% 
+  left_join(df_gastos_programas_C, by = "name_programa") %>%
   left_join(df_programa, by = "name_programa")
 df_gastos_programas_mun$name_programa <- ordered(df_gastos_programas_mun$name_programa, levels = df_gastos_programas_mun$name_programa[7:1])
 
@@ -631,16 +632,16 @@ df_gastos_programas_mun <- df_gastos_programas_mun %>%
          porcentaje_Canarias = df_gastos_programas_mun$valor_Canarias / sum(df_gastos_programas_mun$valor_Canarias) * 100,
          label = "|")
 
-df_gastos_programas_mun <- df_gastos_programas_mun %>% transform(hovertext = paste0(
-    "<b>", programa, " </b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€", 
-    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+df_gastos_programas_mun <- df_gastos_programas_mun %>%
+  transform(hovertext = paste0(
+    "<b>", programa, " </b><br>",
+    trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
+    " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)<br>",
+    "Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 0)), "€",
     " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-    )
-  )
+    ))
 
-df_gastos_programas_0 <- df_gastos_programas_mun %>% 
+df_gastos_programas_0 <- df_gastos_programas_mun %>%
   transform(porcentaje = 0,
             porcentaje_Canarias = 0,
             label = "")
@@ -674,8 +675,7 @@ g_gastos_programas <- ggplotly(g_gastos_programas, tooltip = c("text")) %>%
 
 
 ```{r Salud financiera}
-# Indicadores generales de los presupuestos consolidados de las Entidades Locales ejecutados. Islas y municipios de Canarias por años. 2002-2019
-# Indicadores generales de la liquidación presupuestaria de las Entidades Locales de Canarias 2002-2019 [tabla3]
+# Indicadores generales de la liquidación presupuestaria de las Entidades Locales de Canarias [tabla3]
 data_ind_presupuestos <- fromJSON(params$url.presupuesto_3)
 
 ds <- length(rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
@@ -701,18 +701,24 @@ df_presupuestos_mun <- df_presupuestos %>%
   filter(año == params$año & mun == params$id_municipio) %>%
   select(!c(año, mun))
 
-Percent_Ahorro_Bruto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_BRUTO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
-Percent_Ahorro_Neto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_NETO_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
-Percent_Carga_Fin <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "CARGA_FINANCIERA_PORCENTAJE")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Percent_Ahorro_Bruto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_BRUTO_PORCENTAJE")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Percent_Ahorro_Neto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_NETO_PORCENTAJE")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Percent_Carga_Fin <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "CARGA_FINANCIERA_PORCENTAJE")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 
 # En millones de €:
 df_presupuestos_mill <- df_presupuestos_mun %>%
-  filter(medida %in% c("AHORRO_BRUTO", "AHORRO_NETO", "CARGA_FINANCIERA")) %>% 
+  filter(medida %in% c("AHORRO_BRUTO", "AHORRO_NETO", "CARGA_FINANCIERA")) %>%
   mutate(valor_mill = valor / 10^6)
 
-Num_Ahorro_Bruto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_BRUTO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
-Num_Ahorro_Neto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_NETO")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
-Num_Carga_Fin <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "CARGA_FINANCIERA")] %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Ahorro_Bruto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_BRUTO")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Ahorro_Neto <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "AHORRO_NETO")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+Num_Carga_Fin <- df_presupuestos_mill$valor_mill[which(df_presupuestos_mill$medida == "CARGA_FINANCIERA")] %>%
+  round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 
@@ -724,7 +730,7 @@ get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
 if(nchar(GAP) > 4){
-  padding_left <- 6
+  padding_left <- 5
 }else{
   padding_left <- 10
 }
@@ -765,22 +771,34 @@ for (i in 1:nrow(leyenda_poblacion)) {
 <div class="row" style="margin: 15px 0;">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){
-    cat(paste0(
-      "<div class='column-2-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
-    }else{
-      if(Variacion_Porcentual == "NA" & GAP != "NA"){
-        cat(paste0(
-          "<div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
-        }else{
-          if(Variacion_Porcentual != "NA" & GAP == "NA"){
-            cat(paste0(
-              "<div class='column-3-ind'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+  cat(paste0(
+    "<div class='column-2-ind'>",
+    get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-2-ind'>",
+    get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
+  }else{
+    if(Variacion_Porcentual == "NA" & GAP != "NA"){
+      cat(paste0(
+        "<div class='column-3-ind'>",
+        get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>",
+        get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>",
+        get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+      }else{
+        if(Variacion_Porcentual != "NA" & GAP == "NA"){
+          cat(paste0(
+            "<div class='column-3-ind'>",
+            get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>",
+            get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>",
+            get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div>"))
           }else{
             cat(paste0(
-              "<div class='column-4'>", get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>", get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>", get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
+              "<div class='column-4'>",
+              get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>",
+              get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>",
+              get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>",
+              get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
-        }
-    }
+      }
+  }
 ```
 </div>
 

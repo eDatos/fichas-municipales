@@ -58,7 +58,7 @@ get_nombre <- function(nombre) {
 ```{r Mes}
 parados <- fromJSON(params$url.parados)
 
-mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>% 
+mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
   mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
   transform(periodo = gsub("-M01", " Enero", periodo)) %>%
   transform(periodo = gsub("-M02", " Febrero", periodo)) %>%
@@ -71,11 +71,11 @@ mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][
   transform(periodo = gsub("-M09", " Septiembre", periodo)) %>%
   transform(periodo = gsub("-M10", " Octubre", periodo)) %>%
   transform(periodo = gsub("-M11", " Noviembre", periodo)) %>%
-  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>% 
-  transform(code = gsub("M", "", code)) %>% 
+  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>%
+  transform(code = gsub("M", "", code)) %>%
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1))))
 
-mes <- mes %>% 
+mes <- mes %>%
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
@@ -84,7 +84,7 @@ mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```{r Municipio actual}
 CL_AREA <- as_list(read_xml(params$url.cl_area))
 
-df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
   unnest_wider('codes') %>%
   transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
@@ -93,18 +93,18 @@ df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
   mutate(parent = gsub("^.*).", "", parent)) %>%
   select(code = id, value = name, parent)
 
-df_CL_AREA_mun <- df_CL_AREA %>% 
+df_CL_AREA_mun <- df_CL_AREA %>%
   select(id = code, municipio = value, code = parent) %>%
-  filter(substring(id, 0,2) != "ES") %>% 
+  filter(substring(id, 0,2) != "ES") %>%
   transform(id = sub("\\_.*", "", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
-  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
 
 municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
@@ -132,7 +132,7 @@ datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
                               nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
                               latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
-                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>%
   filter(substring(mun, 0,2) != "ES")
 df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
@@ -205,10 +205,10 @@ df_parados <- df_parados %>%
 df_parados$valor <- df_parados$valor %>% as.numeric
 df_parados$mun <- recode_id_Frontera(df_parados, 'mun')
 
-Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric
-Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "Ambos sexos") %>% select(valor) %>% as.numeric
+Num_Paro_Isla <- df_parados %>% filter(mun == municipio_actual$id_isla & periodo == mes_actual$code & gredad == "Total" & sexo == "Total") %>% select(valor) %>% as.numeric
+Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "Total") %>% select(valor) %>% as.numeric
 
-df_u <- df_parados %>% filter(substring(mun, 0,2) != "ES" & gredad == "Total" & sexo == "Ambos sexos") %>%
+df_u <- df_parados %>% filter(substring(mun, 0,2) != "ES" & gredad == "Total" & sexo == "Total") %>%
   select(mun, periodo, valor) %>%
   arrange(periodo)
 
@@ -219,11 +219,6 @@ related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
-
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
-
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
@@ -231,26 +226,31 @@ df <- related_mun %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
   select(mun = id, code, nombre, valor) %>%
   left_join(mes, by = "code") %>%
-  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 12)) - 1), 1), NA)) %>% 
+  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 12)) - 1), 1), NA)) %>%
   filter(order < mes_actual$order+1)
 
 if(substring(mes_actual$code, 0,4) != 2009){
   df <- df %>% filter(order > 12)
   }
 
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas en paro: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+df <- df %>% mutate(
+  tooltip = ifelse(code == mes_actual$code, 
+                   sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                           ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                   sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
+                           ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+                   )
+  )
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
 leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
   mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
          tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
-
-df <- df %>% mutate(
-    tooltip = ifelse(code == mes_actual$code, 
-                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
-                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
-                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
-              )
-  )
 
 if(substring(mes_actual$code, 0,4) != 2009){
   line_range_min = max(0.8, nrow(df[df$nombre == municipio_actual$municipio, ]) - 5*12)
@@ -352,10 +352,11 @@ Percent_Hombres <- round(Num_Paro_H_num / Num_Paro_num *100, 1) %>% format(big.m
 ```
 
 ```{r Pirámide paro por grupos de edad y sexos}
-df_piramide <- df_parados %>% filter(periodo == mes_actual$code & gredad != "Total" & sexo != "Ambos sexos") %>%
+df_piramide <- df_parados %>%
+  filter(periodo == mes_actual$code & gredad != "Total" & sexo != "Total") %>%
   select(mun, gredad, sexo, valor) %>%
   transform(valor = if_else(sexo == "Hombres", -valor, valor)) %>%
-  transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>% 
+  transform(order = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>%
   transform(gredad = ifelse(gredad == "Menor de 20", "<20", gredad)) %>%
   transform(gredad = ifelse(gredad == "60 o más", ">59", gredad)) %>%
   transform(order = if_else(gredad == "<20", 19, order)) %>%
@@ -366,13 +367,13 @@ df_Canarias <- df_piramide %>% filter(mun == "ES70")
 df_mun <- df_piramide %>% filter(mun == params$id_municipio)
 df_mun <- cbind(df_mun, porcentaje = df_mun$valor / Num_Paro_num, valor_Canarias = df_Canarias$valor, porcentaje_Canarias = df_Canarias$valor / Num_Paro_Canarias)
 
-df_mun <- df_mun %>% transform(
-  hovertext = paste0(
+df_mun <- df_mun %>%
+  transform(hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", gredad," años</b><br>"), ""),
-    "<br><b>", sexo, "</b>",
-    "<br>", trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
-    " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
+    "<br><b>", sexo, "</b><br>",
+    trimws(format(abs(valor), big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje)*100, 1), big.mark = ".", decimal.mark = ",")), "%)<br>",
+    "Canarias: ", trimws(format(abs(valor_Canarias), big.mark = ".", decimal.mark = ",")),
     " (", trimws(format(round(abs(porcentaje_Canarias)*100, 1), big.mark = ".", decimal.mark = ",")), "%)"
   )
 )
@@ -437,7 +438,7 @@ mapa_comarca_plot <- tm_shape(mapa_comarca) +
 df_ranking <- df_u %>%
   select(id = mun, code = periodo, valor) %>%
   filter(code == mes_actual$code & !is.na(valor)) %>%
-  left_join(df_CL_AREA_mun, by = "id") %>% 
+  left_join(df_CL_AREA_mun, by = "id") %>%
   arrange(desc(valor))
 
 rk_canarias <- grep(params$id_municipio, df_ranking$id)
@@ -456,15 +457,16 @@ percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==
 ```
 
 ```{r Edad media paro}
-df_edad_media <- df_parados %>% 
-  filter(mun == params$id_municipio & periodo == mes_actual$code, gredad != "Total" & sexo == "Ambos sexos") %>% 
+df_edad_media <- df_parados %>%
+  filter(mun == params$id_municipio & periodo == mes_actual$code, gredad != "Total" & sexo == "Total") %>%
   transform(x = as.numeric(unlist(lapply(strsplit(gredad, "-"), '[[', 1)))) %>%
-  transform(x = x + 2.5) %>% 
+  transform(x = x + 2.5) %>%
   transform(x = if_else(gredad == "Menor de 20", 18, x)) %>%
-  transform(x = if_else(gredad == "60 o más", 62.5, x)) %>% 
+  transform(x = if_else(gredad == "60 o más", 62.5, x)) %>%
   transform(producto = valor * x)
 
-edad_media <- round(sum(df_edad_media$producto) / sum(df_edad_media$valor), 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+edad_media <- round(sum(df_edad_media$producto) / sum(df_edad_media$valor), 1) %>%
+  format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
 ```{r Barras Paro por sectores económicos y sexo}
@@ -494,7 +496,7 @@ df_ae <- data.frame(
 for(i in 1:nrow(df_ae)) {
   df_ae$ae[i] <- data_paro_se[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
 }
-df_ae <- df_ae %>% 
+df_ae <- df_ae %>%
   transform(ae = lapply(strsplit(ae, " "), '[[', 1)) %>%
   transform(ae = gsub(",", "", ae)) %>%
   transform(ae = gsub("Resto", "Resto de servicios", ae))
@@ -509,23 +511,24 @@ df_paro_se <- df_paro_se %>%
   select(!c(id_sexo, id_ae))
 
 df_paro_se_mun <- df_paro_se %>%
-  filter(mun == params$id_municipio & periodo == mes_actual$code & ae != "Total" & sexo != "Ambos sexos") %>% select(!c(mun, periodo))
+  filter(mun == params$id_municipio & periodo == mes_actual$code & ae != "Total" & sexo != "Total") %>% select(!c(mun, periodo))
 df_paro_Canarias <- df_paro_se %>%
-  filter(mun == "ES70" & periodo == mes_actual$code & ae != "Total" & sexo != "Ambos sexos") %>% select(!c(mun, periodo))
+  filter(mun == "ES70" & periodo == mes_actual$code & ae != "Total" & sexo != "Total") %>% select(!c(mun, periodo))
 df_paro_se_mun <- df_paro_se_mun %>%
   mutate(porcentaje = df_paro_se_mun$valor / Num_Paro_num * 100,
          valor_Canarias = df_paro_Canarias$valor,
-         porcentaje_Canarias = df_paro_Canarias$valor / Num_Paro_Canarias * 100) %>% 
+         porcentaje_Canarias = df_paro_Canarias$valor / Num_Paro_Canarias * 100) %>%
   transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje),
             porcentaje_Canarias = if_else(sexo == "Hombres", -porcentaje_Canarias, porcentaje_Canarias))
 
-df_paro_se_mun <- df_paro_se_mun %>% transform(hovertext = paste0(
+df_paro_se_mun <- df_paro_se_mun %>%
+  transform(hovertext = paste0(
     ifelse(sexo == "Hombres", paste0("<b>", trimws(ae), "</b><br>"), ""),
-    "<br><b>", sexo, "</b>",
-    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
-    " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
-    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
-    " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"))%>%
+    "<br><b>", sexo, "</b><br>",
+    trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)<br>",
+    "Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)")) %>%
   mutate(order = nrow(df_paro_se_mun):1)
 
 g_paro_se <- ggplot(data = df_paro_se_mun, aes(x = reorder(name_ae, order), fill = sexo, group = sexo, text = hovertext)) +
@@ -549,7 +552,7 @@ g_paro_se <- ggplot(data = df_paro_se_mun, aes(x = reorder(name_ae, order), fill
 
 g_paro_se <- ggplotly(g_paro_se, tooltip = c("text")) %>%
   layout(hovermode = 'y unified', margin = list(t = 10, l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>% 
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   style(hoverinfo = "skip", traces = c(3, 4))
 ```
 
@@ -592,7 +595,7 @@ df_paro_sexo_est <- df_paro_sexo_est %>%
   select(!c(id_sexo, id_estudios))
 
 df_paro_sexo_est_mun <- df_paro_sexo_est %>%
-  filter(mun == params$id_municipio & periodo == mes_actual$code & estudios != "Total" & sexo == "Ambos sexos") %>%
+  filter(mun == params$id_municipio & periodo == mes_actual$code & estudios != "Total" & sexo == "Total") %>%
   select(!c(mun, sexo)) %>% arrange(valor)
 df_paro_sexo_est_mun <- df_paro_sexo_est_mun %>% mutate(peso = round(df_paro_sexo_est_mun$valor / Num_Paro_num * 100, 1))
 
@@ -640,10 +643,17 @@ for (i in 1:nrow(leyenda_poblacion)) {
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
-    '</div><div class="column-3-ind">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '</div><div class="column-3-ind">',
+    get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-3-ind">',
+    get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-3-ind">',
+    get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }else{
   cat(paste0(
-    '<div class="column-4">', get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">', get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-4">', get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">', get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
+    '<div class="column-4">',
+    get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-4">',
+    get_indicator2("Edad<br/>media", edad_media, "./img/family.png"), '</div><div class="column-4">',
+    get_indicator2(paste0("Mujeres</p><p class='label' style='color: #999;'>", Num_Paro_M), paste0(Percent_Mujeres, "%"), "./img/female.png"), '</div><div class="column-4">',
+    get_indicator2(paste0("Hombres</p><p class='label' style='color: #999;'>", Num_Paro_H), paste0(Percent_Hombres, "%"), "./img/male.png"), '</div>'))
 }
 ```
 </div>
