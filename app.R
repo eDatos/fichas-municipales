@@ -131,7 +131,7 @@ ui <- fluidPage(
     
     function resizeGlosarioIframe(obj) {
       var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
-      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 100 + 'px';
       //obj.parentElement.style.height = obj.style.height;
       obj.style.transform = 'scale(' + scale + ')';
       var cssLink = document.createElement('link');
@@ -143,7 +143,7 @@ ui <- fluidPage(
     
     function resizeAyudaIframe(obj) {
       var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
-      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 100 + 'px';
       //obj.parentElement.style.height = obj.style.height;
       obj.style.transform = 'scale(' + scale + ')';
       var cssLink = document.createElement('link');
