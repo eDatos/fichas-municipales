@@ -11,7 +11,7 @@ library(data.table)
 directory.data <- "data/"
 directory.rmd <- "Rmd/"
 directory.output <- "output"
-df_init_data <-  read.csv("init-data.csv", encoding = "UTF-8", sep = ";") %>% 
+df_init_data <- read.csv("init-data.csv", encoding = "UTF-8", sep = ";") %>% 
   transform(filepath = paste0(directory.data, name, '.', extension),
             param.name = paste0('url.', name))
 df_fichas <- read.csv("fichas.csv", encoding = "UTF-8", sep = ";")
@@ -22,11 +22,11 @@ downloadData <- function() {
       next
     }
     print(paste0('Download resource: ', df_init_data$name[i]))
-    if(df_init_data$extension[i] == "json") {
-      write(getURL( df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
-    } else {
-      download.file(df_init_data$url[i], df_init_data$filepath[i])
-    }
+    #if(df_init_data$extension[i] == "json") {
+    #  write(getURL( df_init_data$url[i], httpheader = c(Accept = "application/json"), .encoding = "UTF-8"), df_init_data$filepath[i])
+    #} else {
+      download.file(df_init_data$url[i], df_init_data$filepath[i], method = "libcurl", mode = "wb")
+    #}
   }
 }
 
@@ -127,7 +127,7 @@ loadMunicipios <- function() {
 downloadData()
 
 periods <- get_total_periods(df_init_data,
-                             # df_fichas %>% filter(code == "demografia")) %>%
+                             # df_fichas %>% filter(code == "afiliacion_residencia")) %>%
                              df_fichas %>%
                                filter(code %in% c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
                                                   "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
@@ -241,8 +241,9 @@ generarFichas <- function(municipios, df_fichas, periods) {
 
 generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_residencia'), periods)
 generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_cotizacion'), periods)
-generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A %notin% c(2019:2021)))
-generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A %notin% c(2021)))
+generarFichas(municipios, df_fichas %>% filter(code == 'presupuestos'), periods %>% filter(A == 2020))
+generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2018 & M %in% c(1:3)))
+generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2020 & M == 12))
 
 # c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
 #   "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",

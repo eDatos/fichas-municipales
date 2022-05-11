@@ -154,9 +154,9 @@ df_afil <- data.frame(
                    length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
                    length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_sl = rep(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-           each = length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                  length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
-                  length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+              each = length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                    length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                    length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   periodo = rep(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
                 each = length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
                        length(data_afil[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
@@ -330,16 +330,16 @@ if(Variacion_Porcentual != "NA"){
 piramide <- fromJSON(params$url.piramide_r)
 df_piramide_ <- data.frame(
   id_sexo = rep(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                   length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                   length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   periodo = rep(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-           each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                  length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   id_gredad = rep(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-                each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+                  each = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   mun =  rep(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-                 times = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+             times = length(piramide[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(piramide[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 df_edad <- data.frame(
@@ -515,21 +515,21 @@ Peso_afil_propia <- df_afil_sl_mun %>% filter(sl == "Empleos por cuenta propia")
 data_afil_ae_C <- fromJSON(params$url.afil_ae_r_0)
 df_afil_ae_C_ <- data.frame(
   periodo = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                   length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                   length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
-                   length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  id_sexo = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-           each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                  length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
-                  length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  sl = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-                each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
                        length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_sexo = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                       length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  sl = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+           each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                  length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_ae = rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-                        each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+              each = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   mun =  rep(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
-                 times = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+             times = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(data_afil_ae_C[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 df_ae_C <- data.frame(
@@ -541,43 +541,43 @@ for(i in 1:nrow(df_ae_C)) {
 }
 
 df_ae_C <- df_ae_C %>%
-  mutate(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura"),
-         ae = recode(ae, "Industrias extractivas" = "Industria"),
-         ae = recode(ae, "Industria de la alimentación, bebidas y tabaco" = "Industria"),
-         ae = recode(ae, "Industria textil, confección de prendas de vestir, industria del cuero y del calzado" = "Industria"),
-         ae = recode(ae, "Industria de la madera, papel y artes gráficas" = "Industria"),
-         ae = recode(ae, "Coquerías y refino de petróleo" = "Industria"),
-         ae = recode(ae, "Industria química" = "Industria"),
-         ae = recode(ae, "Fabricación de productos farmacéuticos" = "Industria"),
-         ae = recode(ae, "Fabricación de productos de caucho y plásticos y otros productos minerales no metálicos" = "Industria"),
-         ae = recode(ae, "Fabricación de metales básicos y de productos metálicos, excepto maquinaria y equipo" = "Industria"),
-         ae = recode(ae, "Fabricación de productos informáticos, electrónicos y ópticos" = "Industria"),
-         ae = recode(ae, "Fabricación de material y equipo eléctrico" = "Industria"),
-         ae = recode(ae, "Fabricación de maquinaria y equipo n.c.o.p." = "Industria"),
-         ae = recode(ae, "Fabricación de material de transporte" = "Industria"),
-         ae = recode(ae, "Fabricación de muebles; otras industrias manufactureras; reparación e instalación de maquinaria y equipo" = "Industria"),
-         ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria"),
-         ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria"),
-         ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio"),
-         ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de edición, audiovisuales y de programación y emisión de radio y televisión" = "Resto de servicios"),
-         ae = recode(ae, "Telecomunicaciones" = "Resto de servicios"),
-         ae = recode(ae, "Programación, consultoría y otras actividades relacionadas con la informática; servicios de información" = "Resto de servicios"),
-         ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios"),
-         ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios"),
-         ae = recode(ae, "Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial; servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos" = "Resto de servicios"),
-         ae = recode(ae, "Investigación y desarrollo" = "Resto de servicios"),
-         ae = recode(ae, "Publicidad y estudios de mercado; otras actividades profesionales, científicas y técnicas; actividades veterinarias" = "Resto de servicios"),
-         ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios"),
-         ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios"),
-         ae = recode(ae, "Educación" = "Resto de servicios"),
-         ae = recode(ae, "Actividades sanitarias" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de servicios sociales" = "Resto de servicios"),
-         ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios"),
-         ae = recode(ae, "Otros servicios" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"),
-         )
+  transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
+  transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
+  transform(ae = recode(ae, "Industria de la alimentación, bebidas y tabaco" = "Industria")) %>%
+  transform(ae = recode(ae, "Industria textil, confección de prendas de vestir, industria del cuero y del calzado" = "Industria")) %>%
+  transform(ae = recode(ae, "Industria de la madera, papel y artes gráficas" = "Industria")) %>%
+  transform(ae = recode(ae, "Coquerías y refino de petróleo" = "Industria")) %>%
+  transform(ae = recode(ae, "Industria química" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de productos farmacéuticos" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de productos de caucho y plásticos y otros productos minerales no metálicos" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de metales básicos y de productos metálicos, excepto maquinaria y equipo" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de productos informáticos, electrónicos y ópticos" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de material y equipo eléctrico" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de maquinaria y equipo n.c.o.p." = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de material de transporte" = "Industria")) %>%
+  transform(ae = recode(ae, "Fabricación de muebles; otras industrias manufactureras; reparación e instalación de maquinaria y equipo" = "Industria")) %>%
+  transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
+  transform(ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
+  transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
+  transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de edición, audiovisuales y de programación y emisión de radio y televisión" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Telecomunicaciones" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Programación, consultoría y otras actividades relacionadas con la informática; servicios de información" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial; servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Investigación y desarrollo" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Publicidad y estudios de mercado; otras actividades profesionales, científicas y técnicas; actividades veterinarias" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades sanitarias" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de servicios sociales" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
+
 df_afil_ae_C <- df_afil_ae_C_ %>%
   right_join(df_ae_C, by = "id_ae") %>%
   right_join(df_sexo, by = "id_sexo") %>%
@@ -607,21 +607,21 @@ if(substring(municipio_actual$id_isla, 4,5) == "03"){
 
 df_afil_ae_ <- data.frame(
   periodo = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                   length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                   length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
-                   length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  id_sexo = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-           each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                  length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
-                  length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
-  sl = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-                each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
                        length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_sexo = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                       length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  sl = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+           each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                  length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_ae = rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-                        each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+              each = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   mun =  rep(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
-                 times = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+             times = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(data_afil_ae[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 df_ae <- data.frame(
@@ -633,26 +633,25 @@ for(i in 1:nrow(df_ae)) {
 }
 
 df_ae <- df_ae %>%
-  mutate(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura"),
-         ae = recode(ae, "Industrias extractivas" = "Industria"),
-         ae = recode(ae, "Industria manufacturera" = "Industria"),
-         ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria"),
-         ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria"),
-         ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio"),
-         ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios"),
-         ae = recode(ae, "Información y comunicaciones" = "Resto de servicios"),
-         ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios"),
-         ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios"),
-         ae = recode(ae, "Actividades profesionales, científicas y técnicas" = "Resto de servicios"),
-         ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios"),
-         ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios"),
-         ae = recode(ae, "Educación" = "Resto de servicios"),
-         ae = recode(ae, "Actividades sanitarias y de servicios sociales" = "Resto de servicios"),
-         ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios"),
-         ae = recode(ae, "Otros servicios" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de los hogares como empleadores y productores de bienes y servicios para uso propio" = "Resto de servicios"),
-         ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"),
-         )
+  transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
+  transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
+  transform(ae = recode(ae, "Industria manufacturera" = "Industria")) %>%
+  transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
+  transform(ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
+  transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
+  transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Información y comunicaciones" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades profesionales, científicas y técnicas" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades sanitarias y de servicios sociales" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de los hogares como empleadores y productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
+  transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
 
 df_afil_ae <- df_afil_ae_ %>%
   right_join(df_ae, by = "id_ae") %>%
