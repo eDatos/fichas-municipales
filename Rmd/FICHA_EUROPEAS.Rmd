@@ -59,10 +59,10 @@ get_nombre_partido <- function(nombre) {
 data_participacion <- fromJSON(params$url.participacion)
 
 convocatoria <- data.frame(
-    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
 }
 
 convocatoria_europeas <- convocatoria %>% 
@@ -177,9 +177,9 @@ df_participacion <- data.frame(
     ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                      length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    mun = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+    proceso = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+    mun = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric %>% round(1)
 df_participacion <- recode_Frontera(df_participacion)
@@ -309,11 +309,8 @@ if(Variacion != "NA"){
 Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
-Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-
 Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Votos_blanco <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_BLANCO") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 
@@ -326,7 +323,7 @@ Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_
 ```{r Data Resultados}
 data_europeas <- fromJSON(params[[convocatoria_actual$url]])
 
-if(params$año %in% c(2019, 2004)){
+if(params$año == 2014){
   df_europeas <- data.frame(
     mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
               each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -342,13 +339,13 @@ if(params$año %in% c(2019, 2004)){
   for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
     df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$año == 2014){
+    if(params$año == 2009){
       df_europeas <- data.frame(
         candidatura = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                  each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                         length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                          each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                 length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
         mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                     each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                  each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
         medida = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
         valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
       
@@ -358,13 +355,13 @@ if(params$año %in% c(2019, 2004)){
       for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
         df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$año == 2009){
+        if(params$año == 2019){
           df_europeas <- data.frame(
             medida = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                              each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                                     length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                         each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
             mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-                         each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                      each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
             candidatura = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
             valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
           
@@ -373,8 +370,25 @@ if(params$año %in% c(2019, 2004)){
             name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
           for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
             df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+          }}else{
+            if(params$año == 2004){
+              df_europeas <- data.frame(
+                mun = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                             each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                    length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                medida = rep(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                                  each = length(data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                candidatura = data_europeas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                valor = unlist(strsplit(data_europeas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+              
+              df_partido <- data.frame(
+                candidatura = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+                name_partido = vector(mode = "character", length = data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+              for(i in 1:data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
+                df_partido$name_partido[i] <- data_europeas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+              }
+            }
           }
-        }
       }
   }
 
@@ -390,7 +404,7 @@ df_europeas_mun <- df_europeas_mun_ %>%
   filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
 df_europeas_mun <- df_europeas_mun %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = PORCENTAJE_VOTOS_CANDIDATURA)
 
 df_plot_ <- df_europeas_mun %>%
   left_join(df_partido, by = "candidatura") %>% arrange(name_partido) %>% 
@@ -406,7 +420,7 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_europeas_C <- df_europeas %>% 
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(mun, candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = RATIO_VOTOS_CANDIDATURA) %>% 
+  select(mun, candidatura, valor_C = VOTOS_VALIDOS_CANDIDATURA, porcentaje_C = PORCENTAJE_VOTOS_CANDIDATURA) %>% 
   filter(mun == "ES70") %>% select(!mun)
 
 df_plot_C_ <- df_europeas_C %>% filter(substring(candidatura, 0,1) == "P" & candidatura %in% df_plot$candidatura) %>% arrange(valor_C)

@@ -59,10 +59,10 @@ get_nombre_partido <- function(nombre) {
 data_participacion <- fromJSON(params$url.participacion)
 
 convocatoria <- data.frame(
-    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
 }
 
 convocatoria_municipales <- convocatoria %>% 
@@ -177,9 +177,9 @@ df_participacion <- data.frame(
     ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                      length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    mun = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+    proceso = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
               each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-    proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+    mun = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
     valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric %>% round(1)
 df_participacion <- recode_Frontera(df_participacion)
@@ -310,9 +310,6 @@ if(Variacion != "NA"){
 Num_Electores <- df_participacion_mun %>% filter(ind == "ELECTORES") %>% select(valor) %>% as.numeric %>% round(0) %>% format(big.mark = ".", decimal.mark = ",")
 Tasa_abstencion <- df_participacion_mun %>% filter(ind == "TASA_ABSTENCION") %>% select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
-Elec_votantes <- df_participacion_mun %>% filter(ind == "ELECTORES_VOTANTES") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-Elec_abstenidos <- df_participacion_mun %>% filter(ind == "ELECTORES_ABSTENIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-
 Votos_validos <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Votos_nulos <- df_participacion_mun %>% filter(ind == "VOTOS_NULOS") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Votos_candidatura <- df_participacion_mun %>% filter(ind == "VOTOS_VALIDOS_CANDIDATURA") %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
@@ -334,7 +331,7 @@ dR <- length(rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["rep
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
-if(params$año == 2015){
+if(params$año == 2011){
   df_municipales <- data.frame(
     candidatura = rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                       each = length(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -350,7 +347,7 @@ if(params$año == 2015){
   for(i in 1:data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
     df_partido$name_partido[i] <- data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$año == 2011){
+    if(params$año == 2019){
       df_municipales <- data.frame(
         mun = rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                      each = length(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -366,7 +363,7 @@ if(params$año == 2015){
       for(i in 1:data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_municipales[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
         }}else{
-          if(params$año %in% c(2019, 2007)){
+          if(params$año %in% c(2015, 2007)){
             df_municipales <- data.frame(
               mun = rep(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                                 each = length(data_municipales[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -397,7 +394,7 @@ df_municipales_mun <- df_municipales_mun_ %>%
   filter(substring(candidatura, 0,1) == "P") %>% arrange(valor) %>% select(medida, candidatura, valor)
 df_municipales_mun <- df_municipales_mun %>%
   spread(medida, valor) %>% filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA, repr_elegidos = REPRESENTANTES_ELEGIDOS)
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = PORCENTAJE_VOTOS_CANDIDATURA, repr_elegidos = CONCEJALES_CONCEJALAS)
 
 df_plot_ <- df_municipales_mun %>%
   left_join(df_partido, by = "candidatura") %>% arrange(name_partido) %>% 
