@@ -81,3 +81,10 @@
 .form-group {
   margin-bottom: 0;
 }
+.selectize-dropdown .optgroup-header {
+  color: #444;
+  font-size: 1rem;
+}
+.selectize-dropdown .option[data-selectable] {
+    margin-left: 10px;
+}

@@ -209,8 +209,8 @@ related_mun <- df_u %>% filter(periodo == mes_actual$code)
 related_mun <- seleccion_mun(df_localizacion, related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Personas afiliadas: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Afiliaciones: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Afiliaciones: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
 
@@ -256,7 +256,7 @@ g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = no
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "M03")}, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-03")}, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -501,7 +501,7 @@ Peso_afil_esp <- df_afil_extr_mun %>% filter(nacionalidad == "España") %>% sele
 Peso_afil_ext <- df_afil_extr_mun %>% filter(nacionalidad == "Mundo (excluida España)") %>% select(peso) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
-```{r Progress-bar afiliaciones según situaciones laborales}
+```{r Progress-bar afiliaciones según situaciones en el empleo}
 df_afil_sl_mun <- df_afil %>%
   filter(mun == params$id_municipio & sexo == "Total" & periodo == mes_actual$code & nacionalidad == "Total") %>%
   select(sl, valor)
@@ -902,7 +902,7 @@ mapa_comarca_plot
   <h3>Nacionalidades</h3>
 </div>
 <div class="column indicator-title">
-  <h3>Situaciones laborales</h3>
+  <h3>Situaciones en el empleo</h3>
 </div>
 
 <div class="column highlight" style="padding-top: 16px;">
