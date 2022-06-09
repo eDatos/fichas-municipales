@@ -5,14 +5,14 @@ params:
   año: 2019_NOVIEMBRE
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
-  url.congreso_2019n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.congreso_2019a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000034/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?dim=INDICADORES:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_2008: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA&lang=es
-  url.congreso_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
-  url.congreso_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|RATIO_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2019n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013|38048|38901&lang=es
+  url.congreso_2019a: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000034/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2016: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000009/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2015: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000007/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2011: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000002/~latest.json?dim=INDICADORES:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2008: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000016/~latest.json?dim=TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38901|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA&lang=es
+  url.congreso_2004: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000017/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.congreso_2000: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000018/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|35004|35010|35018|35024|35028|35029|35034|ES702|38013|38048|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
   url.participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901&lang=es
 output:
   html_document:
@@ -63,14 +63,14 @@ get_nombre_partido <- function(nombre) {
 data_participacion <- fromJSON(params$url.participacion)
 
 convocatoria <- data.frame(
-    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
-    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
-for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
-  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+    code = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
 }
 
-convocatoria_congreso <- convocatoria %>% 
-  filter(substring(code, 0,9) == "CONGRESO_") %>% 
+convocatoria_congreso <- convocatoria %>%
+  filter(substring(code, 0,9) == "CONGRESO_") %>%
   transform(url = paste0("url.", tolower(substring(code, 0,13)), tolower(substring(code, 15,15))))
 convocatoria_congreso <- convocatoria_congreso %>% 
   mutate(order = as.integer(order(1:nrow(convocatoria_congreso), decreasing = TRUE)),
@@ -86,27 +86,27 @@ convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convoca
 ```{r Municipio actual}
 CL_AREA <- as_list(read_xml(params$url.cl_area))
 
-df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>%
   unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>% 
+  transform(name = lapply(name, '[[', 2)) %>%
   unnest(cols = names(.)) %>%
   unnest(cols = names(.)) %>%
   readr::type_convert() %>%
   mutate(parent = gsub("^.*).", "", parent)) %>%
   select(code = id, value = name, parent)
 
-df_CL_AREA_mun <- df_CL_AREA %>% 
+df_CL_AREA_mun <- df_CL_AREA %>%
   select(id = code, municipio = value, code = parent) %>%
-  filter(substring(id, 0,2) != "ES") %>% 
+  filter(substring(id, 0,2) != "ES") %>%
   transform(id = sub("\\_.*", "", id)) %>%
   filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
   left_join(df_CL_AREA, by="code") %>%
-  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>%
+  left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
-  left_join(df_CL_AREA, by="code") %>% 
+  left_join(df_CL_AREA, by="code") %>%
   select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, id_provincia = code, provincia = value)
 
 municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
@@ -140,7 +140,7 @@ datamun <- fromJSON(params$url.dist_mun)
 df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
                               nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
                               latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
-                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>%
   filter(substring(mun, 0,2) != "ES")
 df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
 distancias_mun <- df_localizacion %>%
@@ -154,7 +154,7 @@ distancias_mun <- data.frame(
 )
 
 seleccion_mun <- function(df_variable, variable, p = 0.5) {
-  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun")
   mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
   
   df_result <- df_dif %>%
@@ -182,9 +182,9 @@ df_participacion <- data.frame(
   ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
                    length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  mun = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+  proceso = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
             each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  proceso = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+  mun = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
   valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
 df_participacion$valor <- df_participacion$valor %>% as.numeric %>% round(1)
 df_participacion <- recode_Frontera(df_participacion)
@@ -332,14 +332,14 @@ Tasa_Votos_blanco <- df_participacion_mun %>% filter(ind == "TASA_VOTOS_VALIDOS_
 ```{r Data Resultados}
 data_congreso <- fromJSON(params[[convocatoria_actual$url]])
 
-if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
-  dR <- length(rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-                   each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
-                          length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
-                          length(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+dR <- length(rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+                        length(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-  ###### Añadir aviso si la variable d_ es mayor que 0 ######
+###### Añadir aviso si la variable d_ es mayor que 0 ######
 
+if(params$año %in% c(2015, 2008)){
   df_congreso <- data.frame(
     medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -355,7 +355,7 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
   for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
     df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$año == 2008){
+    if(params$año %in% c(2016, 2000)){
       df_congreso <- data.frame(
         mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -363,7 +363,7 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
         medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                      each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
         candidatura = data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-        valor = unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+        valor = c(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
       
       df_partido <- data.frame(
         candidatura = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
@@ -371,7 +371,7 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
       for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$año == 2015){
+        if(params$año == "2019_NOVIEMBRE"){
           df_congreso <- data.frame(
             candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                               each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -379,7 +379,7 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
             medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                          each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
             mun = data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-            valor = unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+            valor = c(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
           
           df_partido <- data.frame(
             candidatura = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
@@ -387,7 +387,7 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
           for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
             df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
           }}else{
-            if(params$año == 2011){
+            if(params$año == 2004){
               df_congreso <- data.frame(
                 medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -395,15 +395,48 @@ if(params$año %in% c("2019_NOVIEMBRE", "2019_ABRIL", 2016, 2004, 2000)){
                 candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
                                   each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
                 mun = data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-                valor = unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+                valor = c(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
               
               df_partido <- data.frame(
                 candidatura = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
                 name_partido = vector(mode = "character", length = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
               for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
                 df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+              }}else{
+                if(params$año == "2019_ABRIL"){
+                  df_congreso <- data.frame(
+                    mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                                 each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                        length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                    candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                                      each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                    medida = data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                    valor = c(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
+                  
+                  df_partido <- data.frame(
+                    candidatura = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+                    name_partido = vector(mode = "character", length = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+                  for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+                    df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+                  }}else{
+                    if(params$año == 2011){
+                      df_congreso <- data.frame(
+                        candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                                          each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                                                 length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                        mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                                     each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+                        medida = data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                        valor = c(unlist(strsplit(data_congreso[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dR)))
+                      
+                      df_partido <- data.frame(
+                        candidatura = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+                        name_partido = vector(mode = "character", length = data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]))
+                      for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
+                        df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
+                      }}
+                  }
               }
-            }
           }
       }
   }
@@ -413,7 +446,7 @@ df_congreso <- df_congreso %>% transform(mun = sub("\\_.*", "", mun))
 ```
 
 ```{r Resultados}
-df_congreso_mun_ <- df_congreso %>% 
+df_congreso_mun_ <- df_congreso %>%
   filter(mun == params$id_municipio)
 
 df_congreso_mun <- df_congreso_mun_ %>%
@@ -423,11 +456,11 @@ df_congreso_mun <- df_congreso_mun_ %>%
 df_congreso_mun <- df_congreso_mun %>%
   spread(medida, valor) %>%
   filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
-  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = RATIO_VOTOS_CANDIDATURA)
+  select(candidatura, valor = VOTOS_VALIDOS_CANDIDATURA, porcentaje = PORCENTAJE_VOTOS_CANDIDATURA)
 
 df_plot_ <- df_congreso_mun %>%
   left_join(df_partido, by = "candidatura") %>%
-  arrange(name_partido) %>% 
+  arrange(name_partido) %>%
   arrange(desc(valor)) %>%
   top_n(5, valor)
 df_plot_$valor <- as.integer(df_plot_$valor)
@@ -441,8 +474,8 @@ df_plot$porcentaje <- as.numeric(df_plot$porcentaje)
 
 df_congreso_P <- df_congreso %>%
   spread(medida, valor) %>%
-  filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>% 
-  select(mun, candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = RATIO_VOTOS_CANDIDATURA) %>% 
+  filter(!is.na(VOTOS_VALIDOS_CANDIDATURA)) %>%
+  select(mun, candidatura, valor_P = VOTOS_VALIDOS_CANDIDATURA, porcentaje_P = PORCENTAJE_VOTOS_CANDIDATURA) %>%
   filter(mun == municipio_actual$id_provincia) %>%
   select(!mun)
 
