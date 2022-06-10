@@ -10,7 +10,7 @@ nacimientos;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indi
 mortalidad;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/TASA_MORTALIDAD/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D/data?representation=GEOGRAPHICAL%2CTIME%2CMEASURE%5BABSOLUTE%5D;demografia ;0
 crec_veg;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=5012a489-2ef4-4ff2-b1bf-ebf6e4c5f2d2;demografia ;1
 dependencia;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7dcb25e5-f533-4ba1-a6aa-70fe8fc69db7;demografia ;1
-emd_mujer; json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/DEFUNCIONES_EDAD_MEDIA_MUJERES/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;demografia ;0
+emd_mujer;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/DEFUNCIONES_EDAD_MEDIA_MUJERES/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;demografia ;0
 emd_hombre;json;https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/DEFUNCIONES_EDAD_MEDIA_HOMBRES/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D;demografia ;0
 lugar;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=f0c5c903-5648-4822-80be-8da4d3927b98;demografia ;0
 nacionalidad;json;http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=3a0df911-8098-4b6b-8002-bbfffa892cbc;demografia ;0
