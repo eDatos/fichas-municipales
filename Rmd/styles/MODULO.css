@@ -345,7 +345,6 @@ div.level3 {
 .linechart-placeholder {
   display: table;
   width: 100%;
-  margin-bottom: 15px;
 }
 #ranking-del-municipio {
     margin-top: -25px;
@@ -740,4 +739,16 @@ h6 {
 }
 .main-container {
   max-width: 1200px !important;
+}
+.label_l {
+  color: #666;
+  font-size: 18px;
+  font-weight: bold;
+}
+.column-modulo-link {
+  float: left;
+  margin-top: 30px;
+  width: 20%;
+  align-items: left;
+  display: inline-block;
 }
