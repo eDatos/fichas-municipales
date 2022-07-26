@@ -479,9 +479,28 @@ get_indicator2 = function(label, value, image) {
 get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
+get_indicator_mod_first = function(url, label) {
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p><hr class='separator'/>",
+                 url, label))
+}
+get_indicator_mod_last = function(url, label) {
+  return(sprintf("<p class='label_l'><a href=%s>%s</a></p></div>",
+                 url, label))
+}
+```
+
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "municipales") %>%
+  select(!c(Tematica, Otros))
 ```
 
 <!-- HTML -->
@@ -491,9 +510,8 @@ get_indicator_mod = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https",
-        "T"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -508,10 +526,13 @@ get_indicator_mod = function(url, label) {
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod(
-        "https",
-        "T"
-        )`
+  `r get_indicator_mod_first(
+        df_links$Enlace[which(df_links$Indicador == "Participación")],
+        df_links$Titulo[which(df_links$Indicador == "Participación")])`
+
+  `r get_indicator_mod_last(
+        df_links$Enlace[which(df_links$Indicador == "Resultados")],
+        df_links$Titulo[which(df_links$Indicador == "Resultados")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">

@@ -598,6 +598,9 @@ get_indicator2 = function(label, value, image) {
 get_indicator3 = function(label, value, image) {
   return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -615,6 +618,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "demografia") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -622,9 +633,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "http://www.gobiernodecanarias.org/istac/estadisticas/demografia/",
-        "Demografía"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -640,9 +650,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=POBLACION#visualization/table",
-        "Población"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Indicador principal")],
+        df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -667,15 +676,47 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=POBLACION_EDAD_MEDIA#visualization/table",
-        "Población. Edad media")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=POBLACION_MUJERES#visualization/table",
-        "Población. Mujeres")`
-  `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=POBLACION_HOMBRES#visualization/table",
-        "Población. Hombres")`
+```{r Enlaces Indicadores principales, results='asis'}
+df_links_principales <- df_links %>%
+  filter(Indicador == "Indicadores principales" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_principales) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_principales$Enlace[1],
+      df_links_principales$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_principales$Enlace[1],
+        df_links_principales$Titulo[1])
+      ))
+    if (nrow(df_links_principales) > 2) {
+      if (nrow(df_links_principales) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_principales$Enlace[2],
+            df_links_principales$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_principales)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_principales$Enlace[i],
+                df_links_principales$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_principales$Enlace[nrow(df_links_principales)],
+        df_links_principales$Titulo[nrow(df_links_principales)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding: 35px 15px;">
@@ -756,30 +797,47 @@ mapa_comarca_plot
 </div>
 
 <div class="row">
-  `r get_indicator_mod_first(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:304be2ca-3022-428a-99d0-b28bc4afbb9b&uripub=urn:uuid:253c609d-9d81-4266-986f-13ec9da19b28",
-        "Población según sexos y grupos de edad")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=TASA_MORTALIDAD#visualization/table",
-        "Tasa de mortalidad")`
-  `r get_indicator_mod_inter(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:3e369fce-cf23-4cb6-a9fa-10067b627496&uripub=urn:uuid:cc47adbb-2a55-4ddb-84cb-a540a6f34c50",
-        "Crecimiento vegetativo")`
-  `r get_indicator_mod_inter(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:1c818013-8735-4989-baf1-8afd7c62bead&uripub=urn:uuid:98fecf86-426a-4eaf-aff4-ed6e039d2949",
-        "Índice de dependencia")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=DEFUNCIONES_EDAD_MEDIA_MUJERES#visualization/table",
-        "Edad media defunción mujer")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=DEFUNCIONES_EDAD_MEDIA_HOMBRES#visualization/table",
-        "Edad media defunción hombre")`
-  `r get_indicator_mod_inter(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:3cd610d7-60f3-4dbc-be89-636bdbde9b16&uripub=urn:uuid:253c609d-9d81-4266-986f-13ec9da19b28",
-        "Población según sexos y nacionalidades")`
-  `r get_indicator_mod_last(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:3863be4c-a35d-4523-9ed3-eae5100cae20&uripub=urn:uuid:253c609d-9d81-4266-986f-13ec9da19b28",
-        "Población según sexos y lugares de nacimiento")`
+```{r Enlaces Otros indicadores, results='asis'}
+df_links_otros <- df_links %>%
+  filter(Indicador == "Otros indicadores" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros$Enlace[1],
+      df_links_otros$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros$Enlace[1],
+        df_links_otros$Titulo[1])
+      ))
+    if (nrow(df_links_otros) > 2) {
+      if (nrow(df_links_otros) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros$Enlace[2],
+            df_links_otros$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros$Enlace[i],
+                df_links_otros$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros$Enlace[nrow(df_links_otros)],
+        df_links_otros$Titulo[nrow(df_links_otros)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">

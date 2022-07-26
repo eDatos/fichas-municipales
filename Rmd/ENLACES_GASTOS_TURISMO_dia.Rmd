@@ -661,6 +661,9 @@ get_indicator2 = function(label, value, image) {
 get_indicator4s = function(title, label, value) {
   return(sprintf("<div class='indicator4s'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p><p class='label2'>Canarias</p></div>", title, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -678,6 +681,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "gastos_medios_turista_dia") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -685,8 +696,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/menu.do?uripub=urn:uuid:70b2796b-2f02-435c-9f0a-7588612bb733",
-        "Encuesta sobre el Gasto Turístico")`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -701,9 +712,47 @@ get_indicator_mod_last = function(url, label) {
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:f8bc6e2a-b082-4c72-93f6-81d2c847306f",
-        "Gastos medios según sexos y grupos de edades")`
+```{r Enlaces Indicador principal-Indicadores principales, results='asis'}
+df_links_indicadores <- df_links %>%
+  filter(Indicador %in% c("Indicador principal", "Indicadores principales") & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_indicadores) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_indicadores$Enlace[1],
+      df_links_indicadores$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_indicadores$Enlace[1],
+        df_links_indicadores$Titulo[1])
+      ))
+    if (nrow(df_links_indicadores) > 2) {
+      if (nrow(df_links_indicadores) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_indicadores$Enlace[2],
+            df_links_indicadores$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_indicadores)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_indicadores$Enlace[i],
+                df_links_indicadores$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_indicadores$Enlace[nrow(df_links_indicadores)],
+        df_links_indicadores$Titulo[nrow(df_links_indicadores)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -739,14 +788,52 @@ if(Variacion_Porcentual == "NA"){
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:db6d00b1-143f-4010-98bb-05f34f7b034b",
-        "Gastos medios según tipos de alojamiento")`
+```{r Enlaces Ranking, results='asis'}
+df_links_ranking <- df_links %>%
+  filter(Indicador == "Ranking" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_ranking) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_ranking$Enlace[1],
+      df_links_ranking$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_ranking$Enlace[1],
+        df_links_ranking$Titulo[1])
+      ))
+    if (nrow(df_links_ranking) > 2) {
+      if (nrow(df_links_ranking) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_ranking$Enlace[2],
+            df_links_ranking$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_ranking)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_ranking$Enlace[i],
+                df_links_ranking$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_ranking$Enlace[nrow(df_links_ranking)],
+        df_links_ranking$Titulo[nrow(df_links_ranking)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="row" style="margin-top: 10px;">
-<div class="column-3">
+<div class="row">
+<div class="column-3" style="margin: 0;">
   <div class="indicator-map map-canarias">
   <div class="image">
 ```{r}
@@ -759,7 +846,7 @@ mapa_Canarias_plot
   </div>
 </div>
 </div>
-<div class="column-3">
+<div class="column-3" style="margin: 0;">
 <div class="indicator-map">
   <div class="image">
 ```{r}
@@ -772,7 +859,7 @@ mapa_isla_plot
   </div>
 </div>
 </div>
-<div class="column-3">
+<div class="column-3" style="margin: 0;">
 <div class="indicator-map" style="heigth: 300px;">
   <div class="indicator-content" style="margin-top: 10px;">
   <h3>Tipos de alojamientos</h3>
@@ -790,12 +877,47 @@ mapa_isla_plot
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:cce945de-a4d1-412c-a8c5-49875db31243",
-        "Gastos medios, incluyendo desgloses del gasto, según países de residencia")`
-  `r get_indicator_mod_last(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:2604207e-c2b6-4b85-ac05-9ba0dd9b6ce4",
-        "Gastos medios según niveles de ingresos")`
+```{r Enlaces Otros indicadores 1, results='asis'}
+df_links_otros1 <- df_links %>%
+  filter(Indicador == "Otros indicadores 1" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros1) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros1$Enlace[1],
+      df_links_otros1$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros1$Enlace[1],
+        df_links_otros1$Titulo[1])
+      ))
+    if (nrow(df_links_otros1) > 2) {
+      if (nrow(df_links_otros1) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros1$Enlace[2],
+            df_links_otros1$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros1)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros1$Enlace[i],
+                df_links_otros1$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros1$Enlace[nrow(df_links_otros1)],
+        df_links_otros1$Titulo[nrow(df_links_otros1)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -838,12 +960,47 @@ mapa_isla_plot
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:f8bc6e2a-b082-4c72-93f6-81d2c847306f",
-        "Gastos medios según sexos y grupos de edades")`
-  `r get_indicator_mod_last(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:175c51b8-b490-49a8-a934-539ba7ac9595",
-        "Gastos medios según situación laboral")`
+```{r Enlaces Otros indicadores 2, results='asis'}
+df_links_otros2 <- df_links %>%
+  filter(Indicador == "Otros indicadores 2" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros2) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros2$Enlace[1],
+      df_links_otros2$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros2$Enlace[1],
+        df_links_otros2$Titulo[1])
+      ))
+    if (nrow(df_links_otros2) > 2) {
+      if (nrow(df_links_otros2) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros2$Enlace[2],
+            df_links_otros2$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros2)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros2$Enlace[i],
+                df_links_otros2$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros2$Enlace[nrow(df_links_otros2)],
+        df_links_otros2$Titulo[nrow(df_links_otros2)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -857,13 +1014,13 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<div class="column highlight" style="margin-bottom: -9px;">
+<div class="column highlight"">
 <div class="row" style="margin-top: 10px">
   <div class="column-2">`r get_indicator4s("16 - 44", paste0(Gasto_por_turista_d_menor_C, " €"), paste0(Gasto_por_turista_d_menor, " €"))`</div>
   <div class="column-2">`r get_indicator4s("&gt; 44", paste0(Gasto_por_turista_d_mayor_C, " €"), paste0(Gasto_por_turista_d_mayor, " €"))`</div>
 </div>
 </div>
-<div class="column highlight" style="margin-bottom: -9px;">
+<div class="column highlight"">
 <div class="row" style="margin-top: 10px">
   <div class="column-2">`r get_indicator4s("Activos", paste0(Gasto_tur_sl_d_Act_C, " €"), paste0(Gasto_tur_sl_d_Act, " €"))`</div>
   <div class="column-2">`r get_indicator4s("No activos", paste0(Gasto_tur_sl_d_NAct_C, " €"), paste0(Gasto_tur_sl_d_NAct, " €"))`</div>
@@ -876,12 +1033,47 @@ mapa_isla_plot
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:82620c58-b532-4cf8-8567-92a962b00a25",
-        "Gastos medios según nivel educativo")`
-  `r get_indicator_mod_last(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:39d02f9a-5b79-43ed-a57b-a158960c67e1",
-        "Gastos medios según noches pernoctadas")`
+```{r Enlaces Otros indicadores 3, results='asis'}
+df_links_otros3 <- df_links %>%
+  filter(Indicador == "Otros indicadores 3" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros3) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros3$Enlace[1],
+      df_links_otros3$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros3$Enlace[1],
+        df_links_otros3$Titulo[1])
+      ))
+    if (nrow(df_links_otros3) > 2) {
+      if (nrow(df_links_otros3) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros3$Enlace[2],
+            df_links_otros3$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros3)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros3$Enlace[i],
+                df_links_otros3$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros3$Enlace[nrow(df_links_otros3)],
+        df_links_otros3$Titulo[nrow(df_links_otros3)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
