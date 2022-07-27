@@ -736,6 +736,9 @@ if(nchar(GAP) > 4){
 get_indicator2_GAP = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content' style='padding-left: %spx;'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, padding_left, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -753,6 +756,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "presupuestos") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -760,9 +771,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/collection.html?resourceType=collection&agencyId=ISTAC&resourceId=E31025B_000001",
-        "Estadística Presupuestaria de las Entidades Locales de Canarias"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -778,13 +788,12 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E31025B_000001&version=~latest#visualization/table",
-        "Liquidación del presupuesto consolidado de ingresos y gastos según capítulos de la estructura económica y fases presupuestarias"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Indicador principal")],
+        df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="linechart-placeholder">
+<div class="linechart-placeholder" style="margin-bottom: 20px;">
 <h2 style="color: #005980; margin: 0;">`r Num_Presupuesto` mill.€ de ingresos ejecutados</h2>
 <div class="linechart">
   `r g_line`
@@ -810,15 +819,50 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=PRESUPUESTO_AYUNTAMIENTOS_LIQUIDADO_INGRESO_HABITANTE#visualization/table",
-        "Presupuesto liquidado. Ingresos por habitante")`
-  `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=PRESUPUESTO_AYUNTAMIENTOS_LIQUIDADO_GASTO_HABITANTE#visualization/table",
-        "Presupuesto liquidado. Gastos por habitante")`
+```{r Enlaces Indicadores principales, results='asis'}
+df_links_principales <- df_links %>%
+  filter(Indicador == "Indicadores principales" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_principales) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_principales$Enlace[1],
+      df_links_principales$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_principales$Enlace[1],
+        df_links_principales$Titulo[1])
+      ))
+    if (nrow(df_links_principales) > 2) {
+      if (nrow(df_links_principales) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_principales$Enlace[2],
+            df_links_principales$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_principales)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_principales$Enlace[i],
+                df_links_principales$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_principales$Enlace[nrow(df_links_principales)],
+        df_links_principales$Titulo[nrow(df_links_principales)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
-<div class="highlight-modulo" style="padding: 35px 15px;">
+<div class="highlight-modulo" style="padding: 22px 15px;">
 <div class="row" style="margin: 15px 0;">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){
@@ -912,9 +956,47 @@ mapa_comarca_plot
 
 <div class="row" style="margin-top: 10px;">
 <div class="row">
-  `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E31025B_000004&version=~latest&multidatasetId=ISTAC:E31025B_000001#visualization/table",
-        "Liquidación del presupuesto consolidado de ingresos y gastos según artículos de la estructura económica y fases presupuestarias")`
+```{r Enlaces Otros indicadores 1, results='asis'}
+df_links_otros1 <- df_links %>%
+  filter(Indicador == "Otros indicadores 1" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros1) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros1$Enlace[1],
+      df_links_otros1$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros1$Enlace[1],
+        df_links_otros1$Titulo[1])
+      ))
+    if (nrow(df_links_otros1) > 2) {
+      if (nrow(df_links_otros1) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros1$Enlace[2],
+            df_links_otros1$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros1)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros1$Enlace[i],
+                df_links_otros1$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros1$Enlace[nrow(df_links_otros1)],
+        df_links_otros1$Titulo[nrow(df_links_otros1)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -970,9 +1052,47 @@ mapa_comarca_plot
 
 <div class="row" style="margin-top: 10px;">
 <div class="row">
-  `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E31025B_000002&version=~latest#visualization/table",
-        "Liquidación del presupuesto consolidado de gastos según estructura funcional, capítulos de la estructura económica y fases presupuestarias")`
+```{r Enlaces Otros indicadores 2, results='asis'}
+df_links_otros2 <- df_links %>%
+  filter(Indicador == "Otros indicadores 2" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros2) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros2$Enlace[1],
+      df_links_otros2$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros2$Enlace[1],
+        df_links_otros2$Titulo[1])
+      ))
+    if (nrow(df_links_otros2) > 2) {
+      if (nrow(df_links_otros2) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros2$Enlace[2],
+            df_links_otros2$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros2)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros2$Enlace[i],
+                df_links_otros2$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros2$Enlace[nrow(df_links_otros2)],
+        df_links_otros2$Titulo[nrow(df_links_otros2)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -1005,9 +1125,47 @@ mapa_comarca_plot
 
 <div class="row" style="margin-top: 10px;">
 <div class="row">
-  `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E31025B_000003&version=~latest#visualization/table",
-        "Indicadores generales de los presupuestos consolidados ejecutados")`
+```{r Enlaces Otros indicadores 3, results='asis'}
+df_links_otros3 <- df_links %>%
+  filter(Indicador == "Otros indicadores 3" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros3) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros3$Enlace[1],
+      df_links_otros3$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros3$Enlace[1],
+        df_links_otros3$Titulo[1])
+      ))
+    if (nrow(df_links_otros3) > 2) {
+      if (nrow(df_links_otros3) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros3$Enlace[2],
+            df_links_otros3$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros3)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros3$Enlace[i],
+                df_links_otros3$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros3$Enlace[nrow(df_links_otros3)],
+        df_links_otros3$Titulo[nrow(df_links_otros3)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">

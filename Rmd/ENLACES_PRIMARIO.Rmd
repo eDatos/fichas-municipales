@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38036
+  id_municipio: 38050
   año: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -751,6 +751,9 @@ get_indicator2 = function(label, value, image) {
 get_indicator3 = function(label, value, image) {
   return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -768,6 +771,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "sector_primario") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -775,8 +786,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "http://www.gobiernodecanarias.org/istac/estadisticas/sectorprimario/",
-        "Sector primario")`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -792,8 +803,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=SUPERFICIE_CULTIVO#visualization/table",
-        "Superficie cultivada")`
+        df_links$Enlace[which(df_links$Indicador == "Indicador principal")],
+        df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -817,17 +828,52 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=SUPERFICIE_CULTIVO_SECANO#visualization/table",
-        "Superficie cultivada. Secano")`
-  `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=SUPERFICIE_CULTIVO_REGADIO#visualization/table",
-        "Superficie cultivada. Regadío")`
+```{r Enlaces Indicadores principales, results='asis'}
+df_links_principales <- df_links %>%
+  filter(Indicador == "Indicadores principales" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_principales) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_principales$Enlace[1],
+      df_links_principales$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_principales$Enlace[1],
+        df_links_principales$Titulo[1])
+      ))
+    if (nrow(df_links_principales) > 2) {
+      if (nrow(df_links_principales) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_principales$Enlace[2],
+            df_links_principales$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_principales)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_principales$Enlace[i],
+                df_links_principales$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_principales$Enlace[nrow(df_links_principales)],
+        df_links_principales$Titulo[nrow(df_links_principales)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding: 35px 15px;">
 <div class="row">
-```{r indicadores principales, results='asis'}
+```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA"){
   cat(paste0(
     "<div class='column-2-ind'>", get_indicator2(paste0('Secano<br/></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-2-ind'>", get_indicator2(paste0('Regadío<br/></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
@@ -896,12 +942,47 @@ mapa_comarca_plot
 </div>
 
 <div class="row">
-  `r get_indicator_mod_first(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:fc6d7c86-8956-4d3b-91f0-50ec367baf57&uripub=urn:uuid:ef5f2e5c-e2c4-4c1d-b5ed-c20fe946ce6f",
-        "Superficie de cultivos herbáceos según cultivos y sistemas de cultivo")`
-  `r get_indicator_mod_last(
-        "http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?uripx=urn:uuid:803af13a-04f6-4789-8e78-48f5fdff64a7&uripub=urn:uuid:ef5f2e5c-e2c4-4c1d-b5ed-c20fe946ce6f",
-        "Superficie en plantación regular y árboles diseminados de cultivos leñosos según cultivos y sistemas de cultivo")`
+```{r Enlaces Otros indicadores 1, results='asis'}
+df_links_otros1 <- df_links %>%
+  filter(Indicador == "Otros indicadores 1" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros1) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros1$Enlace[1],
+      df_links_otros1$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros1$Enlace[1],
+        df_links_otros1$Titulo[1])
+      ))
+    if (nrow(df_links_otros1) > 2) {
+      if (nrow(df_links_otros1) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros1$Enlace[2],
+            df_links_otros1$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros1)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros1$Enlace[i],
+                df_links_otros1$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros1$Enlace[nrow(df_links_otros1)],
+        df_links_otros1$Titulo[nrow(df_links_otros1)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -949,29 +1030,50 @@ mapa_comarca_plot
 
 </div>
 </div>
+</div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E01008B_000002&version=~latest#visualization/table",
-        "Número de explotaciones según especies")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E01008B_000001&version=~latest#visualization/table",
-        "Efectivos de ganado según especies")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=GANADO_BOVINO#visualization/table",
-        "Cabezas de ganado. Bovino")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=GANADO_CAPRINO#visualization/table",
-        "Cabezas de ganado. Caprino")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=GANADO_OVINO#visualization/table",
-        "Cabezas de ganado. Ovino")`
-  `r get_indicator_mod_inter(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=indicator&resourceId=GANADO_PORCINO#visualization/table",
-        "Cabezas de ganado. Porcino")`
-  `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E01008B_000010&version=~latest#visualization/table",
-        "Efectivos de ganado apícola según sistemas productivos")`
+```{r Enlaces Otros indicadores 2, results='asis'}
+df_links_otros2 <- df_links %>%
+  filter(Indicador == "Otros indicadores 2" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros2) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros2$Enlace[1],
+      df_links_otros2$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros2$Enlace[1],
+        df_links_otros2$Titulo[1])
+      ))
+    if (nrow(df_links_otros2) > 2) {
+      if (nrow(df_links_otros2) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros2$Enlace[2],
+            df_links_otros2$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros2)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros2$Enlace[i],
+                df_links_otros2$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros2$Enlace[nrow(df_links_otros2)],
+        df_links_otros2$Titulo[nrow(df_links_otros2)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">

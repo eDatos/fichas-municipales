@@ -729,6 +729,9 @@ g_afil_ae_sexo_mun <- ggplotly(g_afil_ae_sexo_mun, tooltip = c("text")) %>%
 get_indicator2 = function(label, value, image) {
   return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -746,6 +749,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "afiliacion_residencia") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -753,9 +764,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/collection.html?resourceType=collection&agencyId=ISTAC&resourceId=E58015B_000002",
-        "Estadística de Afiliación a la Seguridad Social según lugar de residencia"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -771,9 +781,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E58015B_000037&version=~latest#visualization/table",
-        "Afiliaciones según situaciones en el empleo, nacionalidades y sexos. Lugar de residencia"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Indicador principal")],
+        df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 2px;">
@@ -851,13 +860,47 @@ mapa_comarca_plot
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E58015B_000042&version=~latest#visualization/table",
-        "Afiliaciones según sexos y grupos de edad")`
-  `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E58015B_000032&version=~latest&multidatasetId=ISTAC:E58015B_000010#visualization/table",
-        "Afiliaciones según situaciones en el empleo, actividad económica y sexos"
-        )`
+```{r Enlaces Otros indicadores 1, results='asis'}
+df_links_otros1 <- df_links %>%
+  filter(Indicador == "Otros indicadores 1" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros1) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros1$Enlace[1],
+      df_links_otros1$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros1$Enlace[1],
+        df_links_otros1$Titulo[1])
+      ))
+    if (nrow(df_links_otros1) > 2) {
+      if (nrow(df_links_otros1) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros1$Enlace[2],
+            df_links_otros1$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros1)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros1$Enlace[i],
+                df_links_otros1$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros1$Enlace[nrow(df_links_otros1)],
+        df_links_otros1$Titulo[nrow(df_links_otros1)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
@@ -904,10 +947,47 @@ mapa_comarca_plot
 </div>
 
 <div class="row" style="margin-top: 10px;">
-  `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E58015B_000037&version=~latest#visualization/table",
-        "Afiliaciones según situaciones en el empleo, nacionalidades y sexos"
-        )`
+```{r Enlaces Otros indicadores 2, results='asis'}
+df_links_otros2 <- df_links %>%
+  filter(Indicador == "Otros indicadores 2" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros2) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros2$Enlace[1],
+      df_links_otros2$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros2$Enlace[1],
+        df_links_otros2$Titulo[1])
+      ))
+    if (nrow(df_links_otros2) > 2) {
+      if (nrow(df_links_otros2) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros2$Enlace[2],
+            df_links_otros2$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:nrow(df_links_otros2)-1)) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros2$Enlace[i],
+                df_links_otros2$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros2$Enlace[nrow(df_links_otros2)],
+        df_links_otros2$Titulo[nrow(df_links_otros2)])
+      ))
+  }
+```
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">

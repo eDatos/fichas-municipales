@@ -497,6 +497,9 @@ get_indicator2 = function(label, value, image) {
 get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
+```
+
+```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
   return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
 }
@@ -510,6 +513,14 @@ get_indicator_mod_last = function(url, label) {
 }
 ```
 
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+
+df_links <- links %>%
+  filter(Tematica == "europeas") %>%
+  select(!c(Tematica, Otros))
+```
+
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
 <hr>
@@ -517,9 +528,8 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod(
-        "https://www3.gobiernodecanarias.org/istac/elecciones/#/",
-        "Sistema de Información Electoral en Canarias"
-        )`
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
@@ -535,11 +545,12 @@ get_indicator_mod_last = function(url, label) {
 
 <div class="row" style="margin-top: 10px;">
   `r get_indicator_mod_first(
-        "https://www3.gobiernodecanarias.org/istac/elecciones/#/evolucion-electoral/ES70?tipoEleccion=parlamento_europeo",
-        "Participación electoral en Canarias. Parlamento Europeo")`
+        df_links$Enlace[which(df_links$Indicador == "Participación")],
+        df_links$Titulo[which(df_links$Indicador == "Participación")])`
+
   `r get_indicator_mod_last(
-        "https://www3.gobiernodecanarias.org/istac/elecciones/#/proceso-electoral/ES70/PARLAMENTO_EUROPEO_2019/visualization/table",
-        "Resultados de elecciones al Parlamento Europeo")`
+        df_links$Enlace[which(df_links$Indicador == "Resultados")],
+        df_links$Titulo[which(df_links$Indicador == "Resultados")])`
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">

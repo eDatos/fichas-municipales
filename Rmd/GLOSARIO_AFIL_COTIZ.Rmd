@@ -26,8 +26,8 @@ get_indicator_met_ = function(label, description) {
 <div class="row highlight card-columns-3">
   `r get_indicator_met_("Actividad económica", "Se define como la generación de valor añadido mediante la producción de bienes y servicios.")`
   `r get_indicator_met_("Afiliaciones según el lugar de cotización", "Puestos de trabajo registrados en la Seguridad Social y referidos al último día del mes. El lugar de referencia es el domicilio de cotización de la empresa o del autónomo. Se contabilizan los puestos ocupados por personas en situación de alta, contemplando las afiliaciones múltiples de una misma persona.")`
-  `r get_indicator_met_("Asalariados", "Aquellas personas que trabajan a cambio de un sueldo, salario, remuneración, comisión o cualquier otra retribución en metálico o en especie, para un empresario (persona física o jurídica).")`
-  `r get_indicator_met_("Autónomos", "Aquellas personas que llevan su propia empresa o ejercen por su cuenta y con autonomía una profesión liberal, para lo cual pueden a su vez contratar empleados a los que remuneran mediante un sueldo.")`
+  `r get_indicator_met_("Trabajadores por cuenta ajena", "Aquellas personas que trabajan a cambio de un sueldo, salario, remuneración, comisión o cualquier otra retribución en metálico o en especie, para un empresario (persona física o jurídica).")`
+  `r get_indicator_met_("Trabajadores por cuenta propia", "Aquellas personas que llevan su propia empresa o ejercen por su cuenta y con autonomía una profesión liberal, para lo cual pueden a su vez contratar empleados a los que remuneran mediante un sueldo.")`
   `r get_indicator_met_("Edad media", "Promedio de las edades de los individuos pertenecientes a un determinado ámbito a 1 de enero de un año concreto.")`
   `r get_indicator_met_("Tasa de variación", "Incremento o disminución porcentual en el número de individuos pertenecientes a un determinado ámbito con respecto al mismo mes del año anterior al seleccionado.")`
 </div>
