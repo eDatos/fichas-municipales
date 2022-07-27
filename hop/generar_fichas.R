@@ -159,13 +159,17 @@ electorales <- data.frame(
   transform(A = gsub("n", "_NOVIEMBRE", A)) %>%
   select(!name)
 
+periods_COVID <- periods %>%
+  filter(code %in% c("alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia") & A == 2020 & (Q == 2 | M %in% c(4:7)))
+
 "%notin%" <- Negate("%in%")
 periods <- periods %>%
   filter(code %notin% c("afiliacion_residencia", "afiliacion_cotizacion", "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")) %>%
   full_join(periods %>% filter(code %in% c("afiliacion_residencia", "afiliacion_cotizacion") & A != "2012" & M %in% c(3, 6, 9, 12)), by = c("code", "A", "Q", "M")) %>%
-  full_join(periods %>% filter(code == "alojamientos_turisticos" & A != "2009"), by = c("code", "A", "Q", "M")) %>% 
+  full_join(periods %>% filter(code == "alojamientos_turisticos" & A != "2009"), by = c("code", "A", "Q", "M")) %>%
   full_join(periods %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia") & A != "2018"), by = c("code", "A", "Q", "M")) %>%
-  full_join(electorales, by = c("code", "A"))
+  full_join(electorales, by = c("code", "A")) %>%
+  anti_join(periods_COVID, by = c("code", "A", "Q", "M"))
 
 municipios <- loadMunicipios()
 
