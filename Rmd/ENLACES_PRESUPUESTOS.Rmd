@@ -757,7 +757,7 @@ get_indicator_mod_last = function(url, label) {
 ```
 
 ```{r csv Enlaces}
-links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
 
 df_links <- links %>%
   filter(Tematica == "presupuestos") %>%
@@ -793,7 +793,7 @@ df_links <- links %>%
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="linechart-placeholder">
+<div class="linechart-placeholder" style="margin-bottom: 20px;">
 <h2 style="color: #005980; margin: 0;">`r Num_Presupuesto` mill.€ de ingresos ejecutados</h2>
 <div class="linechart">
   `r g_line`
@@ -862,7 +862,7 @@ if (nrow(df_links_principales) == 1) {
 ```
 
 <div class="column-modulo-right">
-<div class="highlight-modulo" style="padding: 35px 15px;">
+<div class="highlight-modulo" style="padding: 22px 15px;">
 <div class="row" style="margin: 15px 0;">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){

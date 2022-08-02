@@ -660,7 +660,7 @@ get_indicator_mod_last = function(url, label) {
 ```
 
 ```{r csv Enlaces}
-links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
 
 df_links <- links %>%
   filter(Tematica == "perfil_turista") %>%
@@ -734,7 +734,7 @@ if (nrow(df_links_indicadores) == 1) {
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="linechart-placeholder">
+<div class="linechart-placeholder" style="margin-bottom: 20px;">
 <h2 style="color: #005980; margin: 0;">`r Num_Turistas` turistas</h2>
 <div class="linechart">
   `r g_line`
@@ -788,14 +788,14 @@ mapa_isla_plot
 </div>
 </div>
 <div class="column-3" style="margin: 0;">
-<div class="column" style="width: 100% !important;">
-<div class="row highlight" style="width: 100% !important; margin-top: -5px; padding: 3px; padding-bottom: 0;">
+<div class="column" style="width: 100% !important; padding: 0;">
+<div class="row highlight" style="width: 100% !important; padding: 3px; padding-bottom: 0;">
   <h3>Grupos de edad</h3>
   <hr class='separator'>
   <div class="column-2">`r get_indicator4s("16 - 44", paste0(Percent_Turistas_menos44_C, "%"), paste0(Percent_Turistas_menos44, "%"))`</div>
   <div class="column-2">`r get_indicator4s("&gt; 44", paste0(Percent_Turistas_mas44_C, "%"), paste0(Percent_Turistas_mas44, "%"))`</div>
 </div>
-<div class="row highlight" style="width: 100% !important; padding-left: 0; margin-top: 12px;">
+<div class="row highlight" style="width: 100% !important; padding-left: 0; margin-top: 8px;">
   <div style= "margin-left: 50px;">`r get_indicator2b("Vacaciones", paste0(Percent_Vacaciones, "%"),"./img/vacaciones.png")`</div>
 </div>
 </div>
@@ -850,7 +850,7 @@ if (nrow(df_links_otros1) == 1) {
 ```
 
 <div class="column-modulo-right">
-<div class="highlight-modulo" style="padding-bottom: 20px;">
+<div class="highlight-modulo" style="padding-bottom: 5px;">
 <div class="row" style="margin-top: -15px;">
 <div class="column-3">
 <div class="indicator-title-row" style="margin-top: 0;">

@@ -678,7 +678,7 @@ get_indicator_mod_last = function(url, label) {
 ```
 
 ```{r csv Enlaces}
-links <- read.csv2("../enlaces.csv", encoding = "windows-1252", sep = ",")
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
 
 df_links <- links %>%
   filter(Tematica == "alojamientos_turisticos") %>%
@@ -925,6 +925,7 @@ if(Plazas_Hoteles == "NA" & Plazas_Apartamentos != "NA"){
       ))
     }
 ```
+</div>
 </div>
 
 </div>
