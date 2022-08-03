@@ -926,6 +926,7 @@ if(Plazas_Hoteles == "NA" & Plazas_Apartamentos != "NA"){
     }
 ```
 </div>
+</div>
 
 </div>
 </div>
