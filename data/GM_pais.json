@@ -1,6 +1,6 @@
 {
   "uuid" : "7f56ab7b-ac57-4e2d-9b8a-02fa434cfbd6",
-  "title" : "Gastos medios, incluyendo desgloses del gasto, según países de residencia por periodos.",
+  "title" : "Gastos medios según países de residencia por periodos.",
   "uriPx" : "urn:uuid:cce945de-a4d1-412c-a8c5-49875db31243",
   "stub" : [ "Indicadores de gasto", "Países de residencia", "Municipios" ],
   "heading" : [ "Periodos" ],
@@ -18,8 +18,8 @@
     "labels" : [ "CANARIAS", "LANZAROTE", " Arrecife", " Teguise", " Tías", " Yaiza", "FUERTEVENTURA", " Antigua", " La Oliva", " Pájara", " Puerto del Rosario", "GRAN CANARIA", " Las Palmas de Gran Canaria", " Mogán", " San Bartolomé de Tirajana", "TENERIFE", " Adeje", " Arona", " Puerto de la Cruz", " Santa Cruz de Tenerife", " Santiago del Teide", "LA PALMA" ]
   }, {
     "variable" : "Periodos",
-    "codes" : [ "2021", "2021Q4", "2021Q3", "2021Q2", "2021Q1", "2020", "2020Q4", "2020Q3", "2020Q2", "2020Q1", "2019", "2019Q4", "2019Q3", "2019Q2", "2019Q1", "2018", "2018Q4", "2018Q3", "2018Q2", "2018Q1" ],
-    "labels" : [ "2021", "2021 Cuarto trimestre", "2021 Tercer trimestre", "2021 Segundo trimestre", "2021 Primer trimestre", "2020", "2020 Cuarto trimestre", "2020 Tercer trimestre", "2020 Segundo trimestre", "2020 Primer trimestre", "2019", "2019 Cuarto trimestre", "2019 Tercer trimestre", "2019 Segundo trimestre", "2019 Primer trimestre", "2018", "2018 Cuarto trimestre", "2018 Tercer trimestre", "2018 Segundo trimestre", "2018 Primer trimestre" ]
+    "codes" : [ "2022Q2", "2022Q1", "2021", "2021Q4", "2021Q3", "2021Q2", "2021Q1", "2020", "2020Q4", "2020Q3", "2020Q2", "2020Q1", "2019", "2019Q4", "2019Q3", "2019Q2", "2019Q1", "2018", "2018Q4", "2018Q3", "2018Q2", "2018Q1" ],
+    "labels" : [ "2022 Segundo trimestre", "2022 Primer trimestre", "2021", "2021 Cuarto trimestre", "2021 Tercer trimestre", "2021 Segundo trimestre", "2021 Primer trimestre", "2020", "2020 Cuarto trimestre", "2020 Tercer trimestre", "2020 Segundo trimestre", "2020 Primer trimestre", "2019", "2019 Cuarto trimestre", "2019 Tercer trimestre", "2019 Segundo trimestre", "2019 Primer trimestre", "2018", "2018 Cuarto trimestre", "2018 Tercer trimestre", "2018 Segundo trimestre", "2018 Primer trimestre" ]
   } ],
   "temporals" : [ "Periodos" ],
   "spatials" : [ "Países de residencia" ],
@@ -29,6 +29,12 @@
   "surveyTitle" : "Encuesta sobre el Gasto Turístico",
   "publishers" : [ "Instituto Canario de Estadística (ISTAC)" ],
   "data" : [ {
+    "Valor" : "1204.51",
+    "dimCodes" : [ "Gasto por turista", "0", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "1278.83",
+    "dimCodes" : [ "Gasto por turista", "0", "ES70", "2022Q1" ]
+  }, {
     "Valor" : "1205.98",
     "dimCodes" : [ "Gasto por turista", "0", "ES70", "2021" ]
   }, {
@@ -88,6 +94,12 @@
   }, {
     "Valor" : "1149.06",
     "dimCodes" : [ "Gasto por turista", "0", "ES70", "2018Q1" ]
+  }, {
+    "Valor" : "1181.28",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "1132.45",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708", "2022Q1" ]
   }, {
     "Valor" : "1171.61",
     "dimCodes" : [ "Gasto por turista", "0", "ES708", "2021" ]
@@ -149,6 +161,12 @@
     "Valor" : "1026.10",
     "dimCodes" : [ "Gasto por turista", "0", "ES708", "2018Q1" ]
   }, {
+    "Valor" : "792.92",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "729.24",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35004", "2022Q1" ]
+  }, {
     "Valor" : "769.14",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35004", "2021" ]
   }, {
@@ -208,6 +226,12 @@
   }, {
     "Valor" : "789.87",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35004", "2018Q1" ]
+  }, {
+    "Valor" : "1008.90",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "1016.93",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35024", "2022Q1" ]
   }, {
     "Valor" : "1083.00",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35024", "2021" ]
@@ -269,6 +293,12 @@
     "Valor" : "966.88",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35024", "2018Q1" ]
   }, {
+    "Valor" : "1135.66",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "1089.41",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35028", "2022Q1" ]
+  }, {
     "Valor" : "1109.31",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35028", "2021" ]
   }, {
@@ -328,6 +358,12 @@
   }, {
     "Valor" : "1019.47",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35028", "2018Q1" ]
+  }, {
+    "Valor" : "1370.33",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "1308.64",
+    "dimCodes" : [ "Gasto por turista", "0", "ES708_35034", "2022Q1" ]
   }, {
     "Valor" : "1367.17",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35034", "2021" ]
@@ -389,6 +425,12 @@
     "Valor" : "1119.68",
     "dimCodes" : [ "Gasto por turista", "0", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "1142.12",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "1244.08",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "1302.88",
     "dimCodes" : [ "Gasto por turista", "0", "ES704", "2021" ]
   }, {
@@ -448,6 +490,12 @@
   }, {
     "Valor" : "1098.76",
     "dimCodes" : [ "Gasto por turista", "0", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "1077.49",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "1185.93",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "1381.62",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35003", "2021" ]
@@ -509,6 +557,12 @@
     "Valor" : "1046.04",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "1126.26",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "1162.74",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "1123.73",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35014", "2021" ]
   }, {
@@ -569,6 +623,12 @@
     "Valor" : "1013.74",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1182.44",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "1334.01",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "1386.26",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35015", "2021" ]
   }, {
@@ -628,6 +688,13 @@
   }, {
     "Valor" : "1185.13",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "1002.02",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "664.27",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "0", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "709.14",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35017", "2021" ]
@@ -695,6 +762,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "0", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1216.91",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "1440.08",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "1234.73",
     "dimCodes" : [ "Gasto por turista", "0", "ES705", "2021" ]
   }, {
@@ -754,6 +827,12 @@
   }, {
     "Valor" : "1262.73",
     "dimCodes" : [ "Gasto por turista", "0", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "702.74",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "1174.03",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "894.06",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35016", "2021" ]
@@ -815,6 +894,12 @@
     "Valor" : "812.59",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1351.47",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "1472.18",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "1348.68",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35012", "2021" ]
   }, {
@@ -874,6 +959,12 @@
   }, {
     "Valor" : "1367.47",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "1342.39",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "1570.44",
+    "dimCodes" : [ "Gasto por turista", "0", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "1373.25",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35019", "2021" ]
@@ -935,6 +1026,12 @@
     "Valor" : "1386.48",
     "dimCodes" : [ "Gasto por turista", "0", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1241.23",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "1242.15",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "1169.16",
     "dimCodes" : [ "Gasto por turista", "0", "ES709", "2021" ]
   }, {
@@ -994,6 +1091,12 @@
   }, {
     "Valor" : "1131.70",
     "dimCodes" : [ "Gasto por turista", "0", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1404.55",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "1437.80",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "1348.79",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38001", "2021" ]
@@ -1055,6 +1158,12 @@
     "Valor" : "1271.72",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1217.47",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "1308.38",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "1192.62",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38006", "2021" ]
   }, {
@@ -1114,6 +1223,12 @@
   }, {
     "Valor" : "1176.33",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38006", "2018Q1" ]
+  }, {
+    "Valor" : "967.45",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "1091.57",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38028", "2022Q1" ]
   }, {
     "Valor" : "993.87",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38028", "2021" ]
@@ -1175,6 +1290,12 @@
     "Valor" : "1044.61",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38028", "2018Q1" ]
   }, {
+    "Valor" : "820.80",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "955.64",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38038", "2022Q1" ]
+  }, {
     "Valor" : "832.28",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38038", "2021" ]
   }, {
@@ -1234,6 +1355,12 @@
   }, {
     "Valor" : "802.23",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38038", "2018Q1" ]
+  }, {
+    "Valor" : "1196.78",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "1193.09",
+    "dimCodes" : [ "Gasto por turista", "0", "ES709_38040", "2022Q1" ]
   }, {
     "Valor" : "1155.80",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38040", "2021" ]
@@ -1295,6 +1422,12 @@
     "Valor" : "1092.06",
     "dimCodes" : [ "Gasto por turista", "0", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "853.49",
+    "dimCodes" : [ "Gasto por turista", "0", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "1094.50",
+    "dimCodes" : [ "Gasto por turista", "0", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "1007.47",
     "dimCodes" : [ "Gasto por turista", "0", "ES707", "2021" ]
   }, {
@@ -1354,6 +1487,12 @@
   }, {
     "Valor" : "1051.37",
     "dimCodes" : [ "Gasto por turista", "0", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "1400.89",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "1425.02",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES70", "2022Q1" ]
   }, {
     "Valor" : "1479.62",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES70", "2021" ]
@@ -1415,6 +1554,12 @@
     "Valor" : "1308.92",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1436.01",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "1321.15",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "1333.43",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708", "2021" ]
   }, {
@@ -1474,6 +1619,14 @@
   }, {
     "Valor" : "1252.38",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "805.11",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "1125.25",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "702.50",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35004", "2021" ]
@@ -1551,6 +1704,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "1286.03",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "1145.23",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "1348.50",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35024", "2021" ]
   }, {
@@ -1613,6 +1772,12 @@
     "Valor" : "1134.74",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35024", "2018Q1" ]
   }, {
+    "Valor" : "1500.51",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "1370.79",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35028", "2022Q1" ]
+  }, {
     "Valor" : "1311.75",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35028", "2021" ]
   }, {
@@ -1672,6 +1837,12 @@
   }, {
     "Valor" : "1357.17",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35028", "2018Q1" ]
+  }, {
+    "Valor" : "1514.13",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "1398.93",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35034", "2022Q1" ]
   }, {
     "Valor" : "1532.66",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35034", "2021" ]
@@ -1734,6 +1905,12 @@
     "Valor" : "1285.46",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "1437.93",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "1367.27",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "1671.60",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704", "2021" ]
   }, {
@@ -1793,6 +1970,14 @@
   }, {
     "Valor" : "1232.51",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "1149.46",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "2052.05",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "3683.29",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35003", "2021" ]
@@ -1860,6 +2045,12 @@
     "Valor" : "1161.21",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "1960.12",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "1172.20",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "1470.14",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35014", "2021" ]
   }, {
@@ -1920,6 +2111,12 @@
     "Valor" : "1101.70",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1345.63",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "1417.74",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "1580.25",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35015", "2021" ]
   }, {
@@ -1979,6 +2176,13 @@
   }, {
     "Valor" : "1280.35",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : ".",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "784.02",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "1097.72",
     "comentarioDATANOTECELL" : "(*)",
@@ -2056,6 +2260,12 @@
     "Valor" : ".",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1325.12",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "1486.09",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "1446.21",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705", "2021" ]
   }, {
@@ -2115,6 +2325,13 @@
   }, {
     "Valor" : "1437.97",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "851.00",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "1267.85",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "1047.28",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35016", "2021" ]
@@ -2178,6 +2395,12 @@
     "Valor" : "744.14",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1332.93",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "1484.44",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "1386.21",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35012", "2021" ]
   }, {
@@ -2237,6 +2460,12 @@
   }, {
     "Valor" : "1584.44",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "1403.03",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "1504.30",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "1553.82",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35019", "2021" ]
@@ -2298,6 +2527,12 @@
     "Valor" : "1548.47",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1445.48",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "1417.68",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "1352.55",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709", "2021" ]
   }, {
@@ -2357,6 +2592,12 @@
   }, {
     "Valor" : "1258.35",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1581.14",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "1588.11",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "1543.67",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38001", "2021" ]
@@ -2418,6 +2659,12 @@
     "Valor" : "1524.92",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1744.85",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "2253.85",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "1289.92",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38006", "2021" ]
   }, {
@@ -2478,6 +2725,12 @@
     "Valor" : "1003.30",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "1282.93",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "1552.93",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "1215.32",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38028", "2021" ]
   }, {
@@ -2537,6 +2790,14 @@
   }, {
     "Valor" : "1205.01",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "1035.18",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "800.81",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "1033.96",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38038", "2021" ]
@@ -2612,6 +2873,14 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "1053.61",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "1745.31",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "1319.97",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38040", "2021" ]
   }, {
@@ -2684,6 +2953,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "1207.72",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "1530.89",
+    "dimCodes" : [ "Gasto por turista", "DEU276", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "1510.80",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES707", "2021" ]
   }, {
@@ -2743,6 +3018,12 @@
   }, {
     "Valor" : "1202.26",
     "dimCodes" : [ "Gasto por turista", "DEU276", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "748.64",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "725.08",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES70", "2022Q1" ]
   }, {
     "Valor" : "797.17",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES70", "2021" ]
@@ -2804,6 +3085,12 @@
     "Valor" : "735.63",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "757.93",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "706.68",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "901.96",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708", "2021" ]
   }, {
@@ -2863,6 +3150,12 @@
   }, {
     "Valor" : "791.46",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "563.03",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "560.61",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "735.72",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35004", "2021" ]
@@ -2931,6 +3224,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "771.41",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "675.12",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "862.72",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35024", "2021" ]
   }, {
@@ -2990,6 +3289,12 @@
   }, {
     "Valor" : "655.17",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "732.59",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "706.73",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "828.86",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35028", "2021" ]
@@ -3051,6 +3356,12 @@
     "Valor" : "645.29",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "888.38",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "827.92",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "1150.90",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35034", "2021" ]
   }, {
@@ -3111,6 +3422,12 @@
     "Valor" : "1096.98",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "716.16",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "872.33",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "870.84",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704", "2021" ]
   }, {
@@ -3170,6 +3487,12 @@
   }, {
     "Valor" : "790.81",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "612.92",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "800.25",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "852.88",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35003", "2021" ]
@@ -3235,6 +3558,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "695.34",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "835.54",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "867.77",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35014", "2021" ]
   }, {
@@ -3294,6 +3623,12 @@
   }, {
     "Valor" : "732.98",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35014", "2018Q1" ]
+  }, {
+    "Valor" : "827.93",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "1065.26",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35015", "2022Q1" ]
   }, {
     "Valor" : "933.29",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35015", "2021" ]
@@ -3356,6 +3691,14 @@
     "Valor" : "1040.78",
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "403.01",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "453.61",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "579.12",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35017", "2021" ]
@@ -3432,6 +3775,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "703.03",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "695.77",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "738.70",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705", "2021" ]
   }, {
@@ -3492,6 +3841,12 @@
     "Valor" : "624.32",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705", "2018Q1" ]
   }, {
+    "Valor" : "537.15",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "612.14",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35016", "2022Q1" ]
+  }, {
     "Valor" : "624.91",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35016", "2021" ]
   }, {
@@ -3551,6 +3906,12 @@
   }, {
     "Valor" : "510.74",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35016", "2018Q1" ]
+  }, {
+    "Valor" : "894.19",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "872.63",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35012", "2022Q1" ]
   }, {
     "Valor" : "777.93",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35012", "2021" ]
@@ -3613,6 +3974,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35012", "2018Q1" ]
   }, {
+    "Valor" : "904.27",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "890.86",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35019", "2022Q1" ]
+  }, {
     "Valor" : "940.12",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35019", "2021" ]
   }, {
@@ -3672,6 +4039,12 @@
   }, {
     "Valor" : "934.94",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES705_35019", "2018Q1" ]
+  }, {
+    "Valor" : "794.68",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "724.76",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709", "2022Q1" ]
   }, {
     "Valor" : "763.63",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709", "2021" ]
@@ -3733,6 +4106,12 @@
     "Valor" : "784.41",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709", "2018Q1" ]
   }, {
+    "Valor" : "990.82",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "1000.47",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38001", "2022Q1" ]
+  }, {
     "Valor" : "979.28",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38001", "2021" ]
   }, {
@@ -3792,6 +4171,12 @@
   }, {
     "Valor" : "984.25",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38001", "2018Q1" ]
+  }, {
+    "Valor" : "893.88",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "1050.09",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38006", "2022Q1" ]
   }, {
     "Valor" : "881.81",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38006", "2021" ]
@@ -3853,6 +4238,12 @@
     "Valor" : "1006.18",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "752.48",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "775.80",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "756.15",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38028", "2021" ]
   }, {
@@ -3913,6 +4304,12 @@
     "Valor" : "758.85",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38028", "2018Q1" ]
   }, {
+    "Valor" : "607.76",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "506.79",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38038", "2022Q1" ]
+  }, {
     "Valor" : "541.18",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38038", "2021" ]
   }, {
@@ -3972,6 +4369,14 @@
   }, {
     "Valor" : "533.94",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38038", "2018Q1" ]
+  }, {
+    "Valor" : "877.54",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "704.04",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38040", "2022Q1" ]
   }, {
     "Valor" : "800.59",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38040", "2021" ]
@@ -4040,6 +4445,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "625.15",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "741.29",
+    "dimCodes" : [ "Gasto por turista", "ESP724", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "828.75",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES707", "2021" ]
   }, {
@@ -4099,6 +4510,12 @@
   }, {
     "Valor" : "713.99",
     "dimCodes" : [ "Gasto por turista", "ESP724", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "1261.77",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "1207.84",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES70", "2022Q1" ]
   }, {
     "Valor" : "1241.01",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES70", "2021" ]
@@ -4160,6 +4577,12 @@
     "Valor" : "1026.79",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1253.00",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "1106.67",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "1220.09",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708", "2021" ]
   }, {
@@ -4219,6 +4642,14 @@
   }, {
     "Valor" : "977.71",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "840.74",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "603.90",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "903.92",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35004", "2021" ]
@@ -4294,6 +4725,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "1007.20",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "1018.40",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "1139.07",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35024", "2021" ]
   }, {
@@ -4354,6 +4791,12 @@
   }, {
     "Valor" : "929.29",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "1151.91",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "1014.15",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "1169.71",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35028", "2021" ]
@@ -4416,6 +4859,12 @@
     "Valor" : "947.93",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "1483.77",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "1300.49",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "1342.47",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35034", "2021" ]
   }, {
@@ -4476,6 +4925,12 @@
   }, {
     "Valor" : "1078.26",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES708_35034", "2018Q1" ]
+  }, {
+    "Valor" : "1120.12",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "1186.77",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704", "2022Q1" ]
   }, {
     "Valor" : "1039.42",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704", "2021" ]
@@ -4538,6 +4993,12 @@
     "Valor" : "1012.86",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704", "2018Q1" ]
   }, {
+    "Valor" : "1209.45",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "1113.09",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35003", "2022Q1" ]
+  }, {
     "Valor" : "965.67",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35003", "2021" ]
   }, {
@@ -4599,6 +5060,12 @@
   }, {
     "Valor" : "994.56",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35003", "2018Q1" ]
+  }, {
+    "Valor" : "1103.58",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "1161.54",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35014", "2022Q1" ]
   }, {
     "Valor" : "1100.15",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35014", "2021" ]
@@ -4663,6 +5130,12 @@
     "Valor" : "1007.21",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1037.59",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "1285.60",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "1095.30",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35015", "2021" ]
   }, {
@@ -4725,6 +5198,14 @@
   }, {
     "Valor" : "1049.22",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "807.07",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "1476.63",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "543.69",
     "comentarioDATANOTECELL" : "(*)",
@@ -4802,6 +5283,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1190.46",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "1192.65",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "1160.32",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705", "2021" ]
   }, {
@@ -4861,6 +5348,12 @@
   }, {
     "Valor" : "970.16",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "691.01",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "791.04",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "824.95",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35016", "2021" ]
@@ -4925,6 +5418,12 @@
     "Valor" : "629.16",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1179.91",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "1144.55",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "1185.03",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35012", "2021" ]
   }, {
@@ -4987,6 +5486,12 @@
     "Valor" : "1021.08",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35012", "2018Q1" ]
   }, {
+    "Valor" : "1343.12",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "1464.64",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35019", "2022Q1" ]
+  }, {
     "Valor" : "1245.44",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35019", "2021" ]
   }, {
@@ -5048,6 +5553,12 @@
     "Valor" : "1045.09",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1330.77",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "1266.68",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "1312.52",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709", "2021" ]
   }, {
@@ -5107,6 +5618,12 @@
   }, {
     "Valor" : "1078.15",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1460.14",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "1423.50",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "1402.71",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38001", "2021" ]
@@ -5168,6 +5685,12 @@
   }, {
     "Valor" : "1165.82",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38001", "2018Q1" ]
+  }, {
+    "Valor" : "1162.90",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "1218.67",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38006", "2022Q1" ]
   }, {
     "Valor" : "1217.13",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38006", "2021" ]
@@ -5231,6 +5754,12 @@
     "Valor" : "1110.52",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "1140.66",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "1053.73",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "1065.19",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38028", "2021" ]
   }, {
@@ -5293,6 +5822,14 @@
   }, {
     "Valor" : "1015.58",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "921.59",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "636.53",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "1371.78",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38038", "2021" ]
@@ -5367,6 +5904,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "1280.65",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "1034.23",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "1188.36",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38040", "2021" ]
   }, {
@@ -5428,6 +5971,13 @@
   }, {
     "Valor" : "868.48",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "1013.48",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "1020.58",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "GBR826", "ES707", "2022Q1" ]
   }, {
     "Valor" : "1457.87",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES707", "2021" ]
@@ -5493,6 +6043,12 @@
     "Valor" : "885.39",
     "dimCodes" : [ "Gasto por turista", "GBR826", "ES707", "2018Q1" ]
   }, {
+    "Valor" : "1249.38",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "1406.10",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES70", "2022Q1" ]
+  }, {
     "Valor" : "1274.41",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES70", "2021" ]
   }, {
@@ -5553,6 +6109,12 @@
     "Valor" : "1240.82",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1165.65",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "1236.43",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "1270.18",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708", "2021" ]
   }, {
@@ -5612,6 +6174,14 @@
   }, {
     "Valor" : "1059.66",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "992.85",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "788.39",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "805.81",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35004", "2021" ]
@@ -5682,6 +6252,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "1060.53",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "1133.65",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "1162.97",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35024", "2021" ]
   }, {
@@ -5741,6 +6317,12 @@
   }, {
     "Valor" : "1053.92",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "1131.90",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "1164.94",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "1145.32",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35028", "2021" ]
@@ -5802,6 +6384,12 @@
     "Valor" : "1037.55",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "1261.09",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "1455.25",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "1490.71",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35034", "2021" ]
   }, {
@@ -5862,6 +6450,12 @@
     "Valor" : "1130.40",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "970.49",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "1234.26",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "1149.68",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704", "2021" ]
   }, {
@@ -5921,6 +6515,12 @@
   }, {
     "Valor" : "1046.67",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "947.70",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "1198.12",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "1092.49",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35003", "2021" ]
@@ -5983,6 +6583,12 @@
     "Valor" : "1150.72",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "875.71",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "1230.36",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "1072.09",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35014", "2021" ]
   }, {
@@ -6043,6 +6649,12 @@
     "Valor" : "1006.37",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1018.47",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "1255.93",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "1221.71",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35015", "2021" ]
   }, {
@@ -6102,6 +6714,14 @@
   }, {
     "Valor" : "1067.87",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "1322.28",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "487.58",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "1011.03",
     "comentarioDATANOTECELL" : "(*)",
@@ -6180,6 +6800,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1397.08",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "1657.00",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "1385.32",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705", "2021" ]
   }, {
@@ -6239,6 +6865,12 @@
   }, {
     "Valor" : "1366.88",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "917.34",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "1806.96",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "1273.77",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35016", "2021" ]
@@ -6300,6 +6932,12 @@
     "Valor" : "1113.46",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1541.80",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "1571.80",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "1439.61",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35012", "2021" ]
   }, {
@@ -6359,6 +6997,12 @@
   }, {
     "Valor" : "1426.94",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "1449.39",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "1721.15",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "1418.07",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35019", "2021" ]
@@ -6420,6 +7064,12 @@
     "Valor" : "1414.81",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1281.87",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "1301.68",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "1235.14",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709", "2021" ]
   }, {
@@ -6479,6 +7129,12 @@
   }, {
     "Valor" : "1232.53",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1358.67",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "1468.74",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "1376.58",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38001", "2021" ]
@@ -6540,6 +7196,12 @@
     "Valor" : "1345.61",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1273.27",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "1313.46",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "1222.98",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38006", "2021" ]
   }, {
@@ -6600,6 +7262,12 @@
     "Valor" : "1286.73",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "1025.26",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "1056.06",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "1100.29",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38028", "2021" ]
   }, {
@@ -6659,6 +7327,12 @@
   }, {
     "Valor" : "1121.90",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "1087.83",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "1463.24",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "1074.53",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38038", "2021" ]
@@ -6722,6 +7396,12 @@
     "Valor" : "1146.92",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "1149.56",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "1262.89",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "1166.19",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38040", "2021" ]
   }, {
@@ -6781,6 +7461,12 @@
   }, {
     "Valor" : "1227.64",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "892.81",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "1293.70",
+    "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES707", "2022Q1" ]
   }, {
     "Valor" : "1158.22",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES707", "2021" ]
@@ -6842,6 +7528,12 @@
     "Valor" : "1005.74",
     "dimCodes" : [ "Gasto por turista", "ZZZ900", "ES707", "2018Q1" ]
   }, {
+    "Valor" : "152.21",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "152.92",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES70", "2022Q1" ]
+  }, {
     "Valor" : "143.98",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES70", "2021" ]
   }, {
@@ -6901,6 +7593,12 @@
   }, {
     "Valor" : "133.59",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES70", "2018Q1" ]
+  }, {
+    "Valor" : "156.99",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "151.29",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708", "2022Q1" ]
   }, {
     "Valor" : "140.57",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708", "2021" ]
@@ -6962,6 +7660,12 @@
     "Valor" : "125.43",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708", "2018Q1" ]
   }, {
+    "Valor" : "131.01",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "129.93",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35004", "2022Q1" ]
+  }, {
     "Valor" : "107.75",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35004", "2021" ]
   }, {
@@ -7021,6 +7725,12 @@
   }, {
     "Valor" : "120.76",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35004", "2018Q1" ]
+  }, {
+    "Valor" : "141.28",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "142.24",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35024", "2022Q1" ]
   }, {
     "Valor" : "132.06",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35024", "2021" ]
@@ -7082,6 +7792,12 @@
     "Valor" : "118.62",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35024", "2018Q1" ]
   }, {
+    "Valor" : "152.51",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "146.91",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35028", "2022Q1" ]
+  }, {
     "Valor" : "134.19",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35028", "2021" ]
   }, {
@@ -7141,6 +7857,12 @@
   }, {
     "Valor" : "121.70",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35028", "2018Q1" ]
+  }, {
+    "Valor" : "176.71",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "168.78",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35034", "2022Q1" ]
   }, {
     "Valor" : "161.36",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35034", "2021" ]
@@ -7202,6 +7924,12 @@
     "Valor" : "137.90",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "128.08",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "143.83",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "153.24",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704", "2021" ]
   }, {
@@ -7261,6 +7989,12 @@
   }, {
     "Valor" : "127.48",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "129.52",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "142.47",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "183.69",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35003", "2021" ]
@@ -7322,6 +8056,12 @@
     "Valor" : "130.03",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "123.89",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "136.78",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "130.25",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35014", "2021" ]
   }, {
@@ -7382,6 +8122,12 @@
     "Valor" : "119.46",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "134.05",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "150.84",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "157.87",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35015", "2021" ]
   }, {
@@ -7441,6 +8187,13 @@
   }, {
     "Valor" : "132.75",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "106.04",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "71.81",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "100.94",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35017", "2021" ]
@@ -7508,6 +8261,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "150.94",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "161.77",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "142.03",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705", "2021" ]
   }, {
@@ -7567,6 +8326,12 @@
   }, {
     "Valor" : "135.36",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "122.72",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "123.92",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "117.12",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35016", "2021" ]
@@ -7628,6 +8393,12 @@
     "Valor" : "107.22",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "156.72",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "167.75",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "152.15",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35012", "2021" ]
   }, {
@@ -7687,6 +8458,12 @@
   }, {
     "Valor" : "140.69",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "161.64",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "179.98",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "154.57",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35019", "2021" ]
@@ -7748,6 +8525,12 @@
     "Valor" : "145.47",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "160.62",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "151.29",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "143.48",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709", "2021" ]
   }, {
@@ -7807,6 +8590,12 @@
   }, {
     "Valor" : "138.98",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "186.13",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "182.38",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "167.75",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38001", "2021" ]
@@ -7868,6 +8657,12 @@
     "Valor" : "156.33",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "151.72",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "149.81",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "142.27",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38006", "2021" ]
   }, {
@@ -7927,6 +8722,12 @@
   }, {
     "Valor" : "144.05",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38006", "2018Q1" ]
+  }, {
+    "Valor" : "135.62",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "137.09",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38028", "2022Q1" ]
   }, {
     "Valor" : "125.99",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38028", "2021" ]
@@ -7988,6 +8789,12 @@
     "Valor" : "130.75",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38028", "2018Q1" ]
   }, {
+    "Valor" : "135.31",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "119.43",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38038", "2022Q1" ]
+  }, {
     "Valor" : "120.77",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38038", "2021" ]
   }, {
@@ -8047,6 +8854,12 @@
   }, {
     "Valor" : "122.50",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38038", "2018Q1" ]
+  }, {
+    "Valor" : "153.37",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "133.10",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38040", "2022Q1" ]
   }, {
     "Valor" : "137.57",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38040", "2021" ]
@@ -8108,6 +8921,12 @@
     "Valor" : "134.49",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "128.58",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "134.59",
+    "dimCodes" : [ "Gasto por turista y día", "0", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "141.06",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES707", "2021" ]
   }, {
@@ -8167,6 +8986,12 @@
   }, {
     "Valor" : "111.36",
     "dimCodes" : [ "Gasto por turista y día", "0", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "139.50",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "143.79",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES70", "2022Q1" ]
   }, {
     "Valor" : "152.55",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES70", "2021" ]
@@ -8228,6 +9053,12 @@
     "Valor" : "129.81",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "151.16",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "142.83",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "136.21",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708", "2021" ]
   }, {
@@ -8287,6 +9118,14 @@
   }, {
     "Valor" : "124.72",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "70.24",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "157.83",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "92.18",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35004", "2021" ]
@@ -8364,6 +9203,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "136.52",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "139.45",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "122.00",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35024", "2021" ]
   }, {
@@ -8426,6 +9271,12 @@
     "Valor" : "102.65",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35024", "2018Q1" ]
   }, {
+    "Valor" : "151.41",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "138.62",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35028", "2022Q1" ]
+  }, {
     "Valor" : "128.46",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35028", "2021" ]
   }, {
@@ -8485,6 +9336,12 @@
   }, {
     "Valor" : "133.41",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35028", "2018Q1" ]
+  }, {
+    "Valor" : "180.30",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "161.56",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35034", "2022Q1" ]
   }, {
     "Valor" : "175.64",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35034", "2021" ]
@@ -8547,6 +9404,12 @@
     "Valor" : "141.74",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "135.36",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "138.91",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "180.86",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704", "2021" ]
   }, {
@@ -8606,6 +9469,14 @@
   }, {
     "Valor" : "129.26",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "149.95",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "138.82",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "506.13",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35003", "2021" ]
@@ -8673,6 +9544,12 @@
     "Valor" : "133.90",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "141.64",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "123.21",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "146.17",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35014", "2021" ]
   }, {
@@ -8733,6 +9610,12 @@
     "Valor" : "120.22",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "134.03",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "144.74",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "166.95",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35015", "2021" ]
   }, {
@@ -8792,6 +9675,13 @@
   }, {
     "Valor" : "131.79",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : ".",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "130.67",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "107.53",
     "comentarioDATANOTECELL" : "(*)",
@@ -8869,6 +9759,12 @@
     "Valor" : ".",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "140.76",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "159.18",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "143.98",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705", "2021" ]
   }, {
@@ -8928,6 +9824,13 @@
   }, {
     "Valor" : "133.89",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "123.77",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "126.93",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "113.83",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35016", "2021" ]
@@ -8991,6 +9894,12 @@
     "Valor" : "93.79",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "148.34",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "163.13",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "131.74",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35012", "2021" ]
   }, {
@@ -9050,6 +9959,12 @@
   }, {
     "Valor" : "146.94",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "145.13",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "166.73",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "155.53",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35019", "2021" ]
@@ -9111,6 +10026,12 @@
     "Valor" : "142.00",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "140.45",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "133.49",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "139.62",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709", "2021" ]
   }, {
@@ -9170,6 +10091,12 @@
   }, {
     "Valor" : "129.66",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "167.13",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "169.01",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "170.91",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38001", "2021" ]
@@ -9231,6 +10158,12 @@
     "Valor" : "162.46",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "143.78",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "125.25",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "127.68",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38006", "2021" ]
   }, {
@@ -9291,6 +10224,12 @@
     "Valor" : "123.56",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "120.41",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "140.16",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "124.03",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38028", "2021" ]
   }, {
@@ -9350,6 +10289,14 @@
   }, {
     "Valor" : "120.95",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "107.71",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "89.51",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "107.42",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38038", "2021" ]
@@ -9425,6 +10372,14 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "140.05",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "168.17",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "144.77",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38040", "2021" ]
   }, {
@@ -9497,6 +10452,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "117.20",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "117.56",
+    "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "123.87",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES707", "2021" ]
   }, {
@@ -9556,6 +10517,12 @@
   }, {
     "Valor" : "100.69",
     "dimCodes" : [ "Gasto por turista y día", "DEU276", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "138.41",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "124.66",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES70", "2022Q1" ]
   }, {
     "Valor" : "123.31",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES70", "2021" ]
@@ -9617,6 +10584,12 @@
     "Valor" : "124.73",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "142.10",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "116.48",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "125.45",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708", "2021" ]
   }, {
@@ -9676,6 +10649,12 @@
   }, {
     "Valor" : "136.70",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "132.19",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "104.39",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "101.12",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35004", "2021" ]
@@ -9744,6 +10723,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "128.71",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "123.29",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "124.96",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35024", "2021" ]
   }, {
@@ -9803,6 +10788,12 @@
   }, {
     "Valor" : "119.72",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "139.14",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "108.16",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "122.68",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35028", "2021" ]
@@ -9864,6 +10855,12 @@
     "Valor" : "136.87",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "167.47",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "131.12",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "145.60",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35034", "2021" ]
   }, {
@@ -9924,6 +10921,12 @@
     "Valor" : "173.53",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "112.84",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "127.81",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "123.64",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704", "2021" ]
   }, {
@@ -9983,6 +10986,12 @@
   }, {
     "Valor" : "121.14",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "100.06",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "145.69",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "117.97",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35003", "2021" ]
@@ -10048,6 +11057,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "108.67",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "121.95",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "117.71",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35014", "2021" ]
   }, {
@@ -10107,6 +11122,12 @@
   }, {
     "Valor" : "116.49",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35014", "2018Q1" ]
+  }, {
+    "Valor" : "126.69",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "143.97",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35015", "2022Q1" ]
   }, {
     "Valor" : "136.66",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35015", "2021" ]
@@ -10169,6 +11190,14 @@
     "Valor" : "151.18",
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "83.19",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "76.44",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "95.54",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35017", "2021" ]
@@ -10245,6 +11274,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "134.65",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "124.52",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "116.70",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705", "2021" ]
   }, {
@@ -10305,6 +11340,12 @@
     "Valor" : "113.46",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705", "2018Q1" ]
   }, {
+    "Valor" : "129.76",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "118.12",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35016", "2022Q1" ]
+  }, {
     "Valor" : "111.86",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35016", "2021" ]
   }, {
@@ -10364,6 +11405,12 @@
   }, {
     "Valor" : "101.28",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35016", "2018Q1" ]
+  }, {
+    "Valor" : "134.16",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "147.26",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35012", "2022Q1" ]
   }, {
     "Valor" : "120.35",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35012", "2021" ]
@@ -10426,6 +11473,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35012", "2018Q1" ]
   }, {
+    "Valor" : "152.20",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "154.50",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35019", "2022Q1" ]
+  }, {
     "Valor" : "135.61",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35019", "2021" ]
   }, {
@@ -10485,6 +11538,12 @@
   }, {
     "Valor" : "140.46",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES705_35019", "2018Q1" ]
+  }, {
+    "Valor" : "145.28",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "126.16",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709", "2022Q1" ]
   }, {
     "Valor" : "123.91",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709", "2021" ]
@@ -10546,6 +11605,12 @@
     "Valor" : "129.44",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709", "2018Q1" ]
   }, {
+    "Valor" : "178.31",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "164.31",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38001", "2022Q1" ]
+  }, {
     "Valor" : "152.06",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38001", "2021" ]
   }, {
@@ -10605,6 +11670,12 @@
   }, {
     "Valor" : "144.31",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38001", "2018Q1" ]
+  }, {
+    "Valor" : "159.31",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "149.03",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38006", "2022Q1" ]
   }, {
     "Valor" : "133.67",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38006", "2021" ]
@@ -10666,6 +11737,12 @@
     "Valor" : "146.91",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "138.90",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "134.22",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "122.31",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38028", "2021" ]
   }, {
@@ -10726,6 +11803,12 @@
     "Valor" : "140.06",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38028", "2018Q1" ]
   }, {
+    "Valor" : "130.85",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "108.87",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38038", "2022Q1" ]
+  }, {
     "Valor" : "118.04",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38038", "2021" ]
   }, {
@@ -10785,6 +11868,14 @@
   }, {
     "Valor" : "114.27",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38038", "2018Q1" ]
+  }, {
+    "Valor" : "166.37",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "109.43",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38040", "2022Q1" ]
   }, {
     "Valor" : "124.07",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38040", "2021" ]
@@ -10853,6 +11944,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "133.09",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "142.94",
+    "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES707", "2022Q1" ]
+  }, {
     "Valor" : "146.27",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES707", "2021" ]
   }, {
@@ -10912,6 +12009,12 @@
   }, {
     "Valor" : "120.79",
     "dimCodes" : [ "Gasto por turista y día", "ESP724", "ES707", "2018Q1" ]
+  }, {
+    "Valor" : "164.56",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "155.40",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES70", "2022Q1" ]
   }, {
     "Valor" : "151.42",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES70", "2021" ]
@@ -10973,6 +12076,12 @@
     "Valor" : "131.61",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "165.00",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "150.50",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "144.03",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708", "2021" ]
   }, {
@@ -11032,6 +12141,14 @@
   }, {
     "Valor" : "118.92",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "189.35",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "145.65",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "134.97",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35004", "2021" ]
@@ -11107,6 +12224,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "144.75",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "141.14",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "138.68",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35024", "2021" ]
   }, {
@@ -11167,6 +12290,12 @@
   }, {
     "Valor" : "116.85",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "158.35",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "143.57",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "136.95",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35028", "2021" ]
@@ -11229,6 +12358,12 @@
     "Valor" : "108.95",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "182.54",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "165.25",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "155.51",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35034", "2021" ]
   }, {
@@ -11289,6 +12424,12 @@
   }, {
     "Valor" : "129.48",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES708_35034", "2018Q1" ]
+  }, {
+    "Valor" : "136.36",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "147.26",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704", "2022Q1" ]
   }, {
     "Valor" : "131.07",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704", "2021" ]
@@ -11351,6 +12492,12 @@
     "Valor" : "128.39",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704", "2018Q1" ]
   }, {
+    "Valor" : "132.87",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "134.09",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35003", "2022Q1" ]
+  }, {
     "Valor" : "122.27",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35003", "2021" ]
   }, {
@@ -11412,6 +12559,12 @@
   }, {
     "Valor" : "126.44",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35003", "2018Q1" ]
+  }, {
+    "Valor" : "136.80",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "148.11",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35014", "2022Q1" ]
   }, {
     "Valor" : "135.58",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35014", "2021" ]
@@ -11476,6 +12629,12 @@
     "Valor" : "127.18",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "142.59",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "160.62",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "142.05",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35015", "2021" ]
   }, {
@@ -11538,6 +12697,14 @@
   }, {
     "Valor" : "137.23",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "109.15",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "53.29",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "56.62",
     "comentarioDATANOTECELL" : "(*)",
@@ -11615,6 +12782,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "152.93",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "142.03",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "133.48",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705", "2021" ]
   }, {
@@ -11674,6 +12847,12 @@
   }, {
     "Valor" : "120.57",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "107.98",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "93.00",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "90.36",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35016", "2021" ]
@@ -11738,6 +12917,12 @@
     "Valor" : "94.85",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "149.96",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "141.05",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "138.90",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35012", "2021" ]
   }, {
@@ -11800,6 +12985,12 @@
     "Valor" : "118.68",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35012", "2018Q1" ]
   }, {
+    "Valor" : "169.91",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "174.79",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35019", "2022Q1" ]
+  }, {
     "Valor" : "147.26",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35019", "2021" ]
   }, {
@@ -11861,6 +13052,12 @@
     "Valor" : "134.98",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "175.90",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "163.49",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "164.63",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709", "2021" ]
   }, {
@@ -11920,6 +13117,12 @@
   }, {
     "Valor" : "143.49",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "197.45",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "192.84",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "180.11",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38001", "2021" ]
@@ -11981,6 +13184,12 @@
   }, {
     "Valor" : "160.02",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38001", "2018Q1" ]
+  }, {
+    "Valor" : "151.64",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "150.32",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38006", "2022Q1" ]
   }, {
     "Valor" : "154.29",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38006", "2021" ]
@@ -12044,6 +13253,12 @@
     "Valor" : "141.28",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "153.27",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "126.71",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "142.59",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38028", "2021" ]
   }, {
@@ -12106,6 +13321,14 @@
   }, {
     "Valor" : "153.21",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "145.60",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "137.94",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "155.00",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38038", "2021" ]
@@ -12180,6 +13403,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "151.31",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "118.36",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "141.52",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38040", "2021" ]
   }, {
@@ -12241,6 +13470,13 @@
   }, {
     "Valor" : "114.73",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "136.51",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "168.32",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES707", "2022Q1" ]
   }, {
     "Valor" : "163.88",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES707", "2021" ]
@@ -12306,6 +13542,12 @@
     "Valor" : "116.65",
     "dimCodes" : [ "Gasto por turista y día", "GBR826", "ES707", "2018Q1" ]
   }, {
+    "Valor" : "150.84",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES70", "2022Q2" ]
+  }, {
+    "Valor" : "161.68",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES70", "2022Q1" ]
+  }, {
     "Valor" : "147.40",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES70", "2021" ]
   }, {
@@ -12366,6 +13608,12 @@
     "Valor" : "138.61",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "151.30",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708", "2022Q2" ]
+  }, {
+    "Valor" : "164.96",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708", "2022Q1" ]
+  }, {
     "Valor" : "149.81",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708", "2021" ]
   }, {
@@ -12425,6 +13673,14 @@
   }, {
     "Valor" : "132.36",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "132.01",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35004", "2022Q2" ]
+  }, {
+    "Valor" : "120.68",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35004", "2022Q1" ]
   }, {
     "Valor" : "115.71",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35004", "2021" ]
@@ -12495,6 +13751,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "142.40",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35024", "2022Q2" ]
+  }, {
+    "Valor" : "153.98",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35024", "2022Q1" ]
+  }, {
     "Valor" : "136.34",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35024", "2021" ]
   }, {
@@ -12554,6 +13816,12 @@
   }, {
     "Valor" : "129.55",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "148.52",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35028", "2022Q2" ]
+  }, {
+    "Valor" : "158.77",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35028", "2022Q1" ]
   }, {
     "Valor" : "139.89",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35028", "2021" ]
@@ -12615,6 +13883,12 @@
     "Valor" : "130.01",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "164.74",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35034", "2022Q2" ]
+  }, {
+    "Valor" : "190.24",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35034", "2022Q1" ]
+  }, {
     "Valor" : "174.43",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35034", "2021" ]
   }, {
@@ -12675,6 +13949,12 @@
     "Valor" : "142.41",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "117.66",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704", "2022Q2" ]
+  }, {
+    "Valor" : "148.89",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704", "2022Q1" ]
+  }, {
     "Valor" : "141.54",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704", "2021" ]
   }, {
@@ -12734,6 +14014,12 @@
   }, {
     "Valor" : "125.53",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "126.93",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35003", "2022Q2" ]
+  }, {
+    "Valor" : "152.79",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35003", "2022Q1" ]
   }, {
     "Valor" : "143.49",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35003", "2021" ]
@@ -12796,6 +14082,12 @@
     "Valor" : "138.06",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "105.89",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35014", "2022Q2" ]
+  }, {
+    "Valor" : "138.28",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35014", "2022Q1" ]
+  }, {
     "Valor" : "125.38",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35014", "2021" ]
   }, {
@@ -12856,6 +14148,12 @@
     "Valor" : "111.90",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "132.19",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35015", "2022Q2" ]
+  }, {
+    "Valor" : "156.76",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35015", "2022Q1" ]
+  }, {
     "Valor" : "150.60",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35015", "2021" ]
   }, {
@@ -12915,6 +14213,14 @@
   }, {
     "Valor" : "131.07",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "113.76",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35017", "2022Q2" ]
+  }, {
+    "Valor" : "71.13",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35017", "2022Q1" ]
   }, {
     "Valor" : "123.28",
     "comentarioDATANOTECELL" : "(*)",
@@ -12993,6 +14299,12 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "161.49",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705", "2022Q2" ]
+  }, {
+    "Valor" : "176.69",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705", "2022Q1" ]
+  }, {
     "Valor" : "155.46",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705", "2021" ]
   }, {
@@ -13052,6 +14364,12 @@
   }, {
     "Valor" : "143.12",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "119.57",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35016", "2022Q2" ]
+  }, {
+    "Valor" : "141.41",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35016", "2022Q1" ]
   }, {
     "Valor" : "132.67",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35016", "2021" ]
@@ -13113,6 +14431,12 @@
     "Valor" : "119.56",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "165.78",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35012", "2022Q2" ]
+  }, {
+    "Valor" : "176.15",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35012", "2022Q1" ]
+  }, {
     "Valor" : "164.62",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35012", "2021" ]
   }, {
@@ -13172,6 +14496,12 @@
   }, {
     "Valor" : "144.35",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "171.99",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35019", "2022Q2" ]
+  }, {
+    "Valor" : "191.47",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35019", "2022Q1" ]
   }, {
     "Valor" : "161.67",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35019", "2021" ]
@@ -13233,6 +14563,12 @@
     "Valor" : "150.65",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "155.10",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709", "2022Q2" ]
+  }, {
+    "Valor" : "152.58",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709", "2022Q1" ]
+  }, {
     "Valor" : "143.01",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709", "2021" ]
   }, {
@@ -13292,6 +14628,12 @@
   }, {
     "Valor" : "140.77",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "175.90",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38001", "2022Q2" ]
+  }, {
+    "Valor" : "174.87",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38001", "2022Q1" ]
   }, {
     "Valor" : "163.80",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38001", "2021" ]
@@ -13353,6 +14695,12 @@
     "Valor" : "150.99",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "151.50",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38006", "2022Q2" ]
+  }, {
+    "Valor" : "151.75",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38006", "2022Q1" ]
+  }, {
     "Valor" : "138.80",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38006", "2021" ]
   }, {
@@ -13413,6 +14761,12 @@
     "Valor" : "149.21",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "130.57",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38028", "2022Q2" ]
+  }, {
+    "Valor" : "141.80",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38028", "2022Q1" ]
+  }, {
     "Valor" : "126.03",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38028", "2021" ]
   }, {
@@ -13472,6 +14826,12 @@
   }, {
     "Valor" : "123.55",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "146.45",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38038", "2022Q2" ]
+  }, {
+    "Valor" : "132.55",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38038", "2022Q1" ]
   }, {
     "Valor" : "123.11",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38038", "2021" ]
@@ -13535,6 +14895,12 @@
     "Valor" : "145.76",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "157.17",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38040", "2022Q2" ]
+  }, {
+    "Valor" : "143.29",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38040", "2022Q1" ]
+  }, {
     "Valor" : "136.35",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38040", "2021" ]
   }, {
@@ -13594,6 +14960,12 @@
   }, {
     "Valor" : "147.04",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "127.89",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES707", "2022Q2" ]
+  }, {
+    "Valor" : "124.54",
+    "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES707", "2022Q1" ]
   }, {
     "Valor" : "134.48",
     "dimCodes" : [ "Gasto por turista y día", "ZZZ900", "ES707", "2021" ]
