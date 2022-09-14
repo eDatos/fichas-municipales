@@ -150,6 +150,12 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```
 
 ```{r Gráfico evolución del número de viajeros}
+dV <- length(rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                        length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]))) -
+      length(unlist(strsplit(viajeros_lugar[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
 df_viajeros <- data.frame(
   ind = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -162,7 +168,7 @@ df_viajeros <- data.frame(
                 each = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_lugar = rep(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                  times = length(viajeros_lugar[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
-  valor = unlist(strsplit(viajeros_lugar[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(viajeros_lugar[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dV)))
 
 df_lugar <- data.frame(
   id_lugar = viajeros_lugar[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],
@@ -925,6 +931,7 @@ if(Plazas_Hoteles == "NA" & Plazas_Apartamentos != "NA"){
       ))
     }
 ```
+</div>
 </div>
 
 </div>

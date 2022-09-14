@@ -756,7 +756,7 @@ if (nrow(df_links_indicadores) == 1) {
 
 <div class="column-modulo-right">
 <div class="highlight-modulo">
-<div class="linechart-placeholder">
+<div class="linechart-placeholder" style="margin-bottom: 15px;">
 <h2 style="color: #005980; margin: 0;">`r Gasto_por_turista_dia` €</h2>
 <div class="linechart">
   `r g_line`
