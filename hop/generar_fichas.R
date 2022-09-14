@@ -195,7 +195,7 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
     }
     if(periodicidad == "Q") {
       #option_params <- append(option_params, list(mes = as.numeric(input$trimestre)*3))
-      option_params <- append(option_params, list(mes = as.numeric(trimestre)))
+      option_params <- append(option_params, list(trimestre = as.numeric(trimestre)))
     }
     
     option_params <- append(option_params, (df_init_data[grepl(id_ficha, df_init_data$fichas, fixed = TRUE),] %>% transform(filepath = paste0('../', filepath)) %>% select(param.name, filepath) %>% deframe %>% as.list))
@@ -242,17 +242,17 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-# generarFicha(2019, 'perfil_turista', 'A', NA, NA, 35001)
+# generarFicha(2019, 'gastos_medios_turista', 'Q', NA, 1, 35001)
 
-generarFichas(municipios, df_fichas %>% filter(code %in% c("paro_registrado", "afiliacion_cotizacion", "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia", "parque_vehiculos")), periods)
-generarFichas(municipios,
-              df_fichas %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia")),
-              periods %>% filter(A == 2022))
+generarFichas(municipios, df_fichas %>% filter(code == 'presupuestos'), periods)
+# generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022 & M %notin% c(1,2,3)))
+
+# generarFichas(municipios, df_fichas %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia")), periods %>% filter(A == 2022))
 
 # generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_cotizacion'), periods)
-# generarFichas(municipios, df_fichas %>% filter(code == 'presupuestos'), periods %>% filter(A == 2020))
-# generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2018 & M %in% c(1:3)))
 # generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022))
+# generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2018 & M %in% c(1:3)))
 
 # c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
 #   "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
