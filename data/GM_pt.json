@@ -14,8 +14,8 @@
     "labels" : [ "CANARIAS", "LANZAROTE", " Arrecife", " Teguise", " Tías", " Yaiza", "FUERTEVENTURA", " Antigua", " La Oliva", " Pájara", " Puerto del Rosario", "GRAN CANARIA", " Las Palmas de Gran Canaria", " Mogán", " San Bartolomé de Tirajana", "TENERIFE", " Adeje", " Arona", " Puerto de la Cruz", " Santa Cruz de Tenerife", " Santiago del Teide", "LA PALMA" ]
   }, {
     "variable" : "Periodos",
-    "codes" : [ "2022Q1", "2021", "2021Q4", "2021Q3", "2021Q2", "2021Q1", "2020", "2020Q4", "2020Q3", "2020Q2", "2020Q1", "2019", "2019Q4", "2019Q3", "2019Q2", "2019Q1", "2018", "2018Q4", "2018Q3", "2018Q2", "2018Q1" ],
-    "labels" : [ "2022 Primer trimestre", "2021", "2021 Cuarto trimestre", "2021 Tercer trimestre", "2021 Segundo trimestre", "2021 Primer trimestre", "2020", "2020 Cuarto trimestre", "2020 Tercer trimestre", "2020 Segundo trimestre", "2020 Primer trimestre", "2019", "2019 Cuarto trimestre", "2019 Tercer trimestre", "2019 Segundo trimestre", "2019 Primer trimestre", "2018", "2018 Cuarto trimestre", "2018 Tercer trimestre", "2018 Segundo trimestre", "2018 Primer trimestre" ]
+    "codes" : [ "2022Q2", "2022Q1", "2021", "2021Q4", "2021Q3", "2021Q2", "2021Q1", "2020", "2020Q4", "2020Q3", "2020Q2", "2020Q1", "2019", "2019Q4", "2019Q3", "2019Q2", "2019Q1", "2018", "2018Q4", "2018Q3", "2018Q2", "2018Q1" ],
+    "labels" : [ "2022 Segundo trimestre", "2022 Primer trimestre", "2021", "2021 Cuarto trimestre", "2021 Tercer trimestre", "2021 Segundo trimestre", "2021 Primer trimestre", "2020", "2020 Cuarto trimestre", "2020 Tercer trimestre", "2020 Segundo trimestre", "2020 Primer trimestre", "2019", "2019 Cuarto trimestre", "2019 Tercer trimestre", "2019 Segundo trimestre", "2019 Primer trimestre", "2018", "2018 Cuarto trimestre", "2018 Tercer trimestre", "2018 Segundo trimestre", "2018 Primer trimestre" ]
   } ],
   "temporals" : [ "Periodos" ],
   "notes" : [ "(*) Dato estimado con menos de 20 observaciones muestrales" ],
@@ -24,6 +24,9 @@
   "surveyTitle" : "Encuesta sobre el Gasto Turístico",
   "publishers" : [ "Instituto Canario de Estadística (ISTAC)" ],
   "data" : [ {
+    "Valor" : "1125.60",
+    "dimCodes" : [ "0", "ES70", "2022Q2" ]
+  }, {
     "Valor" : "1207.10",
     "dimCodes" : [ "0", "ES70", "2022Q1" ]
   }, {
@@ -87,6 +90,9 @@
     "Valor" : "1011.71",
     "dimCodes" : [ "0", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1163.41",
+    "dimCodes" : [ "0", "ES708", "2022Q2" ]
+  }, {
     "Valor" : "1028.65",
     "dimCodes" : [ "0", "ES708", "2022Q1" ]
   }, {
@@ -149,6 +155,10 @@
   }, {
     "Valor" : "862.23",
     "dimCodes" : [ "0", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "655.25",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "0", "ES708_35004", "2022Q2" ]
   }, {
     "Valor" : "766.64",
     "comentarioDATANOTECELL" : "(*)",
@@ -231,6 +241,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "0", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "956.84",
+    "dimCodes" : [ "0", "ES708_35024", "2022Q2" ]
+  }, {
     "Valor" : "945.91",
     "dimCodes" : [ "0", "ES708_35024", "2022Q1" ]
   }, {
@@ -293,6 +306,9 @@
   }, {
     "Valor" : "808.52",
     "dimCodes" : [ "0", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "1058.40",
+    "dimCodes" : [ "0", "ES708_35028", "2022Q2" ]
   }, {
     "Valor" : "918.54",
     "dimCodes" : [ "0", "ES708_35028", "2022Q1" ]
@@ -357,6 +373,9 @@
     "Valor" : "822.34",
     "dimCodes" : [ "0", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "1370.78",
+    "dimCodes" : [ "0", "ES708_35034", "2022Q2" ]
+  }, {
     "Valor" : "1217.42",
     "dimCodes" : [ "0", "ES708_35034", "2022Q1" ]
   }, {
@@ -420,6 +439,9 @@
     "Valor" : "933.38",
     "dimCodes" : [ "0", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "1111.50",
+    "dimCodes" : [ "0", "ES704", "2022Q2" ]
+  }, {
     "Valor" : "1156.22",
     "dimCodes" : [ "0", "ES704", "2022Q1" ]
   }, {
@@ -482,6 +504,9 @@
   }, {
     "Valor" : "967.33",
     "dimCodes" : [ "0", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "976.62",
+    "dimCodes" : [ "0", "ES704_35003", "2022Q2" ]
   }, {
     "Valor" : "1009.61",
     "dimCodes" : [ "0", "ES704_35003", "2022Q1" ]
@@ -547,6 +572,9 @@
     "Valor" : "813.58",
     "dimCodes" : [ "0", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "1065.09",
+    "dimCodes" : [ "0", "ES704_35014", "2022Q2" ]
+  }, {
     "Valor" : "1047.51",
     "dimCodes" : [ "0", "ES704_35014", "2022Q1" ]
   }, {
@@ -610,6 +638,9 @@
     "Valor" : "862.70",
     "dimCodes" : [ "0", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1152.37",
+    "dimCodes" : [ "0", "ES704_35015", "2022Q2" ]
+  }, {
     "Valor" : "1242.98",
     "dimCodes" : [ "0", "ES704_35015", "2022Q1" ]
   }, {
@@ -672,6 +703,10 @@
   }, {
     "Valor" : "1048.74",
     "dimCodes" : [ "0", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "200.00",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "0", "ES704_35017", "2022Q2" ]
   }, {
     "Valor" : "605.69",
     "comentarioDATANOTECELL" : "(*)",
@@ -754,6 +789,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "0", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1125.38",
+    "dimCodes" : [ "0", "ES705", "2022Q2" ]
+  }, {
     "Valor" : "1393.93",
     "dimCodes" : [ "0", "ES705", "2022Q1" ]
   }, {
@@ -816,6 +854,9 @@
   }, {
     "Valor" : "1104.27",
     "dimCodes" : [ "0", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "615.59",
+    "dimCodes" : [ "0", "ES705_35016", "2022Q2" ]
   }, {
     "Valor" : "1228.44",
     "dimCodes" : [ "0", "ES705_35016", "2022Q1" ]
@@ -880,6 +921,9 @@
     "Valor" : "838.28",
     "dimCodes" : [ "0", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1072.94",
+    "dimCodes" : [ "0", "ES705_35012", "2022Q2" ]
+  }, {
     "Valor" : "1311.09",
     "dimCodes" : [ "0", "ES705_35012", "2022Q1" ]
   }, {
@@ -942,6 +986,9 @@
   }, {
     "Valor" : "1110.66",
     "dimCodes" : [ "0", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "1173.83",
+    "dimCodes" : [ "0", "ES705_35019", "2022Q2" ]
   }, {
     "Valor" : "1445.63",
     "dimCodes" : [ "0", "ES705_35019", "2022Q1" ]
@@ -1006,6 +1053,9 @@
     "Valor" : "1120.38",
     "dimCodes" : [ "0", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1120.06",
+    "dimCodes" : [ "0", "ES709", "2022Q2" ]
+  }, {
     "Valor" : "1162.98",
     "dimCodes" : [ "0", "ES709", "2022Q1" ]
   }, {
@@ -1068,6 +1118,9 @@
   }, {
     "Valor" : "1036.53",
     "dimCodes" : [ "0", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1231.24",
+    "dimCodes" : [ "0", "ES709_38001", "2022Q2" ]
   }, {
     "Valor" : "1302.22",
     "dimCodes" : [ "0", "ES709_38001", "2022Q1" ]
@@ -1132,6 +1185,9 @@
     "Valor" : "1167.80",
     "dimCodes" : [ "0", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1033.75",
+    "dimCodes" : [ "0", "ES709_38006", "2022Q2" ]
+  }, {
     "Valor" : "1076.26",
     "dimCodes" : [ "0", "ES709_38006", "2022Q1" ]
   }, {
@@ -1195,6 +1251,9 @@
     "Valor" : "1035.51",
     "dimCodes" : [ "0", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "812.34",
+    "dimCodes" : [ "0", "ES709_38028", "2022Q2" ]
+  }, {
     "Valor" : "957.39",
     "dimCodes" : [ "0", "ES709_38028", "2022Q1" ]
   }, {
@@ -1257,6 +1316,10 @@
   }, {
     "Valor" : "862.02",
     "dimCodes" : [ "0", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "1308.86",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "0", "ES709_38038", "2022Q2" ]
   }, {
     "Valor" : "832.93",
     "comentarioDATANOTECELL" : "(*)",
@@ -1337,6 +1400,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "0", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "1030.23",
+    "dimCodes" : [ "0", "ES709_38040", "2022Q2" ]
+  }, {
     "Valor" : "1050.44",
     "dimCodes" : [ "0", "ES709_38040", "2022Q1" ]
   }, {
@@ -1399,6 +1465,9 @@
   }, {
     "Valor" : "999.51",
     "dimCodes" : [ "0", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "845.90",
+    "dimCodes" : [ "0", "ES707", "2022Q2" ]
   }, {
     "Valor" : "880.66",
     "dimCodes" : [ "0", "ES707", "2022Q1" ]
@@ -1463,6 +1532,9 @@
     "Valor" : "792.33",
     "dimCodes" : [ "0", "ES707", "2018Q1" ]
   }, {
+    "Valor" : "1071.51",
+    "dimCodes" : [ "1", "ES70", "2022Q2" ]
+  }, {
     "Valor" : "1189.55",
     "dimCodes" : [ "1", "ES70", "2022Q1" ]
   }, {
@@ -1526,6 +1598,9 @@
     "Valor" : "1019.62",
     "dimCodes" : [ "1", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1037.27",
+    "dimCodes" : [ "1", "ES708", "2022Q2" ]
+  }, {
     "Valor" : "931.66",
     "dimCodes" : [ "1", "ES708", "2022Q1" ]
   }, {
@@ -1588,6 +1663,10 @@
   }, {
     "Valor" : "856.18",
     "dimCodes" : [ "1", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "471.95",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "1", "ES708_35004", "2022Q2" ]
   }, {
     "Valor" : "808.93",
     "comentarioDATANOTECELL" : "(*)",
@@ -1670,6 +1749,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "1", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "721.92",
+    "dimCodes" : [ "1", "ES708_35024", "2022Q2" ]
+  }, {
     "Valor" : "970.75",
     "dimCodes" : [ "1", "ES708_35024", "2022Q1" ]
   }, {
@@ -1734,6 +1816,9 @@
   }, {
     "Valor" : "821.81",
     "dimCodes" : [ "1", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "1053.27",
+    "dimCodes" : [ "1", "ES708_35028", "2022Q2" ]
   }, {
     "Valor" : "887.26",
     "dimCodes" : [ "1", "ES708_35028", "2022Q1" ]
@@ -1800,6 +1885,9 @@
     "Valor" : "842.03",
     "dimCodes" : [ "1", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "1175.28",
+    "dimCodes" : [ "1", "ES708_35034", "2022Q2" ]
+  }, {
     "Valor" : "976.87",
     "dimCodes" : [ "1", "ES708_35034", "2022Q1" ]
   }, {
@@ -1864,6 +1952,9 @@
     "Valor" : "906.39",
     "dimCodes" : [ "1", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "1151.63",
+    "dimCodes" : [ "1", "ES704", "2022Q2" ]
+  }, {
     "Valor" : "1152.35",
     "dimCodes" : [ "1", "ES704", "2022Q1" ]
   }, {
@@ -1926,6 +2017,9 @@
   }, {
     "Valor" : "940.06",
     "dimCodes" : [ "1", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "917.15",
+    "dimCodes" : [ "1", "ES704_35003", "2022Q2" ]
   }, {
     "Valor" : "897.61",
     "dimCodes" : [ "1", "ES704_35003", "2022Q1" ]
@@ -1995,6 +2089,9 @@
     "Valor" : "743.47",
     "dimCodes" : [ "1", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "950.33",
+    "dimCodes" : [ "1", "ES704_35014", "2022Q2" ]
+  }, {
     "Valor" : "1024.97",
     "dimCodes" : [ "1", "ES704_35014", "2022Q1" ]
   }, {
@@ -2062,6 +2159,9 @@
     "Valor" : "886.33",
     "dimCodes" : [ "1", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1305.16",
+    "dimCodes" : [ "1", "ES704_35015", "2022Q2" ]
+  }, {
     "Valor" : "1310.48",
     "dimCodes" : [ "1", "ES704_35015", "2022Q1" ]
   }, {
@@ -2124,6 +2224,10 @@
   }, {
     "Valor" : "1041.19",
     "dimCodes" : [ "1", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : "200.00",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "1", "ES704_35017", "2022Q2" ]
   }, {
     "Valor" : "82.52",
     "comentarioDATANOTECELL" : "(*)",
@@ -2201,6 +2305,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "1", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1112.80",
+    "dimCodes" : [ "1", "ES705", "2022Q2" ]
+  }, {
     "Valor" : "1343.64",
     "dimCodes" : [ "1", "ES705", "2022Q1" ]
   }, {
@@ -2263,6 +2370,10 @@
   }, {
     "Valor" : "1132.81",
     "dimCodes" : [ "1", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "394.74",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "1", "ES705_35016", "2022Q2" ]
   }, {
     "Valor" : "1115.60",
     "dimCodes" : [ "1", "ES705_35016", "2022Q1" ]
@@ -2337,6 +2448,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "1", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1158.62",
+    "dimCodes" : [ "1", "ES705_35012", "2022Q2" ]
+  }, {
     "Valor" : "1486.45",
     "dimCodes" : [ "1", "ES705_35012", "2022Q1" ]
   }, {
@@ -2402,6 +2516,9 @@
     "Valor" : "1212.57",
     "dimCodes" : [ "1", "ES705_35012", "2018Q1" ]
   }, {
+    "Valor" : "1179.63",
+    "dimCodes" : [ "1", "ES705_35019", "2022Q2" ]
+  }, {
     "Valor" : "1309.23",
     "dimCodes" : [ "1", "ES705_35019", "2022Q1" ]
   }, {
@@ -2465,6 +2582,9 @@
     "Valor" : "1144.15",
     "dimCodes" : [ "1", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1022.39",
+    "dimCodes" : [ "1", "ES709", "2022Q2" ]
+  }, {
     "Valor" : "1188.80",
     "dimCodes" : [ "1", "ES709", "2022Q1" ]
   }, {
@@ -2527,6 +2647,9 @@
   }, {
     "Valor" : "1045.87",
     "dimCodes" : [ "1", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1141.01",
+    "dimCodes" : [ "1", "ES709_38001", "2022Q2" ]
   }, {
     "Valor" : "1371.63",
     "dimCodes" : [ "1", "ES709_38001", "2022Q1" ]
@@ -2592,6 +2715,9 @@
     "Valor" : "1144.01",
     "dimCodes" : [ "1", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1076.33",
+    "dimCodes" : [ "1", "ES709_38006", "2022Q2" ]
+  }, {
     "Valor" : "1033.58",
     "dimCodes" : [ "1", "ES709_38006", "2022Q1" ]
   }, {
@@ -2654,6 +2780,9 @@
   }, {
     "Valor" : "1035.04",
     "dimCodes" : [ "1", "ES709_38006", "2018Q1" ]
+  }, {
+    "Valor" : "715.65",
+    "dimCodes" : [ "1", "ES709_38028", "2022Q2" ]
   }, {
     "Valor" : "831.18",
     "dimCodes" : [ "1", "ES709_38028", "2022Q1" ]
@@ -2719,6 +2848,10 @@
   }, {
     "Valor" : "856.59",
     "dimCodes" : [ "1", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "933.61",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "1", "ES709_38038", "2022Q2" ]
   }, {
     "Valor" : "265.71",
     "comentarioDATANOTECELL" : "(*)",
@@ -2801,6 +2934,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "1", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "907.83",
+    "dimCodes" : [ "1", "ES709_38040", "2022Q2" ]
+  }, {
     "Valor" : "1216.84",
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "1", "ES709_38040", "2022Q1" ]
@@ -2873,6 +3009,9 @@
     "Valor" : "1156.92",
     "dimCodes" : [ "1", "ES709_38040", "2018Q1" ]
   }, {
+    "Valor" : "769.14",
+    "dimCodes" : [ "1", "ES707", "2022Q2" ]
+  }, {
     "Valor" : "1083.26",
     "dimCodes" : [ "1", "ES707", "2022Q1" ]
   }, {
@@ -2940,6 +3079,9 @@
     "Valor" : "660.95",
     "dimCodes" : [ "1", "ES707", "2018Q1" ]
   }, {
+    "Valor" : "1139.58",
+    "dimCodes" : [ "6", "ES70", "2022Q2" ]
+  }, {
     "Valor" : "1212.12",
     "dimCodes" : [ "6", "ES70", "2022Q1" ]
   }, {
@@ -3003,6 +3145,9 @@
     "Valor" : "1009.12",
     "dimCodes" : [ "6", "ES70", "2018Q1" ]
   }, {
+    "Valor" : "1202.43",
+    "dimCodes" : [ "6", "ES708", "2022Q2" ]
+  }, {
     "Valor" : "1055.94",
     "dimCodes" : [ "6", "ES708", "2022Q1" ]
   }, {
@@ -3065,6 +3210,10 @@
   }, {
     "Valor" : "863.86",
     "dimCodes" : [ "6", "ES708", "2018Q1" ]
+  }, {
+    "Valor" : "749.42",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "6", "ES708_35004", "2022Q2" ]
   }, {
     "Valor" : "747.59",
     "comentarioDATANOTECELL" : "(*)",
@@ -3146,6 +3295,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "6", "ES708_35004", "2018Q1" ]
   }, {
+    "Valor" : "1020.77",
+    "dimCodes" : [ "6", "ES708_35024", "2022Q2" ]
+  }, {
     "Valor" : "938.99",
     "dimCodes" : [ "6", "ES708_35024", "2022Q1" ]
   }, {
@@ -3208,6 +3360,9 @@
   }, {
     "Valor" : "805.52",
     "dimCodes" : [ "6", "ES708_35024", "2018Q1" ]
+  }, {
+    "Valor" : "1060.31",
+    "dimCodes" : [ "6", "ES708_35028", "2022Q2" ]
   }, {
     "Valor" : "930.01",
     "dimCodes" : [ "6", "ES708_35028", "2022Q1" ]
@@ -3272,6 +3427,9 @@
     "Valor" : "815.87",
     "dimCodes" : [ "6", "ES708_35028", "2018Q1" ]
   }, {
+    "Valor" : "1423.52",
+    "dimCodes" : [ "6", "ES708_35034", "2022Q2" ]
+  }, {
     "Valor" : "1267.82",
     "dimCodes" : [ "6", "ES708_35034", "2022Q1" ]
   }, {
@@ -3335,6 +3493,9 @@
     "Valor" : "940.11",
     "dimCodes" : [ "6", "ES708_35034", "2018Q1" ]
   }, {
+    "Valor" : "1100.23",
+    "dimCodes" : [ "6", "ES704", "2022Q2" ]
+  }, {
     "Valor" : "1157.35",
     "dimCodes" : [ "6", "ES704", "2022Q1" ]
   }, {
@@ -3397,6 +3558,9 @@
   }, {
     "Valor" : "975.19",
     "dimCodes" : [ "6", "ES704", "2018Q1" ]
+  }, {
+    "Valor" : "995.13",
+    "dimCodes" : [ "6", "ES704_35003", "2022Q2" ]
   }, {
     "Valor" : "1051.39",
     "dimCodes" : [ "6", "ES704_35003", "2022Q1" ]
@@ -3463,6 +3627,9 @@
     "Valor" : "843.11",
     "dimCodes" : [ "6", "ES704_35003", "2018Q1" ]
   }, {
+    "Valor" : "1093.35",
+    "dimCodes" : [ "6", "ES704_35014", "2022Q2" ]
+  }, {
     "Valor" : "1055.48",
     "dimCodes" : [ "6", "ES704_35014", "2022Q1" ]
   }, {
@@ -3526,6 +3693,9 @@
     "Valor" : "856.89",
     "dimCodes" : [ "6", "ES704_35014", "2018Q1" ]
   }, {
+    "Valor" : "1110.21",
+    "dimCodes" : [ "6", "ES704_35015", "2022Q2" ]
+  }, {
     "Valor" : "1225.91",
     "dimCodes" : [ "6", "ES704_35015", "2022Q1" ]
   }, {
@@ -3588,6 +3758,9 @@
   }, {
     "Valor" : "1050.75",
     "dimCodes" : [ "6", "ES704_35015", "2018Q1" ]
+  }, {
+    "Valor" : ".",
+    "dimCodes" : [ "6", "ES704_35017", "2022Q2" ]
   }, {
     "Valor" : "666.68",
     "comentarioDATANOTECELL" : "(*)",
@@ -3669,6 +3842,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "6", "ES704_35017", "2018Q1" ]
   }, {
+    "Valor" : "1128.18",
+    "dimCodes" : [ "6", "ES705", "2022Q2" ]
+  }, {
     "Valor" : "1410.56",
     "dimCodes" : [ "6", "ES705", "2022Q1" ]
   }, {
@@ -3731,6 +3907,9 @@
   }, {
     "Valor" : "1094.47",
     "dimCodes" : [ "6", "ES705", "2018Q1" ]
+  }, {
+    "Valor" : "745.45",
+    "dimCodes" : [ "6", "ES705_35016", "2022Q2" ]
   }, {
     "Valor" : "1304.91",
     "dimCodes" : [ "6", "ES705_35016", "2022Q1" ]
@@ -3798,6 +3977,9 @@
     "Valor" : "948.02",
     "dimCodes" : [ "6", "ES705_35016", "2018Q1" ]
   }, {
+    "Valor" : "1055.15",
+    "dimCodes" : [ "6", "ES705_35012", "2022Q2" ]
+  }, {
     "Valor" : "1244.74",
     "dimCodes" : [ "6", "ES705_35012", "2022Q1" ]
   }, {
@@ -3860,6 +4042,9 @@
   }, {
     "Valor" : "1077.10",
     "dimCodes" : [ "6", "ES705_35012", "2018Q1" ]
+  }, {
+    "Valor" : "1172.60",
+    "dimCodes" : [ "6", "ES705_35019", "2022Q2" ]
   }, {
     "Valor" : "1483.74",
     "dimCodes" : [ "6", "ES705_35019", "2022Q1" ]
@@ -3924,6 +4109,9 @@
     "Valor" : "1112.21",
     "dimCodes" : [ "6", "ES705_35019", "2018Q1" ]
   }, {
+    "Valor" : "1144.55",
+    "dimCodes" : [ "6", "ES709", "2022Q2" ]
+  }, {
     "Valor" : "1156.24",
     "dimCodes" : [ "6", "ES709", "2022Q1" ]
   }, {
@@ -3986,6 +4174,9 @@
   }, {
     "Valor" : "1033.19",
     "dimCodes" : [ "6", "ES709", "2018Q1" ]
+  }, {
+    "Valor" : "1249.05",
+    "dimCodes" : [ "6", "ES709_38001", "2022Q2" ]
   }, {
     "Valor" : "1284.02",
     "dimCodes" : [ "6", "ES709_38001", "2022Q1" ]
@@ -4050,6 +4241,9 @@
     "Valor" : "1175.87",
     "dimCodes" : [ "6", "ES709_38001", "2018Q1" ]
   }, {
+    "Valor" : "1021.80",
+    "dimCodes" : [ "6", "ES709_38006", "2022Q2" ]
+  }, {
     "Valor" : "1088.92",
     "dimCodes" : [ "6", "ES709_38006", "2022Q1" ]
   }, {
@@ -4113,6 +4307,9 @@
     "Valor" : "1035.68",
     "dimCodes" : [ "6", "ES709_38006", "2018Q1" ]
   }, {
+    "Valor" : "844.99",
+    "dimCodes" : [ "6", "ES709_38028", "2022Q2" ]
+  }, {
     "Valor" : "990.34",
     "dimCodes" : [ "6", "ES709_38028", "2022Q1" ]
   }, {
@@ -4175,6 +4372,10 @@
   }, {
     "Valor" : "864.15",
     "dimCodes" : [ "6", "ES709_38028", "2018Q1" ]
+  }, {
+    "Valor" : "2148.41",
+    "comentarioDATANOTECELL" : "(*)",
+    "dimCodes" : [ "6", "ES709_38038", "2022Q2" ]
   }, {
     "Valor" : "885.15",
     "comentarioDATANOTECELL" : "(*)",
@@ -4256,6 +4457,9 @@
     "comentarioDATANOTECELL" : "(*)",
     "dimCodes" : [ "6", "ES709_38038", "2018Q1" ]
   }, {
+    "Valor" : "1053.99",
+    "dimCodes" : [ "6", "ES709_38040", "2022Q2" ]
+  }, {
     "Valor" : "1014.74",
     "dimCodes" : [ "6", "ES709_38040", "2022Q1" ]
   }, {
@@ -4319,6 +4523,9 @@
   }, {
     "Valor" : "938.10",
     "dimCodes" : [ "6", "ES709_38040", "2018Q1" ]
+  }, {
+    "Valor" : "862.81",
+    "dimCodes" : [ "6", "ES707", "2022Q2" ]
   }, {
     "Valor" : "818.56",
     "dimCodes" : [ "6", "ES707", "2022Q1" ]

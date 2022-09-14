@@ -141,6 +141,18 @@ ui <- fluidPage(
       obj.contentWindow.document.head.appendChild(cssLink);
     }
     
+    function resizeEnlacesIframe(obj) {
+      var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 100 + 'px';
+      //obj.parentElement.style.height = obj.style.height;
+      obj.style.transform = 'scale(' + scale + ')';
+      var cssLink = document.createElement('link');
+      cssLink.href = '../../www/styles.css'; 
+      cssLink.rel = 'stylesheet'; 
+      cssLink.type = 'text/css'; 
+      obj.contentWindow.document.head.appendChild(cssLink);
+    }
+    
     function resizeAyudaIframe(obj) {
       var scale = Math.min(1, obj.parentElement.offsetWidth / 940);
       obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 100 + 'px';
@@ -383,6 +395,18 @@ server <- function(input, output) {
     ficha <- df_fichas %>% filter(code == input$id_ficha_2)
     iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
   })
+  
+  output$enlaces <- renderUI({
+    shiny::validate(need(input$id_ficha != "", ""))
+    ficha <- df_fichas %>% filter(code == input$id_ficha)
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeEnlacesIframe(this)")
+  })
+
+  output$enlaces_2 <- renderUI({
+    shiny::validate(need(input$id_ficha_2 != "", ""))
+    ficha <- df_fichas %>% filter(code == input$id_ficha_2)
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeEnlacesIframe(this)")
+  })  
   
   output$ayuda <- renderUI({
     iframe <- tags$iframe(src=paste("frames", "output", "MODULO_AYUDA.html", sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeAyudaIframe(this)")
@@ -650,6 +674,16 @@ server <- function(input, output) {
                    }
                  }
               )
+  observeEvent(eventExpr = input$ver_enlaces, handlerExpr = 
+                 { 
+                   output$tab <-  renderText ({"enlaces"}); 
+                   if(need_layout_2_fichas()) { 
+                     output$fichas <- getLayout7() 
+                   } else { 
+                     output$fichas <- getLayout6() 
+                   }
+                 }
+  )
   observeEvent(eventExpr = input$ver_ayuda, handlerExpr = { output$tab <- renderText ({"ayuda"}); output$fichas <- getLayout5(); })
   observeEvent(eventExpr = input$mes_2, handlerExpr = { if(periodicidad2() == "M" && input$mes_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$trimestre_2, handlerExpr = { if(periodicidad2() == "Q" && input$trimestre_2 != "") output$fichas <- getLayout2() })
@@ -882,6 +916,23 @@ server <- function(input, output) {
     renderUI (
       fluidRow(style = "margin-top: 20px;",
         column(12, htmlOutput('ayuda'))
+      )
+    ) 
+  }
+  
+  getLayout6 <- function() {
+    renderUI (
+      fluidRow(style = "margin-top: 20px;",
+               column(12, htmlOutput('enlaces'))
+      )
+    ) 
+  }
+  
+  getLayout7 <- function() {
+    renderUI (
+      fluidRow(style = "margin-top: 20px;",
+               column(6, htmlOutput('enlaces')),
+               column(6, htmlOutput('enlaces_2'))
       )
     ) 
   }

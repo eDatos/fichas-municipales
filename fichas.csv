@@ -1,18 +1,18 @@
-code;topic;description;filename;periodicidad;glosario
-demografia;020. Demografía;Indicadores demográficos;FICHA.Rmd;A;GLOSARIO_DEMOGR.html
-paro_registrado;051. Empleo;Paro registrado;FICHA_PARO.Rmd;M;GLOSARIO_PARO.html
-afiliacion_residencia;051. Empleo;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;M;GLOSARIO_AFIL_RESID.html
-afiliacion_cotizacion;051. Empleo;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;M;GLOSARIO_AFIL_COTIZ.html
-presupuestos;091. Administración pública;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A;GLOSARIO_PRESUPUESTOS.html
-alojamientos_turisticos;082. Hostelería y turismo;Alojamientos turísticos;FICHA_ALOJAMIENTOS.Rmd;M;GLOSARIO_ALOJAMIENTOS.html
-perfil_turista;082. Hostelería y turismo;Perfil del turista;FICHA_PERFIL.Rmd;A;GLOSARIO_PERFIL.html
-gastos_medios_turista;082. Hostelería y turismo;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO.html
-gastos_medios_turista_dia;082. Hostelería y turismo;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia.html
-europeas;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS.Rmd;O;GLOSARIO_EUROPEAS.html
-congreso;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Congreso;FICHA_CONGRESO.Rmd;O;GLOSARIO_CONGRESO.html
-senado;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Senado;FICHA_SENADO.Rmd;O;GLOSARIO_SENADO.html
-autonomicas;035. Participación ciudadana y elecciones;Resultados de las Elecciones Autonómicas;FICHA_AUTONOMICAS.Rmd;O;GLOSARIO_AUTONOMICAS.html
-cabildo;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO.Rmd;O;GLOSARIO_CABILDO.html
-municipales;035. Participación ciudadana y elecciones;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES.Rmd;O;GLOSARIO_MUNICIPALES.html
-parque_vehiculos;083. Transporte y comunicaciones;Parque de vehículos;FICHA_VEHICULOS.Rmd;M;GLOSARIO_VEHICULOS.html
-sector_primario;060. Sector primario;Sector primario;FICHA_PRIMARIO.Rmd;A;GLOSARIO_PRIMARIO.html
+code;topic;description;filename;periodicidad;glosario;enlace
+demografia;020. Demografía;Indicadores demográficos;FICHA.Rmd;A;GLOSARIO_DEMOGR.html;ENLACES_DEMOGR.html
+paro_registrado;051. Empleo;Paro registrado;FICHA_PARO.Rmd;M;GLOSARIO_PARO.html;ENLACES_PARO.html
+afiliacion_residencia;051. Empleo;Afiliaciones según lugar de residencia;FICHA_AFIL_RESID.Rmd;M;GLOSARIO_AFIL_RESID.html;ENLACES_AFIL_RESID.html
+afiliacion_cotizacion;051. Empleo;Afiliaciones según lugar de cotización;FICHA_AFIL_COTIZ.Rmd;M;GLOSARIO_AFIL_COTIZ.html;ENLACES_AFIL_COTIZ.html
+presupuestos;091. Administración pública;Indicadores presupuestarios;FICHA_PRESUPUESTOS.Rmd;A;GLOSARIO_PRESUPUESTOS.html;ENLACES_PRESUPUESTOS.html
+alojamientos_turisticos;082. Hostelería y turismo;Alojamientos turísticos;FICHA_ALOJAMIENTOS.Rmd;M;GLOSARIO_ALOJAMIENTOS.html;ENLACES_ALOJAMIENTOS.html
+perfil_turista;082. Hostelería y turismo;Perfil del turista;FICHA_PERFIL.Rmd;A;GLOSARIO_PERFIL.html;ENLACES_PERFIL.html
+gastos_medios_turista;082. Hostelería y turismo;Gasto medio por turista;FICHA_GASTOS_TURISMO.Rmd;Q;GLOSARIO_GASTOS_TURISMO.html;ENLACES_GASTOS_TURISMO.html
+gastos_medios_turista_dia;082. Hostelería y turismo;Gasto medio por turista y día;FICHA_GASTOS_TURISMO_dia.Rmd;Q;GLOSARIO_GASTOS_TURISMO_dia.html;ENLACES_GASTOS_TURISMO_dia.html
+europeas;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Parlamento Europeo;FICHA_EUROPEAS.Rmd;O;GLOSARIO_EUROPEAS.html;ENLACES_EUROPEAS.html
+congreso;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Congreso;FICHA_CONGRESO.Rmd;O;GLOSARIO_CONGRESO.html;ENLACES_CONGRESO.html
+senado;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Senado;FICHA_SENADO.Rmd;O;GLOSARIO_SENADO.html;ENLACES_SENADO.html
+autonomicas;035. Participación ciudadana y elecciones;Resultados de las Elecciones Autonómicas;FICHA_AUTONOMICAS.Rmd;O;GLOSARIO_AUTONOMICAS.html;ENLACES_AUTONOMICAS.html
+cabildo;035. Participación ciudadana y elecciones;Resultados de las Elecciones al Cabildo Insular;FICHA_CABILDO.Rmd;O;GLOSARIO_CABILDO.html;ENLACES_CABILDO.html
+municipales;035. Participación ciudadana y elecciones;Resultados de las Elecciones Municipales;FICHA_MUNICIPALES.Rmd;O;GLOSARIO_MUNICIPALES.html;ENLACES_MUNICIPALES.html
+parque_vehiculos;083. Transporte y comunicaciones;Parque de vehículos;FICHA_VEHICULOS.Rmd;M;GLOSARIO_VEHICULOS.html;ENLACES_VEHICULOS.html
+sector_primario;060. Sector primario;Sector primario;FICHA_PRIMARIO.Rmd;A;GLOSARIO_PRIMARIO.html;ENLACES_PRIMARIO.html
