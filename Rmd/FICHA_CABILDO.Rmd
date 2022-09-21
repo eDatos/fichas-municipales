@@ -494,7 +494,10 @@ get_indicator4 = function(title, label, value) {
 <h2 style="color: #666; margin: 0;">Resultados de las Elecciones al Cabildo Insular</h2>
 <hr>
 
-<div class="linechart-placeholder">
+```{r espacio leyenda, results='asis'}
+margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 64, 34)
+```
+<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
 <h2 style="color: #005980; margin-bottom: 0;">Tasa de participación: `r Tasa_participacion` %</h2>
 <div class="linechart">
   `r g_line`
