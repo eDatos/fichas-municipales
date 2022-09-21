@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38037
-  año: 2021
+  ano: 2021
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -120,24 +120,24 @@ seleccion_mun <- function(df_variable, variable, p = 0.5) {
 ```{r Gráfico evolución de la población turística}
 turistas <- fromJSON(params$url.turistas)
 df_turistas <- cbind(data.frame(do.call('rbind', turistas[["data"]][["dimCodes"]])), turistas[["data"]][["Valor"]])
-colnames(df_turistas) <- c('gredad', 'sexo', 'pais', 'mun', 'año', 'valor')
+colnames(df_turistas) <- c('gredad', 'sexo', 'pais', 'mun', 'ano', 'valor')
 df_turistas$gredad <- ordered(df_turistas$gredad, levels=turistas[["categories"]][["codes"]][[1]], labels=turistas[["categories"]][["labels"]][[1]])
 df_turistas$sexo <- factor(df_turistas$sexo, levels=turistas[["categories"]][["codes"]][[2]], labels=turistas[["categories"]][["labels"]][[2]])
 df_turistas$pais <- factor(df_turistas$pais, levels=turistas[["categories"]][["codes"]][[3]], labels=turistas[["categories"]][["labels"]][[3]])
-df_turistas$año <- as.integer(df_turistas$año)
+df_turistas$ano <- as.integer(df_turistas$ano)
 df_turistas$valor <- as.numeric(df_turistas$valor)
 
-num_Canarias_total <- df_turistas %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
+num_Canarias_total <- df_turistas %>% filter(mun == "ES70" & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & ano == params$ano) %>% 
   select(valor) %>% as.numeric
-num_Isla_total <- df_turistas %>% filter(mun == municipio_actual$id_isla & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>%
+num_Isla_total <- df_turistas %>% filter(mun == municipio_actual$id_isla & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & ano == params$ano) %>%
   select(valor) %>% as.numeric
 
 df_u <- df_turistas %>% filter(gredad == "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & substring(mun, 6,7) == "_3") %>%
   transform(mun = substr(mun, 7, 12)) %>% 
-  select(mun, año, valor)
-df_u <- df_u[with(df_u, order(año)), ]
+  select(mun, ano, valor)
+df_u <- df_u[with(df_u, order(ano)), ]
 
-related_mun <- df_u %>% filter(año == params$año)
+related_mun <- df_u %>% filter(ano == params$ano)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
@@ -147,14 +147,14 @@ leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Turistas: <span cla
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by= "mun") %>%
-  select(id = mun, año, nombre, valor) %>%
+  select(id = mun, ano, nombre, valor) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  mutate(tasa = ifelse(año == min(año), NA, round(100*((valor / lag(valor)) - 1), 1)))
+  mutate(tasa = ifelse(ano == min(ano), NA, round(100*((valor / lag(valor)) - 1), 1)))
 
-if(params$año == 2018){
-  df <- df %>% filter(año %in% c(2018,2019,2020))
+if(params$ano == 2018){
+  df <- df %>% filter(ano %in% c(2018,2019,2020))
   }else{
-    df <- df %>% filter(año <= params$año)
+    df <- df %>% filter(ano <= params$ano)
   }
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
@@ -163,17 +163,17 @@ df <- df %>%
   mutate(valor_l = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
          tasa_l = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ","), "%")))
 
-leyenda_poblacion <- df %>% filter(año == params$año) %>%
+leyenda_poblacion <- df %>% filter(ano == params$ano) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
 df <- df %>% mutate(
-  tooltip = ifelse(año == params$año,
+  tooltip = ifelse(ano == params$ano,
                    sprintf(leyenda.content, nombre, valor_l, tasa_l),
-                   sprintf(leyenda.content, nombre, paste0(valor_l, ' (',año,')'), tasa_l)
+                   sprintf(leyenda.content, nombre, paste0(valor_l, ' (',ano,')'), tasa_l)
                    )
   )
 
-g_line <- ggplot(data = df, aes(x = año, y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = ano, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -184,7 +184,7 @@ g_line <- ggplot(data = df, aes(x = año, y = valor, group = nombre, colour = no
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = min(df$año), to = max(df$año), by = max(1, as.integer((max(df$año)-min(df$año))/2)))}) +
+  scale_x_continuous(breaks = function(x){seq(from = min(df$ano), to = max(df$ano), by = max(1, as.integer((max(df$ano)-min(df$ano))/2)))}) +
   scale_y_continuous(labels = function(x){paste0(format(x/10^3, big.mark = ".", decimal.mark = ","), " mil")}, n.breaks = 5, limits = c(0, NA))
 
 
@@ -192,7 +192,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(min(df$año), params$año - 18), max(df$año)),
+                      range = c(max(min(df$ano), params$ano - 18), max(df$ano)),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -239,7 +239,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Número de turistas y su variación porcentual}
-ind_turistas <- df %>% filter(id == params$id_municipio & año == params$año)
+ind_turistas <- df %>% filter(id == params$id_municipio & ano == params$ano)
 
 Num_Turistas_num <- ind_turistas$valor %>% as.numeric
 if(is.na(Num_Turistas_num)) {stop("Error: indicador principal desconocido")}
@@ -247,7 +247,7 @@ Num_Turistas <- Num_Turistas_num %>% format(big.mark = ".", decimal.mark = ",")
 Variacion_Porcentual <- ind_turistas$tasa %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 if(Variacion_Porcentual != "NA"){
   if(ind_turistas$tasa == 0){
-    diferencia <- Num_Turistas_num - df$valor[which(df$id == params$id_municipio & df$año == params$año-1)]
+    diferencia <- Num_Turistas_num - df$valor[which(df$id == params$id_municipio & df$ano == params$ano-1)]
     Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
   }else{
     Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
@@ -266,7 +266,7 @@ df_turismo_estancia$valor <- as.numeric(df_turismo_estancia$valor)
 df_turismo_estancia$mun <- recode_mun(df_turismo_estancia, 'mun')
 
 Num_estancia_media <- df_turismo_estancia %>%
-  filter(nivel == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(nivel == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(valor) %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 ```
 
@@ -296,8 +296,8 @@ mapa_isla_plot <- tm_shape(mapa_isla) +
 
 ```{r Rankings}
 df_ranking <- df_u %>%
-  select(id = mun, año, valor) %>%
-  filter(año == params$año & !is.na(valor)) %>%
+  select(id = mun, ano, valor) %>%
+  filter(ano == params$ano & !is.na(valor)) %>%
   left_join(df_CL_AREA_mun, by = "id") %>% 
   arrange(desc(valor))
 
@@ -317,7 +317,7 @@ df_turistas$mun <- factor(df_turistas$mun, levels=turistas[["categories"]][["cod
 df_turistas$mun <- recode_mun(df_turistas, 'mun')
 
 df_turismo_gedad <- df_turistas %>%
-  filter(mun == municipio_actual$municipio & gredad != "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
+  filter(mun == municipio_actual$municipio & gredad != "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & ano == params$ano) %>% 
   select(gredad, valor)
 df_turismo_gedad <- df_turismo_gedad %>% mutate(porcentaje = df_turismo_gedad$valor/ Num_Turistas_num * 100)
 
@@ -325,7 +325,7 @@ Percent_Turistas_menos44 <- df_turismo_gedad$porcentaje[which(df_turismo_gedad$g
 Percent_Turistas_mas44 <- (100 - df_turismo_gedad$porcentaje[which(df_turismo_gedad$gredad == "De 16 a 44 años")] %>% round(1)) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 df_turismo_gedad_C <- df_turistas %>%
-  filter(mun == "CANARIAS" & gredad != "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & año == params$año) %>% 
+  filter(mun == "CANARIAS" & gredad != "TOTAL GRUPOS DE EDADES" & sexo == "AMBOS SEXOS" & pais == "TOTAL" & ano == params$ano) %>% 
   select(gredad, valor)
 df_turismo_gedad_C <- df_turismo_gedad_C %>% mutate(porcentaje = df_turismo_gedad_C$valor/ num_Canarias_total * 100)
 
@@ -336,18 +336,18 @@ Percent_Turistas_mas44_C <- (100 - df_turismo_gedad_C$porcentaje[which(df_turism
 ```{r Número de mujeres y hombres}
 Percent_Mujeres <- round((
   df_turistas %>%
-    filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Mujeres" & pais == "TOTAL" & año == params$año) %>%
+    filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Mujeres" & pais == "TOTAL" & ano == params$ano) %>%
     select(valor) %>% as.numeric) / Num_Turistas_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 Percent_Hombres <- round((
   df_turistas %>%
-    filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Hombres" & pais == "TOTAL" & año == params$año) %>%
+    filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Hombres" & pais == "TOTAL" & ano == params$ano) %>%
     select(valor) %>% as.numeric) / Num_Turistas_num *100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
 
 Num_Mujeres <- df_turistas %>%
-  filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Mujeres" & pais == "TOTAL" & año == params$año) %>% 
+  filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Mujeres" & pais == "TOTAL" & ano == params$ano) %>% 
   select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 Num_Hombres <- df_turistas %>%
-  filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Hombres" & pais == "TOTAL" & año == params$año) %>%
+  filter(mun == municipio_actual$municipio & gredad == "TOTAL GRUPOS DE EDADES" & sexo == "Hombres" & pais == "TOTAL" & ano == params$ano) %>%
   select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
 ```
 
@@ -355,13 +355,13 @@ Num_Hombres <- df_turistas %>%
 df_turistas <- df_turistas %>% transform(pais = gsub("Otros países", "Otros", pais))
 
 rk_turismo_pais_mun <- df_turistas %>%
-  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & año == params$año) %>% arrange(valor) %>%
+  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo == "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & ano == params$ano) %>% arrange(valor) %>%
   select(pais, valor)
 rk_turismo_pais_mun <- rk_turismo_pais_mun %>% mutate(porcentaje = rk_turismo_pais_mun$valor/ Num_Turistas_num * 100)
 rk_turismo_pais_mun$pais <- ordered(rk_turismo_pais_mun$pais, levels = rk_turismo_pais_mun$pais)
 
 df_turismo_pais_mun <- df_turistas %>%
-  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & año == params$año) %>%
+  filter(gredad == "TOTAL GRUPOS DE EDADES"  & sexo != "AMBOS SEXOS" & pais != "TOTAL" & mun == municipio_actual$municipio & ano == params$ano) %>%
   select(sexo, pais, valor)
 
 df_turismo_pais_mun <- df_turismo_pais_mun %>%
@@ -417,10 +417,10 @@ df_turismo_sl_aloj <- df_turismo_sl_aloj %>%
   mutate(tipo = recode(tipo, "Otros alojamientos colectivos" = "Otros"))
 
 df_turismo_aloj_mun <- df_turismo_sl_aloj %>%
-  filter(tipo != "TOTAL" & sl == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(tipo != "TOTAL" & sl == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(tipo, valor)
 df_turismo_aloj_C <- df_turismo_sl_aloj %>%
-  filter(mun == "CANARIAS" & tipo != "TOTAL" & sl == "TOTAL" & periodo == params$año) %>% 
+  filter(mun == "CANARIAS" & tipo != "TOTAL" & sl == "TOTAL" & periodo == params$ano) %>% 
   select(tipo, valor)
 df_turismo_aloj_mun <- df_turismo_aloj_mun %>%
   mutate(porcentaje = if_else(is.na(valor), 0, df_turismo_aloj_mun$valor / Num_Turistas_num * 100),
@@ -484,7 +484,7 @@ df_turismo_ingresos$valor <- as.numeric(df_turismo_ingresos$valor)
 df_turismo_ingresos$mun <- recode_mun(df_turismo_ingresos, 'mun')
 
 df_turismo_ingresos_C <- df_turismo_ingresos %>%
-  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$ano) %>% 
   select(nivel, valor)
 df_turismo_ingresos_C <- df_turismo_ingresos_C %>% mutate(porcentaje = df_turismo_ingresos_C$valor/ num_Canarias_total * 100)
 
@@ -494,7 +494,7 @@ porc_Turistas_menos50_C_l <- round(porc_Turistas_menos50_C, 1) %>% as.numeric
 porc_Turistas_mas50_C_l <- round(porc_Turistas_mas50_C, 1) %>% as.numeric
 
 df_turismo_ingresos <- df_turismo_ingresos %>%
-  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(nivel != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(nivel, valor)
 df_turismo_ingresos <- df_turismo_ingresos %>% mutate(porcentaje = df_turismo_ingresos$valor/ Num_Turistas_num * 100)
 
@@ -516,7 +516,7 @@ df_turismo_proposito$valor <- as.numeric(df_turismo_proposito$valor)
 df_turismo_proposito$mun <- recode_mun(df_turismo_proposito, 'mun')
 
 df_turismo_proposito <- df_turismo_proposito %>%
-  filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(proposito != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(proposito, valor)
 df_turismo_proposito <- df_turismo_proposito %>% mutate(porcentaje = df_turismo_proposito$valor/ Num_Turistas_num * 100)
 
@@ -539,10 +539,10 @@ df_turismo_educacion <- df_turismo_educacion %>%
   mutate(estudios = recode(estudios, "Estudios superiores" = "Superiores"))
 
 df_turismo_educacion_mun <- df_turismo_educacion %>%
-  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(estudios, valor)
 df_turismo_educacion_C <- df_turismo_educacion %>%
-  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  filter(estudios != "TOTAL" & pais == "TOTAL" & mun == "CANARIAS" & periodo == params$ano) %>% 
   select(estudios, valor)
 df_turismo_educacion_mun <- df_turismo_educacion_mun %>%
   mutate(porcentaje = if_else(is.na(valor), 0, df_turismo_educacion_mun$valor / Num_Turistas_num * 100),
@@ -605,7 +605,7 @@ df_turismo_motiv$valor <- as.numeric(df_turismo_motiv$valor)
 df_turismo_motiv$mun <- recode_mun(df_turismo_motiv, 'mun')
 
 df_turismo_motiv_C <- df_turismo_motiv %>%
-  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$año) %>% 
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == "CANARIAS" & periodo == params$ano) %>% 
   select(motiv, valor)
 df_turismo_motiv_C <- df_turismo_motiv_C %>% mutate(porcentaje = df_turismo_motiv_C$valor/ sum(df_turismo_motiv_C$valor) * 100)
 
@@ -617,7 +617,7 @@ porc_Turistas_explorar_C_l <- round(porc_Turistas_explorar_C, 1) %>% as.numeric
 porc_Turistas_otros_C_l <- round(porc_Turistas_otros_C, 1) %>% as.numeric
 
 df_turismo_motiv <- df_turismo_motiv %>%
-  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$año) %>% 
+  filter(motiv != "TOTAL" & tipo == "TOTAL" & mun == municipio_actual$municipio & periodo == params$ano) %>% 
   select(motiv, valor)
 df_turismo_motiv <- df_turismo_motiv %>% mutate(porcentaje = df_turismo_motiv$valor/ sum(df_turismo_motiv$valor) * 100)
 
@@ -644,7 +644,7 @@ get_indicator4s = function(title, label, value) {
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$año`</h3>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$ano`</h3>
 <h2 style="color: #666; margin: 0;">Perfil del turista</h2>
 <hr>
 

@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 35001
-  año: 2019_NOVIEMBRE
+  ano: 2019_NOVIEMBRE
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.congreso_2019n: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000035/~latest.json?dim=MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA:TERRITORIO:ES701|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES702|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013|38048|38901&lang=es
@@ -79,7 +79,7 @@ convocatoria_congreso <- convocatoria_congreso %>%
 convocatoria_congreso <- convocatoria_congreso %>% arrange(order)
 convocatoria_congreso$code <- factor(convocatoria_congreso$code, levels = convocatoria_congreso$code)
 
-convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$año)
+convocatoria_actual <- convocatoria_congreso %>% filter(substring(code, 10,23) == params$ano)
 convocatoria_tva <- convocatoria_congreso[convocatoria_congreso$order == convocatoria_congreso[convocatoria_actual$code == convocatoria_congreso$code, ]$order - 1, ]
 ```
 
@@ -339,7 +339,7 @@ dR <- length(rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["repres
 
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
-if(params$año %in% c(2015, 2008)){
+if(params$ano %in% c(2015, 2008)){
   df_congreso <- data.frame(
     medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                  each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -355,7 +355,7 @@ if(params$año %in% c(2015, 2008)){
   for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
     df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
   }}else{
-    if(params$año %in% c(2016, 2000)){
+    if(params$ano %in% c(2016, 2000)){
       df_congreso <- data.frame(
         mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                   each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -371,7 +371,7 @@ if(params$año %in% c(2015, 2008)){
       for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]) {
         df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
       }}else{
-        if(params$año == "2019_NOVIEMBRE"){
+        if(params$ano == "2019_NOVIEMBRE"){
           df_congreso <- data.frame(
             candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                               each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -387,7 +387,7 @@ if(params$año %in% c(2015, 2008)){
           for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]) {
             df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
           }}else{
-            if(params$año == 2004){
+            if(params$ano == 2004){
               df_congreso <- data.frame(
                 medida = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                              each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -403,7 +403,7 @@ if(params$año %in% c(2015, 2008)){
               for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
                 df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
               }}else{
-                if(params$año == "2019_ABRIL"){
+                if(params$ano == "2019_ABRIL"){
                   df_congreso <- data.frame(
                     mun = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                                  each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -419,7 +419,7 @@ if(params$año %in% c(2015, 2008)){
                   for(i in 1:data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
                     df_partido$name_partido[i] <- data_congreso[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
                   }}else{
-                    if(params$año == 2011){
+                    if(params$ano == 2011){
                       df_congreso <- data.frame(
                         candidatura = rep(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
                                           each = length(data_congreso[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
@@ -591,20 +591,20 @@ if(Variacion == "NA"){
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
 ```{r tamaño gráfico de barras, results='asis'}
 if(nrow(df_plot_0) == 2) {
-  tamaño <- 158
+  tamano <- 158
   }else if(nrow(df_plot_0) == 3) {
-    tamaño <- 198
+    tamano <- 198
     }else if(nrow(df_plot_0) == 4) {
-      tamaño <- 240
+      tamano <- 240
       }else if(nrow(df_plot_0) == 5) {
-        tamaño <- 280
+        tamano <- 280
         }else if(nrow(df_plot_0) == 6) {
-          tamaño <- 310
+          tamano <- 310
           }else{
-            tamaño <- 354
+            tamano <- 354
           }
 ```
-<div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
+<div class="barras-c" style="height: `r paste0(tamano, 'px')`;">
   `r g_congreso_mun`
 </div>
 

@@ -186,9 +186,9 @@ generarFicha <- function(ano, id_ficha, periodicidad, mes, trimestre, id_municip
   if(!file.exists(paste0(dir.fichero, nombre.fichero))) {
     option_params <- list(id_municipio = as.numeric(id_municipio))
     if(nchar(ano) == 4) {
-      option_params <- append(option_params, list(año = as.numeric(ano)))
+      option_params <- append(option_params, list(ano = as.numeric(ano)))
     }else{
-      option_params <- append(option_params, list(año = as.character(ano)))
+      option_params <- append(option_params, list(ano = as.character(ano)))
     }
     if(periodicidad == "M") {
       option_params <- append(option_params, list(mes = as.numeric(mes)))

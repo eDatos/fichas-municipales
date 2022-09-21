@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 35016
-  año: 2020
+  ano: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -55,7 +55,7 @@ get_nombre <- function(nombre) {
 ```
 
 ```{r url}
-url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_",sprintf ("%06.0f", params$año - 2006), "/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_80|G_81|G_82|G_83|G_84|G_85|G_86|G_87|G_90|G_91|G_92|G_93|G_94|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_80|I_81|I_82|I_83|I_84|I_85|I_86|I_87|I_90|I_91|I_93|I_94|GASTOS|INGRESOS&lang=es")
+url <- paste0("https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E31025B_",sprintf ("%06.0f", params$ano - 2006), "/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:PRESUPUESTO_ESTADO:PRESUPUESTO_EJECUTADO:MEDIDAS:IMPORTE_PRESUPUESTARIO:PRESUPUESTO_PARTIDA:G_10|G_11|G_12|G_13|G_14|G_15|G_16|G_20|G_21|G_22|G_23|G_24|G_25|G_26|G_27|G_30|G_31|G_32|G_33|G_34|G_35|G_42|G_43|G_44|G_45|G_46|G_47|G_48|G_49|G_50|G_60|G_61|G_62|G_63|G_64|G_65|G_68|G_69|G_72|G_73|G_74|G_75|G_76|G_77|G_78|G_79|G_80|G_81|G_82|G_83|G_84|G_85|G_86|G_87|G_90|G_91|G_92|G_93|G_94|I_10|I_11|I_13|I_17|I_18|I_19|I_22|I_28|I_29|I_30|I_31|I_32|I_33|I_34|I_35|I_36|I_38|I_39|I_42|I_43|I_44|I_45|I_46|I_47|I_48|I_49|I_4T|I_50|I_51|I_52|I_53|I_54|I_55|I_59|I_60|I_61|I_68|I_72|I_73|I_74|I_75|I_76|I_77|I_78|I_79|I_7T|I_80|I_81|I_82|I_83|I_84|I_85|I_86|I_87|I_90|I_91|I_93|I_94|GASTOS|INGRESOS&lang=es")
 ```
 
 ```{r Municipio actual}
@@ -98,8 +98,8 @@ recode_mun <- function(df, colname) {
 }
 # Frontera
 recode_Frontera <- function(df) {
-  df_f <- rbind(df %>% filter(año %in% c(2008:max(año)) & mun == "38013_1912"),
-                df %>% filter(año %in% c(2001:2007) & mun == "38013_2007"))
+  df_f <- rbind(df %>% filter(ano %in% c(2008:max(ano)) & mun == "38013_1912"),
+                df %>% filter(ano %in% c(2001:2007) & mun == "38013_2007"))
   df <- df %>% anti_join(df_f)
 }
 
@@ -156,7 +156,7 @@ dI <- length(rep(data_I[["data"]][["dimensions"]][["dimension"]][["representatio
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_I <- data.frame(
-  año = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+  ano = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   mun = rep(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
             times = length(data_I[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
@@ -164,11 +164,11 @@ df_I <- data.frame(
 df_I$valor <- as.numeric(df_I$valor)
 df_I <- recode_Frontera(df_I)
 df_I$mun <- recode_id_Frontera(df_I, 'mun')
-df_I <- df_I[with(df_I, order(año)), ] %>%
+df_I <- df_I[with(df_I, order(ano)), ] %>%
   filter(mun == params$id_municipio) %>%
-  mutate(valor_M = round(valor / 10^6, 1), año = as.integer(año)) %>%
+  mutate(valor_M = round(valor / 10^6, 1), ano = as.integer(ano)) %>%
   transform(mun = paste0(municipio_actual$municipio, "_inicial")) %>%
-  filter(año <= params$año)
+  filter(ano <= params$ano)
 
 # Liquidación del presupuesto consolidado de ingresos y gastos de las Entidades Locales según capítulos de la estructura económica y fases presupuestarias. Islas y municipios de Canarias por años [tabla1]
 data_u <- fromJSON(params$url.presupuesto_1)
@@ -180,7 +180,7 @@ du <- length(rep(data_u[["data"]][["dimensions"]][["dimension"]][["representatio
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_u <- data.frame(
-  año = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+  ano = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   mun = rep(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
             times = length(data_u[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
@@ -188,21 +188,21 @@ df_u <- data.frame(
 df_u$valor <- as.numeric(df_u$valor)
 df_u <- recode_Frontera(df_u)
 df_u$mun <- recode_id_Frontera(df_u, 'mun')
-df_u <- df_u[with(df_u, order(año)), ] %>%
-  mutate(valor_M = round(valor / 10^6, 1), año = as.integer(año))
+df_u <- df_u[with(df_u, order(ano)), ] %>%
+  mutate(valor_M = round(valor / 10^6, 1), ano = as.integer(ano))
 
-related_mun <- df_u %>% filter(año == params$año)
+related_mun <- df_u %>% filter(ano == params$ano)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 df <- related_mun %>%
   select(mun, nombre) %>%
   left_join(df_u, by = "mun") %>%
-  select(id = mun, año, nombre, valor, valor_M) %>%
+  select(id = mun, ano, nombre, valor, valor_M) %>%
   left_join(df_CL_AREA_mun, by = "id") %>%
-  select(año, mun = id, nombre, valor, valor_M) %>%
-  mutate(tasa =  round(100*((valor / lag(valor)) - 1), 1), año = as.integer(año)) %>%
-  filter(año != min(año) & año <= params$año)
+  select(ano, mun = id, nombre, valor, valor_M) %>%
+  mutate(tasa =  round(100*((valor / lag(valor)) - 1), 1), ano = as.integer(ano)) %>%
+  filter(ano != min(ano) & ano <= params$ano)
 
 leyenda.template_I <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto inicial: <span class='sp-habitantes'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
@@ -210,30 +210,30 @@ leyenda.content_I <- "<span class='sp-municipio'>%s</span><br/>Presupuesto inici
 leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Presupuesto ejecutado: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
 
 df <- df %>%
-  left_join(df_I %>% select(año, valor_inicial = valor_M), by = "año") %>%
+  left_join(df_I %>% select(ano, valor_inicial = valor_M), by = "ano") %>%
   mutate(valor_inicial_l = ifelse(is.na(valor_inicial), " -", paste0(format(valor_inicial, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
          valor_l = ifelse(is.na(valor_M), " -", paste0(format(valor_M, big.mark = ".", decimal.mark = ",", nsmall = 1), " mill.€")),
          tasa_l = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
 
 df <- df %>% mutate(
-  tooltip = ifelse(año == params$año,
+  tooltip = ifelse(ano == params$ano,
                    ifelse(mun == params$id_municipio,
                           sprintf(leyenda.content_I, nombre, valor_inicial_l, valor_l, tasa_l),
                           sprintf(leyenda.content, nombre, valor_l, tasa_l)
                           ),
                    ifelse(mun == params$id_municipio,
-                          sprintf(leyenda.content_I, nombre, paste0(valor_inicial_l, ' (',año,')'), valor_l, tasa_l),
-                          sprintf(leyenda.content, nombre, paste0(valor_l, ' (',año,')'), tasa_l)
+                          sprintf(leyenda.content_I, nombre, paste0(valor_inicial_l, ' (',ano,')'), valor_l, tasa_l),
+                          sprintf(leyenda.content, nombre, paste0(valor_l, ' (',ano,')'), tasa_l)
                           )
                    )
   )
 
 g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
 
-leyenda_poblacion <- df %>% filter(año == params$año) %>%
+leyenda_poblacion <- df %>% filter(ano == params$ano) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
-g_line <- ggplot(data = df, aes(x = año)) +
+g_line <- ggplot(data = df, aes(x = ano)) +
   geom_line(size = 0.7, aes(y = valor_M, group = nombre, colour = nombre, text = tooltip)) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
@@ -243,14 +243,14 @@ g_line <- ggplot(data = df, aes(x = año)) +
         panel.grid.minor.x = element_blank(),
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
-  scale_x_continuous(breaks = function(x){seq(from = min(df$año), to = max(df$año), by = as.integer((max(df$año)-min(df$año))/3))}) +
+  scale_x_continuous(breaks = function(x){seq(from = min(df$ano), to = max(df$ano), by = as.integer((max(df$ano)-min(df$ano))/3))}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), " mill.")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
   config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
   layout(hoverlabel = "", hovermode = 'x unified',
          xaxis = list(autorange = FALSE,
-                      range = c(max(min(df$año), params$año - 18), params$año),
+                      range = c(max(min(df$ano), params$ano - 18), params$ano),
                       rangeslider = list(type = "date", thickness = 0.04))) %>%
   onRender("
     function(el) {
@@ -297,7 +297,7 @@ g_line <- ggplotly(g_line, tooltip = "text") %>%
 ```
 
 ```{r Valor del presupuesto y su variación porcentual}
-df_lv <- df %>% filter(mun == params$id_municipio & año == params$año)
+df_lv <- df %>% filter(mun == params$id_municipio & ano == params$ano)
 
 Num_Presupuesto_num <- df_lv$valor_M %>% as.numeric
 if(is.na(Num_Presupuesto_num)) {stop("Error: indicador principal desconocido")}
@@ -305,7 +305,7 @@ Num_Presupuesto <- Num_Presupuesto_num %>% round(1) %>% format(big.mark = ".", d
 Variacion_Porcentual <- df_lv$tasa %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 if(Variacion_Porcentual != "NA"){
   if(df_lv$tasa == 0){
-    diferencia <- df_lv$valor[which(df_lv$año == params$año)] - df$valor[which(df$mun == params$id_municipio & df$año == params$año-1)]
+    diferencia <- df_lv$valor[which(df_lv$ano == params$ano)] - df$valor[which(df$mun == params$id_municipio & df$ano == params$ano-1)]
     Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
   }else{
     Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
@@ -345,8 +345,8 @@ mapa_comarca_plot <- tm_shape(mapa_comarca) +
 
 ```{r Rankings}
 df_ranking <- df_u %>%
-  select(año, id = mun, valor) %>%
-  filter(año == params$año & !is.na(valor)) %>%
+  select(ano, id = mun, valor) %>%
+  filter(ano == params$ano & !is.na(valor)) %>%
   inner_join(df_CL_AREA_mun, by = "id") %>%
   arrange(desc(valor))
 
@@ -372,12 +372,12 @@ ind_Ingresos <- fromJSON(params$url.ingresos_p)
 df_ind_Ingresos <- data.frame(
   mun = rep(names(ind_Ingresos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
             each=ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["size"]]),
-  año = names(ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+  ano = names(ind_Ingresos[["dimension"]][["TIME"]][["representation"]][["index"]]),
   valor = as.numeric(ind_Ingresos[["observation"]]))
 df_ind_Ingresos <- recode_Frontera(df_ind_Ingresos)
 df_ind_Ingresos$mun <- recode_id_Frontera(df_ind_Ingresos, 'mun')
 
-Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>%
+Num_Ingresos_hab <- df_ind_Ingresos %>% filter(mun == params$id_municipio & ano == params$ano) %>% select(valor) %>%
   as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
@@ -388,17 +388,17 @@ ind_Gastos <- fromJSON(params$url.gastos)
 df_ind_Gastos <- data.frame(
   mun = rep(names(ind_Gastos[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
             each=ind_Gastos[["dimension"]][["TIME"]][["representation"]][["size"]]),
-  año = names(ind_Gastos[["dimension"]][["TIME"]][["representation"]][["index"]]),
+  ano = names(ind_Gastos[["dimension"]][["TIME"]][["representation"]][["index"]]),
   valor = as.numeric(ind_Gastos[["observation"]]))
 df_ind_Gastos <- recode_Frontera(df_ind_Gastos)
 df_ind_Gastos$mun <- recode_id_Frontera(df_ind_Gastos, 'mun')
 
-Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & año == params$año) %>% select(valor) %>%
+Num_Gastos_hab <- df_ind_Gastos %>% filter(mun == params$id_municipio & ano == params$ano) %>% select(valor) %>%
   as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Diferencia entre el presupuesto ejecutado y el inicial}
-GAP <- format(round(((df_lv$valor_M[df_lv$año == params$año]) - (df_lv$valor_inicial[df_lv$año == params$año])), 1), big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+GAP <- format(round(((df_lv$valor_M[df_lv$ano == params$ano]) - (df_lv$valor_inicial[df_lv$ano == params$ano])), 1), big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Estructura según partidas}
@@ -605,7 +605,7 @@ df_gastos_programas <- data.frame(
                    length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
   name_programa = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                       each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
-  año = data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]],
+  ano = data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]],
   valor = c(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dg)))
 df_gastos_programas$name_programa <- factor(
   df_gastos_programas$name_programa,
@@ -614,10 +614,10 @@ df_gastos_programas$name_programa <- factor(
 df_gastos_programas$valor <- as.integer(df_gastos_programas$valor)
 df_gastos_programas$mun <- recode_id_Frontera(df_gastos_programas, 'mun')
 
-df_gastos_programas_mun <- df_gastos_programas %>% filter(año == params$año & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(name_programa, valor)
+df_gastos_programas_mun <- df_gastos_programas %>% filter(ano == params$ano & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(name_programa, valor)
 
 df_gastos_programas_C <- df_gastos_programas %>%
-  filter(año == params$año) %>%
+  filter(ano == params$ano) %>%
   group_by(name_programa) %>%
   summarise(valor = sum(valor, na.rm = NA)) %>%
   select(name_programa, valor_Canarias = valor)
@@ -686,7 +686,7 @@ ds <- length(rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][
 ###### Añadir aviso si la variable d_ es mayor que 0 ######
 
 df_presupuestos <- data.frame(
-  año = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+  ano = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
             each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) * length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
   mun = rep(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
             each = length(data_ind_presupuestos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
@@ -698,8 +698,8 @@ df_presupuestos <- recode_Frontera(df_presupuestos)
 df_presupuestos$mun <- recode_id_Frontera(df_presupuestos, 'mun')
 
 df_presupuestos_mun <- df_presupuestos %>%
-  filter(año == params$año & mun == params$id_municipio) %>%
-  select(!c(año, mun))
+  filter(ano == params$ano & mun == params$id_municipio) %>%
+  select(!c(ano, mun))
 
 Percent_Ahorro_Bruto <- df_presupuestos_mun$valor[which(df_presupuestos_mun$medida == "AHORRO_BRUTO_PORCENTAJE")] %>%
   round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
@@ -741,7 +741,7 @@ get_indicator2_GAP = function(label, value, image) {
 
 <!-- HTML -->
 <h1 style="color: #008BD0; margin: 0; font-size: 54px;">`r municipio_actual$municipio` en cifras</h1>
-<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$año`</h3>
+<h3 style="color: #999;margin: 0;float: right;margin-right: 20px;">`r params$ano`</h3>
 <h2 style="color: #666; margin: 0;">Presupuesto ejecutado de ingresos y gastos</h2>
 <hr>
 

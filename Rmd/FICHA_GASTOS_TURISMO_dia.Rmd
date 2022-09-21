@@ -2,8 +2,8 @@
 title: ''
 params:
   id_municipio: 35017
-  año: 2019
-  trimestre: 1
+  ano: 2022
+  trimestre: 2
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -53,7 +53,7 @@ periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]],
 periodo <- periodo %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(code, decreasing = FALSE)))
-periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,7)) == params$trimestre)
+periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,7)) == params$trimestre)
 periodo_tva <- periodo[periodo$order == periodo[periodo_actual$code == periodo$code, ]$order - 4, ]
 ```
 
@@ -170,8 +170,8 @@ if(substring(periodo_actual$code, 0,4) != 2019){
   rango <- c(max(0.8, max(df$order) - 5*4 - 0.2), df$order[df$code == periodo_actual$code & df$mun == params$id_municipio])
 }
 
-año_min <- min(as.integer(substring(df$code, 0,4)))
-año_max <- max(as.integer(substring(df$code, 0,4)))
+ano_min <- min(as.integer(substring(df$code, 0,4)))
+ano_max <- max(as.integer(substring(df$code, 0,4)))
 
 df <- df %>%
   mutate(valor_l = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
@@ -202,7 +202,7 @@ g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nom
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "Q1")}, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "Q1")}, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
