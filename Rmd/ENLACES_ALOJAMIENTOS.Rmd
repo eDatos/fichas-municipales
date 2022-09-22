@@ -882,7 +882,7 @@ if (nrow(df_links_ranking) == 1) {
 ```
 
 <div class="column-modulo-right">
-<div class="highlight-modulo">
+<div class="highlight-modulo" style="padding-bottom: 0;">
 
 ```{r funciones mapa}
 get_map_box_before = function(column_number, aditional_classes = '') {
@@ -893,7 +893,7 @@ get_map_box_after = function(rank, territorio, n_municipios, percent) {
 }
 ```
 
-<div class="row" style="margin-top:10px;">
+<div class="row" style="margin-top: -6px;">
 `r if_else(Plazas_Hoteles == "NA" & Plazas_Apartamentos == "NA", get_map_box_before(2, 'map-canarias'), get_map_box_before(3, 'map-canarias'))`
 ```{r}
 mapa_Canarias_plot
