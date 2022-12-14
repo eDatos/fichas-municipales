@@ -244,7 +244,7 @@ generarFichas <- function(municipios, df_fichas, periods) {
 
 generarFicha(2019, 'europeas', 'O', NA, NA, 35023)
 
-# generarFichas(municipios, df_fichas %>% filter(code == 'presupuestos'), periods)
+generarFichas(municipios, df_fichas %>% filter(code == 'sector_primario'), periods)
 # generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2020 & M %in% c(8)))
 # generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022 & M %notin% c(1,2,3)))
 
