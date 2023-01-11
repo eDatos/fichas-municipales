@@ -704,6 +704,35 @@ h4, h5 {
   height: 50px;
   display: inline-flex;
 }
+.indicator5 {
+  display: contents;
+  align-items: center;
+  height: 75px;
+  margin: 0 auto;
+}
+.indicator5 .value {
+  font-size: 28px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
+}
+.indicator5 .indicator-content {
+  text-align: center;
+  float: center;
+  vertical-align: middle;
+  width: 100%;
+  padding: 0 110px;
+  margin-top: 12px;
+  display: grid;
+}
+.indicator5 .label {
+    color: #666;
+    font-size: 13px;
+    padding: 0;
+    text-align: center;
+}
+
 .column-modulo-left {
   float: left;
   margin-top: 10px;
