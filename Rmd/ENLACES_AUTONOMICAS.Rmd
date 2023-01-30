@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38002
-  año: 2019
+  ano: 2019
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
   url.autonomicas_2019: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000030/~latest.json?dim=TERRITORIO:ES708|35004|35010|35018|35024|35028|35029|35034|ES704|35003|35007|35014|35015|35017|35030|ES705|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|ES709|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|ES706|38002|38003|38021|38036|38049|38050|ES707|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|ES703|38013|38048|38901:MEDIDAS:VOTOS_VALIDOS_CANDIDATURA|PORCENTAJE_VOTOS_CANDIDATURA&lang=es
@@ -14,6 +14,8 @@ output:
   html_document:
     df_print: paged
     css: styles/MODULO.css
+    self_contained: false
+    lib_dir: libs
   pdf_document: default
 always_allow_html: yes
 ---
@@ -73,7 +75,7 @@ convocatoria_autonomicas <- convocatoria_autonomicas %>%
 convocatoria_autonomicas <- convocatoria_autonomicas %>% arrange(order)
 convocatoria_autonomicas$code <- factor(convocatoria_autonomicas$code, levels = convocatoria_autonomicas$code)
 
-convocatoria_actual <- convocatoria_autonomicas %>% filter(substring(code, 13,16) == params$año)
+convocatoria_actual <- convocatoria_autonomicas %>% filter(substring(code, 13,16) == params$ano)
 convocatoria_tva <- convocatoria_autonomicas[convocatoria_autonomicas$order == convocatoria_autonomicas[convocatoria_actual$code == convocatoria_autonomicas$code, ]$order - 1, ]
 ```
 
@@ -546,20 +548,20 @@ if(Variacion == "NA"){
 <div class="row highlight" style="width: 100% !important; margin-top: 10px; padding: 20px 20px 20px 0;">
 ```{r tamaño gráfico de barras, results='asis'}
 if(nrow(df_plot_0) == 2) {
-  tamaño <- 158
+  tamano <- 158
   }else if(nrow(df_plot_0) == 3) {
-    tamaño <- 198
+    tamano <- 198
     }else if(nrow(df_plot_0) == 4) {
-      tamaño <- 240
+      tamano <- 240
       }else if(nrow(df_plot_0) == 5) {
-        tamaño <- 280
+        tamano <- 280
         }else if(nrow(df_plot_0) == 6) {
-          tamaño <- 310
+          tamano <- 310
           }else{
-            tamaño <- 354
+            tamano <- 354
           }
 ```
-<div class="barras-c" style="height: `r paste0(tamaño, 'px')`;">
+<div class="barras-c" style="height: `r paste0(tamano, 'px')`;">
   `r g_autonomicas_mun`
 </div>
 

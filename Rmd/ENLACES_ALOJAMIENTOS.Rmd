@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38040
-  año: 2022
+  ano: 2022
   mes: 1
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -17,6 +17,8 @@ output:
   html_document:
     df_print: paged
     css: styles/MODULO.css
+    self_contained: false
+    lib_dir: libs
   pdf_document: default
 always_allow_html: true
 ---
@@ -43,8 +45,8 @@ signo <- function(value) {
 
 ```{r Mes}
 viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
-
-mes <- data.frame(code = viajeros_lugar[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+mes_or <- levels(ordered(viajeros_lugar[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes <- data.frame(code = mes_or) %>%
   filter(substring(code, 5,6) == "-M") %>%
   mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
   transform(periodo = gsub("-M01", " Enero", periodo)) %>%
@@ -64,7 +66,7 @@ mes <- data.frame(code = viajeros_lugar[["metadata"]][["temporalCoverages"]][["i
 
 mes <- mes %>%
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
-mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
 
@@ -232,8 +234,8 @@ leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
          tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
   left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
 
-año_min <- min(as.integer(substring(df$code, 0,4)))
-año_max <- max(as.integer(substring(df$code, 0,4)))
+ano_min <- min(as.integer(substring(df$code, 0,4)))
+ano_max <- max(as.integer(substring(df$code, 0,4)))
 
 g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
@@ -246,7 +248,7 @@ g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nom
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-01") }, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "-01") }, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x/10^3, big.mark = ".", decimal.mark = ","), " mil")}, n.breaks = 5, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
@@ -472,15 +474,20 @@ df_mun <- df_viajeros %>%
   transform(valor = if_else(is.na(valor), 0, valor)) %>%
   select(lugar, valor)
 
-num_viajeros_españoles_mun <- df_mun$valor[which(df_mun$lugar == "España")]
-num_viajeros_mundosinEspaña_mun <- df_mun$valor[which(df_mun$lugar == "Mundo (excluida España)")]
+num_viajeros_espanoles_mun <- df_mun$valor[which(df_mun$lugar == "España")]
+num_viajeros_mundosinEspana_mun <- df_mun$valor[which(df_mun$lugar == "Mundo (excluida España)")]
 
-peso_española <- ((num_viajeros_españoles_mun / num_viajeros_num * 100)) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
-peso_extranjera <- ((num_viajeros_mundosinEspaña_mun / num_viajeros_num * 100)) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+peso_espanola <- ((num_viajeros_espanoles_mun / num_viajeros_num * 100)) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+peso_extranjera <- ((num_viajeros_mundosinEspana_mun / num_viajeros_num * 100)) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
 ```
 
 ```{r Barras Islas}
 aloj_isla <- fromJSON(params$url.aloj_isla)
+
+dA <- length(rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                 each = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                        length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]))) -
+      length(unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
 df_aloj_isla <- data.frame(
   mun = rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
@@ -490,7 +497,7 @@ df_aloj_isla <- data.frame(
                 each = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_lugar = rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                  times = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  valor = unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dA)))
 
 df_lugar <- data.frame(
   id_lugar = aloj_isla[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],
@@ -574,9 +581,9 @@ g_aloj_isla <- ggplotly(g_aloj_isla, tooltip = c("text")) %>%
 
 ```{r Indicadores Islas}
 peso_Canarias_Esp <- ifelse(
-  num_viajeros_españoles_mun == 0,
+  num_viajeros_espanoles_mun == 0,
   "-",
-  paste0((num_viajeros_canarios_mun / num_viajeros_españoles_mun * 100) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character, "%"))
+  paste0((num_viajeros_canarios_mun / num_viajeros_espanoles_mun * 100) %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character, "%"))
 
 peso_Canarias_Tot <- ifelse(
   num_viajeros_canarios_mun == 0,
@@ -1005,7 +1012,7 @@ if (nrow(df_links_otros) == 1) {
 </div>
 
 <div class="row" style="margin: 24px 0 20px;">
-  <div class="column-2">`r get_indicator3('España', paste0(peso_española, "%"), './img/spain2.png')`</div>
+  <div class="column-2">`r get_indicator3('España', paste0(peso_espanola, "%"), './img/spain2.png')`</div>
   <div class="column-2">`r get_indicator3('Extranjero', paste0(peso_extranjera, "%"), './img/world.png')`</div>
 </div>
 

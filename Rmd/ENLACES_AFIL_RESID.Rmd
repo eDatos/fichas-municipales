@@ -2,7 +2,7 @@
 title: ''
 params:
   id_municipio: 38047
-  año: 2021
+  ano: 2021
   mes: 6
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -21,6 +21,8 @@ output:
   html_document:
     df_print: paged
     css: styles/MODULO.css
+    self_contained: false
+    lib_dir: libs
   pdf_document: default
 always_allow_html: true
 ---
@@ -60,7 +62,7 @@ mes <- data.frame(code = data_afil[["metadata"]][["temporalCoverages"]][["item"]
 mes <- mes %>%
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>%
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
-mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 4, ]
 ```
 
@@ -227,8 +229,8 @@ if(substring(mes_actual$code, 0,4) != 2013){
   df <- df %>% filter(substring(code, 0,4) != 2012)
 }
 
-año_min <- min(as.integer(substring(df$code, 0,4)))
-año_max <- max(as.integer(substring(df$code, 0,4)))
+ano_min <- min(as.integer(substring(df$code, 0,4)))
+ano_max <- max(as.integer(substring(df$code, 0,4)))
 
 leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
   mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
@@ -255,7 +257,7 @@ g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = no
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x){paste0(año_min:año_max, "-03")}, labels = function(x){substr(x, 0,4)}) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "-03")}, labels = function(x){substr(x, 0,4)}) +
   scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
