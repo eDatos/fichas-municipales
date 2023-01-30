@@ -1,9 +1,9 @@
 ---
 title: ''
 params:
-  id_municipio: 35016
+  id_municipio: 35003
   ano: 2022
-  mes: 7
+  mes: 11
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -44,8 +44,8 @@ signo <- function(value) {
 
 ```{r Mes}
 viajeros_lugar <- fromJSON(params$url.viajeros_lugar)
-
-mes <- data.frame(code = viajeros_lugar[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+mes_or <- levels(ordered(viajeros_lugar[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes <- data.frame(code = mes_or) %>%
   filter(substring(code, 5,6) == "-M") %>%
   mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
   transform(periodo = gsub("-M01", " Enero", periodo)) %>%
@@ -483,6 +483,11 @@ peso_extranjera <- ((num_viajeros_mundosinEspana_mun / num_viajeros_num * 100)) 
 ```{r Barras Islas}
 aloj_isla <- fromJSON(params$url.aloj_isla)
 
+dA <- length(rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                 each = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                        length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]))) -
+      length(unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
 df_aloj_isla <- data.frame(
   mun = rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
             each = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
@@ -491,7 +496,7 @@ df_aloj_isla <- data.frame(
                 each = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   id_lugar = rep(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                  times = length(aloj_isla[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  valor = unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+  valor = c(unlist(strsplit(aloj_isla[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dA)))
 
 df_lugar <- data.frame(
   id_lugar = aloj_isla[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],

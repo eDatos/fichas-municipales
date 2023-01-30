@@ -3,7 +3,7 @@ title: ''
 params:
   id_municipio: 38013
   ano: 2022
-  mes: 8
+  mes: 11
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -57,8 +57,8 @@ get_nombre <- function(nombre) {
 
 ```{r Mes}
 parados <- fromJSON(params$url.parados)
-
-mes <- data.frame(code = parados[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+mes_or <- levels(ordered(parados[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes <- data.frame(code = mes_or) %>%
   mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
   transform(periodo = gsub("-M01", " Enero", periodo)) %>%
   transform(periodo = gsub("-M02", " Febrero", periodo)) %>%

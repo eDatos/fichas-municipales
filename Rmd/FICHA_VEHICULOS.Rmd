@@ -68,7 +68,7 @@ mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][[
 mes <- mes %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
-mes_actual <- mes %>% filter(substring(code, 0,4) == params$año & as.numeric(substring(code, 6,8)) == params$mes)
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
 
@@ -159,8 +159,8 @@ df_u <- data.frame(
   spread(medida, valor) %>%
   select(mun, mes, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
 
-año_min <- min(df_u$mes) %>% substring(0,4) %>% as.numeric
-año_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric
+ano_min <- min(df_u$mes) %>% substring(0,4) %>% as.numeric
+ano_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric
 
 related_mun <- df_u %>% filter(mes == mes_actual$code & mun != "ES70")
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
@@ -210,7 +210,7 @@ g_line <- ggplot(data = df,
         legend.position = "none") +
   scale_colour_manual(values = g_line_colours) +
   scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_discrete(breaks = function(x) {paste0(año_min:año_max,"-01")}, labels = function(x){substr(x, 0, 4)}) +
+  scale_x_discrete(breaks = function(x) {paste0(ano_min:ano_max,"-01")}, labels = function(x){substr(x, 0, 4)}) +
   scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
 
 g_line <- ggplotly(g_line, tooltip = "text") %>%
