@@ -242,17 +242,22 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-generarFicha(2019, 'europeas', 'O', NA, NA, 35023)
+# generarFicha(2022, 'parque_vehiculos', 'M', 10, NA, 35013)
 
-generarFichas(municipios, df_fichas %>% filter(code == 'sector_primario'), periods)
-# generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2020 & M %in% c(8)))
-# generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022 & M %notin% c(1,2,3)))
+generarFichas(municipios, df_fichas %>% filter(code == 'demografia'), periods)
+# generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == '2022'))
+# generarFichas(municipios, df_fichas %>% filter(code == 'paro_registrado'), periods %>% filter(A == '2022'))
+# generarFichas(municipios, df_fichas %>% filter(code %in% c('parque_vehiculos', 'sector_primario')), periods)
 
-# generarFichas(municipios, df_fichas %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia")), periods %>% filter(A == 2022))
-
-# generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_cotizacion'), periods)
+# MENSUALES:
+# generarFichas(municipios, df_fichas %>% filter(code %in% c("paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "parque_vehiculos")), periods)
+# generarFichas(municipios, df_fichas %>% filter(code %in% c("alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")), periods %>% filter(A == 2022))
+  
 # generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022))
 # generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2018 & M %in% c(1:3)))
+# generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022 & M %notin% c(1,2,3)))
+# generarFichas(municipios %>% filter(id == '35001'), df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == '2019' & M == '10'))
+
 
 # c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
 #   "alojamientos_turisticos", "perfil_turista", "gastos_medios_turista", "gastos_medios_turista_dia",
