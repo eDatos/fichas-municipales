@@ -85,6 +85,18 @@ recode_mun <- function(df, colname) {
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
   df[,colname]
 }
+# Frontera
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(ano %in% c(2008:max(ano)) & mun == "38013_1912"),
+                df %>% filter(ano %in% c(2000:2007) & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
 ```
 
 ```{r Municipios relacionados}
@@ -95,6 +107,8 @@ df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["r
                               longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
   filter(substring(mun, 0,2) != "ES")
 df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+df_localizacion <- filter(df_localizacion, mun != "38013_1912")
+df_localizacion$mun <- recode_id_Frontera(df_localizacion, 'mun')
 distancias_mun <- df_localizacion %>%
   st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
   st_distance
@@ -135,6 +149,8 @@ df_u <- data.frame(
   spread(medida, valor) %>%
   select(mun, ano, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
 df_u$ano <- as.integer(df_u$ano)
+df_u <- recode_Frontera(df_u)
+df_u$mun <- recode_id_Frontera(df_u, 'mun')
 
 related_mun <- df_u %>% filter(ano == params$ano)
 related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
