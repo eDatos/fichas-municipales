@@ -794,6 +794,9 @@ mapa_isla_plot
 <div class="row">
 
 <div class="column highlight" style="padding: 10px;">
+
+<p style="margin: 10px 16px -10px;">Distribución en el municipio</p>
+
 <div class="progress-bar-container">
   <div class="progress-bar-blue1" style="width:`r porc_Turistas_descansar`%"></div>
   <div class="progress-bar-blue3" style="width:`r porc_Turistas_explorar`%"></div>
@@ -807,7 +810,7 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<p style="margin: 13px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Distribución en Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-grey1" style="width:`r porc_Turistas_descansar_C`%"></div>
@@ -824,6 +827,9 @@ mapa_isla_plot
 </div>
 
 <div class="column highlight" style="padding: 10px;">
+
+<p style="margin: 10px 16px -10px;">Distribución en el municipio</p>
+
 <div class="progress-bar-container">
   <div class="progress-bar-blue1" style="width:`r porc_Turistas_menos50`%"></div>
   <div class="progress-bar-blue6" style="width:`r porc_Turistas_mas50`%"></div>
@@ -835,7 +841,7 @@ mapa_isla_plot
 </div>
 
 <div class="row">
-<p style="margin: 13px 16px -10px;">Canarias</p>
+<p style="margin: 13px 16px -10px;">Distribución en Canarias</p>
 
 <div class="progress-bar-container" style="height: 20px;">
   <div class="progress-bar-grey1" style="width:`r porc_Turistas_menos50_C`%"></div>
