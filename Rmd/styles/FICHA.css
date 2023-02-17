@@ -338,7 +338,7 @@ div.level3 {
     vertical-align: middle;
 }
 .linechart {
-    height: 270px; 
+  height: 275px;
     float: left;
     width: 64%;
 }
@@ -353,7 +353,7 @@ div.level3 {
 .serie-placeholder {
   font-size: 12px;
   width: 350px;
-  margin: 15px 0;
+  margin: 10px 0;
 }
 #hover-event-placeholder {
   height: 250px;
@@ -379,7 +379,7 @@ div.level3 {
   font-size: 14px;
 }
 .serie-placeholder-1 .sp-municipio {
-  font-size: 22px;
+  font-size: 20px;
 }
 .legend rect, .legend {
   border-radius: 20px;

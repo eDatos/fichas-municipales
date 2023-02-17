@@ -736,9 +736,12 @@ get_indicator4s = function(title, label, value) {
 <h2 style="color: #666; margin: 0;">Gasto medio por turista</h2>
 <hr>
 
+```{r espacio leyenda, results='asis'}
+height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 300, 275)
+```
 <div class="linechart-placeholder">
 <h2 style="color: #005980; margin-bottom: 0;">`r Gasto_por_turista` €</h2>
-<div class="linechart">
+<div class="linechart" style="height: `r paste0(height_b, 'px')`;">
   `r g_line`
 </div>
 <div id="hover-event-placeholder" class="column-4">

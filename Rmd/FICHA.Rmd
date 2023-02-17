@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 38001
+  id_municipio: 35023
   ano: 2021
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -624,11 +624,11 @@ get_indicator3 = function(label, value, image) {
 <hr>
 
 ```{r espacio leyenda, results='asis'}
-margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
+height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 300, 275)
 ```
-<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
+<div class="linechart-placeholder">
 <h2 style="color: #005980; margin-bottom: 0;">`r Num_Pobl` habitantes</h2>
-<div class="linechart">
+<div class="linechart" style="height: `r paste0(height_b, 'px')`;">
   `r g_line`
 </div>
 <div id="hover-event-placeholder" class="column-4">

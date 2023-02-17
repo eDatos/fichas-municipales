@@ -489,11 +489,11 @@ get_indicator4 = function(title, label, value) {
 <hr>
 
 ```{r espacio leyenda, results='asis'}
-margin_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 26, 48, 15)
+height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 300, 275)
 ```
-<div class="linechart-placeholder" style="margin-bottom: `r paste0(margin_b, 'px')`;">
+<div class="linechart-placeholder">
 <h2 style="color: #005980; margin-bottom: 0;">Tasa de participación: `r Tasa_participacion` %</h2>
-<div class="linechart">
+<div class="linechart" style="height: `r paste0(height_b, 'px')`;">
   `r g_line`
 </div>
 <div id="hover-event-placeholder" class="column-4">
