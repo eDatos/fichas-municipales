@@ -262,7 +262,7 @@ if(substring(mes_actual$code, 0,4) != 2009){
     line_range_max = max(max(df$order) - 12, max(df$order))
   }
 
-g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line() +
   theme_minimal() +
   theme(axis.title.x = element_blank(),

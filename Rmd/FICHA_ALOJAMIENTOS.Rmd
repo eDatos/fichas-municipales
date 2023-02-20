@@ -238,7 +238,7 @@ leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
 ano_min <- min(as.integer(substring(df$code, 0,4)))
 ano_max <- max(as.integer(substring(df$code, 0,4)))
 
-g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),

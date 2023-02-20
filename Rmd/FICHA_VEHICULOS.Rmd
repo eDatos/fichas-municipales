@@ -67,7 +67,8 @@ mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][[
 
 mes <- mes %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
-  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+  mutate(order = as.integer(order(mes$code, decreasing = FALSE))) %>%
+  arrange(order)
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
 ```
@@ -207,7 +208,7 @@ df <- df %>% mutate(
 )
 
 g_line <- ggplot(data = df, 
-                 aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+                 aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),

@@ -46,13 +46,14 @@ signo <- function(value) {
 
 ```{r Periodo}
 GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
-periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]], 
+periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]],
                       periodo = GM_sexo_edad[["categories"]][["labels"]][[5]]) %>% 
   filter(substring(code, 5,5) == "Q")
 
 periodo <- periodo %>% 
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
-  mutate(order = as.integer(order(code, decreasing = FALSE)))
+  mutate(order = as.integer(order(code, decreasing = FALSE))) %>%
+  arrange(order)
 periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,7)) == params$trimestre)
 periodo_tva <- periodo[periodo$order == periodo[periodo_actual$code == periodo$code, ]$order - 4, ]
 ```
@@ -191,7 +192,7 @@ df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>%
       )
     )
 
-g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+g_line <- ggplot(data = df, aes(x = code, y = valor, group = nombre, colour = nombre, text = tooltip)) +
   geom_line(size = 0.7) +
   theme_minimal() +
   theme(axis.title.x = element_blank(),

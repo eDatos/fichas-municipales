@@ -48,7 +48,8 @@ signo <- function(value) {
 
 ```{r Mes}
 data_afil <- fromJSON(params$url.afil_c)
-mes <- data.frame(code = data_afil[["metadata"]][["temporalCoverages"]][["item"]][["id"]]) %>%
+mes_or <- levels(ordered(data_afil[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes <- data.frame(code = mes_or) %>%
   filter(substring(code, 6,8) %in% c("M03", "M06", "M09", "M12")) %>%
   mutate(periodo = code) %>%
   transform(periodo = gsub("-M03", " Marzo", periodo)) %>%
