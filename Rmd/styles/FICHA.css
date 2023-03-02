@@ -6,10 +6,16 @@ body {
   max-width: 100% !important;
   max-height: 100%;
 }
-table {
+table { 
   table-layout: fixed ;
   width: 100%;
-  margin-bottom: 40px;
+  border-collapse: collapse;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-spacing: 0;
+}
+th, td {
+  padding: 5% 5% 5% 5%;
 }
 td {
   width: 50%;
@@ -345,7 +351,6 @@ div.level3 {
 .linechart-placeholder {
   display: table;
   width: 100%;
-  margin-bottom: 15px;
 }
 #ranking-del-municipio {
     margin-top: -25px;
