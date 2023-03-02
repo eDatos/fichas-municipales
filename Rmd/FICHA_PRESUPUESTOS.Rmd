@@ -1,8 +1,8 @@
 ---
 title: ''
 params:
-  id_municipio: 35016
-  ano: 2019
+  id_municipio: 35023
+  ano: 2020
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
   url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
@@ -578,17 +578,11 @@ g_estr_part_ingresos <- ggplotly(g_estr_part_ingresos, tooltip = c("text")) %>%
 data_gastos_programas <- fromJSON(params$url.presupuesto_2)
 
 df_programa <- data.frame(
-  id = data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],
-  name_programa = c(data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[1]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[2]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[3]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[4]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[5]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[6]][["value"]],
-                    data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[7]][["value"]]))
+  id_programa = data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["id"]],
+  name_programa = vector(mode = "character", length = data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][5]))
 
-df_programa$programa <- ""
 for(i in 1:nrow(df_programa)) {
+  df_programa$name_programa[i] <- data_gastos_programas[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[5]][["name"]][["text"]][[i]][["value"]]
   df_programa$programa[i] <- get_nombre(paste0(df_programa$name_programa[i]))
 }
 
@@ -603,28 +597,28 @@ df_gastos_programas <- data.frame(
   mun = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
             each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]]) *
                    length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
-  name_programa = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+  id_programa = rep(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
                       each = length(data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]])),
   ano = data_gastos_programas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[6]][["code"]],
   valor = c(unlist(strsplit(data_gastos_programas[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dg)))
-df_gastos_programas$name_programa <- factor(
-  df_gastos_programas$name_programa,
-  levels = df_programa$id,
-  labels = df_programa$name_programa)
 df_gastos_programas$valor <- as.integer(df_gastos_programas$valor)
 df_gastos_programas$mun <- recode_id_Frontera(df_gastos_programas, 'mun')
 
-df_gastos_programas_mun <- df_gastos_programas %>% filter(ano == params$ano & mun == params$id_municipio) %>% arrange(desc(valor)) %>% select(name_programa, valor)
+df_gastos_programas_mun <- df_gastos_programas %>%
+  filter(ano == params$ano & mun == params$id_municipio) %>%
+  left_join(df_programa, by = "id_programa") %>%
+  arrange(desc(valor)) %>%
+  select(programa, name_programa, valor)
 
 df_gastos_programas_C <- df_gastos_programas %>%
   filter(ano == params$ano) %>%
+  left_join(df_programa, by = "id_programa") %>%
   group_by(name_programa) %>%
   summarise(valor = sum(valor, na.rm = NA)) %>%
   select(name_programa, valor_Canarias = valor)
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>%
-  left_join(df_gastos_programas_C, by = "name_programa") %>%
-  left_join(df_programa, by = "name_programa")
+  left_join(df_gastos_programas_C, by = "name_programa")
 df_gastos_programas_mun$name_programa <- ordered(df_gastos_programas_mun$name_programa, levels = df_gastos_programas_mun$name_programa[7:1])
 
 df_gastos_programas_mun <- df_gastos_programas_mun %>%
@@ -729,13 +723,12 @@ get_indicator2 = function(label, value, image) {
 get_indicator4 = function(title, label, value) {
   return(sprintf("<div class='indicator4'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p></div>", title, value, label))
 }
-if(nchar(GAP) > 4){
-  padding_left <- 5
-}else{
-  padding_left <- 10
-}
+
+padding_left <- ifelse(nchar(GAP) > 3, 5, 10)
+padding <- ifelse(nchar(GAP) > 3, 0, 5)
+
 get_indicator2_GAP = function(label, value, image) {
-  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content' style='padding-left: %spx;'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, padding_left, value, label))
+  return(sprintf(" style='padding: 5px %spx;'><div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content' style='padding-left: %spx;'><p class='value'>%s</p><p class='label'>%s</p></div></div>", padding, image, padding_left, value, label))
 }
 ```
 
@@ -746,7 +739,7 @@ get_indicator2_GAP = function(label, value, image) {
 <hr>
 
 ```{r espacio leyenda, results='asis'}
-height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 300, 275)
+height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 317, 290)
 ```
 <div class="linechart-placeholder">
 <h2 style="color: #005980; margin-bottom: 0;">`r Num_Presupuesto` mill.€ de ingresos ejecutados</h2>
@@ -768,7 +761,7 @@ for (i in 1:nrow(leyenda_poblacion)) {
 </div>
 </div>
 
-<div class="row" style="margin: 15px 0;">
+<div class="row">
 ```{r Indicadores principales, results='asis'}
 if(Variacion_Porcentual == "NA" & GAP == "NA"){
   cat(paste0(
@@ -780,7 +773,7 @@ if(Variacion_Porcentual == "NA" & GAP == "NA"){
       cat(paste0(
         "<div class='column-3-ind'>",
         get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-3-ind'>",
-        get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'>",
+        get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-3-ind'",
         get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
       }else{
         if(Variacion_Porcentual != "NA" & GAP == "NA"){
@@ -794,7 +787,7 @@ if(Variacion_Porcentual == "NA" & GAP == "NA"){
               "<div class='column-4'>",
               get_indicator2('Tasa de<br>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>",
               get_indicator2('Ingresos<br>por habitante', paste0(Num_Ingresos_hab, '€'), './img/ingresos-blue.png'), "</div><div class='column-4'>",
-              get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'>",
+              get_indicator2('Gastos<br>por habitante', paste0(Num_Gastos_hab, '€'), './img/gastos-blue.png'), "</div><div class='column-4'",
               get_indicator2_GAP('Inicial vs<br>Ejecutado', paste0(GAP, ' mill.€'), './img/equilibrio-presupuestario-blue.png'), "</div>"))
           }
       }

@@ -12,7 +12,7 @@ params:
   url.edad_media: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION_EDAD_MEDIA/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.nacimientos: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/NACIMIENTOS/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.mortalidad: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/TASA_MORTALIDAD/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.crec_veg: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=5012a489-2ef4-4ff2-b1bf-ebf6e4c5f2d2
+  url.crec_veg: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00042A_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901&lang=es
   url.dependencia: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7dcb25e5-f533-4ba1-a6aa-70fe8fc69db7
   url.emd_mujer: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/DEFUNCIONES_EDAD_MEDIA_MUJERES/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.emd_hombre: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/DEFUNCIONES_EDAD_MEDIA_HOMBRES/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
@@ -444,10 +444,16 @@ TBM <- ((df_mortalidad %>% filter(mun == params$id_municipio & ano == params$ano
 
 ```{r Crecimiento vegetativo}
 data_crec_veg <- fromJSON(params$url.crec_veg)
-df_crec_veg <- cbind(data.frame(do.call('rbind', data_crec_veg[["data"]][["dimCodes"]])), data_crec_veg[["data"]][["Valor"]])
-colnames(df_crec_veg) <- c('mun', 'ano', 'valor')
-df_crec_veg$ano <- as.numeric(df_crec_veg$ano)
+df_crec_veg <- data.frame(
+  ano = rep(data_crec_veg[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_crec_veg[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  mun = rep(data_crec_veg[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            times = length(data_crec_veg[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]])),
+  valor = unlist(strsplit(data_crec_veg[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 df_crec_veg$valor <- as.numeric(df_crec_veg$valor)
+df_crec_veg <- recode_Frontera(df_crec_veg)
+df_crec_veg$mun <- recode_id_Frontera(df_crec_veg, 'mun')
+
 df_crec_veg <- df_crec_veg %>%
   filter(!is.na(valor))
 
