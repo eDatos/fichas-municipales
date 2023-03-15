@@ -1,0 +1,94 @@
+---
+title: ''
+params:
+  id_municipio: 35003
+  ano: 2021
+  mes: 12
+  url.cl_CNAE: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_CNAE_2009_AGGREGATIONS/01.001/codes?limit=100000
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "reshape2", "kableExtra")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Municipio actual}
+CL_CNAE <- as_list(read_xml(params$url.cl_CNAE))
+
+df_CL_CNAE <- tibble::as_tibble(CL_CNAE) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+
+url_clasificacion <- paste0("https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_CNAE_2009_AGGREGATIONS/01.001/codes/",
+                       df_CL_CNAE$code)
+
+df_CL_CNAE <- data.frame(matrix(ncol = 2, nrow = length(df_CL_CNAE$code), dimnames = list(NULL, c("id_ae", "name"))))
+for(i in 1:length(df_CL_CNAE$code)) {
+  # df_CL_CNAE$id_ae[i] <- as_list(read_xml(url_clasificacion[i]))$code$id[[1]]
+  df_CL_CNAE$name[i] <- as_list(read_xml(url_clasificacion[i]))$code$name$text[[1]]
+}
+
+
+as_list(read_xml("https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_CNAE_2009_AGGREGATIONS/01.001/codes/A86_86"))$code$name$text[[1]]
+```
+
+
+```{r}
+df_CL_CNAE <- df_CL_CNAE %>%
+  select(id = code, ae = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>%
+  # transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  # filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id, ae, code = parent, id_A = code, A = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id, ae, code = parent, id_A, A, id_B = code, B = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id, ae, code = parent, id_A, A, id_B, B, id_C = code, C = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id, ae, code = parent, id_A, A, id_B, B, id_C, C, id_D = code, D = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id, ae, code = parent, id_A, A, id_B, B, id_C, C, id_D, D, id_E = code, E = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(code = id, ae, id_A, A, id_B, B, id_C, C, id_D, D, id_E, E, G = value) %>%
+  left_join(df_CL_CNAE, by = "code") %>%
+  select(id_A, A, id_B, B, id_C, C, id_D, D, id_E, E, G, code, ae, name)
+
+write.csv2(df_CL_CNAE, file = "CL_CNAE.csv", row.names = FALSE, col.names = TRUE)
+```
+
+```{r}
+df_ae <- read.csv2("../CL_CNAE.csv", encoding = "UTF-8", sep = ",")
+df_ ae _mun <- df_estr_partidas_mun %>% inner_join(df_ae, by = "id_ae")
+
+```
+

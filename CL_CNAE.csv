@@ -1,0 +1,248 @@
+ae,id_ae,name_ae
+Agricultura,A10_01,"Agricultura, ganadería, silvicultura y pesca"
+Industria,A10_02,Industria
+Industria,A10_02_O,"Resto de sectores de industrias extractivas; industria manufacturera; suministro de energía eléctrica, gas, vapor y aire acondicionado; suministro de agua; actividades de saneamiento, gestión de residuos y descontaminación"
+Construcción,A10_03,Construcción
+Servicios,A10_04,Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas; transporte y almacenamiento; hostelería
+Servicios,A10_04_O,Resto de sectores de comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas; transporte y almacenamiento; hostelería
+Resto de servicios,A10_05,Información y comunicaciones
+Resto de servicios,A10_06,Actividades financieras y de seguros
+Resto de servicios,A10_07,Actividades inmobiliarias
+Resto de servicios,A10_08,"Actividades profesionales, científicas y técnicas; actividades administrativas y servicios auxiliares"
+Resto de servicios,A10_09,Administración pública y defensa; seguridad social obligatoria; educación; actividades sanitarias y de servicios sociales
+Resto de servicios,A10_09_O,Resto de sectores de administración pública y defensa; seguridad social obligatoria; educación; actividades sanitarias y de servicios sociales
+Resto de servicios,A10_10,"Actividades artísticas, recreativas y de entretenimiento y otros servicios"
+Resto de servicios,A10_10_O,"Resto de sectores de actividades artísticas, recreativas y de entretenimiento y otros servicios"
+Agricultura,A21_01,"Agricultura, ganadería, silvicultura y pesca"
+Industria,A21_02,Industrias extractivas
+Industria,A21_03,Industria manufacturera
+Industria,A21_03_O,Resto de sectores de industria manufacturera
+Industria,A21_04,"Suministro de energía eléctrica, gas, vapor y aire acondicionado"
+Industria,A21_05,"Suministro de agua; actividades de saneamiento, gestión de residuos y descontaminación"
+Construcción,A21_06,Construcción
+Comercio,A21_07,Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas
+Resto de servicios,A21_08,Transporte y almacenamiento
+Hostelería,A21_09,Hostelería
+Resto de servicios,A21_10,Información y comunicaciones
+Resto de servicios,A21_10_O,Resto de sectores de información y comunicaciones
+Resto de servicios,A21_11,Actividades financieras y de seguros
+Resto de servicios,A21_12,Actividades inmobiliarias
+Resto de servicios,A21_13,"Actividades profesionales, científicas y técnicas"
+Resto de servicios,A21_13_O,"Resto de sectores de actividades profesionales, científicas y técnicas"
+Resto de servicios,A21_14,Actividades administrativas y servicios auxiliares
+Resto de servicios,A21_15,Administración pública y defensa; seguridad social obligatoria
+Resto de servicios,A21_16,Educación
+Resto de servicios,A21_17,Actividades sanitarias y de servicios sociales
+Resto de servicios,A21_18,"Actividades artísticas, recreativas y de entretenimiento"
+Resto de servicios,A21_19,Otros servicios
+Resto de servicios,A21_20,Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio
+Resto de servicios,A21_21,Actividades de organizaciones y organismos extraterritoriales
+Agricultura,A3_01,"Agricultura, ganadería, silvicultura y pesca"
+Industria,A3_02,Industria y construcción
+Servicios,A3_03,Servicios
+Agricultura,A38_01,"Agricultura, ganadería, silvicultura y pesca"
+Agricultura,A38_01_O,"Resto de sectores de agricultura, ganadería, silvicultura y pesca"
+Industria,A38_02,Industrias extractivas
+Industria,A38_03,"Industria de la alimentación, bebidas y tabaco"
+Industria,A38_04,"Industria textil, confección de prendas de vestir, industria del cuero y del calzado"
+Industria,A38_05,"Industria de la madera, papel y artes gráficas"
+Industria,A38_05_O,"Resto de sectores de industria de la madera, papel y artes gráficas"
+Industria,A38_06,Coquerías y refino de petróleo
+Industria,A38_07,Industria química
+Industria,A38_08,Fabricación de productos farmacéuticos
+Industria,A38_09,Fabricación de productos de caucho y plásticos y otros productos minerales no metálicos
+Industria,A38_10,"Fabricación de metales básicos y de productos metálicos, excepto maquinaria y equipo"
+Industria,A38_11,"Fabricación de productos informáticos, electrónicos y ópticos"
+Industria,A38_12,Fabricación de material y equipo eléctrico
+Industria,A38_13,Fabricación de maquinaria y equipo n.c.o.p.
+Industria,A38_14,Fabricación de material de transporte
+Industria,A38_15,Fabricación de muebles; otras industrias manufactureras; reparación e instalación de maquinaria y equipo
+Industria,A38_16,"Suministro de energía eléctrica, gas, vapor y aire acondicionado"
+Industria,A38_17,"Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación"
+Construcción,A38_18,Construcción
+Comercio,A38_19,Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas
+Comercio,A38_19_O,Resto de sectores de comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas
+Resto de servicios,A38_20,Transporte y almacenamiento
+Resto de servicios,A38_20_O,Resto de sectores de transporte y almacenamiento
+Hostelería,A38_21,Hostelería
+Resto de servicios,A38_22,"Actividades de edición, audiovisuales y de programación y emisión de radio y televisión"
+Resto de servicios,A38_23,Telecomunicaciones
+Resto de servicios,A38_24,"Programación, consultoría y otras actividades relacionadas con la informática; servicios de información"
+Resto de servicios,A38_25,Actividades financieras y de seguros
+Resto de servicios,A38_25_O,Resto de sectores de actividades financieras y de seguros
+Resto de servicios,A38_26,Actividades inmobiliarias
+Resto de servicios,A38_27,Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial; servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos
+Resto de servicios,A38_28,Investigación y desarrollo
+Resto de servicios,A38_29,"Publicidad y estudios de mercado; otras actividades profesionales, científicas y técnicas; actividades veterinarias"
+Resto de servicios,A38_30,Actividades administrativas y servicios auxiliares
+Resto de servicios,A38_30_O,Resto de sectores de actividades administrativas y servicios auxiliares
+Resto de servicios,A38_31,Administración pública y defensa; seguridad social obligatoria
+Resto de servicios,A38_32,Educación
+Resto de servicios,A38_33,Actividades sanitarias
+Resto de servicios,A38_34,Actividades de servicios sociales
+Resto de servicios,A38_35,"Actividades artísticas, recreativas y de entretenimiento"
+Resto de servicios,A38_36,Otros servicios
+Resto de servicios,A38_36_O,Resto de sectores de otros servicios
+Resto de servicios,A38_37,Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio
+Resto de servicios,A38_38,Actividades de organizaciones y organismos extraterritoriales
+Agricultura,A4_01,"Agricultura, ganadería, silvicultura y pesca"
+Industria,A4_02,Industria
+Construcción,A4_03,Construcción
+Servicios,A4_04,Servicios
+Servicios,A4_04_O,Resto de sectores de servicios
+Servicios,A4_04_S1,Servicios (excepto actividades de los hogares como empleadores y organizaciones y organismos extraterritoriales)
+Agricultura,A64_01,"Agricultura, ganadería, caza y servicios relacionados con las mismas"
+Agricultura,A64_02,Silvicultura y explotación forestal
+Agricultura,A64_03,Pesca y acuicultura
+Industria,A64_04,Industrias extractivas
+Industria,A64_05,"Industria de la alimentación, bebidas y tabaco"
+Industria,A64_05_O,"Resto de sectores de industria de la alimentación, bebidas y tabaco"
+Industria,A64_06,"Industria textil, confección de prendas de vestir, industria del cuero y del calzado"
+Industria,A64_07,"Industria de la madera y del corcho, excepto muebles; cestería y espartería"
+Industria,A64_08,Industria del papel
+Industria,A64_09,Artes gráficas y reproducción de soportes grabados
+Industria,A64_10,Coquerías y refino de petróleo
+Industria,A64_11,Industria química
+Industria,A64_12,Fabricación de productos farmacéuticos
+Industria,A64_13,Fabricación de productos de caucho y plásticos
+Industria,A64_14,Fabricación de otros productos minerales no metálicos
+Industria,A64_14_O,Resto de sectores de fabricación de otros productos minerales no metálicos
+Industria,A64_15,"Metalurgia; fabricación de productos de hierro, acero y ferroaleaciones"
+Industria,A64_15_O,"Resto de sectores de metalurgia; fabricación de productos de hierro, acero y ferroaleaciones"
+Industria,A64_16,"Fabricación de productos metálicos, excepto maquinaria y equipo"
+Industria,A64_16_O,"Resto de sectores de fabricación de productos metálicos, excepto maquinaria y equipo"
+Industria,A64_17,"Fabricación de productos informáticos, electrónicos y ópticos"
+Industria,A64_18,Fabricación de material y equipo eléctrico
+Industria,A64_19,Fabricación de maquinaria y equipo n.c.o.p.
+Industria,A64_20,"Fabricación de vehículos de motor, remolques y semirremolques"
+Industria,A64_21,Fabricación de otro material de transporte
+Industria,A64_22,Fabricación de muebles; otras industrias manufactureras
+Industria,A64_23,Reparación e instalación de maquinaria y equipo
+Industria,A64_24,"Suministro de energía eléctrica, gas, vapor y aire acondicionado"
+Industria,A64_25,"Captación, depuración y distribución de agua"
+Industria,A64_26,"Recogida y tratamiento de aguas residuales; recogida, tratamiento y eliminación de residuos; valorización; actividades de descontaminación y otros servicios de gestión de residuos"
+Construcción,A64_27,Construcción
+Comercio,A64_28,Venta y reparación de vehículos de motor y motocicletas
+Comercio,A64_29,"Comercio al por mayor e intermediarios del comercio, excepto de vehículos de motor y motocicletas"
+Comercio,A64_30,"Comercio al por menor, excepto de vehículos de motor y motocicletas"
+Resto de servicios,A64_31,Transporte terrestre y por tubería
+Resto de servicios,A64_31_O,Resto de sectores de transporte terrestre y por tubería
+Resto de servicios,A64_32,Transporte marítimo y por vías navegables interiores
+Resto de servicios,A64_33,Transporte aéreo
+Resto de servicios,A64_34,Almacenamiento y actividades anexas al transporte
+Resto de servicios,A64_35,Actividades postales y de correos
+Hostelería,A64_36,Hostelería
+Resto de servicios,A64_37,Edición
+Resto de servicios,A64_38,"Actividades cinematográficas, de vídeo y de programas de televisión, grabación de sonido y edición musical; actividades de programación y emisión de radio y televisión"
+Resto de servicios,A64_39,Telecomunicaciones
+Resto de servicios,A64_40,"Programación, consultoría y otras actividades relacionadas con la informática; servicios de información"
+Resto de servicios,A64_41,"Servicios financieros, excepto seguros y fondos de pensiones"
+Resto de servicios,A64_42,"Seguros, reaseguros y fondos de pensiones, excepto Seguridad Social obligatoria"
+Resto de servicios,A64_43,Actividades auxiliares a los servicios financieros y a los seguros
+Resto de servicios,A64_44,Actividades inmobiliarias
+Resto de servicios,A64_45,Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial
+Resto de servicios,A64_46,Servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos
+Resto de servicios,A64_47,Investigación y desarrollo
+Resto de servicios,A64_48,Publicidad y estudios de mercado
+Resto de servicios,A64_49,"Otras actividades profesionales, científicas y técnicas; actividades veterinarias"
+Resto de servicios,A64_50,Actividades de alquiler
+Resto de servicios,A64_51,Actividades relacionadas con el empleo
+Resto de servicios,A64_52,"Actividades de agencias de viajes, operadores turísticos, servicios de reservas y actividades relacionadas con los mismos"
+Resto de servicios,A64_53,Actividades de seguridad e investigación; servicios a edificios y actividades de jardinería; actividades administrativas de oficina y otras actividades auxiliares a las empresas
+Resto de servicios,A64_54,Administración pública y defensa; seguridad social obligatoria
+Resto de servicios,A64_55,Educación
+Resto de servicios,A64_56,Actividades sanitarias
+Resto de servicios,A64_57,Actividades de servicios sociales
+Resto de servicios,A64_58,"Actividades de creación, artísticas y espectáculos; actividades de bibliotecas, archivos, museos y otras actividades culturales; actividades de juegos de azar y apuestas "
+Resto de servicios,A64_59,"Actividades deportivas, recreativas y de entretenimiento"
+Resto de servicios,A64_60,Actividades asociativas
+Resto de servicios,A64_61,"Reparación de ordenadores, efectos personales y artículos de uso doméstico"
+Resto de servicios,A64_62,Otros servicios personales
+Resto de servicios,A64_63,Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio
+Resto de servicios,A64_64,Actividades de organizaciones y organismos extraterritoriales
+Agricultura,A86_01,"Agricultura, ganadería, caza y servicios relacionados con las mismas"
+Agricultura,A86_02,Silvicultura y explotación forestal
+Agricultura,A86_03,Pesca y acuicultura
+Industria,A86_04,Industrias extractivas
+Industria,A86_05,Procesado y conservación de carne y elaboración de productos cárnicos
+Industria,A86_06,"Procesado y conservación de pescados, crustáceos y moluscos"
+Industria,A86_07,Fabricación de productos lácteos
+Industria,A86_08,"Fabricación de productos de molinería, de panadería y de pastas alimenticias"
+Industria,A86_09,Otras industrias alimenticias
+Industria,A86_10,Fabricación de bebidas
+Industria,A86_11,Industria del tabaco
+Industria,A86_12,"Industria textil, confección de prendas de vestir, industria del cuero y del calzado"
+Industria,A86_13,Industria de la madera y del corcho
+Industria,A86_14,Industria del papel
+Industria,A86_15,Artes gráficas y reproducción de soportes grabados
+Industria,A86_16,Coquerías y refino de petróleo
+Industria,A86_17,Fabricación de productos químicos básicos y de pesticidas y otros productos agroquímicos
+Industria,A86_18,"Fabricación de pinturas, artículos de limpieza, perfumes y cosméticos y otros productos químicos"
+Industria,A86_19,Fabricación de productos farmacéuticos
+Industria,A86_20,Fabricación de productos de caucho
+Industria,A86_21,Fabricación de productos de plástico
+Industria,A86_22,Fabricación de vidrio y productos de vidrio
+Industria,A86_23,"Fabricación de cemento, cal y yeso"
+Industria,A86_24,Fabricación de otros productos minerales no metálicos
+Industria,A86_25,Siderurgia
+Industria,A86_26,Producción de metales preciosos y de otros metales no férreos
+Industria,A86_27,Fundición de metales
+Industria,A86_28,"Fabricación de elementos metálicos para la construcción, cisternas y grandes depósitos de metal y generadores de vapor"
+Industria,A86_29,"Forja, estampación y embutición de metales; metalurgia de polvos"
+Industria,A86_30,Tratamiento y revestimiento de metales; ingeniería mecánica por cuenta de terceros
+Industria,A86_31,"Fabricación de armas y municiones, artículos de ferretería y otros productos metálicos"
+Industria,A86_32,"Fabricación de productos informáticos, electrónicos y ópticos"
+Industria,A86_33,"Fabricación de material y equipo eléctrico, excepto de aparatos domésticos"
+Industria,A86_34,Fabricación de aparatos domésticos
+Industria,A86_35,"Fabricación de maquinaria de uso general, de maquinaria agraria y forestal y de otra maquinaria para usos específicos"
+Industria,A86_36,Fabricación de máquinas herramienta para trabajar el metal y otras máquinas herramienta
+Industria,A86_37,"Fabricación de vehículos de motor, remolques y semirremolques"
+Industria,A86_38,Construcción naval
+Industria,A86_39,"Fabricación de otro material de transporte, excepto construcción naval"
+Industria,A86_40,Fabricación de muebles
+Industria,A86_41,Otras industrias manufactureras
+Industria,A86_42,Reparación e instalación de maquinaria y equipo
+Industria,A86_43,"Producción, transporte y distribución de energía eléctrica"
+Industria,A86_44,"Suministro de gas, vapor y aire acondicionado"
+Industria,A86_45,"Captación, depuración y distribución de agua"
+Industria,A86_46,"Recogida y tratamiento de aguas residuales; recogida, tratamiento y eliminación de residuos; valorización; actividades de descontaminación y otros servicios de gestión de residuos"
+Construcción,A86_47,Construcción
+Comercio,A86_48,Venta y reparación de vehículos de motor y motocicletas
+Comercio,A86_49,"Comercio al por mayor e intermediarios del comercio, excepto de vehículos de motor y motocicletas"
+Comercio,A86_50,"Comercio al por menor, excepto de vehículos de motor y motocicletas"
+Resto de servicios,A86_51,Transporte por ferrocarril
+Resto de servicios,A86_52,Otro transporte terrestre de pasajeros
+Resto de servicios,A86_53,Otro transporte terrestre de mercancías
+Resto de servicios,A86_54,Transporte marítimo y por vías navegables interiores
+Resto de servicios,A86_55,Transporte aéreo
+Resto de servicios,A86_56,Almacenamiento y actividades anexas al transporte
+Resto de servicios,A86_57,Actividades postales y de correos
+Hostelería,A86_58,Hostelería
+Resto de servicios,A86_59,Edición
+Resto de servicios,A86_60,"Actividades cinematográficas, de vídeo y de programas de televisión, grabación de sonido y edición musical; actividades de programación y emisión de radio y televisión"
+Resto de servicios,A86_61,Telecomunicaciones
+Resto de servicios,A86_62,"Programación, consultoría y otras actividades relacionadas con la informática; servicios de información"
+Resto de servicios,A86_63,"Servicios financieros, excepto seguros y fondos de pensiones"
+Resto de servicios,A86_64,"Seguros, reaseguros y fondos de pensiones, excepto Seguridad Social obligatoria"
+Resto de servicios,A86_65,Actividades auxiliares a los servicios financieros y a los seguros
+Resto de servicios,A86_66,Actividades inmobiliarias
+Resto de servicios,A86_67,Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial
+Resto de servicios,A86_68,Servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos
+Resto de servicios,A86_69,Investigación y desarrollo
+Resto de servicios,A86_70,Publicidad y estudios de mercado
+Resto de servicios,A86_71,"Otras actividades profesionales, científicas y técnicas; actividades veterinarias"
+Resto de servicios,A86_72,Actividades de alquiler
+Resto de servicios,A86_73,Actividades relacionadas con el empleo
+Resto de servicios,A86_74,"Actividades de agencias de viajes, operadores turísticos, servicios de reservas y actividades relacionadas con los mismos"
+Resto de servicios,A86_75,Actividades de seguridad e investigación; servicios a edificios y actividades de jardinería; actividades administrativas de oficina y otras actividades auxiliares a las empresas
+Resto de servicios,A86_76,Administración pública y defensa; seguridad social obligatoria
+Resto de servicios,A86_77,Educación
+Resto de servicios,A86_78,Actividades sanitarias
+Resto de servicios,A86_79,Actividades de servicios sociales
+Resto de servicios,A86_80,"Actividades de creación, artísticas y espectáculos; actividades de bibliotecas, archivos, museos y otras actividades culturales; actividades de juegos de azar y apuestas "
+Resto de servicios,A86_81,"Actividades deportivas, recreativas y de entretenimiento"
+Resto de servicios,A86_82,Actividades asociativas
+Resto de servicios,A86_83,"Reparación de ordenadores, efectos personales y artículos de uso doméstico"
+Resto de servicios,A86_84,Otros servicios personales
+Resto de servicios,A86_85,Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio
+Resto de servicios,A86_86,Actividades de organizaciones y organismos extraterritoriales

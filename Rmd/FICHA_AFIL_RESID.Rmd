@@ -60,7 +60,6 @@ mes <- data.frame(code = mes_or) %>%
   transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1))))
 
 mes <- mes %>%
-  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>%
   mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
 mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
 mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 4, ]
@@ -537,54 +536,59 @@ df_afil_ae_C_ <- data.frame(
              times = length(data_afil_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(data_afil_ae_C[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-df_ae_C <- data.frame(
+df_r_ae_C <- data.frame(
   id_ae = data_afil_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
-  ae = vector(mode = "character", length = data_afil_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+  name_ae = vector(mode = "character", length = data_afil_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
 
-for(i in 1:nrow(df_ae_C)) {
-  df_ae_C$ae[i] <- data_afil_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+for(i in 1:nrow(df_r_ae_C)) {
+  df_r_ae_C$name_ae[i] <- data_afil_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
 }
 
-df_ae_C <- df_ae_C %>%
-  transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
-  transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
-  transform(ae = recode(ae, "Industria de la alimentación, bebidas y tabaco" = "Industria")) %>%
-  transform(ae = recode(ae, "Industria textil, confección de prendas de vestir, industria del cuero y del calzado" = "Industria")) %>%
-  transform(ae = recode(ae, "Industria de la madera, papel y artes gráficas" = "Industria")) %>%
-  transform(ae = recode(ae, "Coquerías y refino de petróleo" = "Industria")) %>%
-  transform(ae = recode(ae, "Industria química" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de productos farmacéuticos" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de productos de caucho y plásticos y otros productos minerales no metálicos" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de metales básicos y de productos metálicos, excepto maquinaria y equipo" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de productos informáticos, electrónicos y ópticos" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de material y equipo eléctrico" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de maquinaria y equipo n.c.o.p." = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de material de transporte" = "Industria")) %>%
-  transform(ae = recode(ae, "Fabricación de muebles; otras industrias manufactureras; reparación e instalación de maquinaria y equipo" = "Industria")) %>%
-  transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
-  transform(ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
-  transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
-  transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de edición, audiovisuales y de programación y emisión de radio y televisión" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Telecomunicaciones" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Programación, consultoría y otras actividades relacionadas con la informática; servicios de información" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial; servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Investigación y desarrollo" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Publicidad y estudios de mercado; otras actividades profesionales, científicas y técnicas; actividades veterinarias" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades sanitarias" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de servicios sociales" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
+df_ae <- read.csv2("../CL_CNAE.csv", encoding = "UTF-8", sep = ",")
+df_ae <- df_ae %>% select(!name_ae)
+
+df_r_ae_C <- df_r_ae_C %>% inner_join(df_ae, by = "id_ae")
+
+# df_ae_C <- df_ae_C %>%
+#   transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
+#   transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
+#   transform(ae = recode(ae, "Industria de la alimentación, bebidas y tabaco" = "Industria")) %>%
+#   transform(ae = recode(ae, "Industria textil, confección de prendas de vestir, industria del cuero y del calzado" = "Industria")) %>%
+#   transform(ae = recode(ae, "Industria de la madera, papel y artes gráficas" = "Industria")) %>%
+#   transform(ae = recode(ae, "Coquerías y refino de petróleo" = "Industria")) %>%
+#   transform(ae = recode(ae, "Industria química" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de productos farmacéuticos" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de productos de caucho y plásticos y otros productos minerales no metálicos" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de metales básicos y de productos metálicos, excepto maquinaria y equipo" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de productos informáticos, electrónicos y ópticos" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de material y equipo eléctrico" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de maquinaria y equipo n.c.o.p." = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de material de transporte" = "Industria")) %>%
+#   transform(ae = recode(ae, "Fabricación de muebles; otras industrias manufactureras; reparación e instalación de maquinaria y equipo" = "Industria")) %>%
+#   transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
+#   transform(ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
+#   transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
+#   transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de edición, audiovisuales y de programación y emisión de radio y televisión" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Telecomunicaciones" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Programación, consultoría y otras actividades relacionadas con la informática; servicios de información" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades jurídicas y de contabilidad; actividades de las sedes centrales; actividades de consultoría de gestión empresarial; servicios técnicos de arquitectura e ingeniería; ensayos y análisis técnicos" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Investigación y desarrollo" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Publicidad y estudios de mercado; otras actividades profesionales, científicas y técnicas; actividades veterinarias" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades sanitarias" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de servicios sociales" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
 
 df_afil_ae_C <- df_afil_ae_C_ %>%
-  right_join(df_ae_C, by = "id_ae") %>%
+  right_join(df_r_ae_C, by = "id_ae") %>%
   right_join(df_sexo, by = "id_sexo") %>%
   select(c(mun, periodo, ae, sexo, valor))
 
@@ -629,37 +633,39 @@ df_afil_ae_ <- data.frame(
              times = length(data_afil_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
   valor = unlist(strsplit(data_afil_ae[["data"]][["observations"]], split = " | ", fixed = TRUE)))
 
-df_ae <- data.frame(
+df_r_ae <- data.frame(
   id_ae = data_afil_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
-  ae = vector(mode = "character", length = data_afil_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+  name_ae = vector(mode = "character", length = data_afil_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
 
-for(i in 1:nrow(df_ae)) {
-  df_ae$ae[i] <- data_afil_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+for(i in 1:nrow(df_r_ae)) {
+  df_r_ae$name_ae[i] <- data_afil_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
 }
 
-df_ae <- df_ae %>%
-  transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
-  transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
-  transform(ae = recode(ae, "Industria manufacturera" = "Industria")) %>%
-  transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
-  transform(ae = recode(ae, "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
-  transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
-  transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Información y comunicaciones" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades profesionales, científicas y técnicas" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades sanitarias y de servicios sociales" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de los hogares como empleadores y productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
-  transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
+df_r_ae <- df_r_ae %>% inner_join(df_ae, by = "id_ae")
+
+# df_r_ae <- df_r_ae %>%
+#   transform(ae = recode(ae, "Agricultura, ganadería, silvicultura y pesca" = "Agricultura")) %>%
+#   transform(ae = recode(ae, "Industrias extractivas" = "Industria")) %>%
+#   transform(ae = recode(ae, "Industria manufacturera" = "Industria")) %>%
+#   transform(ae = recode(ae, "Suministro de energía eléctrica, gas, vapor y aire acondicionado" = "Industria")) %>%
+#   transform(ae = recode(ae, "Suministro de agua; actividades de saneamiento, gestión de residuos y descontaminación" = "Industria")) %>%
+#   transform(ae = recode(ae, "Comercio al por mayor y al por menor; reparación de vehículos de motor y motocicletas" = "Comercio")) %>%
+#   transform(ae = recode(ae, "Transporte y almacenamiento" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Información y comunicaciones" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades financieras y de seguros" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades inmobiliarias" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades profesionales, científicas y técnicas" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades administrativas y servicios auxiliares" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Administración pública y defensa; seguridad social obligatoria" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Educación" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades sanitarias y de servicios sociales" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades artísticas, recreativas y de entretenimiento" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Otros servicios" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de los hogares como empleadores de personal doméstico; actividades de los hogares como productores de bienes y servicios para uso propio" = "Resto de servicios")) %>%
+#   transform(ae = recode(ae, "Actividades de organizaciones y organismos extraterritoriales" = "Resto de servicios"))
 
 df_afil_ae <- df_afil_ae_ %>%
-  right_join(df_ae, by = "id_ae") %>%
+  right_join(df_r_ae, by = "id_ae") %>%
   right_join(df_sexo, by = "id_sexo") %>%
   select(c(mun, periodo, ae, sexo, valor))
 
