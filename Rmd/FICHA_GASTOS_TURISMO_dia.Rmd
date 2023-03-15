@@ -308,6 +308,8 @@ Gasto_por_turista_d_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$g
 
 ```{r Mapas}
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),

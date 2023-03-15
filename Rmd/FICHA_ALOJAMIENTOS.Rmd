@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35003
+  id_municipio: 38013
   ano: 2022
   mes: 11
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
@@ -364,6 +364,8 @@ ADR <- df_ADR %>%
 
 ```{r Mapas}
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),

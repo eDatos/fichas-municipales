@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35017
+  id_municipio: 35003
   ano: 2022
   trimestre: 3
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
@@ -308,6 +308,8 @@ Gasto_por_turista_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gre
 
 ```{r Mapas}
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),

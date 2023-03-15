@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35023
+  id_municipio: 38013
   ano: 2022
   mes: 12
   url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
@@ -312,6 +312,8 @@ Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos_num * 100, 1) %>%
 palette <- c('#8CD2EA', '#005980')
 
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),

@@ -408,6 +408,8 @@ g_piramide <- ggplotly(g_piramide, tooltip = c("text")) %>%
 
 ```{r Mapas}
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != params$id_municipio), col = "0"),

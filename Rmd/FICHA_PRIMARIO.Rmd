@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35023
+  id_municipio: 38013
   ano: 2021
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
   url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
@@ -11,7 +11,6 @@ params:
   url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO_REGADIO/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
   url.agr_herbaceos: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01135A_000003/~latest.json?dim=PRODUCTO_AGRICOLA:AA_S1|C1100_S1|C1210|C1220_L1|C1220_L2|C1300|C1410|C1510|C1600|C1910|C1900_L1|C1900_L3|P1100|P1210|P1300|P9100|P9200|P9300|P9000_L1|P9000_L2|R1000_L1|R1000_L2|R1000_L3|R1000_L4|I1190_L2|I3000|I9000_L1|S0000|V1110|V1300|V2100|V2200|V2300|V2400_L1|V2500|V2800|V2900_L1|V3100|V3200|V3300|V3410|V3420|V3430|V3510|V3520|V3600_L3|V4100|V4210|V4200_L1|V4300|V4500|V4600|V4900_L1|V4910|V5100|V5200|V5900_L1|N1009|N1011|N0000_S3|N0000_S2|ARA9_L1|ARA_S2_L1|ARA_S2_L10|ARA_S2_L2|ARA_S2_L3|ARA_S2_L4|ARA_S2_L5|ARA_S2_L6|ARA_S2_L7|ARA_S2_L8|ARA_S2_L9|U1100:OCUPACION_CULTIVO:_T:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:SISTEMA_CULTIVO:_T&lang=es
   url.agr_permanentes: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01135A_000004/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PRODUCTO_AGRICOLA:PECR|F1110|F1120|F1191|F1190_L1|F1210|F1230|F1240|F1250|F2100|F2200|F2300|F2400|F2900_L1|F2900_L2|F2900_L3|F2900_L4|F2900_L5|F2900_L6|F2900_L7|F2900_L8|F2900_L9|F2910|F3200|F3900_L1|F4100|F4200|F4300|F4400|F4900_L1|T1000|T2910|T3100|T4000_S1|W1100|W1200|O1100|O1910|H9100|H9000_L1|L0000|Z0000:SISTEMA_CULTIVO:_T:MEDIDAS:SUPERFICIE_CULTIVADA&lang=es
-                       https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01135A_000004/1.0?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901:PRODUCTO_AGRICOLA:PECR|F1110|F1120|F1191|F1190_L1|F1210|F1230|F1240|F1250|F2100|F2200|F2300|F2400|F2900_L1|F2900_L2|F2900_L3|F2900_L4|F2900_L5|F2900_L6|F2900_L7|F2900_L8|F2900_L9|F2910|F3200|F3900_L1|F4100|F4200|F4300|F4400|F4900_L1|T1000|T2910|T3100|T4000_S1|W1100|W1200|O1100|O1910|H9100|H9000_L1|L0000|Z0000:SISTEMA_CULTIVO:_T:MEDIDAS:SUPERFICIE_CULTIVADA
   url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:ESPECIE_ANIMAL:_T|1|4|3|2|16|6|18&lang=es
   url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
   url.colmenas: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000010/~latest.json?dim=SISTEMA_PRODUCTIVO:_T:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
@@ -98,6 +97,11 @@ recode_mun <- function(df, colname) {
   df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
   df[,colname]
 }
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(ano > "2016" & mun == "38013_1912"),
+                df %>% filter(ano < "2017" & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
 recode_id_Frontera <- function(df, colname) {
   df[,colname] = trimws(df[,colname])
   df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
@@ -155,6 +159,7 @@ df_u_ <- data.frame(
   spread(medida, valor) %>%
   select(mun, ano, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
 df_u <- df_u_ %>% filter(substring(mun, 0,2) != "ES")
+df_u <- recode_Frontera(df_u)
 df_u$mun <- recode_id_Frontera(df_u, 'mun')
 df_u$ano <- as.integer(df_u$ano)
 
@@ -277,6 +282,7 @@ df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICA
                                   each=data_secano[["dimension"]][["TIME"]][["representation"]][["size"]]),
                         ano = rep(names(data_secano[["dimension"]][["TIME"]][["representation"]][["index"]])),
                         valor = round(as.numeric(data_secano[["observation"]]), 1))
+df_secano <- recode_Frontera(df_secano)
 df_secano$mun <- recode_id_Frontera(df_secano, 'mun')
 
 sup_secano_num <- df_secano %>% filter(ano == params$ano & mun == params$id_municipio) %>% select(valor) %>% as.numeric
@@ -291,6 +297,7 @@ df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHI
                                    each=data_regadio[["dimension"]][["TIME"]][["representation"]][["size"]]),
                          ano = rep(names(data_regadio[["dimension"]][["TIME"]][["representation"]][["index"]])),
                          valor = round(as.numeric(data_regadio[["observation"]]), 1))
+df_regadio <- recode_Frontera(df_regadio)
 df_regadio$mun <- recode_id_Frontera(df_regadio, 'mun')
 
 sup_regadio_num <- df_regadio %>% filter(ano == params$ano & mun == params$id_municipio) %>% select(valor) %>% as.numeric
@@ -302,6 +309,8 @@ percent_regadio <- round(sup_regadio_num / superficie_cultivada_num * 100, 1) %>
 palette <- c('#8CD2EA', '#005980')
 
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
@@ -368,6 +377,7 @@ df_herbaceos <- data.frame(
                    each = length(data_herbaceos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
   mun = data_herbaceos[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
   valor = unlist(strsplit(data_herbaceos[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_herbaceos <- recode_Frontera(df_herbaceos)
 df_herbaceos$mun <- recode_id_Frontera(df_herbaceos, 'mun')
 df_herbaceos$valor <- as.numeric(df_herbaceos$valor)
 
@@ -503,6 +513,7 @@ df_permanentes <- data.frame(
                    each = length(data_permanentes[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   ano = data_permanentes[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
   valor = unlist(strsplit(data_permanentes[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_permanentes <- recode_Frontera(df_permanentes)
 df_permanentes$mun <- recode_id_Frontera(df_permanentes, 'mun')
 df_permanentes$valor <- as.numeric(df_permanentes$valor)
 
@@ -638,6 +649,7 @@ df_exp_especies_ <- data.frame(
             each = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   id_especie = data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
   valor = unlist(strsplit(data_exp_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_exp_especies_ <- recode_Frontera(df_exp_especies_)
 df_exp_especies_$mun <- recode_id_Frontera(df_exp_especies_, 'mun')
 df_exp_especies_$valor <- as.numeric(df_exp_especies_$valor)
 
@@ -727,6 +739,7 @@ df_cab_especies <- data.frame(
             each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
   id_especie = data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
   valor = unlist(strsplit(data_cab_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_cab_especies <- recode_Frontera(df_cab_especies)
 df_cab_especies$mun <- recode_id_Frontera(df_cab_especies, 'mun')
 df_cab_especies$valor <- as.numeric(df_cab_especies$valor)
 
@@ -758,6 +771,7 @@ df_colmenas <- data.frame(
             each = length(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
   mun = rep(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]),
   valor = unlist(strsplit(data_colmenas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_colmenas <- recode_Frontera(df_colmenas)
 df_colmenas$mun <- recode_id_Frontera(df_colmenas, 'mun')
 df_colmenas$valor <- as.numeric(df_colmenas$valor)
 

@@ -1,7 +1,7 @@
 ---
 title: ''
 params:
-  id_municipio: 35003
+  id_municipio: 38013
   ano: 2022
   mes: 12
   url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
@@ -132,7 +132,7 @@ distancias_mun <- data.frame(
   distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
 )
 
-seleccion_mun <- function(df_localizacion, df_variable, variable, p = 0.5) {
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
   df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
   mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
   
@@ -209,7 +209,7 @@ df_u <- df_afil %>% filter(sl == "Total" & sexo == "Total" & nacionalidad == "To
   select(mun, periodo, valor) %>% arrange(periodo)
 
 related_mun <- df_u %>% filter(periodo == mes_actual$code)
-related_mun <- seleccion_mun(df_localizacion, related_mun %>% select(mun, valor), 'valor')
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
 if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
 
 leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Afiliaciones: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
@@ -443,6 +443,8 @@ Percent_Hombres <- round(df_afil_sexo_mun %>% filter(sexo == "Hombres") %>% sele
 
 ```{r Mapas}
 mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+mapa_Canarias <- mapa_Canarias %>%
+  transform(geocode = ifelse(geocode == "38013_2007", "38013", geocode))
 
 mapa_Canarias <- rbind(
   cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
