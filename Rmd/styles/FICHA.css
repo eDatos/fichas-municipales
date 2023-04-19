@@ -118,11 +118,11 @@ div.level3 {
   position: relative;
 }
 .legend-vertical-container > .progressbar-legend  {
-    margin: 5px 20px;
-    align-items: initial;
+  margin: 5px 20px;
+  align-items: initial;
 }
 .legend-vertical-container > .progressbar-legend > .sp-content {
-    text-align: left;
+  text-align: left;
 }
 .indicator2 {
   display: inline-flex;
@@ -134,37 +134,37 @@ div.level3 {
   max-height: 60px;
 }
 .indicator2 .value {
-    font-size: 28px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
+  font-size: 28px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .indicator2 .label {
-    color: #666;
-    font-size: 18px;
-    padding: 0;
-    margin-bottom: 5px;
-    text-align: center;
+  color: #666;
+  font-size: 18px;
+  padding: 0;
+  margin-bottom: 5px;
+  text-align: center;
 }
 .indicator2 .label2{
-    color: #666;
+  color: #666;
 } 
 .indicator2 span {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .indicator2 .image {
-    height: 60px;
+  height: 60px;
 }
 .indicator2 .indicator-content {
-    text-align: center;
-    float: left;
-    vertical-align: middle;
-    width: calc(100% - 60px);
-    padding-left: 10px;
-    display: grid;
+  text-align: center;
+  float: left;
+  vertical-align: middle;
+  width: calc(100% - 60px);
+  padding-left: 10px;
+  display: grid;
 }
 
 .indicator3 {
@@ -176,36 +176,36 @@ div.level3 {
   max-height: 50px;
 }
 .indicator3 .value {
-    font-size: 24px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
+  font-size: 24px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .indicator3 .label {
-    color: #666;
-    font-size: 13px;
-    padding: 0;
-    text-align: center;
+  color: #666;
+  font-size: 13px;
+  padding: 0;
+  text-align: center;
 }
 .indicator3 .label2{
-    color: #666;
+  color: #666;
 } 
 .indicator3 span {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .indicator3 .image {
-    height: 50px;
+  height: 50px;
 }
 .indicator3 .indicator-content {
-    text-align: center;
-    float: left;
-    vertical-align: middle;
-    width: calc(100% - 50px);
-    padding-left: 10px;
-    display: grid;
+  text-align: center;
+  float: left;
+  vertical-align: middle;
+  width: calc(100% - 50px);
+  padding-left: 10px;
+  display: grid;
 }
 .indicator4 {
   /*display: inline-flex;*/
@@ -213,33 +213,33 @@ div.level3 {
   margin: 0 auto;
 }
 .indicator4 .title {
-    font-size: 22px;
-    color: #666;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
+  font-size: 22px;
+  color: #666;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .indicator4 .value {
-    font-size: 28px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
+  font-size: 28px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .indicator4 .label {
-    color: #999;
-    font-size: 20px;
-    padding: 0;
-    text-align: center;
-    display: block;
+  color: #999;
+  font-size: 20px;
+  padding: 0;
+  text-align: center;
+  display: block;
 }
 .indicator4 .indicator-content {
-    text-align: center;
-    float: left;
-    vertical-align: middle;
-    width: calc(100% - 50px);
-    padding-left: 10px;
-    display: grid;
+  text-align: center;
+  float: left;
+  vertical-align: middle;
+  width: calc(100% - 50px);
+  padding-left: 10px;
+  display: grid;
 }
 
 .indicator-map {
@@ -266,94 +266,94 @@ div.level3 {
   margin-bottom: -22px;
 }    
 .indicator-map .value {
-    font-size: 32px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
-    margin-right: 5px;
+  font-size: 32px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
+  margin-right: 5px;
 }
 .indicator-map .label {
-    color: #666;
-    font-size: 18px;
-    padding: 0;
-    text-align: center;
-    margin: 0;
-    vertical-align: bottom;
+  color: #666;
+  font-size: 18px;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+  vertical-align: bottom;
 }
 .indicator-map .label2 {
-    color: #666;
-    font-size: 14px;
-    text-align: center;
-    margin: 0;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
 } 
 .indicator-map .label3 {
-    color: #666;
-    font-size: 16px;
-    text-align: center;
-    margin-top: 5px;
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 5px;
 }
 .indicator-map span {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .indicator-map .image {
-    height: 140px;
-    margin: 0 auto;
-    display: table;
-    width: 100%;
-    margin-bottom: -15px;
-    overflow: hidden;
+  height: 140px;
+  margin: 0 auto;
+  display: table;
+  width: 100%;
+  margin-bottom: -15px;
+  overflow: hidden;
 }
 .indicator-map .indicator-content {
-    text-align: center;
-    vertical-align: middle;
-    width: 100%;
-    margin-top: 12px;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+  margin-top: 12px;
 }
 .indicator-title {
-    border: 2px solid #008BD0;
-    border-radius: 15px;
-    padding: 10px;
-    margin: 20px 5px 10px;
-    width: calc(50% - 10px) !important;
+  border: 2px solid #008BD0;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 20px 5px 10px;
+  width: calc(50% - 10px) !important;
 }
 .indicator-title-row {
-    border: 2px solid #008BD0;
-    border-radius: 15px;
-    padding: 5px;
-    margin: 20px 5px 10px 0;
-    width: 100% !important;
+  border: 2px solid #008BD0;
+  border-radius: 15px;
+  padding: 5px;
+  margin: 20px 5px 10px 0;
+  width: 100% !important;
 }
 .indicator-title h3 {
-    font-size: 20px;
-    margin: 0px;
-    text-align: center;
-    color: #666;
+  font-size: 20px;
+  margin: 0px;
+  text-align: center;
+  color: #666;
 }
 .indicator-title-row h3 {
-    font-size: 20px;
-    margin: 0px;
-    text-align: center;
-    color: #666;
+  font-size: 20px;
+  margin: 0px;
+  text-align: center;
+  color: #666;
 }
 .helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .linechart {
   height: 275px;
-    float: left;
-    width: 64%;
+  float: left;
+  width: 64%;
 }
 .linechart-placeholder {
   display: table;
   width: 100%;
 }
 #ranking-del-municipio {
-    margin-top: -25px;
+  margin-top: -25px;
 }
 .serie-placeholder {
   font-size: 12px;
@@ -429,9 +429,9 @@ display: none;
   margin-bottom: 0 !important;
 }
 hr {
-    margin: 0px;
-    border: 0;
-    border-top: 1px solid #eee;
+  margin: 0px;
+  border: 0;
+  border-top: 1px solid #eee;
 }
 hr.separator {
   border-top: 2px solid #eee;
@@ -439,9 +439,9 @@ hr.separator {
   margin-bottom: 6px;
 }
 h4, h5 {
-    margin: 10px;
-    text-align: center;
-    color: #666;
+  margin: 10px;
+  text-align: center;
+  color: #666;
 }
 .piechart {
   float: left;
@@ -459,56 +459,56 @@ h4, h5 {
   margin: 0 auto;
 }
 .indicator4s .title {
-    font-size: 16px;
-    color: #666;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
+  font-size: 16px;
+  color: #666;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
 }
 .indicator4s .value {
-    font-size: 24px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 5px;
-    text-align: center;
+  font-size: 24px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
 }
 .indicator4s .label {
-    color: #999;
-    font-size: 14px;
-    margin-bottom: 0;
-    padding: 0;
-    text-align: center;
-    display: block;
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 0;
+  padding: 0;
+  text-align: center;
+  display: block;
 }
 .indicator4s .label2 {
-    color: #999;
-    font-size: 10px;
-    padding: -5px;
-    margin-top: 0;
-    text-align: center;
-    display: block;
+  color: #999;
+  font-size: 10px;
+  padding: -5px;
+  margin-top: 0;
+  text-align: center;
+  display: block;
 }
 .indicator4s .indicator-content {
-    text-align: center;
-    float: left;
-    vertical-align: middle;
-    width: calc(100% - 50px);
-    padding-left: 10px;
-    display: grid;
+  text-align: center;
+  float: left;
+  vertical-align: middle;
+  width: calc(100% - 50px);
+  padding-left: 10px;
+  display: grid;
 }
 
 .highlight h3 {
-    font-size: 20px;
-    margin: 0px;
-    text-align: center;
-    color: #666;
+  font-size: 20px;
+  margin: 0px;
+  text-align: center;
+  color: #666;
 }
 
 .column h3 {
-    font-size: 20px;
-    margin: 0px;
-    text-align: center;
-    color: #666;
+  font-size: 20px;
+  margin: 0px;
+  text-align: center;
+  color: #666;
 }
 
 .indicator2b {
@@ -523,71 +523,71 @@ h4, h5 {
   padding-left: -20px;
 }
 .indicator2b .value {
-    font-size: 28px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    margin-right: -5px;
-    text-align: center;
+  font-size: 28px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-right: -5px;
+  text-align: center;
 }
 .indicator2b .label {
-    color: #666;
-    font-size: 18px;
-    padding: 0;
-    text-align: center;
+  color: #666;
+  font-size: 18px;
+  padding: 0;
+  text-align: center;
 }
 .indicator2b .label2{
-    color: #666;
+  color: #666;
 } 
 .indicator2b span {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 .indicator2b .image {
-    height: 60px;
+  height: 60px;
 }
 .indicator2b .indicator-content {
-    text-align: center;
-    float: left;
-    vertical-align: middle;
-    width: calc(100% - 60px);
-    padding-left: 20px;
-    display: grid;
+  text-align: center;
+  float: left;
+  vertical-align: middle;
+  width: calc(100% - 60px);
+  padding-left: 20px;
+  display: grid;
 }
 
 .indicator-map h3 {
-    font-size: 20px;
-    margin: 5px;
-    text-align: center;
-    color: #666;
+  font-size: 20px;
+  margin: 5px;
+  text-align: center;
+  color: #666;
 }
 .indicator-map .value2 {
-    font-size: 18px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: center;
-    margin-right: 5px;
+  font-size: 18px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: center;
+  margin-right: 5px;
 }
 .indicator-map .value3 {
-    font-size: 26px;
-    color: #008BD0;
-    font-weight: bold;
-    margin-bottom: 0px;
-    text-align: justify;
-    margin-left: 25px;
-    padding: 3px 10px;
-    vertical-align: top;
+  font-size: 26px;
+  color: #008BD0;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-align: justify;
+  margin-left: 25px;
+  padding: 3px 10px;
+  vertical-align: top;
 }
 .indicator-map .label5 {
-    color: #666;
-    font-size: 13px;
-    padding: 0;
-    margin: 0;
-    margin-left: 15px;
-    text-align: justify;
-    vertical-align: top;
+  color: #666;
+  font-size: 13px;
+  padding: 0;
+  margin: 0;
+  margin-left: 15px;
+  text-align: justify;
+  vertical-align: top;
 }
 
 .progressbar-legend > .sp-content-b {

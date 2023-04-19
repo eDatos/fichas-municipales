@@ -164,10 +164,13 @@ periods_COVID <- periods %>%
 
 "%notin%" <- Negate("%in%")
 periods <- periods %>%
-  filter(code %notin% c("afiliacion_residencia", "afiliacion_cotizacion", "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")) %>%
+  filter(code %notin% c("demografia", "afiliacion_residencia", "afiliacion_cotizacion",
+                        "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia", "parque_vehiculos")) %>%
+  full_join(periods %>% filter(code == "demografia" & A != "2000"), by = c("code", "A", "Q", "M")) %>%
   full_join(periods %>% filter(code %in% c("afiliacion_residencia", "afiliacion_cotizacion") & A != "2012" & M %in% c(3, 6, 9, 12)), by = c("code", "A", "Q", "M")) %>%
   full_join(periods %>% filter(code == "alojamientos_turisticos" & A != "2009"), by = c("code", "A", "Q", "M")) %>%
   full_join(periods %>% filter(code %in% c("gastos_medios_turista", "gastos_medios_turista_dia") & A != "2018"), by = c("code", "A", "Q", "M")) %>%
+  full_join(periods %>% filter(code == "parque_vehiculos" & A %notin% c(2008:2014)), by = c("code", "A", "Q", "M")) %>%
   full_join(electorales, by = c("code", "A")) %>%
   anti_join(periods_COVID, by = c("code", "A", "Q", "M"))
 
@@ -242,21 +245,26 @@ generarFichas <- function(municipios, df_fichas, periods) {
   }
 }
 
-# generarFicha(2022, 'parque_vehiculos', 'M', 10, NA, 35013)
+# generarFicha(2022, 'afiliacion_residencia', 'M', 12, NA, 35003)
 
-generarFichas(municipios, df_fichas %>% filter(code == 'demografia'), periods)
+# generarFichas(municipios, df_fichas, periods)
+
+generarFichas(municipios, df_fichas %>% filter(code == 'presupuestos'), periods)
+generarFichas(municipios %>% filter(id %in% c('35023', '35031')), df_fichas %>% filter(code == 'sector_primario'), periods)
+generarFichas(municipios %>% filter(id %in% c('35023', '35031')), df_fichas %>% filter(code %notin% c("presupuestos", "perfil_turista", "alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")), periods)
+# generarFichas(municipios, df_fichas %>% filter(code == 'demografia'), periods %>% filter(A == '2021'))
 # generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == '2022'))
-# generarFichas(municipios, df_fichas %>% filter(code == 'paro_registrado'), periods %>% filter(A == '2022'))
-# generarFichas(municipios, df_fichas %>% filter(code %in% c('parque_vehiculos', 'sector_primario')), periods)
+# generarFichas(municipios, df_fichas %>% filter(code == 'afiliacion_residencia'), periods %>% filter(A == '2022'))
 
 # MENSUALES:
 # generarFichas(municipios, df_fichas %>% filter(code %in% c("paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "parque_vehiculos")), periods)
 # generarFichas(municipios, df_fichas %>% filter(code %in% c("alojamientos_turisticos", "gastos_medios_turista", "gastos_medios_turista_dia")), periods %>% filter(A == 2022))
   
-# generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022))
+# generarFichas(municipios, df_fichas %>% filter(code %in% c('parque_vehiculos', 'sector_primario')), periods)
 # generarFichas(municipios, df_fichas %>% filter(code == 'alojamientos_turisticos'), periods %>% filter(A == 2018 & M %in% c(1:3)))
 # generarFichas(municipios, df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == 2022 & M %notin% c(1,2,3)))
 # generarFichas(municipios %>% filter(id == '35001'), df_fichas %>% filter(code == 'parque_vehiculos'), periods %>% filter(A == '2019' & M == '10'))
+# generarFichas(municipios %>% filter(id == '38009'), df_fichas %>% filter(code == 'perfil_turista'), periods %>% filter(A == '2021'))
 
 
 # c("demografia", "paro_registrado", "afiliacion_residencia", "afiliacion_cotizacion", "presupuestos",
