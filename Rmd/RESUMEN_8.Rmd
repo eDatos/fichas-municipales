@@ -1,0 +1,447 @@
+---
+title: ''
+params:
+  id_municipio: 35003
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
+  url.GM_sexo_edad: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=948e02fd-4d75-4a06-9d40-48acd5fd4556
+  url.GM_sl: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=42f1c94f-5732-4e38-9583-39258ff8f5bf
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "reshape2", "kableExtra")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+# Frontera
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+df_localizacion <- filter(df_localizacion, mun != "38013_1912")
+df_localizacion$mun <- recode_id_Frontera(df_localizacion, 'mun')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1,]
+}
+```
+
+
+```{r Periodo}
+GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
+periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]],
+                      periodo = GM_sexo_edad[["categories"]][["labels"]][[5]]) %>%
+  filter(substring(code, 5,5) == "Q") %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>%
+  mutate(order = as.integer(order(code, decreasing = FALSE))) %>%
+  arrange(order)
+
+periodo_actual <- periodo[nrow(periodo),]
+```
+
+```{r Gráfico evolución de los gastos medios turísticos}
+df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
+colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'code', 'valor')
+df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
+df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categories"]][["codes"]][[2]], labels=GM_sexo_edad[["categories"]][["labels"]][[2]])
+df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
+df_GM_sexo_edad$valor <- round(as.numeric(df_GM_sexo_edad$valor), 0)
+df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(code, 5,5) == "Q") %>% 
+  select(mun, code, valor)
+df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
+df_u <- df_u[with(df_u, order(code)), ]
+
+related_mun <- df_u %>% filter(code == periodo_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+df_g <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, nombre, code, valor) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(code, mun = id, nombre, valor) %>%
+  left_join(periodo, by = "code") %>%
+  mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
+  filter(code <= periodo_actual$code)
+
+if(substring(periodo_actual$code, 0,4) != 2019){
+  df_g <- df_g %>% filter(substring(code, 0,4) != 2018)
+  rango <- c(max(0.8, nrow(df_g[df_g$mun == params$id_municipio, ]) - 5*4 - 0.2), nrow(df_g[df_g$mun == params$id_municipio, ]))
+}else{
+  rango <- c(max(0.8, max(df_g$order) - 5*4 - 0.2), df_g$order[df_g$code == periodo_actual$code & df_g$mun == params$id_municipio])
+}
+
+ano_min <- min(as.integer(substring(df_g$code, 0,4)))
+ano_max <- max(as.integer(substring(df_g$code, 0,4)))
+
+I_GM_num <- df_g %>% filter(order == min(df_g$order)) %>% select(valor) %>% as.numeric
+I_GM <- I_GM_num %>% format(big.mark = ".", decimal.mark = ",")
+Num_GM_num <- df_g %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric
+Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",")
+
+df_g <- df_g %>%
+  transform(hovertext = paste0(
+    "<b>", nombre, "</b><br>Gasto medio: ", ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+    "<br>Tasa de variación: ", ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%"))))
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
+g_line_g <- ggplot(data = df_g, aes(x = code, y = valor, group = nombre, colour = nombre, text = hovertext)) +
+  geom_line(size = 0.7) +
+  geom_text(aes(x = rango[1], y = (0.92*I_GM_num), label = I_GM, colour = '#000000'), size = 3.5, nudge_x = 0.5) +
+  geom_text(aes(x = rango[2], y = (0.94*Num_GM_num), label = Num_GM_num, colour = '#000000'), size = 3.5, nudge_x = -0.5) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "Q1")}, labels = function(x){substr(x, 0,4)}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5, limits = c(0, NA))
+
+g_line_g <- ggplotly(g_line_g, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = rango)) %>%
+  style(hoverinfo = "skip", traces = c(2, 3))
+```
+
+```{r Gráfico evolución de los gastos medios diarios turísticos}
+df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(code, 5,5) == "Q") %>% 
+  select(mun, code, valor)
+df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
+df_u <- df_u[with(df_u, order(code)), ]
+
+related_mun <- df_u %>% filter(code == periodo_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+df_gd <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, nombre, code, valor) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(code, mun = id, nombre, valor) %>%
+  left_join(periodo, by = "code") %>%
+  mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
+  filter(code <= periodo_actual$code)
+
+if(substring(periodo_actual$code, 0,4) != 2019){
+  df_gd <- df_gd %>% filter(substring(code, 0,4) != 2018)
+  rango <- c(max(0.8, nrow(df_gd[df_gd$mun == params$id_municipio, ]) - 5*4 - 0.2), nrow(df_gd[df_gd$mun == params$id_municipio, ]))
+}else{
+  rango <- c(max(0.8, max(df_gd$order) - 5*4 - 0.2), df_gd$order[df_gd$code == periodo_actual$code & df_gd$mun == params$id_municipio])
+}
+
+ano_min <- min(as.integer(substring(df_gd$code, 0,4)))
+ano_max <- max(as.integer(substring(df_gd$code, 0,4)))
+
+I_GMd_num <- df_gd %>% filter(order == min(df_gd$order)) %>% select(valor) %>% as.numeric
+I_GMd <- I_GMd_num %>% format(big.mark = ".", decimal.mark = ",")
+Num_GMd_num <- df_gd %>% filter(mun == params$id_municipio & code == periodo_actual$code) %>% select(valor) %>% as.numeric
+Num_GMd <- Num_GMd_num %>% format(big.mark = ".", decimal.mark = ",")
+
+df_gd <- df_gd %>%
+  transform(hovertext = paste0(
+    "<b>", nombre, "</b><br>Gasto medio: ", ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+    "<br>Tasa de variación: ", ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%"))))
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
+g_line_gd <- ggplot(data = df_gd, aes(x = code, y = valor, group = nombre, colour = nombre, text = hovertext)) +
+  geom_line(size = 0.7) +
+  geom_text(aes(x = rango[1], y = (0.92*I_GMd_num), label = I_GMd, colour = '#000000'), size = 3.5, nudge_x = 0.5) +
+  geom_text(aes(x = rango[2], y = (0.94*Num_GMd_num), label = Num_GMd_num, colour = '#000000'), size = 3.5, nudge_x = -0.5) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "Q1")}, labels = function(x){substr(x, 0,4)}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5, limits = c(0, NA))
+
+g_line_gd <- ggplotly(g_line_gd, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = rango)) %>%
+  style(hoverinfo = "skip", traces = c(2, 3))
+```
+
+```{r Indicadores Gastos Medios}
+tb_periodos <- df_g %>%
+  filter(order > max(df_g$order) - 4) %>%
+  select(code)
+
+ind_GM_sexo_edad <- df_GM_sexo_edad %>%
+  select(ind, sexo, gredad, mun, code, valor) %>%
+  filter(ind == "Gasto por turista" & substring(mun, 6,6) == "_" & code %in% tb_periodos$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €"))) %>%
+  transform(mun = substr(mun, 7, 12)) %>% filter(mun == params$id_municipio)
+
+df_GM_sexo_mun <- ind_GM_sexo_edad %>%
+  filter(sexo != "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
+  select(sexo, code, valor)
+
+ind_GM_sexo_mun <- df_GM_sexo_mun %>%
+  acast(code ~ sexo, value.var = 'valor')
+
+df_GM_edad_mun <- ind_GM_sexo_edad %>%
+  filter(ind == "Gasto por turista" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES") %>% 
+  select(gredad, code, valor)
+
+ind_GM_edad_mun <- df_GM_edad_mun %>%
+  acast(code ~ gredad, value.var = 'valor')
+
+
+ind_GMd_sexo_edad <- df_GM_sexo_edad %>%
+  select(ind, sexo, gredad, mun, code, valor) %>%
+  filter(ind == "Gasto por turista y día" & substring(mun, 6,6) == "_" & code %in% tb_periodos$code) %>%
+  transform(mun = substr(mun, 7, 12)) %>% filter(mun == params$id_municipio)
+
+df_GMd_sexo_mun <- ind_GMd_sexo_edad %>%
+  filter(sexo != "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
+  select(sexo, code, valor)
+
+ind_GMd_sexo_mun <- df_GMd_sexo_mun %>%
+  acast(code ~ sexo, value.var = 'valor')
+
+df_GMd_edad_mun <- ind_GMd_sexo_edad %>%
+  filter(sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES") %>% 
+  select(gredad, code, valor)
+
+ind_GMd_edad_mun <- df_GMd_edad_mun %>%
+  acast(code ~ gredad, value.var = 'valor')
+```
+
+```{r Indicadores Gastos Medios Situación laboral}
+GM_sl <- fromJSON(params$url.GM_sl)
+df_GM_sl <- cbind(data.frame(do.call('rbind', GM_sl[["data"]][["dimCodes"]])), GM_sl[["data"]][["Valor"]])
+colnames(df_GM_sl) <- c('ind', 'sl','mun', 'code', 'valor')
+df_GM_sl$ind <- factor(df_GM_sl$ind, levels=GM_sl[["categories"]][["codes"]][[1]], labels=GM_sl[["categories"]][["labels"]][[1]])
+df_GM_sl$sl <- factor(df_GM_sl$sl, levels=GM_sl[["categories"]][["codes"]][[2]], labels=GM_sl[["categories"]][["labels"]][[2]])
+df_GM_sl$mun <- factor(df_GM_sl$mun, levels=GM_sl[["categories"]][["codes"]][[3]], labels=GM_sl[["categories"]][["labels"]][[3]])
+df_GM_sl$valor <- as.numeric(df_GM_sl$valor) %>% round(0)
+df_GM_sl$mun <- recode_mun(df_GM_sl, 'mun')
+
+df_GM_sl_mun <- df_GM_sl %>%
+  filter(ind == "Gasto por turista" & sl != "TOTAL" & mun == municipio_actual$municipio & code %in% tb_periodos$code) %>% 
+  mutate(valor = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €"))) %>%
+  select(sl, code, valor)
+
+ind_GM_sl <- df_GM_sl_mun %>%
+  acast(code ~ sl, value.var = 'valor')
+
+df_GMd_sl_mun <- df_GM_sl %>%
+  filter(ind == "Gasto por turista y día" & sl != "TOTAL" & mun == municipio_actual$municipio & code %in% tb_periodos$code) %>% 
+  mutate(valor = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €"))) %>%
+  select(sl, code, valor)
+
+ind_GMd_sl <- df_GMd_sl_mun %>%
+  acast(code ~ sl, value.var = 'valor')
+```
+
+
+```{r Gasto medio por turista, results='asis'}
+tb_g <- df_g %>%
+  filter(code %in% tb_periodos$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+         tasa = ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%"))) %>%
+  select(code, valor, tasa)
+
+tb_GM_sexo <- as.data.frame(ind_GM_sexo_mun) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select("code", "Mujeres", "Hombres")
+
+tb_GM_edad <- as.data.frame(ind_GM_edad_mun) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select(!rowname)
+
+tb_GM_sl <- as.data.frame(ind_GM_sl) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select(!rowname)
+
+tb_g <- tb_g %>%
+  left_join(tb_GM_sexo, 'code') %>%
+  left_join(tb_GM_edad, 'code') %>%
+  left_join(tb_GM_sl, 'code') %>%
+  arrange(desc(code)) %>%
+  rename('Periodo' = code, 'Gasto medio' = valor, 'Tasa de variación' = tasa)
+
+tb_g <- tb_g %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:5, width = "23%")
+```
+
+```{r Gasto medio por turista y día, results='asis'}
+tb_gd <- df_gd %>%
+  filter(code %in% tb_periodos$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+         tasa = ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%"))) %>%
+  select(code, valor, tasa)
+
+tb_GMd_sexo <- as.data.frame(ind_GMd_sexo_mun) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select("code", "Mujeres", "Hombres")
+
+tb_GMd_edad <- as.data.frame(ind_GMd_edad_mun) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select(!rowname)
+
+tb_GMd_sl <- as.data.frame(ind_GMd_sl) %>%
+  rownames_to_column %>%
+  mutate(code = rowname) %>%
+  select(!rowname)
+
+tb_gd <- tb_gd %>%
+  left_join(tb_GMd_sexo, 'code') %>%
+  left_join(tb_GMd_edad, 'code') %>%
+  left_join(tb_GMd_sl, 'code') %>%
+  arrange(desc(code)) %>%
+  rename('Periodo' = code, 'Gasto medio' = valor, 'Tasa de variación' = tasa)
+
+tb_gd <- tb_gd %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:5, width = "23%")
+```
+
+<!-- HTML -->
+<body style="height: 1391px;">
+
+<h3 style="color: #008BD0; margin: 0; text-align: right; margin: 10px;">`r municipio_actual$municipio` en cifras</h3>
+
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Gasto medio por turista</h2>
+
+<div class="row" style="padding: 20px 5px 0;">
+  <div class="piramide" style="height: 363px;">
+  `r g_line_g`
+  </div>
+</div>
+
+<div class="row" style="padding: 20px 5px 0;">`r tb_g`</div>
+
+</div>
+
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Gasto medio por turista y día</h2>
+
+<div class="row" style="padding: 20px 5px 0;">
+  <div class="piramide" style="height: 363px;">
+  `r g_line_gd`
+  </div>
+</div>
+
+<div class="row" style="padding: 20px 5px 0;">`r tb_gd`</div>
+
+</div>
+

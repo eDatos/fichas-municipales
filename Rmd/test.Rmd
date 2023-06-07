@@ -1,0 +1,23 @@
+---
+title: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require("htmltools")
+```
+
+```{r, echo = FALSE}
+  htmltools::includeHTML("RESUMEN_1.html")
+  htmltools::includeHTML("RESUMEN_2.html")
+  htmltools::includeHTML("RESUMEN_3.html")
+  htmltools::includeHTML("RESUMEN_4.html")
+  htmltools::includeHTML("RESUMEN_5.html")
+  htmltools::includeHTML("RESUMEN_6.html")
+  htmltools::includeHTML("RESUMEN_7.html")
+  htmltools::includeHTML("RESUMEN_8.html")
+  htmltools::includeHTML("RESUMEN_9.html")
+  htmltools::includeHTML("RESUMEN_10.html")
+```
+

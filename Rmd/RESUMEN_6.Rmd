@@ -1,0 +1,585 @@
+---
+title: ''
+params:
+  id_municipio: 35003
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
+  url.parados: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E59021A_000008/~latest.json?&lang=es
+  url.paro_se: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E59021A_000009/~latest.json?dim=SEXO:M|F:TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:ACTIVIDAD_ECONOMICA:A4_01|A4_02|A4_03|A21_07|A21_09|A4_04_O&lang=es
+  url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D
+  url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO_SECANO/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO_REGADIO/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
+  url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:ESPECIE_ANIMAL:1|4|3|2|16|6&lang=es
+  url.colmenas: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000010/~latest.json?dim=SISTEMA_PRODUCTIVO:_T:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+    self_contained: false
+    lib_dir: libs
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "reshape2", "kableExtra")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 17) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+# Frontera
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
+
+recode_Frontera_primario <- function(df) {
+  df_f <- rbind(df %>% filter(ano > "2016" & mun == "38013_1912"),
+                df %>% filter(ano < "2017" & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+df_localizacion <- filter(df_localizacion, mun != "38013_1912")
+df_localizacion$mun <- recode_id_Frontera(df_localizacion, 'mun')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1,]
+}
+```
+
+
+<!-- HTML -->
+<body style="height: 1391px;">
+
+<h3 style="color: #008BD0; margin: 0; text-align: right; margin: 10px;">`r municipio_actual$municipio` en cifras</h3>
+
+```{r Mes}
+data_paro_se <- fromJSON(params$url.paro_se)
+
+mes_or_p <- levels(ordered(data_paro_se[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes_p <- data.frame(code = mes_or_p) %>%
+  mutate(periodo = paste0(substring(code, 0,4), substring(code, 5,8))) %>%
+  transform(periodo = gsub("-M01", " Enero", periodo)) %>%
+  transform(periodo = gsub("-M02", " Febrero", periodo)) %>%
+  transform(periodo = gsub("-M03", " Marzo", periodo)) %>%
+  transform(periodo = gsub("-M04", " Abril", periodo)) %>%
+  transform(periodo = gsub("-M05", " Mayo", periodo)) %>%
+  transform(periodo = gsub("-M06", " Junio", periodo)) %>%
+  transform(periodo = gsub("-M07", " Julio", periodo)) %>%
+  transform(periodo = gsub("-M08", " Agosto", periodo)) %>%
+  transform(periodo = gsub("-M09", " Septiembre", periodo)) %>%
+  transform(periodo = gsub("-M10", " Octubre", periodo)) %>%
+  transform(periodo = gsub("-M11", " Noviembre", periodo)) %>%
+  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>%
+  transform(code = gsub("M", "", code)) %>%
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1))))
+
+mes_p <- mes_p %>%
+  mutate(order = as.integer(order(mes_p$code, decreasing = FALSE)))
+mes_actual_p <- mes_p %>% filter(code == max(mes_p$code))
+```
+
+```{r Población parada}
+parados <- fromJSON(params$url.parados)
+df_parados <- data.frame(
+  periodo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  mun = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_sexo = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+                each = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_gredad = rep(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                  times = length(parados[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(parados[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+df_edad <- data.frame(
+  id_gredad = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  gredad = vector(mode = "character", length = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+
+for(i in 1:nrow(df_edad)) {
+  df_edad$gredad[i] <- parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
+df_edad <- df_edad %>%
+  transform(gredad = gsub("De ", "", gredad)) %>%
+  transform(gredad = gsub(" años", "", gredad)) %>%
+  transform(gredad = gsub(" a ", "-", gredad))
+
+df_sexo <- data.frame(
+  id_sexo = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+  sexo = vector(mode = "character", length = parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+
+for(i in 1:nrow(df_sexo)) {
+  df_sexo$sexo[i] <- parados[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_parados <- df_parados %>%
+  right_join(df_edad, by = "id_gredad") %>%
+  right_join(df_sexo, by = "id_sexo") %>%
+  transform(periodo = gsub("M", "", periodo)) %>%
+  select(!c(id_gredad, id_sexo))
+df_parados$valor <- df_parados$valor %>% as.numeric
+df_parados$mun <- recode_id_Frontera(df_parados, 'mun')
+
+Num_Paro_num <- df_parados %>% filter(mun == params$id_municipio & periodo == mes_actual_p$code & sexo == "Total" & gredad == "Total") %>% select(valor) %>% as.numeric
+Num_Paro_Canarias <- df_parados %>% filter(mun == "ES70" & periodo == mes_actual_p$code & sexo == "Total" & gredad == "Total") %>% select(valor) %>% as.numeric
+```
+
+```{r Barras Paro por sectores económicos y sexo}
+df_paro_se <- data.frame(
+  id_sexo = rep(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+             each = length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                    length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                    length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  periodo = rep(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  mun = rep(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_ae = rep(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+              times = length(data_paro_se[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(data_paro_se[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_paro_se$valor <- as.numeric(df_paro_se$valor)
+df_paro_se$mun <- recode_id_Frontera(df_paro_se, 'mun')
+
+df_ae_p <- data.frame(
+  id_ae = data_paro_se[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  ae = vector(mode = "character", length = data_paro_se[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]),
+  name_ae = vector(mode = "character", length = data_paro_se[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+
+for(i in 1:nrow(df_ae_p)) {
+  df_ae_p$ae[i] <- data_paro_se[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
+df_ae_p <- df_ae_p %>%
+  transform(ae = lapply(strsplit(ae, " "), '[[', 1)) %>%
+  transform(ae = gsub(",", "", ae)) %>%
+  transform(ae = gsub("Resto", "Resto de servicios", ae))
+for(i in 1:nrow(df_ae_p)) {
+  df_ae_p$name_ae[i] <- get_nombre(paste0(df_ae_p$ae[i]))
+}
+
+df_paro_se <- df_paro_se %>%
+  right_join(df_sexo, by = "id_sexo") %>%
+  right_join(df_ae_p, by = "id_ae") %>%
+  transform(periodo = gsub("M", "", periodo)) %>%
+  select(!c(id_sexo, id_ae))
+
+df_paro_se_mun <- df_paro_se %>%
+  filter(mun == params$id_municipio & periodo == mes_actual_p$code & sexo != "Total" & ae != "Total") %>% select(!c(mun, periodo))
+df_paro_Canarias <- df_paro_se %>%
+  filter(mun == "ES70" & periodo == mes_actual_p$code & sexo != "Total" & ae != "Total") %>% select(!c(mun, periodo))
+df_paro_se_mun <- df_paro_se_mun %>%
+  mutate(porcentaje = df_paro_se_mun$valor / Num_Paro_num * 100,
+         valor_Canarias = df_paro_Canarias$valor,
+         porcentaje_Canarias = df_paro_Canarias$valor / Num_Paro_Canarias * 100) %>%
+  transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje),
+            porcentaje_Canarias = if_else(sexo == "Hombres", -porcentaje_Canarias, porcentaje_Canarias))
+
+df_paro_se_mun <- df_paro_se_mun %>%
+  transform(hovertext = paste0(
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(ae), "</b><br>"), ""),
+    "<br><b>", sexo, "</b><br>",
+    trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)<br>",
+    "Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"))
+
+df_paro_se_mun$ae <- ordered(df_paro_se_mun$ae, levels = df_paro_se_mun$ae[6:1])
+df_paro_se_mun$name_ae <- ordered(df_paro_se_mun$name_ae, levels = df_paro_se_mun$name_ae[6:1])
+
+g_paro_se <- ggplot(data = df_paro_se_mun, aes(x = name_ae, fill = sexo, group = sexo, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
+  geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias, text = "")) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
+  theme(axis.text.x = element_text(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_y_continuous(labels = function(x){paste0(format(abs(x), big.mark = '.', decimal.mark = ","), '%')},
+                     limits = c(-1, 1)*max(abs(df_paro_se_mun$porcentaje), abs(df_paro_se_mun$porcentaje_Canarias)))
+
+g_paro_se <- ggplotly(g_paro_se, tooltip = c("text")) %>%
+  layout(hovermode = 'y unified', margin = list(t = 10, l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(3, 4))
+```
+
+```{r Paro actividades económicas, results='asis'}
+tb_ae_p <- df_paro_se_mun %>%
+  acast(ae ~ sexo, value.var = 'valor')
+tb_ae_p <- as.data.frame(tb_ae_p[nrow(tb_ae_p):1,]) %>%
+  rownames_to_column %>%
+  mutate(Total = Mujeres + Hombres) %>%
+  mutate(Mujeres = ifelse(is.na(Mujeres), " -", paste0(format(Mujeres, big.mark = ".", decimal.mark = ","))),
+         Hombres = ifelse(is.na(Hombres), " -", paste0(format(Hombres, big.mark = ".", decimal.mark = ","))),
+         Total = ifelse(is.na(Total), " -", paste0(format(Total, big.mark = ".", decimal.mark = ",")))) %>%
+  select('Actividades económicas' = rowname, 'Mujeres', 'Hombres', 'Total')
+
+tb_ae_p <- tb_ae_p %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:4, width = "20%")
+```
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+
+<div class="row">
+  <div class="column-2">`r tb_ae_p`</div>
+
+  <div class="column-2" style="height: 290px;">`r g_paro_se`</div>
+</div>
+
+<div class="row">
+  <div class="column-2"></div>
+  <div class="column-2">
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-C'></div><div class='sp-content'>Canarias</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+--------------------------------------------
+<h1 style="color: #005980; margin: 15px;">Sector primario</h1>
+
+```{r Gráfico evolución de la superficie cultivada}
+data_u <- fromJSON(params$url.cultivada)
+df_u_ <- data.frame(
+  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  ano = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
+  arrange(ano) %>%
+  spread(medida, valor) %>%
+  select(mun, ano, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+df_u <- df_u_ %>% filter(substring(mun, 0,2) != "ES")
+df_u <- recode_Frontera_primario(df_u)
+df_u$mun <- recode_id_Frontera(df_u, 'mun')
+df_u$ano <- as.integer(df_u$ano)
+
+related_mun <- df_u %>% filter(ano == max(df_u$ano))
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by= "mun") %>%
+  select(id = mun, ano, nombre, valor, tasa) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(ano, mun = id, nombre, valor, tasa) %>%
+  filter(ano != min(ano))
+
+min_ano <- max(max(df$ano) - 18, min(df$ano))
+max_ano <- max(df$ano)
+
+I_superficie_cultivada_num <- df %>% filter(ano == min_ano) %>% select(valor) %>% as.numeric
+superficie_cultivada_num <- df %>% filter(ano == max_ano) %>% select(valor) %>% as.numeric
+I_superficie_cultivada <- I_superficie_cultivada_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+superficie_cultivada <- superficie_cultivada_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% as.character
+
+df <- df %>%
+  transform(hovertext = paste0(
+    "<b>", nombre, "</b><br>Superficie cultivada: ", ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)), " ha")),
+    "<br>Tasa de variación: ", ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%"))))
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
+g_line_pr <- ggplot(data = df, aes(x = ano, y = valor, group = nombre, colour = nombre, text = hovertext)) +
+  geom_line(size = 0.7) +
+  geom_text(aes(x = min_ano, y = (0.92*I_superficie_cultivada_num), label = I_superficie_cultivada, colour = '#000000'), size = 3.5, nudge_x = +0.6) +
+  geom_text(aes(x = max_ano, y = (0.94*superficie_cultivada_num), label = superficie_cultivada, colour = '#000000'), size = 3.5, nudge_x = -0.6) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_continuous(breaks = function(x){seq(from = max(max(df$ano) - 18, min(df$ano)), to = max(df$ano), by = as.integer((max(df$ano)-max(max(df$ano) - 18, min(df$ano)))/4)+1)}) +
+  scale_y_continuous(labels = function(x){paste0(format(as.integer(x), big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+
+g_line_pr <- ggplotly(g_line_pr, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(max(df$ano) - 18, min(df$ano)), max(df$ano)))) %>%
+  style(hoverinfo = "skip", traces = c(2, 3))
+```
+
+```{r Indicador Secano}
+data_secano <- fromJSON(params$url.cultivada_secano)
+
+df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                  each=data_secano[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                        ano = rep(names(data_secano[["dimension"]][["TIME"]][["representation"]][["index"]])),
+                        valor = round(as.numeric(data_secano[["observation"]]), 1))
+df_secano <- recode_Frontera_primario(df_secano)
+df_secano$mun <- recode_id_Frontera(df_secano, 'mun')
+df_secano$ano <- as.integer(df_secano$ano)
+```
+
+```{r Indicador Regadío}
+data_regadio <- fromJSON(params$url.cultivada_regadio)
+
+df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                                   each=data_regadio[["dimension"]][["TIME"]][["representation"]][["size"]]),
+                         ano = rep(names(data_regadio[["dimension"]][["TIME"]][["representation"]][["index"]])),
+                         valor = round(as.numeric(data_regadio[["observation"]]), 1))
+df_regadio <- recode_Frontera_primario(df_regadio)
+df_regadio$mun <- recode_id_Frontera(df_regadio, 'mun')
+df_regadio$ano <- as.integer(df_regadio$ano)
+```
+
+```{r Ganadería cabezas}
+data_cab_especies <- fromJSON(params$url.cab_especies)
+df_cab_especies <- data.frame(
+  mun = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                   length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  ano = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_especie = data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+  valor = unlist(strsplit(data_cab_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_cab_especies <- recode_Frontera_primario(df_cab_especies)
+df_cab_especies$mun <- recode_id_Frontera(df_cab_especies, 'mun')
+df_cab_especies$ano <- as.integer(df_cab_especies$ano)
+df_cab_especies$valor <- as.numeric(df_cab_especies$valor)
+
+df_especies_ <- data.frame(
+  id_especie = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  especie = vector(mode = "character", length = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+for(i in 1:data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]) {
+  df_especies_$especie[i] <- data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_cab_especies <- df_cab_especies %>% 
+  right_join(df_especies_, by = "id_especie")
+
+df_cab_especies_mun <- df_cab_especies %>%
+  filter(mun == params$id_municipio & ano == max_ano)
+
+bovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Bovinos")] %>% format(big.mark = ".", decimal.mark = ",")
+caprinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Caprinos")] %>% format(big.mark = ".", decimal.mark = ",")
+ovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Ovinos")] %>% format(big.mark = ".", decimal.mark = ",")
+porcinos_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Porcinos")]] %>% format(big.mark = ".", decimal.mark = ",")
+gallinas_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Gallinas")]] %>% format(big.mark = ".", decimal.mark = ",")
+conejos_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Conejos")]] %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+```{r Ganadería colmenas}
+data_colmenas <- fromJSON(params$url.colmenas)
+df_colmenas <- data.frame(
+  ano = rep(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  mun = rep(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]),
+  valor = unlist(strsplit(data_colmenas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+df_colmenas <- recode_Frontera_primario(df_colmenas)
+df_colmenas$mun <- recode_id_Frontera(df_colmenas, 'mun')
+df_colmenas$ano <- as.integer(df_colmenas$ano)
+df_colmenas$valor <- as.numeric(df_colmenas$valor)
+
+abejas_num <- df_colmenas %>%
+  filter(mun == params$id_municipio & ano == max_ano) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+```
+
+```{r Superficie cultivada, results='asis'}
+tb_pr <- df %>%
+  filter(ano %in% c((max_ano-7):max_ano))
+
+df_secano_mun <- df_secano %>%
+  filter(mun == params$id_municipio) %>%
+  select(ano, secano = valor)
+
+df_regadio_mun <- df_regadio %>%
+  filter(mun == params$id_municipio) %>%
+  select(ano, regadio = valor)
+
+tb_pr <- tb_pr %>%
+  left_join(df_secano_mun, 'ano') %>%
+  left_join(df_regadio_mun, 'ano') %>%
+  arrange(-ano) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " ha")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
+         secano = ifelse(is.na(secano), " -", paste0(format(secano, big.mark = ".", decimal.mark = ",", nsmall = 1), " ha")),
+         regadio = ifelse(is.na(regadio), " -", paste0(format(regadio, big.mark = ".", decimal.mark = ",", nsmall = 1), " ha"))) %>%
+  select('Año' = ano, 'Superficie cultivada' = valor, 'Tasa de variación' = tasa,  'Secano' = secano, 'Regadío' = regadio)
+
+tb_pr <- tb_pr %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:5, width = "23%")
+```
+
+```{r Ganadería, results='asis'}
+df_especies_mun <- df_cab_especies %>%
+  filter(mun == params$id_municipio & ano %in% c((max_ano-5):max_ano)) %>%
+  select(!id_especie)
+
+df_colmenas_mun <- df_colmenas %>%
+  filter(mun == params$id_municipio & ano %in% c((max_ano-5):max_ano)) %>%
+  mutate(especie = c('Colmenas'))
+
+df_gn <- df_especies_mun %>%
+  rbind(df_colmenas_mun) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ","))))
+
+df_gn <- df_gn %>%
+  acast(especie ~ ano, value.var = 'valor')
+
+tb_gn <- df_gn[c('Bovinos', 'Caprinos', 'Ovinos', 'Porcinos', 'Gallinas', 'Colmenas', 'Conejos'),]
+
+tb_gn <- tb_gn %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:7, width = "20%")
+```
+
+```{r Generación HTML, results="asis"}
+get_indicator3 = function(label, value, image) {
+  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+```
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Superficie cultivada</h2>
+
+<div class="row">
+  <div class="column-2" style="padding-top: 20px;">`r tb_pr`</div>
+
+  <div class="column-2" style="height: 350px;">`r g_line_pr`</div>
+</div>
+</div>
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Ganadería</h2>
+
+<div class="row">
+  <div class="column-2" style="padding-top: 20px">`r tb_gn`</div>
+
+  <div class="column-4-ind">`r get_indicator3("Bovinos", bovinos_num, "./img/bovino.png")`</div>
+  <div class="column-4-ind">`r get_indicator3("Caprinos", caprinos_num, "./img/caprino.png")`</div>
+  <div class="column-4-ind">`r get_indicator3("Ovinos", ovinos_num, "./img/ovino.png")`</div>
+  <div class="column-4-ind">`r get_indicator3("Porcinos", porcinos_num, "./img/porcino.png")`</div>
+  <div class="column-6-ind" style="height: 50px;">`r get_indicator3("Gallinas", gallinas_num, "./img/gallina.png")`</div>
+  <div class="column-6-ind" style="height: 50px;">`r get_indicator3("Colmenas", abejas_num, "./img/abeja.png")`</div>
+  <div class="column-6-ind" style="height: 50px; float: center;">`r get_indicator3("Conejos", conejos_num, "./img/conejo.png")`</div>
+  </div>
+</div>
+</div>
+
+
+--------------------------------------------

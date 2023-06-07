@@ -1,0 +1,737 @@
+---
+title: ''
+params:
+  id_municipio: 35003
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
+  url.participacion: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/C00010A_000001/~latest.json?dim=TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_1912|38013_2007|38048|38901&lang=es
+  url.afil_c: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000009/~latest.json?dim=LUGAR_COTIZACION:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
+  url.piramide_c: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000015/~latest.json?lang=es
+  url.afil_ae_c_0: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000001/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F&lang=es
+  url.afil_ae_c_08: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000003/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:35004|35010|35018|35024|35028|35029|35034&lang=es
+  url.afil_ae_c_04: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000053/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:35003|35007|35014|35015|35017|35030&lang=es
+  url.afil_ae_c_05: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000054/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033&lang=es
+  url.afil_ae_c_09: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000055/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052&lang=es
+  url.afil_ae_c_06: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000056/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:38002|38003|38021|38036|38049|38050&lang=es
+  url.afil_ae_c_07: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000057/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053&lang=es
+  url.afil_ae_c_03: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E58015B_000058/~latest.json?dim=SITUACION_EMPLEO:_T:SEXO:M|F:LUGAR_COTIZACION:38013_2007|38048|38901&lang=es
+output:
+  html_document:
+    df_print: paged
+    css: styles/FICHA.css
+    # self_contained: false
+    # lib_dir: libs
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr", "reshape2", "kableExtra")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+
+get_nombre_partido <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 38) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = if_else(substring(id, 0,5) == "38013",  "38013", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+# Frontera
+recode_Frontera <- function(df) {
+  df_f <- rbind(df %>% filter(ano %in% c(2008:max(ano)) & mun == "38013_1912"),
+                df %>% filter(ano %in% c(2000:2007) & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+
+recode_id_Frontera <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
+  df[,colname]
+}
+
+recode_Frontera_electorales <- function(df) {
+  df_f <- rbind(df %>% filter(proceso != "AUTONOMICAS_2007" & mun == "38013_1912"),
+                df %>% filter(proceso == "AUTONOMICAS_2007" & mun == "38013_2007"),
+                df %>% filter(proceso != "MUNICIPALES_2007" & mun == "38013_1912"),
+                df %>% filter(proceso == "MUNICIPALES_2007" & mun == "38013_2007"),
+                df %>% filter(proceso != "CABILDO_2007" & mun == "38013_1912"),
+                df %>% filter(proceso == "CABILDO_2007" & mun == "38013_2007"),
+                df %>% filter(proceso %notin% c("CONGRESO_2004", "CONGRESO_2000") & mun == "38013_1912"),
+                df %>% filter(proceso %in% c("CONGRESO_2004", "CONGRESO_2000") & mun == "38013_2007"),
+                df %>% filter(proceso != "PARLAMENTO_EUROPEO_2004" & mun == "38013_1912"),
+                df %>% filter(proceso == "PARLAMENTO_EUROPEO_2004" & mun == "38013_2007"),
+                df %>% filter(proceso %notin% c("SENADO_2004", "SENADO_2000") & mun == "38013_1912"),
+                df %>% filter(proceso %in% c("SENADO_2004", "SENADO_2000") & mun == "38013_2007"))
+  df <- df %>% anti_join(df_f)
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+df_localizacion <- filter(df_localizacion, mun != "38013_1912")
+df_localizacion$mun <- recode_id_Frontera(df_localizacion, 'mun')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1,]
+}
+```
+
+```{r Convocatoria}
+data_participacion <- fromJSON(params$url.participacion)
+
+convocatoria <- data.frame(
+    proceso = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+    name = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+for(i in 1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]) {
+  convocatoria$name[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+}
+```
+
+```{r Participación}
+dP <- length(rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                 each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                        length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]))) -
+                        length(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+###### Añadir aviso si la variable d_ es mayor que 0 ######
+
+df_participacion_total <- data.frame(
+  ind = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+            each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                   length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  proceso = rep(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+            each = length(data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
+  mun = data_participacion[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+  valor = c(unlist(strsplit(data_participacion[["data"]][["observations"]], split = " | ", fixed = TRUE)), rep(NA, dP)))
+df_participacion_total$valor <- df_participacion_total$valor %>% as.numeric %>% round(1)
+df_participacion_total <- recode_Frontera_electorales(df_participacion_total)
+df_participacion_total$mun <- recode_id_Frontera(df_participacion_total, 'mun')
+
+df_ind <- data.frame(
+  ind = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+  indicador = vector(mode = "character", length = data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]),
+  order = c(1:data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]))
+
+for(i in 1:nrow(df_ind)) {
+  df_ind$indicador[i] <- data_participacion[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
+}
+df_ind$indicador <- factor(df_ind$indicador, levels = df_ind$indicador)
+```
+
+
+<!-- HTML -->
+<body style="height: 1391px;">
+
+<h3 style="color: #008BD0; margin: 0; text-align: right; margin: 10px;">`r municipio_actual$municipio` en cifras</h3>
+
+```{r Convocatoria senado}
+convocatoria_senado <- convocatoria %>%
+  filter(substring(proceso, 0,7) == "SENADO_") %>%
+  transform(url = paste0("url.", tolower(substring(proceso, 0,11)), tolower(substring(proceso, 13,13))))
+convocatoria_senado <- convocatoria_senado %>%
+  mutate(order = as.integer(order(1:nrow(convocatoria_senado), decreasing = TRUE)),
+         convocatoria_formatted = trimws(paste0(substring(proceso, 13,13), tolower(substring(proceso, 14,24)), " ", substring(proceso, 8,11))),
+         convocatoria_axis = trimws(paste0(tolower(substring(proceso, 13,15)), " ", substring(proceso, 8,11))))
+convocatoria_senado <- convocatoria_senado %>% arrange(order)
+convocatoria_senado$proceso <- factor(convocatoria_senado$proceso, levels = convocatoria_senado$proceso)
+
+convocatoria_actual <- convocatoria_senado %>% filter(order == max(order))
+convocatoria_tva <- convocatoria_senado %>% filter(order == max(order) - 1)
+```
+
+```{r Gráfico evolución senado}
+df_participacion <- df_participacion_total %>%
+  filter(substring(proceso, 0,7) == "SENADO_" &
+         proceso %notin% c("SENADO_1977", "SENADO_1979", "SENADO_1982", "SENADO_1986", "SENADO_1989", "SENADO_1993", "SENADO_1996"))
+df_u <- df_participacion %>% filter(substring(mun, 0,2) != "ES" & ind == "TASA_PARTICIPACION") %>% arrange(proceso) %>% select(!ind)
+
+related_mun <- df_u %>% filter(proceso == convocatoria_actual$proceso)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+min_proceso <- min(df_u$proceso)
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = 'mun') %>%
+  select(id = mun, proceso, valor, nombre) %>%
+  left_join(df_CL_AREA_mun, by = 'id') %>%
+  select(proceso, valor, id, nombre) %>%
+  left_join(convocatoria_senado, by = 'proceso') %>%
+  filter(order > max(convocatoria_senado$order) - 6) %>%
+  transform(variacion = ifelse(proceso == min_proceso, NA, round((valor - lag(valor)), 1)))
+
+min_order <- min(df$order)
+max_order <- max(df$order)
+I_Tasa_participacion_num <- df %>% filter(order == min_order) %>% select(valor) %>% as.numeric
+I_Tasa_participacion <- I_Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% paste0("%")
+Tasa_participacion_num <- df %>% filter(order == max_order) %>% select(valor) %>% as.numeric
+Tasa_participacion <- Tasa_participacion_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1) %>% paste0("%")
+
+df <- df %>%
+  transform(hovertext = paste0(
+    "<b>", nombre, "</b><br>Tasa de participación: ", ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), "%")),
+    "<br>Variación: ", ifelse(is.na(variacion), " -", paste0(trimws(format(round(variacion, 1), big.mark = ".", decimal.mark = ",")), " puntos"))))
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
+g_line_el_s <- ggplot(data = df, aes(x = order, y = valor, group = nombre, colour = nombre, text = hovertext)) +
+  geom_line(size = 0.7) +
+  geom_text(aes(x = min_order+0.36, y = (0.92*I_Tasa_participacion_num), label = I_Tasa_participacion, colour = '#000000'), size = 3.5) +
+  geom_text(aes(x = max_order-0.36, y = (0.94*Tasa_participacion_num), label = Tasa_participacion, colour = '#000000'), size = 3.5) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_continuous(breaks = function(x){min(df$order):max(df$order)},
+                     labels = c(convocatoria_senado$convocatoria_axis[which(convocatoria_senado$order %in% c(min(df$order):max(df$order)))])) +
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "%")}, n.breaks = 6, limits = c(0, NA))
+
+g_line_el_s <- ggplotly(g_line_el_s, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(min(df$order), max(df$order) - 8), max(df$order)))) %>%
+  style(hoverinfo = "skip", traces = c(2, 3))
+```
+
+```{r Senado, results='asis'}
+df_participacion_mun <- df_participacion %>%
+  filter(mun == params$id_municipio &
+         ind %in% c('ELECTORES', 'VOTANTES', 'TASA_PARTICIPACION', 'TASA_ABSTENCION', 'TASA_VOTOS_VALIDOS', 'TASA_VOTOS_NULOS')) %>%
+  left_join(convocatoria_senado, by = 'proceso') %>%
+  filter(order > max(convocatoria_senado$order) - 4) %>%
+  select(!order) %>%
+  left_join(df_ind, by = 'ind') %>%
+  mutate(valor = ifelse(ind == "ELECTORES", format(round(valor, 0), big.mark = ".", decimal.mark = ","),
+                        ifelse(ind == "VOTANTES", format(round(valor, 0), big.mark = ".", decimal.mark = ","),
+                               paste0(format(round(valor, 1), big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))) %>%
+  select(indicador, convocatoria_axis, valor)
+df_participacion_mun <- df_participacion_mun %>%
+  acast(indicador ~ convocatoria_axis)
+
+tb_el_s <- df_participacion_mun %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(1:4, width = "15%")
+```
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Resultados de las Elecciones al Senado</h2>
+
+<div class="row">
+  <div class="column-2">`r tb_el_s`</div>
+  
+  <div class="column-2" style="height: 340px;">`r g_line_el_s`</div>
+</div>
+</div>
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+<h1 style="color: #005980; margin: 15px;">Movimiento laboral</h1>
+
+```{r Mes cotización}
+data_afil_c <- fromJSON(params$url.afil_c)
+mes_or <- levels(ordered(data_afil_c[["metadata"]][["temporalCoverages"]][["item"]][["id"]]))
+mes <- data.frame(code = mes_or) %>%
+  filter(substring(code, 6,8) %in% c("M03", "M06", "M09", "M12")) %>%
+  mutate(periodo = code) %>%
+  transform(periodo = gsub("-M03", " Marzo", periodo)) %>%
+  transform(periodo = gsub("-M06", " Junio", periodo)) %>%
+  transform(periodo = gsub("-M09", " Septiembre", periodo)) %>%
+  transform(periodo = gsub("-M12", " Diciembre", periodo)) %>%
+  transform(code = gsub("M", "", code)) %>%
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1))))
+
+mes <- mes %>%
+  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+mes_actual <- mes %>% filter(code == max(mes$code))
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 4, ]
+```
+
+```{r Gráfico evolución de las afiliaciones según cotización}
+df_c_afil <- data.frame(
+  id_sl = rep(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+              each = length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                     length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                     length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                     length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_sexo = rep(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                each = length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                       length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  mun = rep(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                   length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_nacionalidad = rep(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                        each = length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  periodo =  rep(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+                 times = length(data_afil_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(data_afil_c[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+df_c_afil <- df_c_afil %>%
+  filter(substring(periodo, 5,8) %in% c("-M03", "-M06", "-M09", "-M12") & substring(mun, 0,2) != "ES")
+
+df_c_sl <- data.frame(
+  id_sl = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["id"]],
+  sl = vector(mode = "character", length = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][1]))
+
+for(i in 1:nrow(df_c_sl)) {
+  df_c_sl$sl[i] <- data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[1]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_c_sexo <- data.frame(
+  id_sexo = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+  sexo = vector(mode = "character", length = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+
+for(i in 1:nrow(df_c_sexo)) {
+  df_c_sexo$sexo[i] <- data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+}
+df_c_nacionalidad <- data.frame(
+  id_nacionalidad = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
+  nacionalidad = vector(mode = "character", length = data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
+
+for(i in 1:nrow(df_c_nacionalidad)) {
+  df_c_nacionalidad$nacionalidad[i] <- data_afil_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_c_afil <- df_c_afil %>%
+  right_join(df_c_sl, by = "id_sl") %>%
+  right_join(df_c_sexo, by = "id_sexo") %>%
+  right_join(df_c_nacionalidad, by = "id_nacionalidad") %>%
+  transform(periodo = gsub("M", "", periodo)) %>%
+  select(c(mun, periodo, sl, nacionalidad, sexo, valor))
+df_c_afil$valor <- df_c_afil$valor %>% as.numeric
+df_c_afil$mun <- recode_id_Frontera(df_c_afil, 'mun')
+
+df_c_u <- df_c_afil %>% filter(sl == "Total" & sexo == "Total" & nacionalidad == "Total") %>%
+  select(mun, periodo, valor) %>% arrange(periodo)
+
+related_mun <- df_c_u %>% filter(periodo == mes_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+
+g_line_c_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
+df_c <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_c_u, by = "mun") %>%
+  select(id = mun, periodo, nombre, valor) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(mun = id, code = periodo, nombre, valor) %>%
+  left_join(mes, by = "code") %>%
+  transform(tasa = ifelse(substring(code, 0,4) != min(substring(code, 0,4)), round(100*((valor / lag(valor, n = 4)) - 1), 1), NA)) %>% 
+  filter(order < mes_actual$order+1)
+
+ano_min_c <- min(as.integer(substring(df_c$code, 0,4)))
+I_periodo_c <- df_c[nrow(df_c) - 5*4,]$code
+x_I_periodo_c <- df_c[nrow(df_c) - 5*4 + 1,]$code
+ano_max_c <- max(as.integer(substring(df_c$code, 0,4)))
+x_max_periodo_c <- df_c[nrow(df_c) - 1,]$code
+I_Afil_num <- df_c %>% filter(code == I_periodo_c & mun == params$id_municipio) %>% select(valor) %>% as.numeric
+df_c_lv <- df_c %>% filter(code == mes_actual$code & mun == params$id_municipio)
+Num_Afil_num <- df_c_lv$valor %>% as.numeric
+I_Afil <- I_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character
+Num_Afil <- Num_Afil_num %>% format(big.mark = ".", decimal.mark = ",") %>% as.character
+
+df_c <- df_c %>%
+  transform(hovertext = paste0(
+    "<b>", nombre, "</b><br>Afiliaciones: ", ifelse(is.na(valor), " -", trimws(format(valor, big.mark = ".", decimal.mark = ","))),
+    "<br>Tasa de variación: ", ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",")), "%"))))
+
+g_line_c <- ggplot(data = df_c, aes(x = code, y = valor, group = nombre, colour = nombre, text = hovertext)) +
+  geom_line() +
+  geom_text(aes(x = x_I_periodo_c, y = (0.92*I_Afil_num), label = I_Afil, colour = '#000000'), size = 3.5) +
+  geom_text(aes(x = x_max_periodo_c, y = (0.94*Num_Afil_num), label = Num_Afil, colour = '#000000'), size = 3.5) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_c_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min_c:ano_max_c, "-03")}, labels = function(x){substr(x, 0,4)}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+
+g_line_c <- ggplotly(g_line_c, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"), list("pan2d"), list("resetScale2d"), list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(1, nrow(df_c[df_c$nombre == municipio_actual$municipio, ]) - 5*4), nrow(df_c[df_c$nombre == municipio_actual$municipio, ])))) %>%
+  style(hoverinfo = "skip", traces = c(2, 3))
+```
+
+```{r Pirámide afiliaciones según cotización por edad y sexo}
+piramide_c <- fromJSON(params$url.piramide_c)
+df_c_piramide_ <- data.frame(
+  periodo = rep(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                each = length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_gredad = rep(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+                  each = length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                         length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  mun = rep(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+            each = length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
+  id_sexo =  rep(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                 times = length(piramide_c[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(piramide_c[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+df_c_edad <- data.frame(
+  id_gredad = piramide_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["id"]],
+  gredad = vector(mode = "character", length = piramide_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][2]))
+
+for(i in 1:nrow(df_c_edad)) {
+  df_c_edad$gredad[i] <- piramide_c[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[2]][["name"]][["text"]][[i]][["value"]]
+}
+df_c_edad <- df_c_edad %>%
+  transform(gredad = gsub("Menor de 20 años", "<20", gredad)) %>%
+  transform(gredad = gsub("60 años o más", ">59", gredad)) %>%
+  transform(gredad = gsub("De ", "", gredad)) %>%
+  transform(gredad = gsub(" a ", "-", gredad)) %>%
+  transform(gredad = gsub(" años", "", gredad))
+
+df_c_piramide <- df_c_piramide_ %>%
+  right_join(df_c_edad, by = "id_gredad") %>%
+  right_join(df_c_sexo, by = "id_sexo") %>%
+  transform(periodo = gsub("M", "", periodo)) %>%
+  select(c(mun, periodo, gredad, sexo, valor))
+df_c_piramide$valor <- df_c_piramide$valor %>% as.numeric
+df_c_piramide$mun <- recode_id_Frontera(df_c_piramide, 'mun')
+
+Num_Afil_Canarias <- df_c_piramide %>% filter(mun == "ES70" & periodo == mes_actual$code & gredad == "Total" & sexo == "Total") %>%
+  select(valor) %>% as.numeric
+```
+
+```{r Barras afiliaciones actividades económicas por sexo}
+data_afil_c_ae_C <- fromJSON(params$url.afil_ae_c_0)
+df_c_afil_ae_C_ <- data.frame(
+  periodo = rep(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                each = length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                       length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  sl = rep(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+           each = length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                  length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                  length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_ae = rep(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+              each = length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                     length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_sexo = rep(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                each = length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  mun =  rep(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+             times = length(data_afil_c_ae_C[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(data_afil_c_ae_C[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+df_c_ae_C <- data.frame(
+  id_ae = data_afil_c_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+  name_ae = vector(mode = "character", length = data_afil_c_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+
+for(i in 1:nrow(df_c_ae_C)) {
+  df_c_ae_C$name_ae[i] <- data_afil_c_ae_C[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_ae <- read.csv2("../CL_CNAE.csv", encoding = "UTF-8", sep = ",")
+df_ae <- df_ae %>% select(!name_ae)
+
+df_c_ae_C <- df_c_ae_C %>% inner_join(df_ae, by = "id_ae")
+
+df_c_afil_ae_C <- df_c_afil_ae_C_ %>%
+  right_join(df_c_ae_C, by = "id_ae") %>%
+  right_join(df_c_sexo, by = "id_sexo") %>%
+  select(c(mun, periodo, ae, sexo, valor))
+
+if(substring(municipio_actual$id_isla, 4,5) == "08"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_08)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "04"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_04)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "05"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_05)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "09"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_09)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "06"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_06)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "07"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_07)
+}
+if(substring(municipio_actual$id_isla, 4,5) == "03"){
+  data_afil_c_ae <- fromJSON(params$url.afil_ae_c_03)
+}
+
+df_c_afil_ae_ <- data.frame(
+  periodo = rep(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
+                each = length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]]) *
+                       length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                       length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                       length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  sl = rep(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
+           each = length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
+                  length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                  length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_ae = rep(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
+              each = length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]]) *
+                     length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  id_sexo = rep(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
+                each = length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]])),
+  mun =  rep(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[5]][["code"]],
+             times = length(data_afil_c_ae[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]])),
+  valor = unlist(strsplit(data_afil_c_ae[["data"]][["observations"]], split = " | ", fixed = TRUE)))
+
+df_c_ae <- data.frame(
+  id_ae = data_afil_c_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["id"]],
+  name_ae = vector(mode = "character", length = data_afil_c_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][3]))
+
+for(i in 1:nrow(df_c_ae)) {
+  df_c_ae$name_ae[i] <- data_afil_c_ae[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[3]][["name"]][["text"]][[i]][["value"]]
+}
+
+df_ae <- read.csv2("../CL_CNAE.csv", encoding = "UTF-8", sep = ",")
+df_ae <- df_ae %>% select(!name_ae)
+
+df_c_ae <- df_c_ae %>% inner_join(df_ae, by = "id_ae")
+
+df_c_afil_ae <- df_c_afil_ae_ %>%
+  right_join(df_c_ae, by = "id_ae") %>%
+  right_join(df_c_sexo, by = "id_sexo") %>%
+  select(c(mun, periodo, ae, sexo, valor))
+
+df_c_afil_ae <- df_c_afil_ae %>%
+  rbind(df_c_afil_ae_C) %>%
+  transform(periodo = gsub("M", "", periodo))
+df_c_afil_ae$valor <- df_c_afil_ae$valor %>% as.numeric
+df_c_afil_ae$mun <- recode_id_Frontera(df_c_afil_ae, 'mun')
+
+df_c_afil_ae$ae <- ordered(df_c_afil_ae$ae, levels = c("Resto de servicios", "Hostelería", "Comercio", "Construcción", "Industria", "Agricultura", "Total"))
+
+df_c_afil_ae_sexo_mun_ <- df_c_afil_ae %>%
+  filter(mun == params$id_municipio & ae != "Total" & periodo == mes_actual$code) %>%
+  select(ae, sexo, valor)
+df_c_afil_ae_sexo_mun <- acast(df_c_afil_ae_sexo_mun_, ae ~ sexo, sum)
+df_c_afil_ae_sexo_mun <- df_c_afil_ae_sexo_mun %>% 
+  melt(id.var = "ae")
+colnames(df_c_afil_ae_sexo_mun) <- c("ae", "sexo", "valor")
+
+df_c_afil_Canarias_ <- df_c_afil_ae %>%
+  filter(mun == "ES70" & ae != "Total" & periodo == mes_actual$code) %>% 
+  select(ae, sexo, valor)
+df_c_afil_Canarias <- acast(df_c_afil_Canarias_, ae ~ sexo, sum)
+df_c_afil_Canarias <- df_c_afil_Canarias %>% 
+  melt(id.var = "ae")
+colnames(df_c_afil_Canarias) <- c("ae", "sexo", "valor")
+
+df_c_afil_ae_sexo_mun <- df_c_afil_ae_sexo_mun %>% 
+  mutate(porcentaje = df_c_afil_ae_sexo_mun$valor / Num_Afil_num * 100,
+         valor_Canarias = df_c_afil_Canarias$valor, 
+         porcentaje_Canarias = df_c_afil_Canarias$valor / Num_Afil_Canarias * 100) %>%
+  transform(porcentaje = if_else(sexo == "Hombres", -porcentaje, porcentaje),
+            porcentaje_Canarias = if_else(sexo == "Hombres", -porcentaje_Canarias, porcentaje_Canarias))
+
+df_c_afil_ae_sexo_mun <- df_c_afil_ae_sexo_mun %>%
+  transform(hovertext = paste0(
+    ifelse(sexo == "Hombres", paste0("<b>", trimws(ae), "</b><br>"), ""),
+    "<br><b>", sexo, "</b>",
+    "<br>",trimws(format(valor, big.mark = ".", decimal.mark = ",")), 
+    " (", trimws(format(round(abs(porcentaje), 1), big.mark = ".", decimal.mark = ",")), "%)",
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+    " (", trimws(format(round(abs(porcentaje_Canarias), 1), big.mark = ".", decimal.mark = ",")), "%)"))
+
+df_c_afil_ae_sexo_mun <- df_c_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de servicios" = "Resto de<br>servicios"))
+
+g_c_afil_ae_sexo_mun <- ggplot(df_c_afil_ae_sexo_mun, aes(x = ae, fill = sexo, group = sexo, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.99, position = position_stack(reverse = TRUE), aes(y = porcentaje)) +
+  geom_bar(stat = "identity", color = "#59656E", alpha = 0, width = 0.99, size = 0.4, aes(y = porcentaje_Canarias, text = "")) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = NULL, y = NULL, colour = " ") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = c("Mujeres" = "#8CD2EA", "Hombres" = "#005980")) +
+  theme(axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_y_continuous(n.breaks = 5, labels = function(x){paste0(format(abs(x), big.mark = '.', decimal.mark = ","), '%')},
+                     limits = c(-1, 1)*max(abs(df_c_afil_ae_sexo_mun$porcentaje), abs(df_c_afil_ae_sexo_mun$porcentaje_Canarias)))
+
+g_c_afil_ae_sexo_mun <- ggplotly(g_c_afil_ae_sexo_mun, tooltip = c("text")) %>%
+  layout(hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(3, 4))
+```
+
+
+```{r Afil_cotización, results='asis'}
+tb_periodos <- df_c %>%
+  filter(order > max(df_c$order) - 8) %>%
+  select(code)
+
+tb_cot <- df_c %>%
+  filter(code %in% tb_periodos$code)
+
+df_c_afil_sexo <- df_c_afil %>%
+  filter(mun == params$id_municipio & sl == "Total" & sexo != "Total" & periodo %in% tb_periodos$code & nacionalidad == "Total") %>%
+  acast(periodo ~ sexo)
+df_c_afil_sexo <- df_c_afil_sexo %>%
+  data.frame(code = rownames(df_c_afil_sexo))
+
+tb_cot <- tb_cot %>%
+  left_join(df_c_afil_sexo, 'code') %>%
+  arrange(desc(code)) %>%
+  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ","))),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")),
+         Mujeres = ifelse(is.na(Mujeres), " -", paste0(format(Mujeres, big.mark = ".", decimal.mark = ","))),
+         Hombres = ifelse(is.na(Hombres), " -", paste0(format(Hombres, big.mark = ".", decimal.mark = ",")))) %>%
+  select('Periodo' = code, 'Afiliaciones' = valor, 'Tasa de variación' = tasa, 'Mujeres', 'Hombres')
+
+tb_cot <- tb_cot %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:5, width = "22%")
+```
+
+```{r Cotización actividades económicas, results='asis'}
+df_c_afil_ae_sexo_mun <- df_c_afil_ae_sexo_mun %>% mutate(ae = recode(ae,  "Resto de<br>servicios" = "Resto de servicios"))
+
+tb_cot_ae <- df_c_afil_ae_sexo_mun %>%
+  acast(ae ~ sexo, value.var = 'valor')
+tb_cot_ae <- as.data.frame(tb_cot_ae[nrow(tb_cot_ae):1,]) %>%
+  rownames_to_column %>%
+  mutate(Total = Mujeres + Hombres) %>%
+  mutate(Mujeres = ifelse(is.na(Mujeres), " -", paste0(format(Mujeres, big.mark = ".", decimal.mark = ","))),
+         Hombres = ifelse(is.na(Hombres), " -", paste0(format(Hombres, big.mark = ".", decimal.mark = ","))),
+         Total = ifelse(is.na(Total), " -", paste0(format(Total, big.mark = ".", decimal.mark = ",")))) %>%
+  select('Actividades económicas' = rowname, 'Mujeres', 'Hombres', 'Total')
+
+tb_cot_ae <- tb_cot_ae %>%
+  kable(format = 'html', align = 'c', table.attr = "class=\"my-table-2\"") %>%
+  kable_styling(full_width = TRUE, position = "left") %>%
+  column_spec(2:4, width = "20%")
+```
+
+<div class="highlight" style="width: 100% !important; margin: 15px 5px;">
+<h2 style="color: #005980; margin-left: 20px;">Afiliaciones según el lugar de cotización</h2>
+
+<div class="row">
+  <div class="column-2">`r tb_cot`</div>
+
+  <div class="column-2" style="height: 340px;">`r g_line_c`</div>
+</div>
+
+<div class="row" style="margin-top: 20px">
+  <div class="column-2">`r tb_cot_ae`</div>
+
+  <div class="column-2" style="height: 290px;">`r g_c_afil_ae_sexo_mun`</div>
+</div>
+
+<div class="row">
+  <div class="column-2"></div>
+  <div class="column-2">
+<div class="progressbar-legend-container">
+  <div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Hombres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Mujeres</div></div>
+  <div class='progressbar-legend'><div class='progress-bar-C'></div><div class='sp-content'>Canarias</div></div>
+  </div>
+</div>
+</div>
+</div>
+
