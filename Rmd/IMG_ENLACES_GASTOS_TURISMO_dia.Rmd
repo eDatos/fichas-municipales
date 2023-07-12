@@ -1,0 +1,1131 @@
+---
+title: ''
+params:
+  id_municipio: 35004
+  ano: 2021
+  trimestre: 4
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
+  url.GM_sexo_edad: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=948e02fd-4d75-4a06-9d40-48acd5fd4556
+  url.GM_sl: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=42f1c94f-5732-4e38-9583-39258ff8f5bf
+  url.GM_ni: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=b8a748fa-26de-46da-a276-5d4a2e97d740
+  url.GM_ne: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=ac3a3368-b6b5-4c63-aa23-19ed2261ed1d
+  url.GM_ta: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9ea1e03b-3ce2-404e-b289-e7d6d7894575
+  url.GM_np: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=a6a6170b-1ac2-4393-a1d7-6ba04452c333
+  url.GM_pt: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=70840a10-9dc8-409e-bf67-1099f6629093
+  url.GM_pais: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=7f56ab7b-ac57-4e2d-9b8a-02fa434cfbd6
+output:
+  html_document:
+    df_print: paged
+    css: styles/MODULO.css
+    self_contained: false
+    lib_dir: libs
+  pdf_document: default
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+```
+
+```{r Periodo}
+GM_sexo_edad <- fromJSON(params$url.GM_sexo_edad)
+periodo <- data.frame(code = GM_sexo_edad[["categories"]][["codes"]][[5]], 
+                      periodo = GM_sexo_edad[["categories"]][["labels"]][[5]]) %>% 
+  filter(substring(code, 5,5) == "Q")
+
+periodo <- periodo %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " trimestre de ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
+  mutate(order = as.integer(order(code, decreasing = FALSE)))
+periodo_actual <- periodo %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,7)) == params$trimestre)
+periodo_tva <- periodo[periodo$order == periodo[periodo_actual$code == periodo$code, ]$order - 4, ]
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>%
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = sub("\\_.*", "", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1:3,]
+}
+```
+
+```{r Gráfico evolución de los gastos medios turísticos}
+df_GM_sexo_edad <- cbind(data.frame(do.call('rbind', GM_sexo_edad[["data"]][["dimCodes"]])), GM_sexo_edad[["data"]][["Valor"]])
+colnames(df_GM_sexo_edad) <- c('ind', 'sexo', 'gredad', 'mun', 'periodo', 'valor')
+df_GM_sexo_edad$ind <- factor(df_GM_sexo_edad$ind, levels=GM_sexo_edad[["categories"]][["codes"]][[1]], labels=GM_sexo_edad[["categories"]][["labels"]][[1]])
+df_GM_sexo_edad$sexo <- factor(df_GM_sexo_edad$sexo, levels=GM_sexo_edad[["categories"]][["codes"]][[2]], labels=GM_sexo_edad[["categories"]][["labels"]][[2]])
+df_GM_sexo_edad$gredad <- factor(df_GM_sexo_edad$gredad, levels=GM_sexo_edad[["categories"]][["codes"]][[3]], labels=GM_sexo_edad[["categories"]][["labels"]][[3]])
+df_GM_sexo_edad$valor <- as.numeric(df_GM_sexo_edad$valor) %>% round(1)
+df_u <- df_GM_sexo_edad %>% filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES" & substring(periodo, 5,5) == "Q") %>% 
+  select(mun, periodo, valor)
+df_u <- df_u %>% filter(substring(mun, 6,6) == "_") %>% transform(mun = substr(mun, 7, 12))
+df_u <- df_u[with(df_u, order(periodo)), ]
+
+related_mun <- df_u %>% filter(periodo == periodo_actual$code)
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
+
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Gasto medio: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)' ), related_mun$nombre)
+
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, nombre, periodo, valor) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(code = periodo, mun = id, nombre, valor) %>%
+  left_join(periodo, by = "code") %>%
+  mutate(tasa = ifelse(substring(code, 0,4) == min(substring(code, 0,4)), NA, round(100*((valor / lag(valor, n = 4)) - 1), 1))) %>% 
+  filter(code <= periodo_actual$code)
+
+if(substring(periodo_actual$code, 0,4) != 2019){
+  df <- df %>% filter(substring(code, 0,4) != 2018)
+  rango <- c(max(0.8, nrow(df[df$mun == params$id_municipio, ]) - 5*4 - 0.2), nrow(df[df$mun == params$id_municipio, ]))
+}else{
+  rango <- c(max(0.8, max(df$order) - 5*4 - 0.2), df$order[df$code == periodo_actual$code & df$mun == params$id_municipio])
+}
+
+ano_min <- min(as.integer(substring(df$code, 0,4)))
+ano_max <- max(as.integer(substring(df$code, 0,4)))
+
+df <- df %>%
+  mutate(valor_l = ifelse(is.na(valor), " -", paste0(trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €")),
+         tasa_l = ifelse(is.na(tasa), " -", paste0(trimws(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1)), "%")))
+
+leyenda_poblacion <- df %>% filter(periodo == periodo_actual$periodo) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
+
+df <- df %>% mutate(periodo = strsplit(periodo, " ")) %>% 
+  unnest_wider('periodo') %>% 
+  mutate(
+    periodo = paste0(...2, ' trimestre de ', ...1),
+    tooltip = ifelse(
+      periodo == periodo_actual$periodo_formatted,
+      sprintf(leyenda.content, nombre, valor_l, tasa_l),
+      sprintf(leyenda.content, nombre, paste0(valor_l, ' (',periodo,')'), tasa_l)
+      )
+    )
+
+g_line <- ggplot(data = df, aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+  geom_line(size = 0.7) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x){paste0(ano_min:ano_max, "Q1")}, labels = function(x){substr(x, 0,4)}) +
+  scale_y_continuous(labels = function(x){paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 5, limits = c(0, NA))
+
+g_line <- ggplotly(g_line, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = rango,
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
+  onRender("
+    function(el) {
+      var municipios = document.getElementsByClassName('sp-municipio');
+      var contents = document.getElementsByClassName('sp-content');
+      var init_contents = [];
+      for (var i = 0; i < municipios.length; i++) {
+        init_contents[i] = contents[i].innerHTML;
+      }
+      
+      el.on('plotly_hover', function(d) {
+        highlight(d);
+      });
+      
+      el.on('plotly_unhover', function(d) {
+        reset(d);
+      });
+      
+      el.on('plotly_click', function(d) {
+        highlight(d);
+      });
+      
+      function highlight(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
+        }
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x = d.points[point].x;
+              contents[i].innerHTML = d.points[point].text;
+            }
+          }
+        }
+      }
+      
+      function reset(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = init_contents[i];
+        }
+      }
+    }
+  ") 
+```
+
+```{r Valor del gasto medio y su variación porcentual}
+ind_GM <- df %>% filter(mun == params$id_municipio & code == periodo_actual$code)
+
+Num_GM_num <- ind_GM$valor %>% as.numeric
+if(is.na(Num_GM_num)) {stop("Error: indicador principal desconocido")}
+Num_GM <- Num_GM_num %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Variacion_Porcentual <- ind_GM$tasa %>% as.numeric %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion_Porcentual != "NA"){
+  if(ind_GM$tasa[which(ind_GM$code == periodo_actual$code)] == 0){
+    diferencia <- Num_GM_num - ind_GM$valor[which(ind_GM$code == periodo_tva$code)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
+}
+```
+
+```{r Indicadores Gastos Medios}
+ind_GM_sexo_edad <- df_GM_sexo_edad %>%
+  select(ind, sexo, gredad, mun, periodo, valor) %>%
+  filter(substring(mun, 6,6) == "_" & periodo == periodo_actual$code) %>% transform(mun = substr(mun, 7, 12)) %>% filter(mun == params$id_municipio)
+
+df_GM_mun <- ind_GM_sexo_edad %>%
+  filter(sexo == "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
+    select(ind, valor)
+
+Gasto_por_turista_dia <- df_GM_mun$valor[which(df_GM_mun$ind == "Gasto por turista y día")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_GMd_sexo_mun <- ind_GM_sexo_edad %>%
+  filter(ind == "Gasto por turista y día" & sexo != "AMBOS SEXOS" & gredad == "TOTAL GRUPOS DE EDADES") %>% 
+  select(sexo, valor)
+
+Gasto_por_turista_d_M <- df_GMd_sexo_mun$valor[which(df_GMd_sexo_mun$sexo == "Mujeres")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_por_turista_d_H <- df_GMd_sexo_mun$valor[which(df_GMd_sexo_mun$sexo == "Hombres")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_GMd_edad_mun <- ind_GM_sexo_edad %>%
+  filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES") %>% 
+  select(gredad, valor)
+
+Gasto_por_turista_d_menor <- df_GMd_edad_mun$valor[which(df_GMd_edad_mun$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_por_turista_d_mayor <- df_GMd_edad_mun$valor[which(df_GMd_edad_mun$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_GM_sexo_edad_C <- df_GM_sexo_edad %>%
+  select(ind, sexo, gredad, mun, periodo, valor) %>%
+  filter(ind == "Gasto por turista y día" & sexo == "AMBOS SEXOS" & gredad != "TOTAL GRUPOS DE EDADES" & mun == "ES70" & periodo == periodo_actual$code)
+
+Gasto_por_turista_d_menor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "De 16 a 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_por_turista_d_mayor_C <- df_GM_sexo_edad_C$valor[which(df_GM_sexo_edad_C$gredad == "Mayor de 44 años")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Mapas}
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% st_sf
+
+palette <- c('#8CD2EA', '#005980')
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla)
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+```
+
+```{r Rankings}
+df_ranking <- df_u %>%
+  select(id = mun, periodo, valor) %>%
+  filter(periodo == periodo_actual$code) %>%
+  inner_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(valor))
+
+df_tur_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
+rk_canarias <- grep(params$id_municipio, df_ranking$id)
+num_mun_canarias <- nrow(df_ranking)
+percent_canarias <- format(round(df_tur_mun$valor / sum(df_ranking$valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_tur_isla <- df_ranking %>% filter(isla == df_tur_mun$isla)
+rk_isla <- grep(params$id_municipio, df_tur_isla$id)
+num_mun_isla <- nrow(df_tur_isla)
+percent_isla <- format(round(df_tur_mun$valor / sum(df_tur_isla$valor, na.rm = TRUE) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Indicadores Gastos Medios Situación laboral}
+GM_sl <- fromJSON(params$url.GM_sl)
+df_GM_sl <- cbind(data.frame(do.call('rbind', GM_sl[["data"]][["dimCodes"]])), GM_sl[["data"]][["Valor"]])
+colnames(df_GM_sl) <- c('ind', 'sl','mun', 'periodo', 'valor')
+df_GM_sl$ind <- factor(df_GM_sl$ind, levels=GM_sl[["categories"]][["codes"]][[1]], labels=GM_sl[["categories"]][["labels"]][[1]])
+df_GM_sl$sl <- factor(df_GM_sl$sl, levels=GM_sl[["categories"]][["codes"]][[2]], labels=GM_sl[["categories"]][["labels"]][[2]])
+df_GM_sl$mun <- factor(df_GM_sl$mun, levels=GM_sl[["categories"]][["codes"]][[3]], labels=GM_sl[["categories"]][["labels"]][[3]])
+df_GM_sl$valor <- as.numeric(df_GM_sl$valor) %>% round(1)
+df_GM_sl$mun <- recode_mun(df_GM_sl, 'mun')
+
+df_GMd_sl_mun <- df_GM_sl %>%
+  filter(ind == "Gasto por turista y día" & sl != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  select(sl, valor)
+
+Gasto_tur_sl_d_Act <- df_GMd_sl_mun$valor[which(df_GMd_sl_mun$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_tur_sl_d_NAct <- df_GMd_sl_mun$valor[which(df_GMd_sl_mun$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_GMd_sl_C <- df_GM_sl %>%
+  filter(ind == "Gasto por turista y día" & sl != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
+  select(sl, valor)
+
+Gasto_tur_sl_d_Act_C <- df_GMd_sl_C$valor[which(df_GMd_sl_C$sl == "Activos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_tur_sl_d_NAct_C <- df_GMd_sl_C$valor[which(df_GMd_sl_C$sl == "Inactivos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Barras Gastos Medios Niveles de ingresos}
+GM_ni <- fromJSON(params$url.GM_ni)
+df_GM_ni <- cbind(data.frame(do.call('rbind', GM_ni[["data"]][["dimCodes"]])), GM_ni[["data"]][["Valor"]])
+colnames(df_GM_ni) <- c('ind', 'nivel','mun', 'periodo', 'valor')
+df_GM_ni$ind <- factor(df_GM_ni$ind, levels=GM_ni[["categories"]][["codes"]][[1]], labels=GM_ni[["categories"]][["labels"]][[1]])
+df_GM_ni$nivel <- factor(df_GM_ni$nivel, levels=GM_ni[["categories"]][["codes"]][[2]], labels=GM_ni[["categories"]][["labels"]][[2]])
+df_GM_ni$mun <- factor(df_GM_ni$mun, levels=GM_ni[["categories"]][["codes"]][[3]], labels=GM_ni[["categories"]][["labels"]][[3]])
+df_GM_ni$valor <- as.numeric(df_GM_ni$valor) %>% round(1)
+df_GM_ni$mun <- recode_mun(df_GM_ni, 'mun')
+df_GM_ni <- df_GM_ni %>%
+  mutate(nivel = recode(nivel, "Menos de 25.000€" = "< 25.000 €")) %>%
+  mutate(nivel = recode(nivel, "25.000€ - 49.999€" = "25.000 € - 49.999 €")) %>%
+  mutate(nivel = recode(nivel, "50.000€ - 74.999€" = "50.000 € - 74.999 €")) %>%
+  mutate(nivel = recode(nivel, "75.000€ o más" = "> 74.999 €"))
+
+df_GMd_ni_mun <- df_GM_ni %>%
+  filter(ind == "Gasto por turista y día" & nivel != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  select(nivel, valor)
+
+df_GM_ni_Canarias <- df_GM_ni %>%
+  filter(ind == "Gasto por turista y día" & nivel != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>% 
+  select(nivel, valor)
+
+df_GMd_ni_plot <- df_GMd_ni_mun %>%
+  mutate(valor_Canarias = df_GM_ni_Canarias$valor,
+         label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
+df_GMd_ni_plot$nivel <- ordered(df_GMd_ni_plot$nivel, levels = df_GMd_ni_plot$nivel)
+
+df_GMd_ni_plot <- df_GMd_ni_plot %>% transform(hovertext = paste0(
+    "<b>", nivel, "</b>",
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    )
+  )
+
+df_GMd_ni_0 <- df_GMd_ni_plot %>% 
+  transform(valor = 0,
+            valor_Canarias = 0,
+            label = "")
+
+df_GMd_ni_plot <- rbind(df_GMd_ni_plot, df_GMd_ni_0)
+
+g_GMd_ni <- ggplot(df_GMd_ni_plot, aes(y = nivel, fill = nivel, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
+  geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
+  scale_fill_manual(values = c("> 74.999 €" = "#005980", "50.000 € - 74.999 €" = "#008BD0", "25.000 € - 49.999 €" = "#2CBCE2", "< 25.000 €" = "#8CD2EA")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')})
+
+g_GMd_ni <- ggplotly(g_GMd_ni, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(5:8))
+```
+
+```{r Barras Gastos Medios Nivel educativo}
+GM_ne <- fromJSON(params$url.GM_ne)
+df_GM_ne <- cbind(data.frame(do.call('rbind', GM_ne[["data"]][["dimCodes"]])), GM_ne[["data"]][["Valor"]])
+colnames(df_GM_ne) <- c('ind', 'estudios','mun', 'periodo', 'valor')
+df_GM_ne$ind <- factor(df_GM_ne$ind, levels=GM_ne[["categories"]][["codes"]][[1]], labels=GM_ne[["categories"]][["labels"]][[1]])
+df_GM_ne$estudios <- factor(df_GM_ne$estudios, levels=GM_ne[["categories"]][["codes"]][[2]], labels=GM_ne[["categories"]][["labels"]][[2]])
+df_GM_ne$mun <- factor(df_GM_ne$mun, levels=GM_ne[["categories"]][["codes"]][[3]], labels=GM_ne[["categories"]][["labels"]][[3]])
+df_GM_ne$valor <- as.numeric(df_GM_ne$valor) %>% round(1)
+df_GM_ne$mun <- recode_mun(df_GM_ne, 'mun')
+df_GM_ne <- df_GM_ne %>%
+  mutate(estudios = recode(estudios, "Sin estudios o estudios primarios" = "Sin estudios<br>o primarios")) %>%
+  mutate(estudios = recode(estudios, "Estudios secundarios" = "Secundarios")) %>%
+  mutate(estudios = recode(estudios, "Estudios superiores" = "Superiores"))
+
+df_GMd_ne_mun <- df_GM_ne %>%
+  filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  select(estudios, valor)
+
+df_GMd_ne_Canarias <- df_GM_ne %>%
+  filter(ind == "Gasto por turista y día" & estudios != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
+  select(estudios, valor)
+df_GMd_ne_mun <- df_GMd_ne_mun %>% mutate(valor_Canarias = df_GMd_ne_Canarias$valor)
+
+df_GMd_ne_plot <- df_GMd_ne_mun %>%
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
+
+df_GMd_ne_plot <- df_GMd_ne_plot %>% transform(hovertext = paste0(
+    "<b>", estudios, "</b>",
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    )
+  )
+
+df_GMd_ne_0 <- df_GMd_ne_plot %>% 
+  transform(valor = 0,
+            valor_Canarias = 0,
+            label = "")
+
+df_GMd_ne_plot <- rbind(df_GMd_ne_plot, df_GMd_ne_0)
+
+g_GMd_ne <- ggplot(df_GMd_ne_plot, aes(y = estudios, fill = estudios, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
+  geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
+  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(size = 8),
+        # axis.text.y = element_blank(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')}, n.breaks = 3)
+
+g_GMd_ne <- ggplotly(g_GMd_ne, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(4:6))
+```
+
+```{r Indicadores Gastos Medios Tipos de alojamiento}
+GM_ta <- fromJSON(params$url.GM_ta)
+df_GM_ta <- cbind(data.frame(do.call('rbind', GM_ta[["data"]][["dimCodes"]])), GM_ta[["data"]][["Valor"]])
+colnames(df_GM_ta) <- c('ind', 'tipo','mun', 'periodo', 'valor')
+df_GM_ta$ind <- factor(df_GM_ta$ind, levels=GM_ta[["categories"]][["codes"]][[1]], labels=GM_ta[["categories"]][["labels"]][[1]])
+df_GM_ta$tipo <- factor(df_GM_ta$tipo, levels=GM_ta[["categories"]][["codes"]][[2]], labels=GM_ta[["categories"]][["labels"]][[2]])
+df_GM_ta$mun <- factor(df_GM_ta$mun, levels=GM_ta[["categories"]][["codes"]][[3]], labels=GM_ta[["categories"]][["labels"]][[3]])
+df_GM_ta$valor <- as.numeric(df_GM_ta$valor) %>% round(1)
+df_GM_ta$mun <- recode_mun(df_GM_ta, 'mun')
+
+df_GMd_ta_mun <- df_GM_ta %>%
+  filter(ind == "Gasto por turista y día" & tipo != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  select(tipo, valor)
+
+Gasto_tur_ta_d_hot <- df_GMd_ta_mun$valor[which(df_GMd_ta_mun$tipo == "Hoteleros")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_tur_ta_d_ext <- df_GMd_ta_mun$valor[which(df_GMd_ta_mun$tipo == "Extrahoteleros")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+Gasto_tur_ta_d_otr <- df_GMd_ta_mun$valor[which(df_GMd_ta_mun$tipo == "Otros alojamientos colectivos")] %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Barras Gastos Medios Noches pernoctadas}
+GM_np <- fromJSON(params$url.GM_np)
+df_GM_np <- cbind(data.frame(do.call('rbind', GM_np[["data"]][["dimCodes"]])), GM_np[["data"]][["Valor"]])
+colnames(df_GM_np) <- c('ind', 'noches','mun', 'periodo', 'valor')
+df_GM_np$ind <- factor(df_GM_np$ind, levels=GM_np[["categories"]][["codes"]][[1]], labels=GM_np[["categories"]][["labels"]][[1]])
+df_GM_np$noches <- factor(df_GM_np$noches, levels=GM_np[["categories"]][["codes"]][[2]], labels=GM_np[["categories"]][["labels"]][[2]])
+df_GM_np$mun <- factor(df_GM_np$mun, levels=GM_np[["categories"]][["codes"]][[3]], labels=GM_np[["categories"]][["labels"]][[3]])
+df_GM_np$valor <- as.numeric(df_GM_np$valor) %>% round(1)
+df_GM_np$mun <- recode_mun(df_GM_np, 'mun')
+df_GM_np <- df_GM_np %>%
+  mutate(noches = recode(noches, "De 1 a 7 noches" = "1 - 7")) %>%
+  mutate(noches = recode(noches, "De 8 a 15 noches" = "8 - 15")) %>%
+  mutate(noches = recode(noches, "Más de 15 noches" = "&gt; 15"))
+
+df_GMd_np_mun <- df_GM_np %>%
+  filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% 
+  select(noches, valor)
+
+df_GMd_np_Canarias <- df_GM_np %>%
+  filter(ind == "Gasto por turista y día" & noches != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
+  select(noches, valor)
+df_GMd_np_mun <- df_GMd_np_mun %>% mutate(valor_Canarias = df_GMd_np_Canarias$valor)
+
+df_GMd_np_plot <- df_GMd_np_mun %>%
+  mutate(label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
+
+df_GMd_np_plot <- df_GMd_np_plot %>% transform(hovertext = paste0(
+    "<b>", noches, "</b>",
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    )
+  )
+
+df_GMd_np_0 <- df_GMd_np_plot %>% 
+  transform(valor = 0,
+            valor_Canarias = 0,
+            label = "")
+
+df_GMd_np_plot <- rbind(df_GMd_np_plot, df_GMd_np_0)
+
+g_GMd_np <- ggplot(df_GMd_np_plot, aes(y = noches, fill = noches, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
+  geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
+  scale_fill_manual(values = c("#8CD2EA", "#008BD0", "#005980")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(size = 8),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')}, n.breaks = 3)
+
+g_GMd_np <- ggplotly(g_GMd_np, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(4:6))
+```
+
+```{r Barras Gastos Medios por día País}
+GM_pais <- fromJSON(params$url.GM_pais)
+df_GM_pais <- cbind(data.frame(do.call('rbind', GM_pais[["data"]][["dimCodes"]])), GM_pais[["data"]][["Valor"]])
+colnames(df_GM_pais) <- c('ind', 'pais', 'mun', 'periodo', 'valor')
+df_GM_pais$ind <- factor(df_GM_pais$ind, levels=GM_pais[["categories"]][["codes"]][[1]], labels=GM_pais[["categories"]][["labels"]][[1]])
+df_GM_pais$pais <- factor(df_GM_pais$pais, levels=GM_pais[["categories"]][["codes"]][[2]], labels=GM_pais[["categories"]][["labels"]][[2]])
+df_GM_pais$mun <- factor(df_GM_pais$mun, levels=GM_pais[["categories"]][["codes"]][[3]], labels=GM_pais[["categories"]][["labels"]][[3]])
+df_GM_pais$valor <- as.numeric(df_GM_pais$valor) %>% round(1)
+df_GM_pais$valor[is.na(df_GM_pais$valor)] <- 0
+df_GM_pais$mun <- recode_mun(df_GM_pais, 'mun')
+df_GM_pais <- df_GM_pais %>% transform(pais = gsub("Otros países", "Otros", pais))
+
+rk_GMd_pais_mun <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>% arrange(valor) %>%
+  select(pais, valor)
+rk_GMd_pais_mun$pais <- ordered(rk_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
+
+df_GMd_pais_mun <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día"  & pais != "TOTAL" & mun == municipio_actual$municipio & periodo == periodo_actual$code) %>%
+  select(pais, valor)
+df_GMd_pais_Canarias <- df_GM_pais %>%
+  filter(ind == "Gasto por turista y día" & pais != "TOTAL" & mun == "CANARIAS" & periodo == periodo_actual$code) %>%
+  select(pais, valor)
+df_GMd_pais_mun <- df_GMd_pais_mun %>% mutate(valor_Canarias = df_GMd_pais_Canarias$valor)
+df_GMd_pais_mun$pais <- ordered(df_GMd_pais_mun$pais, levels = rk_GMd_pais_mun$pais)
+
+df_GMd_pais_plot <- df_GMd_pais_mun %>%
+  mutate(valor_Canarias = df_GMd_pais_Canarias$valor,
+         label = "|") %>%
+  transform(valor = if_else(is.na(valor), 0, valor))
+
+df_GMd_pais_plot <- df_GMd_pais_plot %>% transform(hovertext = paste0(
+    "<b>", pais, "</b>",
+    "<br>", trimws(format(valor, big.mark = ".", decimal.mark = ",")), " €", 
+    "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")), " €"
+    )
+  )
+
+df_GMd_pais_0 <- df_GMd_pais_plot %>% 
+  transform(valor = 0,
+            valor_Canarias = 0,
+            label = "")
+
+df_GMd_pais_plot <- rbind(df_GMd_pais_plot, df_GMd_pais_0)
+
+g_GMd_pais <- ggplot(df_GMd_pais_plot, aes(y = pais, fill = pais, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = valor)) +
+  geom_text(size = 6, color = "#59656E", aes(x = valor_Canarias, text = "")) +
+  scale_fill_manual(values = c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")) +
+  theme_minimal() +
+  guides(fill = guide_legend(title = " ")) +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  theme(axis.text.x = element_text(),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), ' €')})
+
+g_GMd_pais <- ggplotly(g_GMd_pais, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified') %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c(5:8))
+```
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'><nobr>%s</nobr></p><p class='label'>%s</p></div></div>", image, value, label))
+}
+get_indicator4s = function(title, label, value) {
+  return(sprintf("<div class='indicator4s'><div class='title'>%s</div><hr class='separator'><p class='value'>%s</p><p class='label'>%s</p><p class='label2'>Canarias</p></div>", title, value, label))
+}
+```
+
+```{r Funciones Enlaces, results="asis"}
+get_indicator_mod = function(url, label) {
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
+}
+get_indicator_mod_first = function(url, label) {
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
+}
+get_indicator_mod_inter = function(url, label) {
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
+}
+get_indicator_mod_last = function(url, label) {
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
+}
+```
+
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+colnames(links)[1] <- "Tematica"
+df_links <- links %>%
+  filter(Tematica == "gastos_medios_turista_dia") %>%
+  select(!c(Tematica, Otros))
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
+<hr>
+<h3 style="color: #666; margin: 12px; font-size: 16px;">Al pinchar en los títulos de la izquierda se accede a las tablas con las que se ha elaborado esta ficha.</h3>
+
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod(
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">[Nombre del municipio] en cifras</h1>
+<h3 style="color: #999; margin: 0; float: right; margin-right: 20px;">Temporalidad</h3>
+<h2 style="color: #666; margin: 0;">Gasto medio por turista y día</h2>
+<hr>
+
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Indicador principal-Indicadores principales, results='asis'}
+df_links_indicadores <- df_links %>%
+  filter(Indicador %in% c("Indicador principal", "Indicadores principales") & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_indicadores) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_indicadores$Enlace[1],
+      df_links_indicadores$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_indicadores$Enlace[1],
+        df_links_indicadores$Titulo[1])
+      ))
+    if (nrow(df_links_indicadores) > 2) {
+      if (nrow(df_links_indicadores) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_indicadores$Enlace[2],
+            df_links_indicadores$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_indicadores)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_indicadores$Enlace[i],
+                df_links_indicadores$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_indicadores$Enlace[nrow(df_links_indicadores)],
+        df_links_indicadores$Titulo[nrow(df_links_indicadores)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+
+```{r espacio leyenda, results='asis'}
+height_b <- ifelse(nchar(leyenda_poblacion$nombre[1]) > 27, 300, 275)
+```
+<div class="linechart-placeholder">
+<h2 style="color: #005980; margin: 0;">`r Gasto_por_turista_dia` €</h2>
+<div class="linechart" style="height: `r paste0(height_b, 'px')`;">
+  `r g_line`
+</div>
+<div id="hover-event-placeholder" class="column-4">
+```{r leyendas, results = "asis"}
+for (i in 1:nrow(leyenda_poblacion)) {
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor_l[i], leyenda_poblacion$tasa_l[i]))
+}
+```
+</div>
+</div>
+
+<div class="row">
+```{r Indicadores principales, results='asis'}
+if(Variacion_Porcentual == "NA"){
+  cat(paste0(
+    '<div class="column-2-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-2-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+}else{
+  cat(paste0(
+    '<div class="column-3-ind">', get_indicator2("Tasa de<br/>variación", paste0(Variacion_Porcentual, "%"), Imagen_Variacion), '</div><div class="column-3-ind">', get_indicator2("Mujeres", paste0(Gasto_por_turista_d_M, " €"), "./img/female.png"), '</div><div class="column-3-ind">', get_indicator2("Hombres", paste0(Gasto_por_turista_d_H, " €"), "./img/male.png"), '</div>'))
+}
+```
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Ranking, results='asis'}
+df_links_ranking <- df_links %>%
+  filter(Indicador == "Ranking" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_ranking) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_ranking$Enlace[1],
+      df_links_ranking$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_ranking$Enlace[1],
+        df_links_ranking$Titulo[1])
+      ))
+    if (nrow(df_links_ranking) > 2) {
+      if (nrow(df_links_ranking) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_ranking$Enlace[2],
+            df_links_ranking$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_ranking)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_ranking$Enlace[i],
+                df_links_ranking$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_ranking$Enlace[nrow(df_links_ranking)],
+        df_links_ranking$Titulo[nrow(df_links_ranking)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+<div class="row">
+<div class="column-3" style="margin: 0;">
+  <div class="indicator-map map-canarias">
+  <div class="image">
+```{r}
+mapa_Canarias_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
+  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3" style="margin: 0;">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_isla_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
+  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3" style="margin: 0;">
+<div class="indicator-map" style="heigth: 300px;">
+  <div class="indicator-content" style="margin-top: 10px;">
+  <h3>Tipos de alojamientos</h3>
+  <hr class='separator' style="margin: 14px;">
+  <p class="label5"><span class="value3">`r paste0(Gasto_tur_ta_d_hot, " €")`</span>Hoteleros</p>
+  <p class="label5"><span class="value3">`r paste0(Gasto_tur_ta_d_ext, " €")`</span>Extrahoteleros</p>
+  <p class="label5"><span class="value3">`r paste0(Gasto_tur_ta_d_otr, " €")`</span>Otros</p>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Otros indicadores 1, results='asis'}
+df_links_otros1 <- df_links %>%
+  filter(Indicador == "Otros indicadores 1" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros1) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros1$Enlace[1],
+      df_links_otros1$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros1$Enlace[1],
+        df_links_otros1$Titulo[1])
+      ))
+    if (nrow(df_links_otros1) > 2) {
+      if (nrow(df_links_otros1) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros1$Enlace[2],
+            df_links_otros1$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros1)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros1$Enlace[i],
+                df_links_otros1$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros1$Enlace[nrow(df_links_otros1)],
+        df_links_otros1$Titulo[nrow(df_links_otros1)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo" style="padding-bottom: 20px;">
+<div class="row" style="margin-top: -15px;">
+<div class="column indicator-title">
+  <h3>Países de residencia</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Niveles de ingresos</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight">
+<div class="piramide" style="height: 190px;">
+`r g_GMd_pais`
+</div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+
+</div>
+
+<div class="column highlight">
+<div class="piramide" style="height: 190px;">
+`r g_GMd_ni`
+</div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Otros indicadores 2, results='asis'}
+df_links_otros2 <- df_links %>%
+  filter(Indicador == "Otros indicadores 2" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros2) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros2$Enlace[1],
+      df_links_otros2$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros2$Enlace[1],
+        df_links_otros2$Titulo[1])
+      ))
+    if (nrow(df_links_otros2) > 2) {
+      if (nrow(df_links_otros2) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros2$Enlace[2],
+            df_links_otros2$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros2)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros2$Enlace[i],
+                df_links_otros2$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros2$Enlace[nrow(df_links_otros2)],
+        df_links_otros2$Titulo[nrow(df_links_otros2)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo" style="padding-bottom: 20px;">
+<div class="row" style="margin-top: -15px;">
+<div class="column indicator-title">
+  <h3>Grupos de edad</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Situaciones laborales</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight"">
+<div class="row" style="margin-top: 10px">
+  <div class="column-2">`r get_indicator4s("16 - 44", paste0(Gasto_por_turista_d_menor_C, " €"), paste0(Gasto_por_turista_d_menor, " €"))`</div>
+  <div class="column-2">`r get_indicator4s("&gt; 44", paste0(Gasto_por_turista_d_mayor_C, " €"), paste0(Gasto_por_turista_d_mayor, " €"))`</div>
+</div>
+</div>
+<div class="column highlight"">
+<div class="row" style="margin-top: 10px">
+  <div class="column-2">`r get_indicator4s("Activos", paste0(Gasto_tur_sl_d_Act_C, " €"), paste0(Gasto_tur_sl_d_Act, " €"))`</div>
+  <div class="column-2">`r get_indicator4s("No activos", paste0(Gasto_tur_sl_d_NAct_C, " €"), paste0(Gasto_tur_sl_d_NAct, " €"))`</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Otros indicadores 3, results='asis'}
+df_links_otros3 <- df_links %>%
+  filter(Indicador == "Otros indicadores 3" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros3) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros3$Enlace[1],
+      df_links_otros3$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros3$Enlace[1],
+        df_links_otros3$Titulo[1])
+      ))
+    if (nrow(df_links_otros3) > 2) {
+      if (nrow(df_links_otros3) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros3$Enlace[2],
+            df_links_otros3$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros3)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros3$Enlace[i],
+                df_links_otros3$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros3$Enlace[nrow(df_links_otros3)],
+        df_links_otros3$Titulo[nrow(df_links_otros3)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo" style="padding-bottom: 20px;">
+<div class="row" style="margin-top: -15px;">
+<div class="column indicator-title">
+  <h3>Niveles educativos</h3>
+</div>
+<div class="column indicator-title">
+  <h3>Noches pernoctadas</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight" style="padding: 30px 10px 5px;">
+<div class="piramide" style="height: 120px;">
+`r g_GMd_ne`
+</div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+
+</div>
+
+<div class="column highlight" style="padding: 30px 10px 5px;">
+<div class="piramide" style="height: 120px;">
+`r g_GMd_np`
+</div>
+
+<div class="progressbar-legend-container">
+<div class='progressbar-legend'>
+  <div class='progress-bar-C-b' style='margin-top: -9px;'>|</div><div class='sp-content-b' style='margin-top: 4px;'>Canarias</div></div>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
+

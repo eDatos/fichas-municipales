@@ -1,31 +1,17 @@
 ---
 title: ''
-params:
-  id_municipio: 38050
-  ano: 2020
-  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
-  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
-  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
-  url.cultivada: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D
-  url.cultivada_secano: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO_SECANO/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.cultivada_regadio: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/SUPERFICIE_CULTIVO_REGADIO/data?representation=MEASURE%5BABSOLUTE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D
-  url.agr_herbaceos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9bd9de0e-1785-4e6c-b0e5-b139106445b9
-  url.agr_lenosos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=bba81127-8204-4fbb-8b37-4872748439df
-  url.exp_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000002/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901:ESPECIE_ANIMAL:_T|1|4|3|2|16|6|18&lang=es
-  url.cab_especies: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000001/~latest.json?dim=TERRITORIO:ES70|35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
-  url.colmenas: https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0/datasets/ISTAC/E01008B_000010/~latest.json?dim=SISTEMA_PRODUCTIVO:_T:TERRITORIO:35004|35010|35018|35024|35028|35029|35034|35003|35007|35014|35015|35017|35030|35001|35002|35005|35006|35008|35009|35011|35012|35013|35016|35019|35020|35021|35022|35023|35025|35026|35027|35031|35032|35033|38001|38004|38005|38006|38010|38011|38012|38015|38017|38018|38019|38020|38022|38023|38025|38026|38028|38031|38032|38034|38035|38038|38039|38040|38041|38042|38043|38044|38046|38051|38052|38002|38003|38021|38036|38049|38050|38007|38008|38009|38014|38016|38024|38027|38029|38030|38033|38037|38045|38047|38053|38013_2007|38048|38901&lang=es
 output:
   html_document:
     df_print: paged
     css: styles/MODULO.css
-    self_contained: false
-    lib_dir: libs
+    # self_contained: false
+    # lib_dir: libs
   pdf_document: default
 always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
 ```{r librerías, include=FALSE}
@@ -35,747 +21,24 @@ if(length(new.packages)) install.packages(new.packages)
 sapply(list.of.packages, require, character.only = TRUE)
 ```
 
-```{r funciones, include=FALSE}
-signo <- function(value) {
-  if (value > 0){sign <- "más"} else {sign <- "menos"}
-  return(sign)
-}
-
-"%notin%" <- Negate("%in%")
-
-get_nombre <- function(nombre) {
-  string_list <- str_split(nombre, pattern = " ")[[1]]
-  result <- ""
-  line.char <- 0
-  for(word.index in 1:length(string_list)) {
-    if((line.char + nchar(string_list[word.index])) < 18) {
-      result <- paste0(result, " ", string_list[word.index])
-      line.char <- line.char + 1 + nchar(string_list[word.index])
-    } else {
-      result <- paste0(result, "<br>", string_list[word.index])
-      line.char <- nchar(string_list[word.index])
-    }
-  }
-  trimws(result)
-}
-```
-
-```{r Municipio actual}
-CL_AREA <- as_list(read_xml(params$url.cl_area))
-
-df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
-  unnest_wider('codes') %>%
-  transform(name = lapply(name, '[[', 2)) %>%
-  unnest(cols = names(.)) %>%
-  unnest(cols = names(.)) %>%
-  readr::type_convert() %>%
-  mutate(parent = gsub("^.*).", "", parent)) %>%
-  select(code = id, value = name, parent)
-
-df_CL_AREA_mun <- df_CL_AREA %>% 
-  select(id = code, municipio = value, code = parent) %>%
-  filter(substring(id, 0,2) != "ES") %>% 
-  transform(id = sub("\\_.*", "", id)) %>%
-  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
-  left_join(df_CL_AREA, by="code") %>%
-  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
-  left_join(df_CL_AREA, by="code") %>% 
-  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
-
-municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
-```
-
-```{r Normalización de municipios} 
-recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
-recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
-
-recode_mun <- function(df, colname) {
-  df[,colname] = trimws(df[,colname])
-  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
-  df[,colname]
-}
-recode_id_Frontera <- function(df, colname) {
-  df[,colname] = trimws(df[,colname])
-  df[,colname] = mapvalues(df[,colname], from = c("38013_1912", "38013_2007"), to = c("38013", "38013"))
-  df[,colname]
-}
-```
-
-```{r Municipios relacionados}
-datamun <- fromJSON(params$url.dist_mun)
-df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
-                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
-                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
-                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
-  filter(substring(mun, 0,2) != "ES")
-df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
-distancias_mun <- df_localizacion %>%
-  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
-  st_distance
-  
-distancias_mun <- data.frame(
-  mun = df_localizacion$mun,
-  nombre = df_localizacion$nombre,
-  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
-)
-
-seleccion_mun <- function(df_variable, variable, p = 0.5) {
-  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
-  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
-  
-  df_result <- df_dif %>%
-    mutate(
-      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
-      distancia_N = scale(distancia),
-      dif_N = scale(dif),
-      coeficientes = p * distancia_N + (1-p) * dif_N
-    ) %>%
-  arrange(coeficientes)
-  
-  df_result[1:3,]
-}
-```
-
-```{r Gráfico evolución de la superficie cultivada}
-data_u <- fromJSON(params$url.cultivada)
-df_u_ <- data.frame(
-  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                  each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  ano = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
-            each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
-  medida = names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
-  valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
-  arrange(ano) %>%
-  spread(medida, valor) %>%
-  select(mun, ano, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
-df_u <- df_u_ %>% filter(substring(mun, 0,2) != "ES")
-df_u$mun <- recode_id_Frontera(df_u, 'mun')
-df_u$ano <- as.integer(df_u$ano)
-
-related_mun <- df_u %>% filter(ano == params$ano)
-related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
-if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
-
-df <- related_mun %>%
-  select(mun, nombre) %>%
-  left_join(df_u, by= "mun") %>%
-  select(id = mun, ano, nombre, valor, tasa) %>%
-  left_join(df_CL_AREA_mun, by = "id") %>%
-  select(ano, mun = id, nombre, valor, tasa) %>%
-  filter(ano != min(ano) & ano <= params$ano)
-
-g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
-
-leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
-leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Superficie cultivada: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
-
-leyenda_poblacion <- df %>% filter(ano == params$ano) %>%
-  mutate(valor = ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), " ha")),
-         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
-  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
-
-df <- df %>% mutate(
-    tooltip = ifelse(ano == params$ano,
-                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", paste0(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1), ' ha')),
-                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
-                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)), ' ha (',ano,')'),
-                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
-    )
-) 
-
-g_line <- ggplot(data = df, 
-                 aes(x = ano, y = valor, group = nombre, colour = nombre, text = tooltip)) +
-  geom_line(size = 0.7) +
-  theme_minimal() +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(),
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        legend.position = "none") +
-  scale_colour_manual(values = g_line_colours) +
-  scale_size_manual(values = c(1, 0.1, 0.1)) +
-  scale_x_continuous(breaks = function(x){seq(from = max(max(df$ano) - 18, min(df$ano)), to = max(df$ano), by = as.integer((max(df$ano)-max(max(df$ano) - 18, min(df$ano)))/4)+1)}) +
-  scale_y_continuous(labels = function(x){paste0(format(as.integer(x), big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
-
-g_line <- ggplotly(g_line, tooltip = "text") %>%
-  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  layout(hoverlabel = "", hovermode = 'x unified',
-         xaxis = list(autorange = FALSE,
-                      range = c(max(max(df$ano) - 18, min(df$ano)), max(df$ano)),
-                      rangeslider = list(type = "date", thickness = 0.04))) %>%
-  onRender("
-    function(el) {
-      var municipios = document.getElementsByClassName('sp-municipio');
-      var contents = document.getElementsByClassName('sp-content');
-      var init_contents = [];
-      for (var i = 0; i < municipios.length; i++) {
-        init_contents[i] = contents[i].innerHTML;
-      }
-      
-      el.on('plotly_hover', function(d) {
-        highlight(d);
-      });
-      
-      el.on('plotly_unhover', function(d) {
-        reset(d);
-      });
-      
-      el.on('plotly_click', function(d) {
-        highlight(d);
-      });
-      
-      function highlight(d) {
-        for (var i = 0; i < municipios.length; i++) {
-          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
-        }
-        for (point in d.points) {
-          for (var i = 0; i < municipios.length; i++) {
-            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
-              var x = d.points[point].x;
-              contents[i].innerHTML = d.points[point].text;
-            }
-          }
-        }
-      }
-      
-      function reset(d) {
-        for (var i = 0; i < municipios.length; i++) {
-          contents[i].innerHTML = init_contents[i];
-        }
-      }
-    }
-  ") 
-```
-
-```{r Valor de la superficie cultivada y su variación porcentual}
-df_lv <- df_u %>% filter(ano == params$ano & mun == params$id_municipio)
-
-superficie_cultivada_num <- df_lv$valor
-if(is.na(superficie_cultivada_num)) {stop("Error: indicador principal desconocido")}
-superficie_cultivada <- superficie_cultivada_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-Variacion_Porcentual <- df_lv$tasa %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-if(Variacion_Porcentual != "NA"){
-  Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
-  if(df_lv$tasa == 0){
-    diferencia <- superficie_cultivada_num - df$valor[which(df$mun == params$id_municipio & df$ano == params$ano-1)]
-    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
-  }
-}
-```
-
-```{r Indicador Secano}
-data_secano <- fromJSON(params$url.cultivada_secano)
-
-df_secano <- data.frame(mun = rep(names(data_secano[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                  each=data_secano[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                        ano = rep(names(data_secano[["dimension"]][["TIME"]][["representation"]][["index"]])),
-                        valor = round(as.numeric(data_secano[["observation"]]), 1))
-df_secano$mun <- recode_id_Frontera(df_secano, 'mun')
-
-sup_secano_num <- df_secano %>% filter(ano == params$ano & mun == params$id_municipio) %>% select(valor) %>% as.numeric
-sup_secano <- sup_secano_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-percent_secano <- round(sup_secano_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-```
-
-```{r Indicador Regadío}
-data_regadio <- fromJSON(params$url.cultivada_regadio)
-
-df_regadio <- data.frame(mun = rep(names(data_regadio[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
-                                   each=data_regadio[["dimension"]][["TIME"]][["representation"]][["size"]]),
-                         ano = rep(names(data_regadio[["dimension"]][["TIME"]][["representation"]][["index"]])),
-                         valor = round(as.numeric(data_regadio[["observation"]]), 1))
-df_regadio$mun <- recode_id_Frontera(df_regadio, 'mun')
-
-sup_regadio_num <- df_regadio %>% filter(ano == params$ano & mun == params$id_municipio) %>% select(valor) %>% as.numeric
-sup_regadio <- sup_regadio_num %>% round(1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-percent_regadio <- round(sup_regadio_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-```
-
-```{r Mapas}
-palette <- c('#8CD2EA', '#005980')
-
-mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
-
-mapa_Canarias <- rbind(
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
-  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
-) %>% 
-  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
-  st_sf
-
-mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
-                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
-                      tmap_options(check.and.fix = TRUE)
-
-mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
-
-mapa_isla_plot <- tm_shape(mapa_isla) + 
-                  tm_borders() + 
-                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                  tmap_options(check.and.fix = TRUE)
-
-mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
-
-mapa_comarca_plot <- tm_shape(mapa_comarca) + 
-                     tm_borders() + 
-                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
-                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
-                     tmap_options(check.and.fix = TRUE)
-```
-
-```{r Rankings}
-sup_Canarias_total <- df_u_ %>% filter(mun == "ES70" & ano == params$ano) %>% select(valor) %>% as.numeric
-sup_Isla_total <- df_u_ %>% filter(mun == municipio_actual$id_isla & ano == params$ano) %>% select(valor) %>% as.numeric
-
-df_ranking <- df_u %>%
-  select(id = mun, ano, valor) %>%
-  filter(ano == params$ano & !is.na(valor)) %>%
-  left_join(df_CL_AREA_mun, by = "id") %>% 
-  arrange(desc(valor))
-
-df_ranking_mun <- df_ranking[which(df_ranking$id==params$id_municipio),]
-rk_canarias <- grep(params$id_municipio, df_ranking$id)
-num_mun_canarias <- nrow(df_ranking)
-percent_canarias <- format(round(df_ranking_mun$valor / sup_Canarias_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-df_ranking_isla <- df_ranking %>% filter(isla == df_ranking_mun$isla)
-rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
-num_mun_isla <- nrow(df_ranking_isla)
-percent_isla <- format(round(df_ranking_mun$valor / sup_Isla_total * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
-rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
-num_mun_comarca <- nrow(df_ranking_comarca)
-percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
-```
-
-```{r Barras herbáceos}
-data_herbaceos <- fromJSON(params$url.agr_herbaceos)
-df_herbaceos <- cbind(data.frame(do.call('rbind', data_herbaceos[["data"]][["dimCodes"]])), data_herbaceos[["data"]][["Valor"]])
-colnames(df_herbaceos) <- c('mun', 'cultivo', 'ano', 'sistema', 'valor')
-df_herbaceos$cultivo <- factor(df_herbaceos$cultivo, levels=data_herbaceos[["categories"]][["codes"]][[2]], labels=data_herbaceos[["categories"]][["labels"]][[2]])
-df_herbaceos$ano <- as.numeric(df_herbaceos$ano)
-df_herbaceos$sistema <- factor(df_herbaceos$sistema, levels=data_herbaceos[["categories"]][["codes"]][[4]], labels=data_herbaceos[["categories"]][["labels"]][[4]])
-df_herbaceos$valor <- as.numeric(df_herbaceos$valor)
-df_herbaceos$mun <- recode_id_Frontera(df_herbaceos, 'mun')
-
-sup_herbaceos_num <- df_herbaceos %>%
-  filter(mun == params$id_municipio & ano == params$ano & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
-sup_herbaceos <- sup_herbaceos_num %>% format(big.mark = ".", decimal.mark = ",")
-sup_herbaceos_C <- df_herbaceos %>%
-  filter(mun == "ES70" & ano == params$ano & cultivo == "TOTAL CULTIVOS HERBÁCEOS" & sistema == "TOTAL (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
-
-percent_herbaceos <- round(sup_herbaceos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-percent_herbaceos_C <- round(sup_herbaceos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-df_herbaceos <- df_herbaceos %>% 
-  filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL (SECANO+REGADÍO)" & ano == params$ano) %>% 
-  transform(cultivo = trimws(cultivo))
-
-rk_herbaceos_mun <- df_herbaceos %>%
-  filter(mun == params$id_municipio) %>%
-  top_n(8, valor) %>% 
-  arrange(cultivo) %>%
-  arrange(desc(valor)) %>%
-  select(cultivo, valor)
-
-if(length(rk_herbaceos_mun$cultivo) > 8){
-  rk_herbaceos_mun <- rk_herbaceos_mun[1:8, ]
-}
-rk_herbaceos_mun$cultivo <- ordered(rk_herbaceos_mun$cultivo, levels = rk_herbaceos_mun$cultivo[8:1])
-
-df_herbaceos_mun <- df_herbaceos %>%
-  filter(mun == params$id_municipio & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(cultivo, valor)
-df_herbaceos_C <- df_herbaceos %>%
-  filter(mun == "ES70" & cultivo %in% rk_herbaceos_mun$cultivo) %>%
-  select(cultivo, valor)
-df_herbaceos_mun <- df_herbaceos_mun %>%
-  mutate(porcentaje = df_herbaceos_mun$valor / sup_herbaceos_num * 100,
-         valor_Canarias = df_herbaceos_C$valor,
-         porcentaje_Canarias = df_herbaceos_C$valor / sup_herbaceos_C * 100)
-
-df_herbaceos_mun$name_cultivo <- ""
-for(i in 1:nrow(df_herbaceos_mun)) {
-  df_herbaceos_mun$name_cultivo[i] <- get_nombre(paste0(df_herbaceos_mun$cultivo[i]))
-}
-
-df_herbaceos_plot <- df_herbaceos_mun %>%
-  arrange(desc(name_cultivo)) %>%
-  arrange(desc(valor)) %>% 
-  mutate(label = "|")
-df_herbaceos_plot$cultivo <- ordered(df_herbaceos_plot$cultivo, levels = rk_herbaceos_mun$cultivo[8:1])
-df_herbaceos_plot <- df_herbaceos_plot %>%
-  left_join(rk_herbaceos_mun, by = c("cultivo", "valor")) %>% 
-  arrange(desc(cultivo))
-
-df_herbaceos_plot <- df_herbaceos_plot %>% transform(hovertext = paste0(
-  "<b>", cultivo, "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
-  " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
-  " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-  )
-)
-
-df_herbaceos_0 <- df_herbaceos_plot %>% 
-  transform(porcentaje = 0,
-            porcentaje_Canarias = 0,
-            label = "")
-
-df_herbaceos_plot <- df_herbaceos_plot %>% 
-  rbind(df_herbaceos_0) %>% 
-  filter(valor != 0)
-
-if(nrow(df_herbaceos_plot)/2 == 8){
-  col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-  size_text <- 6
-  }else if(nrow(df_herbaceos_plot)/2 == 7){
-    col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-    size_text <- 7
-    }else if(nrow(df_herbaceos_plot)/2 == 6){
-      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      size_text <- 8
-      }else if(nrow(df_herbaceos_plot)/2 == 5){
-        col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
-        size_text <- 9
-        }else if(nrow(df_herbaceos_plot)/2 == 4){
-          col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
-          size_text <- 10
-          }else if(nrow(df_herbaceos_plot)/2 == 3){
-            col <- c("#8CD2EA", "#008BD0", "#005980")
-            size_text <- 15
-            }else if(nrow(df_herbaceos_plot)/2 == 2){
-              col <- c("#8CD2EA", "#005980")
-              size_text <- 20
-            }
-
-g_herbaceos <- ggplot(data = df_herbaceos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = size_text, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
-  theme_minimal() +
-  labs(title = "", x = NULL, y = NULL, colour = " ") +
-  guides(fill = FALSE) +
-  scale_fill_manual(values = col) +
-  theme(axis.text.x = element_text(),
-        axis.text.y = element_text(size = 8),
-        axis.line = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.major.x = element_line(colour = "lightgray"),
-        panel.grid.minor.x = element_line(colour = "lightgray"),
-        panel.background = element_rect(fill = "white"),
-        legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
-  scale_y_discrete(labels = df_herbaceos_plot$name_cultivo[(nrow(df_herbaceos_plot)/2):1])
-
-g_herbaceos <- ggplotly(g_herbaceos, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c((nrow(df_herbaceos_plot)/2+1):24))
-```
-
-```{r Barras leñosos}
-data_lenosos <- fromJSON(params$url.agr_lenosos)
-df_lenosos <- cbind(data.frame(do.call('rbind', data_lenosos[["data"]][["dimCodes"]])), data_lenosos[["data"]][["Valor"]])
-colnames(df_lenosos) <- c('mun', 'cultivo', 'ano', 'sistema', 'valor')
-df_lenosos$cultivo <- factor(df_lenosos$cultivo, levels=data_lenosos[["categories"]][["codes"]][[2]], labels=data_lenosos[["categories"]][["labels"]][[2]])
-df_lenosos$ano <- as.numeric(df_lenosos$ano)
-df_lenosos$sistema <- factor(df_lenosos$sistema, levels=data_lenosos[["categories"]][["codes"]][[4]], labels=data_lenosos[["categories"]][["labels"]][[4]])
-df_lenosos$valor <- as.numeric(df_lenosos$valor)
-df_lenosos$mun <- recode_id_Frontera(df_lenosos, 'mun')
-
-sup_lenosos_num <- df_lenosos %>%
-  filter(mun == params$id_municipio & ano == params$ano & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
-sup_lenosos <- sup_lenosos_num %>% format(big.mark = ".", decimal.mark = ",")
-sup_lenosos_C <- df_lenosos %>%
-  filter(mun == "ES70" & ano == params$ano & cultivo == "TOTAL CULTIVOS LEÑOSOS" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)") %>% select(valor) %>% as.numeric
-
-percent_lenosos <- round(sup_lenosos_num / superficie_cultivada_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-percent_lenosos_C <- round(sup_lenosos_C / sup_Canarias_total * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
-
-df_lenosos <- df_lenosos %>%
-  filter(substring(cultivo, 0,1) == " " & substring(cultivo, 0,4) != " Otr" & sistema == "TOTAL EN PLANTACIÓN REGULAR (SECANO+REGADÍO)" & ano == params$ano) %>% 
-  transform(cultivo = trimws(cultivo))
-
-rk_lenosos_mun <- df_lenosos %>%
-  filter(mun == params$id_municipio) %>%
-  top_n(8, valor) %>% 
-  arrange(cultivo) %>%
-  arrange(desc(valor)) %>%
-  select(cultivo, valor)
-
-if(length(rk_lenosos_mun$cultivo) > 8){
-  rk_lenosos_mun <- rk_lenosos_mun[1:8, ]
-}
-rk_lenosos_mun$cultivo <- ordered(rk_lenosos_mun$cultivo, levels = rk_lenosos_mun$cultivo[8:1])
-
-df_lenosos_mun <- df_lenosos %>%
-  filter(mun == params$id_municipio & cultivo %in% rk_lenosos_mun$cultivo) %>%
-  select(cultivo, valor)
-df_lenosos_C <- df_lenosos %>%
-  filter(mun == "ES70" & cultivo %in% rk_lenosos_mun$cultivo) %>%
-  select(cultivo, valor)
-df_lenosos_mun <- df_lenosos_mun %>%
-  mutate(porcentaje = df_lenosos_mun$valor / sup_lenosos_num * 100,
-         valor_Canarias = df_lenosos_C$valor,
-         porcentaje_Canarias = df_lenosos_C$valor / sup_lenosos_C * 100)
-
-df_lenosos_mun$name_cultivo <- ""
-for(i in 1:nrow(df_lenosos_mun)) {
-  df_lenosos_mun$name_cultivo[i] <- get_nombre(paste0(df_lenosos_mun$cultivo[i]))
-}
-
-df_lenosos_plot <- df_lenosos_mun %>%
-  arrange(desc(name_cultivo)) %>%
-  arrange(desc(valor)) %>% 
-  mutate(label = "|")
-df_lenosos_plot$cultivo <- ordered(df_lenosos_plot$cultivo, levels = rk_lenosos_mun$cultivo[8:1])
-df_lenosos_plot <- df_lenosos_plot %>% 
-  left_join(rk_lenosos_mun, by = c("cultivo", "valor")) %>% 
-  arrange(desc(cultivo))
-
-df_lenosos_plot <- df_lenosos_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(cultivo), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",", nsmall = 1)),
-  " ha (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",", nsmall = 1)),
-  " ha (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-  )
-)
-
-df_lenosos_0 <- df_lenosos_plot %>% 
-  transform(porcentaje = 0,
-            porcentaje_Canarias = 0,
-            label = "")
-
-df_lenosos_plot <- df_lenosos_plot %>%
-  rbind(df_lenosos_0) %>% 
-  filter(valor != 0)
-
-if(nrow(df_lenosos_plot)/2 == 8){
-  col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980", "#00405B")
-  size_text <- 6
-  }else if(nrow(df_lenosos_plot)/2 == 7){
-    col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-    size_text <- 7
-    }else if(nrow(df_lenosos_plot)/2 == 6){
-      col <- c("#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-      size_text <- 8
-      }else if(nrow(df_lenosos_plot)/2 == 5){
-        col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#0072A2", "#005980")
-        size_text <- 9
-        }else if(nrow(df_lenosos_plot)/2 == 4){
-          col <- c("#8CD2EA", "#2CBCE2", "#008BD0", "#005980")
-          size_text <- 10
-          }else if(nrow(df_lenosos_plot)/2 == 3){
-            col <- c("#8CD2EA", "#008BD0", "#005980")
-            size_text <- 15
-            }else if(nrow(df_lenosos_plot)/2 == 2){
-              col <- c("#8CD2EA", "#005980")
-              size_text <- 20
-            }
-
-g_lenosos <- ggplot(data = df_lenosos_plot, aes(y = cultivo, fill = cultivo, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = size_text, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
-  theme_minimal() +
-  labs(title = "", x = NULL, y = NULL, colour = " ") +
-  guides(fill = FALSE) +
-  scale_fill_manual(values = col) +
-  theme(axis.text.x = element_text(),
-        axis.text.y = element_text(size = 8),
-        axis.line = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.major.x = element_line(colour = "lightgray"),
-        panel.grid.minor.x = element_line(colour = "lightgray"),
-        panel.background = element_rect(fill = "white"),
-        legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
-  scale_y_discrete(labels = df_lenosos_plot$name_cultivo[(nrow(df_lenosos_plot)/2):1])
-
-g_lenosos <- ggplotly(g_lenosos, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c((nrow(df_lenosos_plot)/2+1):24))
-```
-
-```{r Ganadería explotaciones}
-data_exp_especies <- fromJSON(params$url.exp_especies)
-df_exp_especies_ <- data.frame(
-  mun = rep(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                   length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
-  ano = rep(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-            each = length(data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
-  id_especie = data_exp_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-  valor = unlist(strsplit(data_exp_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_exp_especies_$mun <- recode_id_Frontera(df_exp_especies_, 'mun')
-df_exp_especies_$valor <- as.numeric(df_exp_especies_$valor)
-
-Num_exp_especies <- df_exp_especies_ %>%
-  filter(mun == municipio_actual$id & ano == params$ano & id_especie == "_T") %>% select(valor) %>% as.numeric
-Num_exp_especies_C <- df_exp_especies_ %>%
-  filter(mun == "ES70" & ano == params$ano & id_especie == "_T") %>% select(valor) %>% as.numeric
-
-df_especies <- data.frame(
-  id_especie = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
-  especie = vector(mode = "character", length = data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
-for(i in 1:data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]) {
-  df_especies$especie[i] <- data_exp_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
-}
-
-order_especies <- c("Conejos", "Abejas", "Gallinas", "Porcinos", "Ovinos", "Caprinos", "Bovinos")
-
-df_exp_especies <- df_exp_especies_ %>% 
-  left_join(df_especies, by = "id_especie") %>% 
-  filter(ano == params$ano & especie %in% order_especies)
-
-df_exp_especies_mun <- df_exp_especies %>%
-  filter(mun == params$id_municipio) %>%
-  select(especie, valor)
-df_exp_especies_C <- df_exp_especies %>%
-  filter(mun == "ES70") %>%
-  select(especie, valor)
-df_exp_especies_mun <- df_exp_especies_mun %>%
-  mutate(porcentaje = df_exp_especies_mun$valor / Num_exp_especies * 100,
-         valor_Canarias = df_exp_especies_C$valor,
-         porcentaje_Canarias = df_exp_especies_C$valor / Num_exp_especies_C * 100)
-
-df_exp_especies_plot <- df_exp_especies_mun %>%
-  mutate(label = "|")
-
-df_exp_especies_plot$especie <- ordered(df_exp_especies_plot$especie, levels = order_especies)
-
-df_exp_especies_plot <- df_exp_especies_plot %>% transform(hovertext = paste0(
-  "<b>", trimws(especie), "</b><br>",
-  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)",
-  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
-  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)), "%)"
-  )
-)
-
-df_exp_especies_0 <- df_exp_especies_plot %>% 
-  transform(porcentaje = 0,
-            porcentaje_Canarias = 0,
-            label = "")
-
-df_exp_especies_plot <- rbind(df_exp_especies_plot, df_exp_especies_0)
-
-col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
-
-g_exp_especies <- ggplot(data = df_exp_especies_plot, aes(y = especie, fill = especie, label = label, name = NULL, text = hovertext)) +
-  geom_bar(stat = "identity", alpha = 0.8, width = 0.6, aes(x = porcentaje)) +
-  geom_text(size = 6, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
-  theme_minimal() +
-  labs(title = "", x = NULL, y = NULL, colour = " ") +
-  guides(fill = FALSE) +
-  scale_fill_manual(values = col) +
-  theme(axis.text.x = element_text(),
-        axis.text.y = element_text(size = 8),
-        axis.line = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.major.x = element_line(colour = "lightgray"),
-        panel.grid.minor.x = element_line(colour = "lightgray"),
-        panel.background = element_rect(fill = "white"),
-        legend.position = "none") +
-  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')})
-
-g_exp_especies <- ggplotly(g_exp_especies, tooltip = c("text")) %>%
-  layout(hoverlabel = "", hovermode = 'y unified', margin = list(t = 0, l = 0, r = 0, b = 0)) %>%
-  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
-  style(hoverinfo = "skip", traces = c((nrow(df_exp_especies_plot)/2+1):46))
-```
-
-```{r Ganadería cabezas}
-data_cab_especies <- fromJSON(params$url.cab_especies)
-df_cab_especies <- data.frame(
-  mun = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[1]][["code"]],
-            each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]) *
-                   length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
-  ano = rep(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]],
-            each = length(data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]])),
-  id_especie = data_cab_especies[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[4]][["code"]],
-  valor = unlist(strsplit(data_cab_especies[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_cab_especies$mun <- recode_id_Frontera(df_cab_especies, 'mun')
-df_cab_especies$valor <- as.numeric(df_cab_especies$valor)
-
-df_especies_ <- data.frame(
-  id_especie = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["id"]],
-  especie = vector(mode = "character", length = data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]))
-for(i in 1:data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["total"]][4]) {
-  df_especies_$especie[i] <- data_cab_especies[["metadata"]][["dimensions"]][["dimension"]][["dimensionValues"]][["value"]][[4]][["name"]][["text"]][[i]][["value"]]
-}
-
-df_cab_especies <- df_cab_especies %>% 
-  right_join(df_especies_, by = "id_especie")
-
-df_cab_especies_mun <- df_cab_especies %>%
-  filter(mun == params$id_municipio & ano == params$ano)
-
-bovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Bovinos")] %>% format(big.mark = ".", decimal.mark = ",")
-caprinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Caprinos")] %>% format(big.mark = ".", decimal.mark = ",")
-ovinos_num <- df_cab_especies_mun$valor[which(df_cab_especies_mun$especie == "Ovinos")] %>% format(big.mark = ".", decimal.mark = ",")
-porcinos_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Porcinos")]] %>% format(big.mark = ".", decimal.mark = ",")
-gallinas_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Gallinas")]] %>% format(big.mark = ".", decimal.mark = ",")
-conejos_num <- df_cab_especies_mun$valor[[which(df_cab_especies_mun$especie == "Conejos")]] %>% format(big.mark = ".", decimal.mark = ",")
-```
-
-```{r Ganadería colmenas}
-data_colmenas <- fromJSON(params$url.colmenas)
-df_colmenas <- data.frame(
-  ano = rep(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[2]][["code"]],
-            each = length(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]])),
-  mun = rep(data_colmenas[["data"]][["dimensions"]][["dimension"]][["representations"]][["representation"]][[3]][["code"]]),
-  valor = unlist(strsplit(data_colmenas[["data"]][["observations"]], split = " | ", fixed = TRUE)))
-df_colmenas$mun <- recode_id_Frontera(df_colmenas, 'mun')
-df_colmenas$valor <- as.numeric(df_colmenas$valor)
-
-abejas_num <- df_colmenas %>%
-  filter(mun == params$id_municipio & ano == params$ano) %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
-```
-
-
-```{r Generación HTML, results="asis"}
-get_indicator2 = function(label, value, image) {
-  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
-}
-get_indicator3 = function(label, value, image) {
-  return(sprintf("<div class='indicator3'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
-}
-```
-
 ```{r Funciones Enlaces, results="asis"}
 get_indicator_mod = function(url, label) {
-  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p></div>", url, label))
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
 }
 get_indicator_mod_first = function(url, label) {
-  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s>%s</a></p><hr class='separator'/>",
-                 url, label))
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
 }
 get_indicator_mod_inter = function(url, label) {
-  return(sprintf("<p class='label_l'><a href=%s>%s</a></p><hr class='separator'/>",
-                 url, label))
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
 }
 get_indicator_mod_last = function(url, label) {
-  return(sprintf("<p class='label_l'><a href=%s>%s</a></p></div>",
-                 url, label))
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
 }
 ```
 
 ```{r csv Enlaces}
 links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
-
+colnames(links)[1] <- "Tematica"
 df_links <- links %>%
   filter(Tematica == "sector_primario") %>%
   select(!c(Tematica, Otros))
@@ -794,10 +57,9 @@ df_links <- links %>%
 <div class="column-modulo-right">
 <div class="highlight-modulo">
 
-<h1 style="color: #008BD0; margin: 0; font-size: 54px;">[Nombre del municipio] en cifras</h1>
-<h3 style="color: #999; margin: 0; float: right; margin-right: 20px;">Temporalidad</h3>
-<h2 style="color: #666; margin: 0;">Sector primario</h2>
-<hr>
+<p style="margin-bottom: 0;"> 
+  <img src="img_dat/prim_encabezado.png"/>
+</p>
 
 </div>
 </div>
@@ -809,23 +71,13 @@ df_links <- links %>%
         df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
 
 <div class="column-modulo-right">
-<div class="highlight-modulo">
-<div class="linechart-placeholder">
-<h2 style="color: #005980; margin: 0;">Superficie cultivada: `r superficie_cultivada` ha</h2>
-<div class="linechart">
-  `r g_line`
-</div>
-<div id="hover-event-placeholder" class="column-4">
-```{r leyendas, results = "asis"}
-for (i in 1:nrow(leyenda_poblacion)) {
-  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
-}
-```
-</div>
-</div>
+<div class="highlight-modulo" style="padding-bottom: 0px;>
+
+<p style="margin-bottom: 0;"> 
+  <img src="img_dat/prim_serie.png"/>
+</p>
 
 </div>
-
 </div>
 </div>
 
@@ -873,21 +125,13 @@ if (nrow(df_links_principales) == 1) {
 ```
 
 <div class="column-modulo-right">
-<div class="highlight-modulo" style="padding: 35px 15px;">
-<div class="row">
-```{r Indicadores principales, results='asis'}
-if(Variacion_Porcentual == "NA"){
-  cat(paste0(
-    "<div class='column-2-ind'>", get_indicator2(paste0('Secano<br/></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-2-ind'>", get_indicator2(paste0('Regadío<br/></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
-}else{
-  cat(paste0(
-    "<div class='column-3-ind'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-3-ind'>", get_indicator2(paste0('Secano<br/></p><p class="label" style="color: #999;">', paste0(percent_secano, '%')), paste0(sup_secano, " ha"), './img/secano.png'), "</div><div class='column-3-ind'>", get_indicator2(paste0('Regadío<br/></p><p class="label" style="color: #999;">', paste0(percent_regadio, '%')), paste0(sup_regadio, " ha"), './img/regadio.png'), "</div>"))
-}
-```
-</div>
+<div class="highlight-modulo" style="padding: 15px 0;">
+
+<p style="margin-bottom: 0;"> 
+  <img src="img_dat/prim_indicadores.png"/>
+</p>
 
 </div>
-
 </div>
 </div>
 
@@ -897,49 +141,14 @@ if(Variacion_Porcentual == "NA"){
         ""
         )`
 
-<div class="column-modulo-right" style="padding: 0px 23px;">
-<div class="row">
-<div class="column-3">
-  <div class="indicator-map">
-  <div class="image map-canarias">
-```{r}
-mapa_Canarias_plot
-```
-  </div>
-  <div class="indicator-content">
-  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
-  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
-  </div>
-</div>
-</div>
-<div class="column-3">
-<div class="indicator-map">
-  <div class="image">
-```{r}
-mapa_isla_plot
-```
-  </div>
-  <div class="indicator-content">
-  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
-  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
-  </div>
-</div>
-</div>
-<div class="column-3">
-<div class="indicator-map">
-  <div class="image">
-```{r}
-mapa_comarca_plot
-```
-</div>
-  <div class="indicator-content">
-  <p class="label"><span class="value">`r rk_comarca`º </span>en la comarca</p>
-  <p class="label2">de `r num_mun_comarca` municipios (`r percent_comarca`%)</p>
-  </div>
-</div>
-</div>
-</div>
+<div class="column-modulo-right">
+<!-- <div class="highlight-modulo"> -->
 
+<p style="margin: 0 23px;"> 
+  <img src="img_dat/prim_mapas.png"/>
+</p>
+
+<!-- </div> -->
 </div>
 </div>
 
@@ -988,47 +197,10 @@ if (nrow(df_links_otros1) == 1) {
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
-<div class="row" style="margin-top: -15px;">
-<div class="column indicator-title">
-  <h3>Cultivos herbáceos</h3>
-</div>
-<div class="column indicator-title">
-  <h3>Cultivos leñosos</h3>
-</div>
-</div>
 
-<div class="row">
-<div class="column highlight">
-<div class="row">
-<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_herbaceos` ha</p><hr class='separator'><p class='label'>Superficie cultivada</p></div></div>
-</div>
-
-<div class="piramide" style="height: 300px">
-  `r g_herbaceos`
-</div>
-
-<div class="progressbar-legend-container" style="margin-top:10px;">
-<div class='progressbar-legend'>
-<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div></div>
-</div>
-
-</div>
-
-<div class="column highlight">
-<div class="row">
-<div class='indicator5'><div class='indicator-content'><p class='value'>`r sup_lenosos` ha</p><hr class='separator'><p class='label'>Superficie cultivada</p></div></div>
-</div>
-
-<div class="piramide" style="height: 300px">
-  `r g_lenosos`
-</div>
-
-<div class="progressbar-legend-container" style="margin-top:10px;">
-<div class='progressbar-legend'>
-<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div></div>
-</div>
-</div>
-</div>
+<p style="margin-bottom: 0;"> 
+  <img src="img_dat/prim_otros1.png"/>
+</p>
 
 </div>
 </div>
@@ -1079,55 +251,12 @@ if (nrow(df_links_otros2) == 1) {
 
 <div class="column-modulo-right">
 <div class="highlight-modulo" style="padding-bottom: 20px;">
-<div class="indicator-title-row" style="margin-top: 4px;">
-  <h3>Ganadería</h3>
-</div>
-<div class="row">
-<div class="column indicator-title" style="margin-top: 0px;">
-  <h3>Número de explotaciones</h3>
-</div>
-<div class="column indicator-title" style="margin-top: 0px;">
-  <h3>Número de cabezas/colmenas</h3>
-</div>
-</div>
 
-<div class="row">
-<div class="column highlight">
-<div class="row">
-<div class='indicator5'><div class='indicator-content'><p class='value'>`r Num_exp_especies`</p><hr class='separator'><p class='label'>Explotaciones</p></div></div>
-</div>
-
-<div class="piramide" style="height: 240px; padding-top: 20px;">
-  `r g_exp_especies`
-</div>
-
-<div class="progressbar-legend-container" style="margin-top: 10px;">
-<div class='progressbar-legend'>
-<div class='progress-bar-C-b' style='margin-top: -4px;'>|</div><div class='sp-content' style='margin-top: 5px;'>Canarias</div>
-</div>
-</div>
+<p style="margin-bottom: 0;"> 
+  <img src="img_dat/prim_otros2.png"/>
+</p>
 
 </div>
-
-<div class="column highlight" style="padding: 54px 0;">
-<div class="row" style="margin-bottom: 40px;">
-  <div class="column-2">`r get_indicator3("Bovinos", bovinos_num, "./img/bovino.png")`</div>
-  <div class="column-2">`r get_indicator3("Caprinos", caprinos_num, "./img/caprino.png")`</div>
-</div>
-<div class="row" style="margin-bottom: 41px;">
-  <div class="column-2">`r get_indicator3("Ovinos", ovinos_num, "./img/ovino.png")`</div>
-  <div class="column-2">`r get_indicator3("Porcinos", porcinos_num, "./img/porcino.png")`</div>
-</div>
-<div class="row">
-  <div class="column-3-ind" style="height: 50px;">`r get_indicator3("Gallinas", gallinas_num, "./img/gallina.png")`</div>
-  <div class="column-3-ind" style="height: 50px;">`r get_indicator3("Colmenas", abejas_num, "./img/abeja.png")`</div>
-  <div class="column-3-ind" style="height: 50px; float: center;">`r get_indicator3("Conejos", conejos_num, "./img/conejo.png")`</div>
-</div>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 

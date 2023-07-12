@@ -1,0 +1,1070 @@
+---
+title: ''
+params:
+  id_municipio: 38048
+  ano: 2021
+  mes: 12
+  url.mes: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/MATRICULA_VEHICULOS
+  url.cl_area: https://datos.canarias.es/api/estadisticas/structural-resources/v1.0/codelists/ISTAC/CL_AREA_ES70_COMARCAS/01.000/codes
+  url.mapa: https://datos.canarias.es/catalogos/estadisticas/dataset/6dd8baf4-14f4-43a3-88b2-984d034c965c/resource/812f22ae-62a5-4cea-8052-b0269b1bd491/download/municipios_20170101.json
+  url.dist_mun: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/POBLACION
+  url.parque: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BREGIONS%7CMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.parque_tur: https://datos.canarias.es/api/estadisticas/indicators/v1.0/indicators/PARQUE_VEHICULOS_TURISMOS/data?representation=MEASURE%5BABSOLUTE%7CANNUAL_PERCENTAGE_RATE%5D&granularity=GEOGRAPHICAL%5BMUNICIPALITIES%5D%2CTIME%5BMONTHLY%5D
+  url.tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=9019908a-7837-4af4-bef0-b4cfa226cb15
+  url.matr_tipos: http://www.gobiernodecanarias.org/istac/jaxi-istac/tabla.do?accion=jsonMtd&uuidConsulta=71de0bba-9447-4c77-8ba5-3e660f535233
+output:
+  html_document:
+    df_print: paged
+    css: styles/MODULO.css
+    self_contained: false
+    lib_dir: libs
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{r librerías, include=FALSE}
+list.of.packages <- c("jsonlite", "ggplot2", "knitr", "data.table", "plotly", "plyr", "dplyr", "scales", "htmlwidgets", "sf", "fuzzyjoin", "xml2", "XML", "tidyverse", "tmap", "magrittr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+sapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r funciones, include=FALSE}
+signo <- function(value) {
+  if (value > 0){sign <- "más"} else {sign <- "menos"}
+  return(sign)
+}
+
+"%notin%" <- Negate("%in%")
+
+get_nombre <- function(nombre) {
+  string_list <- str_split(nombre, pattern = " ")[[1]]
+  result <- ""
+  line.char <- 0
+  for(word.index in 1:length(string_list)) {
+    if((line.char + nchar(string_list[word.index])) < 18) {
+      result <- paste0(result, " ", string_list[word.index])
+      line.char <- line.char + 1 + nchar(string_list[word.index])
+    } else {
+      result <- paste0(result, "<br>", string_list[word.index])
+      line.char <- nchar(string_list[word.index])
+    }
+  }
+  trimws(result)
+}
+```
+
+```{r Mes}
+data_mes <- fromJSON(params$url.mes)
+
+mes <- data.frame(code = data_mes[["dimension"]][["TIME"]][["representation"]][["code"]],
+                  periodo = data_mes[["dimension"]][["TIME"]][["representation"]][["title"]][["es"]],
+                  granularidad = data_mes[["dimension"]][["TIME"]][["representation"]][["granularityCode"]]) %>% 
+  filter(granularidad == "MONTHLY") %>% select(!granularidad)
+
+mes <- mes %>% 
+  transform(periodo_formatted = paste0(unlist(lapply(strsplit(periodo, " "), '[[', 2)), " ", unlist(lapply(strsplit(periodo, " "), '[[', 1)))) %>% 
+  mutate(order = as.integer(order(mes$code, decreasing = FALSE)))
+mes_actual <- mes %>% filter(substring(code, 0,4) == params$ano & as.numeric(substring(code, 6,8)) == params$mes)
+mes_tva <- mes[mes$order == mes[mes_actual$code == mes$code, ]$order - 12, ]
+```
+
+```{r Municipio actual}
+CL_AREA <- as_list(read_xml(params$url.cl_area))
+
+df_CL_AREA <- tibble::as_tibble(CL_AREA) %>% 
+  unnest_wider('codes') %>%
+  transform(name = lapply(name, '[[', 2)) %>% 
+  unnest(cols = names(.)) %>%
+  unnest(cols = names(.)) %>%
+  readr::type_convert() %>%
+  mutate(parent = gsub("^.*).", "", parent)) %>%
+  select(code = id, value = name, parent)
+
+df_CL_AREA_mun <- df_CL_AREA %>% 
+  select(id = code, municipio = value, code = parent) %>%
+  filter(substring(id, 0,2) != "ES") %>% 
+  transform(id = sub("\\_.*", "", id)) %>%
+  filter(nchar(id) > 0 & !grepl("(", municipio, fixed = TRUE)) %>%
+  left_join(df_CL_AREA, by="code") %>%
+  select(id, municipio, code = parent, id_comarca = code, comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, code = parent, id_gran_comarca = code, gran_comarca = value) %>% 
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>%
+  left_join(df_CL_AREA, by="code") %>% 
+  select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value)
+
+municipio_actual <- df_CL_AREA_mun[df_CL_AREA_mun$id == params$id_municipio,]
+```
+
+```{r Normalización de municipios} 
+recode_mun.from <- c("Oliva (La)", "Palmas de Gran Canaria (Las)", "Valsequillo", "Santa María de Guía", "Aldea de San Nicolás (La)", "Santa Lucía", "Pinar de El Hierro (El)", "Pinar de El Hierro, El", "Fuencaliente", "Llanos de Aridane (Los)", "Paso (El)", "Laguna (La)", "Rosario (El)", "Matanza de Acentejo (La)", "Sauzal (El)", "Victoria de Acentejo (La)", "Silos (Los)", "Tanque (El)", "Guancha (La)", "Orotava (La)", "Realejos (Los)", "San Miguel", "Vilaflor", "Güimar", "Icod de Los Vinos", "Puerto de La Cruz", "San Juan de La Rambla", "San Sebastián de la Gomera", "Santa Cruz de la Palma")
+recode_mun.to <- c("La Oliva", "Las Palmas de Gran Canaria", "Valsequillo de Gran Canaria", "Santa María de Guía de Gran Canaria", "La Aldea de San Nicolás", "Santa Lucía de Tirajana", "El Pinar de El Hierro", "El Pinar de El Hierro", "Fuencaliente de La Palma", "Los Llanos de Aridane", "El Paso", "San Cristóbal de La Laguna", "El Rosario", "La Matanza de Acentejo", "El Sauzal", "La Victoria de Acentejo", "Los Silos", "El Tanque", "La Guancha", "La Orotava", "Los Realejos", "San Miguel de Abona", "Vilaflor de Chasna", "Güímar", "Icod de los Vinos", "Puerto de la Cruz", "San Juan de la Rambla", "San Sebastián de La Gomera", "Santa Cruz de La Palma")
+
+recode_mun <- function(df, colname) {
+  df[,colname] = trimws(df[,colname])
+  df[,colname] = mapvalues(df[,colname], from = recode_mun.from, to = recode_mun.to)
+  df[,colname]
+}
+```
+
+```{r Municipios relacionados}
+datamun <- fromJSON(params$url.dist_mun)
+df_localizacion <- data.frame(mun = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["code"]],
+                              nombre = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["title"]][["es"]],
+                              latitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["latitude"]],
+                              longitud = datamun[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["longitude"]]) %>% 
+  filter(substring(mun, 0,2) != "ES")
+df_localizacion$nombre <- recode_mun(df_localizacion, 'nombre')
+distancias_mun <- df_localizacion %>%
+  st_as_sf(coords = c("longitud", "latitud"), crs = 4326) %>%
+  st_distance
+
+distancias_mun <- data.frame(
+  mun = df_localizacion$mun,
+  nombre = df_localizacion$nombre,
+  distancia = distancias_mun[as.numeric(rownames(df_localizacion[df_localizacion$mun == params$id_municipio, ])),] / 1000
+)
+
+seleccion_mun <- function(df_variable, variable, p = 0.5) {
+  df_dif <- df_variable %>% left_join(distancias_mun, by = "mun") 
+  mun_actual <- df_dif[df_dif$mun == params$id_municipio,]
+  
+  df_result <- df_dif %>%
+    mutate(
+      dif = abs(df_dif[,variable] - mun_actual[1,variable]),
+      distancia_N = scale(distancia),
+      dif_N = scale(dif),
+      coeficientes = p * distancia_N + (1-p) * dif_N
+    ) %>%
+  arrange(coeficientes)
+  
+  df_result[1:3,]
+}
+```
+
+```{r Gráfico evolución}
+data_u <- fromJSON(params$url.parque)
+df_u <- data.frame(
+  mun = rep(names(data_u[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_u[["dimension"]][["TIME"]][["representation"]][["size"]] * data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_u[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_u[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_u[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = round(as.numeric(data_u[["observation"]]), 1)) %>%
+  spread(medida, valor) %>%
+  select(mun, mes, valor = ABSOLUTE, tasa = ANNUAL_PERCENTAGE_RATE)
+
+ano_min <- min(df_u$mes) %>% substring(0,4) %>% as.numeric
+ano_max <- max(df_u$mes) %>% substring(0,4) %>% as.numeric
+
+related_mun <- df_u %>% filter(mes == mes_actual$code & mun != "ES70")
+related_mun <- seleccion_mun(related_mun %>% select(mun, valor), 'valor')
+if(related_mun$mun[1] != params$id_municipio) {stop("Error: indicador principal desconocido")}
+
+df <- related_mun %>%
+  select(mun, nombre) %>%
+  left_join(df_u, by = "mun") %>%
+  select(id = mun, mes, nombre, valor, tasa) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>%
+  select(id, code = mes, nombre, valor, tasa) %>%
+  left_join(mes, by = "code") %>% 
+  filter(order < mes_actual$order+1)
+
+if(substring(mes_actual$code, 0,4) != 2009){
+  df <- df %>% filter(substring(code, 0,4) != 2008)
+}
+
+g_line_colours <- setNames(c('rgba(0, 89, 128, 0.8)', 'rgba(0, 139, 208, 0.8)', 'rgba(140, 210, 234, 0.8)'), related_mun$nombre)
+
+leyenda.template <- "<div class='serie-placeholder serie-placeholder-%s'><div class='sp-bullet' style='background-color: %s'></div><div class='sp-content'><span class='sp-municipio'>%s</span><br/>Número de vehículos: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span></div></div>"
+leyenda.content <- "<span class='sp-municipio'>%s</span><br/>Número de vehículos: <span class='sp-habitantes'>%s</span><br/>Tasa de variación: <span class='sp-tasa'>%s</span>"
+
+leyenda_poblacion <- df %>% filter(code == mes_actual$code) %>%
+  mutate(valor = ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+         tasa = ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))) %>%
+  left_join(data.frame(cbind(nombre = rownames(data.frame(g_line_colours)), color = g_line_colours)), by = "nombre")
+
+df <- df %>% mutate(
+    tooltip = ifelse(code == mes_actual$code,
+                     sprintf(leyenda.content, nombre, ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%"))),
+                     sprintf(leyenda.content, nombre, paste0(ifelse(is.na(valor), " -", format(valor, big.mark = ".", decimal.mark = ",")), ' (',periodo_formatted,')'),
+                             ifelse(is.na(tasa), " -", paste0(format(tasa, big.mark = ".", decimal.mark = ",", nsmall = 1), "%")))
+    )
+)
+
+g_line <- ggplot(data = df, 
+                 aes(x = reorder(code, order), y = valor, group = nombre, colour = nombre, text = tooltip)) +
+  geom_line(size = 0.7) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none") +
+  scale_colour_manual(values = g_line_colours) +
+  scale_size_manual(values = c(1, 0.1, 0.1)) +
+  scale_x_discrete(breaks = function(x) {paste0(ano_min:ano_max,"-01")}, labels = function(x){substr(x, 0, 4)}) +
+  scale_y_continuous(labels = function(x) {paste0(format(x, big.mark = ".", decimal.mark = ","), "")}, n.breaks = 6, limits = c(0, NA))
+
+g_line <- ggplotly(g_line, tooltip = "text") %>%
+  config(displaylogo = FALSE, modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  layout(hoverlabel = "", hovermode = 'x unified',
+         xaxis = list(autorange = FALSE,
+                      range = c(max(0.8, nrow(df[df$nombre == municipio_actual$municipio, ]) - 5*12),
+                                nrow(df[df$nombre == municipio_actual$municipio, ])
+                                ),
+                      rangeslider = list(type = "date", thickness = 0.04))) %>%
+  onRender("
+    function(el) {
+      var municipios = document.getElementsByClassName('sp-municipio');
+      var contents = document.getElementsByClassName('sp-content');
+      var init_contents = [];
+      for (var i = 0; i < municipios.length; i++) {
+        init_contents[i] = contents[i].innerHTML;
+      }
+      
+      el.on('plotly_hover', function(d) {
+        highlight(d);
+      });
+      
+      el.on('plotly_unhover', function(d) {
+        reset(d);
+      });
+      
+      el.on('plotly_click', function(d) {
+        highlight(d);
+      });
+      
+      function highlight(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = '<span class=\"sp-municipio\">' + municipios[i].textContent + '</span>';
+        }
+        for (point in d.points) {
+          for (var i = 0; i < municipios.length; i++) {
+            if (d.points[point].data.legendgroup.includes(municipios[i].textContent)) {
+              var x = d.points[point].x;
+              contents[i].innerHTML = d.points[point].text;
+            }
+          }
+        }
+      }
+      
+      function reset(d) {
+        for (var i = 0; i < municipios.length; i++) {
+          contents[i].innerHTML = init_contents[i];
+        }
+      }
+    }
+  ") 
+```
+
+```{r Número de vehículos y su variación porcentual}
+df_lv <- df_u %>% filter(mun == params$id_municipio & mes == mes_actual$code)
+
+Num_Vehiculos_num <- df_lv %>% select(valor) %>% as.numeric
+if(is.na(Num_Vehiculos_num)) {stop("Error: indicador principal desconocido")}
+Num_Vehiculos <- df_lv %>% select(valor) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",")
+Variacion_Porcentual <- df_lv %>% select(tasa) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+if(Variacion_Porcentual != "NA"){
+  if(df_lv$tasa == 0){
+    diferencia <- Num_Vehiculos_num - df$valor[which(df$id == params$id_municipio & df$code == mes_tva$code)]
+    Imagen_Variacion <- ifelse(signo(diferencia) == "más", './img/up.png', './img/down.png')
+  }else{
+    Imagen_Variacion <- ifelse(signo(Variacion_Porcentual) == "más", './img/up.png', './img/down.png')
+  }
+}
+```
+
+```{r Otros indicadores}
+data_Tur_Parque <- fromJSON(params$url.parque_tur)
+
+df_Tur_Parque <- data.frame(
+  mun = rep(names(data_Tur_Parque[["dimension"]][["GEOGRAPHICAL"]][["representation"]][["index"]]),
+                  each=data_Tur_Parque[["dimension"]][["TIME"]][["representation"]][["size"]] * data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  mes = rep(names(data_Tur_Parque[["dimension"]][["TIME"]][["representation"]][["index"]]),
+            each=data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["size"]]),
+  medida = names(data_Tur_Parque[["dimension"]][["MEASURE"]][["representation"]][["index"]]),
+  valor = as.numeric(data_Tur_Parque[["observation"]]))
+df_Tur_Parque$valor <- as.numeric(df_Tur_Parque$valor)
+
+Num_Tur_Parque_num <- df_Tur_Parque %>% filter(mun == params$id_municipio & mes == mes_actual$code & medida == "ABSOLUTE") %>% select(valor) %>% as.numeric
+Num_Tur_Parque <- Num_Tur_Parque_num %>% round(0) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+Percent_Tur_Parque <- round(Num_Tur_Parque_num / Num_Vehiculos_num * 100, 1) %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Mapas}
+palette <- c('#8CD2EA', '#005980')
+
+mapa_Canarias <- st_read(params$url.mapa, quiet = TRUE)
+
+mapa_Canarias <- rbind(
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode != municipio_actual$id), col = "0"),
+  cbind(filter(mapa_Canarias, mapa_Canarias$geocode == municipio_actual$id), col = "1")
+) %>% 
+  select(-c(notas, utm_x_capi, utm_y_capi, long_capi, lati_capi)) %>%
+  st_sf
+
+mapa_Canarias_plot <- tm_shape(mapa_Canarias) + 
+                      tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                      tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA, outer.margins = 0, inner.margins = 0) +
+                      tmap_options(check.and.fix = TRUE)
+
+mapa_isla <- filter(mapa_Canarias, mapa_Canarias$gcd_isla == municipio_actual$id_isla) %>% select(geocode, col)
+
+mapa_isla_plot <- tm_shape(mapa_isla) + 
+                  tm_borders() + 
+                  tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                  tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                  tmap_options(check.and.fix = TRUE)
+
+mapa_comarca <- filter(mapa_Canarias, mapa_Canarias$geocode %in% (df_CL_AREA_mun[df_CL_AREA_mun$id_comarca == municipio_actual$id_comarca,]$id)) %>% select(geocode, col)
+
+mapa_comarca_plot <- tm_shape(mapa_comarca) + 
+                     tm_borders() + 
+                     tm_fill(col = "col", palette = palette, alpha = 0.8, legend.show = F) +
+                     tm_layout(frame = FALSE, frame.lwd = NA, panel.label.bg.color = NA) +
+                     tmap_options(check.and.fix = TRUE)
+```
+
+```{r Rankings}
+df_ranking <- df_u %>%
+  select(id = mun, mes, valor) %>%
+  filter(mes == mes_actual$code & !is.na(valor)) %>%
+  left_join(df_CL_AREA_mun, by = "id") %>% 
+  arrange(desc(valor))
+
+Num_vehiculos_Canarias <- df_u %>% filter(mun == "ES70" & mes == mes_actual$code) %>% select(valor) %>% as.numeric
+
+rk_canarias <- grep(params$id_municipio, df_ranking$id)
+num_mun_canarias <- nrow(df_ranking)
+percent_canarias <- format(round(df_ranking[which(df_ranking$id==params$id_municipio),]$valor / Num_vehiculos_Canarias * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_ranking_isla <- df_ranking %>% filter(isla == municipio_actual$isla)
+rk_isla <- grep(params$id_municipio, df_ranking_isla$id)
+num_mun_isla <- nrow(df_ranking_isla)
+percent_isla <- format(round(df_ranking_isla[which(df_ranking_isla$id==params$id_municipio),]$valor / sum(df_ranking_isla$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+
+df_ranking_comarca <- df_ranking %>% filter(comarca == municipio_actual$comarca)
+rk_comarca <- grep(params$id_municipio, df_ranking_comarca$id)
+num_mun_comarca <- nrow(df_ranking_comarca)
+percent_comarca <- format(round(df_ranking_comarca[which(df_ranking_comarca$id==params$id_municipio),]$valor / sum(df_ranking_comarca$valor) * 100, 1), big.mark = ".", decimal.mark = ",", nsmall = 1)
+```
+
+```{r Tipos de vehículo y tipos de combustible}
+data_tipos <- fromJSON(params$url.tipos)
+
+df_tipos <- cbind(data.frame(do.call('rbind', data_tipos[["data"]][["dimCodes"]])), data_tipos[["data"]][["Valor"]])
+colnames(df_tipos) <- c('veh', 'combustible', 'mun', 'periodo', 'valor')
+df_tipos$veh <- factor(df_tipos$veh, levels=data_tipos[["categories"]][["codes"]][[1]], labels=data_tipos[["categories"]][["labels"]][[1]])
+df_tipos$combustible <- factor(df_tipos$combustible, levels=data_tipos[["categories"]][["codes"]][[2]], labels=data_tipos[["categories"]][["labels"]][[2]])
+df_tipos$mun <- factor(df_tipos$mun, levels=data_tipos[["categories"]][["codes"]][[3]], labels=data_tipos[["categories"]][["labels"]][[3]])
+df_tipos$periodo <- factor(df_tipos$periodo, levels=data_tipos[["categories"]][["codes"]][[4]],
+                           labels=paste0(substring(data_tipos[["categories"]][["codes"]][[4]], 0,4), "-", substring(data_tipos[["categories"]][["codes"]][[4]], 6,7)))
+df_tipos$valor <- as.numeric(df_tipos$valor)
+df_tipos$mun <- recode_mun(df_tipos, 'mun')
+```
+
+```{r Barras Tipos de vehículo}
+rk_vehiculos_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>%
+  arrange(desc(veh)) %>%
+  arrange(valor) %>%
+  select(veh, valor)
+rk_vehiculos_mun$veh <- ordered(rk_vehiculos_mun$veh, levels = rk_vehiculos_mun$veh)
+rk_vehiculos_mun <- rk_vehiculos_mun %>% 
+  mutate(order = as.integer(rk_vehiculos_mun$valor, decreasing = FALSE))
+
+df_vehiculos_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(veh, valor)
+
+df_vehiculos_C <- df_tipos %>%
+  filter(mun == "CANARIAS" & periodo == mes_actual$code & combustible == "TOTAL" & veh != "TOTAL" & substring(veh, 0,1) != " ") %>% 
+  select(veh, valor)
+df_vehiculos_mun <- df_vehiculos_mun %>%
+  mutate(porcentaje = df_vehiculos_mun$valor / Num_Vehiculos_num * 100,
+         valor_Canarias = df_vehiculos_C$valor,
+         porcentaje_Canarias = df_vehiculos_C$valor / Num_vehiculos_Canarias * 100)
+
+df_vehiculos_plot <- df_vehiculos_mun %>%
+  mutate(label = "|")
+df_vehiculos_plot$veh <- ordered(df_vehiculos_plot$veh, levels = rk_vehiculos_mun$veh)
+
+df_vehiculos_plot <- df_vehiculos_plot %>%
+  left_join(rk_vehiculos_mun, by = c("veh", "valor")) %>% 
+  arrange(desc(order))
+
+df_vehiculos_plot <- df_vehiculos_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(veh), "</b><br>",
+  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ",")), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
+  )
+)
+
+df_vehiculos_plot$name_veh <- ""
+for(i in 1:nrow(df_vehiculos_plot)) {
+  df_vehiculos_plot$name_veh[i] <- get_nombre(paste0(df_vehiculos_plot$veh[i]))
+}
+
+df_vehiculos_0 <- df_vehiculos_plot %>% 
+  transform(porcentaje = 0,
+            porcentaje_Canarias = 0,
+            label = "")
+
+df_vehiculos_plot <- rbind(df_vehiculos_plot, df_vehiculos_0)
+
+col <- c("#D5EDFA", "#8CD2EA", "#2CBCE2", "#00A6DC", "#008BD0", "#0072A2", "#005980")
+
+g_vehiculos <- ggplot(data = df_vehiculos_plot, aes(y = reorder(veh, order), fill = veh, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  theme_minimal() +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = col) +
+  theme(axis.text.x = element_text(),
+        axis.text.y = element_text(size = 8),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_vehiculos_plot$name_veh[(nrow(df_vehiculos_plot)/2):1])
+
+g_vehiculos <- ggplotly(g_vehiculos, tooltip = c("text")) %>%
+  layout(hovermode = 'y unified', margin = list(l = 0, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c((nrow(df_vehiculos_plot)/2+1):nrow(df_vehiculos_plot)))
+```
+
+```{r Progress-bar Tipos de combustible}
+rk_combustibles_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
+  arrange(valor) %>%
+  select(combustible, valor)
+rk_combustibles_mun <- rk_combustibles_mun %>% mutate(porcentaje = rk_combustibles_mun$valor/ Num_Vehiculos_num * 100)
+rk_combustibles_mun$combustible <- ordered(rk_combustibles_mun$combustible, levels = rk_combustibles_mun$combustible)
+
+df_combustibles_mun <- df_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code & combustible != "TOTAL" & veh == "TOTAL" & substring(veh, 0,1) != " ") %>%
+  select(combustible, valor)
+
+df_combustibles_mun <- df_combustibles_mun %>%
+  mutate(porcentaje = df_combustibles_mun$valor / Num_Vehiculos_num * 100)
+
+valor_gasolina <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Gasolina")]
+valor_diesel <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Diésel")]
+valor_electrico <- df_combustibles_mun$valor[which(df_combustibles_mun$combustible == "Eléctrico")]
+valor_otros <- sum(df_combustibles_mun %>%
+                     filter(combustible %notin% c("Gasolina", "Diésel", "Eléctrico")) %>%
+                     select(valor))
+
+vehiculos_unidad <- function(valor){
+  if(valor == 1){
+    valor <- paste0(valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0), " vehículo)")
+  } else {
+    valor <- paste0(valor %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0), " vehículos)")
+  }
+}
+
+valor_gasolina_l <- vehiculos_unidad(valor_gasolina)
+valor_diesel_l <- vehiculos_unidad(valor_diesel)
+valor_electrico_l <- vehiculos_unidad(valor_electrico)
+valor_otros_l <- vehiculos_unidad(ifelse(valor_otros == 0, 0, valor_otros))
+
+porc_gasolina <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Gasolina")]
+porc_diesel <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Diésel")]
+porc_gasolina_diesel <- porc_gasolina + porc_diesel
+porc_electrico <- df_combustibles_mun$porcentaje[which(df_combustibles_mun$combustible == "Eléctrico")]
+porc_otros <- ifelse(valor_otros == 0, 0, 100 - porc_gasolina - porc_diesel - porc_electrico)
+
+# porc_gasolina_l <- round(porc_gasolina, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+# porc_diesel_l <- round(porc_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+porc_gasolina_diesel_l <- round(porc_gasolina_diesel, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+porc_electrico_l <- round(porc_electrico, 1) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 1)
+# porc_otros_l <- ifelse(valor_otros == 0, 0, round(porc_otros, 1)) %>% as.numeric %>% format(big.mark = ".", decimal.mark = ",", nsmall = 0)
+```
+
+```{r Progress-bar Otros tipos de combustible}
+lista_tipos <- c("Otros", "Gasolina", "Diésel", "Eléctrico")
+df_combustibles_otros <- df_combustibles_mun %>%
+  filter(combustible %notin% lista_tipos) %>%
+  top_n(4) %>% 
+  arrange(-valor)
+
+df_combustibles_otros <- df_combustibles_otros %>%
+  mutate(porcentaje_barra = df_combustibles_otros$valor / sum(df_combustibles_otros$valor) * 100,
+         porcentaje = df_combustibles_otros$valor / Num_Vehiculos_num * 100)
+
+for (i in 1:nrow(df_combustibles_otros)) {
+  if(df_combustibles_otros$porcentaje[i] >= 0.1) {
+    lista_tipos <- c(lista_tipos, as.character(df_combustibles_otros$combustible[i]))
+  }
+}
+lista_tipos <- lista_tipos[2:length(lista_tipos)]
+
+df_combustibles_resto <- df_combustibles_mun %>%
+  filter(combustible %notin% lista_tipos)
+
+tipo <- c()
+for (i in 1:(10-nrow(df_combustibles_resto))) {
+  tipo[i] <- as.character(df_combustibles_otros$combustible[i])
+}
+
+porc <- c()
+valor_l <- c()
+for (i in 1:length(tipo)) {
+  porc[i] <- df_combustibles_otros$porcentaje_barra[i]
+  valor_l[i] <- vehiculos_unidad(df_combustibles_otros$valor[i])
+}
+
+if(sum(df_combustibles_resto$valor) != 0) {
+  tipo[i+1] <- "Resto de tipos de combustible"
+  porc[i+1] <- sum(df_combustibles_resto$valor) / sum(df_combustibles_otros$valor) * 100
+  valor_l[i+1] <- vehiculos_unidad(sum(df_combustibles_resto$valor))
+}
+```
+
+```{r Matriculaciones Tipos}
+data_matr_tipos <- fromJSON(params$url.matr_tipos)
+
+df_matr_tipos <- cbind(data.frame(do.call('rbind', data_matr_tipos[["data"]][["dimCodes"]])), data_matr_tipos[["data"]][["Valor"]])
+colnames(df_matr_tipos) <- c('veh', 'mun', 'periodo', 'valor')
+df_matr_tipos$veh <- factor(df_matr_tipos$veh, levels=data_matr_tipos[["categories"]][["codes"]][[1]], labels=data_matr_tipos[["categories"]][["labels"]][[1]])
+df_matr_tipos$mun <- factor(df_matr_tipos$mun, levels=data_matr_tipos[["categories"]][["codes"]][[2]], labels=data_matr_tipos[["categories"]][["labels"]][[2]])
+df_matr_tipos$periodo <- factor(df_matr_tipos$periodo, levels=data_matr_tipos[["categories"]][["codes"]][[3]],
+                                labels=paste0(substring(data_matr_tipos[["categories"]][["codes"]][[3]], 0,4), "-", substring(data_matr_tipos[["categories"]][["codes"]][[3]], 6,7)))
+df_matr_tipos$valor <- as.numeric(df_matr_tipos$valor)
+df_matr_tipos$mun <- recode_mun(df_matr_tipos, 'mun')
+
+Num_Matriculaciones_num <- df_matr_tipos %>% filter(mun == municipio_actual$municipio & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric
+Num_Matriculaciones_C <- df_matr_tipos %>% filter(mun == "CANARIAS" & periodo == mes_actual$code & veh == "TOTAL") %>% select(valor) %>% as.numeric
+
+df_matr_tipos <- df_matr_tipos %>%
+  filter(veh %notin% c("TOTAL", " TOTAL DE AUTOMÓVILES")) %>%
+  transform(veh = trimws(veh)) %>%
+  transform(veh = str_to_sentence(veh)) %>%
+  transform(veh = gsub("Vehiculos especiales", "Vehículos especiales", veh))
+
+if(Num_Matriculaciones_num == 0) {
+  rk_matr_tipos_mun <- df_matr_tipos %>%
+    filter(mun == "CANARIAS" & periodo == mes_actual$code) %>%
+    arrange(desc(veh)) %>%
+    arrange(valor) %>%
+    select(veh, valor)
+  } else {
+    rk_matr_tipos_mun <- df_matr_tipos %>%
+      filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>%
+      arrange(desc(veh)) %>%
+      arrange(valor) %>%
+      select(veh, valor)
+  }
+
+rk_matr_tipos_mun$veh <- ordered(rk_matr_tipos_mun$veh, levels = rk_matr_tipos_mun$veh)
+
+rk_matr_tipos_mun <- rk_matr_tipos_mun %>%
+  mutate(order = as.integer(order(rk_matr_tipos_mun$valor, decreasing = FALSE)))
+
+df_matr_tipos_mun <- df_matr_tipos %>%
+  filter(mun == municipio_actual$municipio & periodo == mes_actual$code) %>% select(!c(mun, periodo))
+df_matr_tipos_C <- df_matr_tipos %>%
+  filter(mun == "CANARIAS" & periodo == mes_actual$code) %>% 
+  select(veh, valor)
+df_matr_tipos_mun <- df_matr_tipos_mun %>%
+  mutate(porcentaje = df_matr_tipos_mun$valor / Num_Matriculaciones_num * 100,
+         valor_Canarias = df_matr_tipos_C$valor,
+         porcentaje_Canarias = df_matr_tipos_C$valor / Num_Matriculaciones_C * 100)
+
+df_matr_tipos_plot <- df_matr_tipos_mun %>%
+  mutate(label = "|")
+df_matr_tipos_plot$veh <- ordered(df_matr_tipos_plot$veh, levels = rk_matr_tipos_mun$veh)
+
+df_matr_tipos_plot <- df_matr_tipos_plot %>%
+  left_join(rk_matr_tipos_mun, by = c("veh", "valor")) %>% 
+  arrange(desc(order))
+
+df_matr_tipos_plot <- df_matr_tipos_plot %>% transform(hovertext = paste0(
+  "<b>", trimws(veh), "</b><br>",
+  trimws(format(valor, big.mark = ".", decimal.mark = ",")),
+  " (", ifelse(is.nan(porcentaje), "0,0", trimws(format(round(porcentaje, 1), big.mark = ".", decimal.mark = ","))), "%)",
+  "<br>Canarias: ", trimws(format(valor_Canarias, big.mark = ".", decimal.mark = ",")),
+  " (", trimws(format(round(porcentaje_Canarias, 1), big.mark = ".", decimal.mark = ",")), "%)"
+  )
+)
+
+df_matr_tipos_plot$name_veh <- ""
+for(i in 1:nrow(df_matr_tipos_plot)) {
+  df_matr_tipos_plot$name_veh[i] <- get_nombre(paste0(df_matr_tipos_plot$veh[i]))
+}
+
+df_matr_tipos_0 <- df_matr_tipos_plot %>% 
+  transform(porcentaje = 0,
+            porcentaje_Canarias = 0,
+            label = "")
+
+df_matr_tipos_plot <- rbind(df_matr_tipos_plot, df_matr_tipos_0)
+
+col <- c("#D5EDFA", "#8CD2EA", "#87CAE0", "#2CBCE2", "#28ACD1", "#00A6DC", "#0099CC", "#008BD0", "#0083C4", "#0072A2", "#005980", "#00405B")
+
+g_matr_tipos <- ggplot(data = df_matr_tipos_plot, aes(y = reorder(veh, order), fill = veh, label = label, name = NULL, text = hovertext)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.7, aes(x = porcentaje)) +
+  geom_text(size = 7, color = "#59656E", aes(x = porcentaje_Canarias, text = "")) +
+  theme_minimal() +
+  labs(title = "", x = NULL, y = NULL, colour = " ") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = col) +
+  theme(axis.text.x = element_text(),
+        axis.text.y = element_text(size = 8),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "lightgray"),
+        panel.grid.minor.x = element_line(colour = "lightgray"),
+        panel.background = element_rect(fill = "white"),
+        legend.position = "none") +
+  scale_x_continuous(labels = function(x){paste0(format(x, big.mark = '.', decimal.mark = ","), '%')}) +
+  scale_y_discrete(labels = df_matr_tipos_plot$name_veh[(nrow(df_matr_tipos_plot)/2):1])
+
+g_matr_tipos <- ggplotly(g_matr_tipos, tooltip = c("text")) %>%
+  layout(hoverlabel = "", hovermode = 'y unified', margin = list(l = -5, r = 0)) %>%
+  config(displaylogo = FALSE,  modeBarButtons = list(list("zoom2d"),list("pan2d"),list("resetScale2d"),list("toImage"))) %>%
+  style(hoverinfo = "skip", traces = c((nrow(df_matr_tipos_plot)/2+1):nrow(df_matr_tipos_plot)))
+```
+
+
+```{r Generación HTML, results="asis"}
+get_indicator2 = function(label, value, image) {
+  return(sprintf("<div class='indicator2'><div class='image'><img src='%s'></img></div><div class='indicator-content'><p class='value'>%s</p><p class='label'>%s</p></div></div>", image, value, label))
+}
+```
+
+```{r Funciones Enlaces, results="asis"}
+get_indicator_mod = function(url, label) {
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
+}
+get_indicator_mod_first = function(url, label) {
+  return(sprintf("<div class='column-modulo-link'><p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
+}
+get_indicator_mod_inter = function(url, label) {
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p><hr class='separator'/>", url, label))
+}
+get_indicator_mod_last = function(url, label) {
+  return(sprintf("<p class='label_l'><a href=%s target='_blank'>%s</a></p></div>", url, label))
+}
+```
+
+```{r csv Enlaces}
+links <- read.csv2("../enlaces.csv", encoding = "UTF-8", sep = ",")
+colnames(links)[1] <- "Tematica"
+
+df_links <- links %>%
+  filter(Tematica == "parque_vehiculos") %>%
+  select(!c(Tematica, Otros))
+```
+
+<!-- HTML -->
+<h1 style="color: #008BD0; margin: 0; font-size: 36px;">Enlaces a los datos</h1>
+<hr>
+<h3 style="color: #666; margin: 12px; font-size: 16px;">Al pinchar en los títulos de la izquierda se accede a las tablas con las que se ha elaborado esta ficha.</h3>
+
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod(
+        df_links$Enlace[which(df_links$Indicador == "Tema")],
+        df_links$Titulo[which(df_links$Indicador == "Tema")])`
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+
+<h1 style="color: #008BD0; margin: 0; font-size: 54px;">[Nombre del municipio] en cifras</h1>
+<h3 style="color: #999; margin: 0; float: right; margin-right: 20px;">Temporalidad</h3>
+<h2 style="color: #666; margin: 0;">Parque de vehículos</h2>
+<hr>
+
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+  `r get_indicator_mod(
+        df_links$Enlace[which(df_links$Indicador == "Indicador principal")],
+        df_links$Titulo[which(df_links$Indicador == "Indicador principal")])`
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+<div class="linechart-placeholder">
+<h2 style="color: #005980; margin: 0;">`r Num_Vehiculos` vehículos</h2>
+<div class="linechart">
+  `r g_line`
+</div>
+<div id="hover-event-placeholder" class="column-4">
+```{r leyendas, results = "asis"}
+for (i in 1:nrow(leyenda_poblacion)) {
+  cat(sprintf(leyenda.template, i, leyenda_poblacion$color[i], leyenda_poblacion$nombre[i], leyenda_poblacion$valor[i], leyenda_poblacion$tasa[i]))
+}
+```
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+```{r Enlaces Indicadores principales, results='asis'}
+df_links_principales <- df_links %>%
+  filter(Indicador == "Indicadores principales" & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_principales) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_principales$Enlace[1],
+      df_links_principales$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_principales$Enlace[1],
+        df_links_principales$Titulo[1])
+      ))
+    if (nrow(df_links_principales) > 2) {
+      if (nrow(df_links_principales) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_principales$Enlace[2],
+            df_links_principales$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_principales)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_principales$Enlace[i],
+                df_links_principales$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_principales$Enlace[nrow(df_links_principales)],
+        df_links_principales$Titulo[nrow(df_links_principales)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo" style="padding: 35px 15px;">
+<div class="row">
+```{r Indicadores principales, results='asis'}
+if(Variacion_Porcentual == "NA"){
+  cat(paste0(
+    "<div class='column-3-ind'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-3-ind'>", get_indicator2("Gasolina<br/>+ diesel", paste0(porc_gasolina_diesel_l, '%'), "./img/gasolina.png"), "</div><div class='column-3-ind'>", get_indicator2("Eléctricos", paste0(porc_electrico_l, '%'), "./img/electrico.png"), "</div>"))
+}else{
+  cat(paste0(
+    "<div class='column-4'>", get_indicator2('Tasa de<br/>variación', paste0(Variacion_Porcentual, '%'), Imagen_Variacion), "</div><div class='column-4'>", get_indicator2(paste0('Turismos<br/></p><p class="label" style="color: #999;">', paste0(Percent_Tur_Parque, '%')), Num_Tur_Parque, './img/coche.png'), "</div><div class='column-4'>", get_indicator2("Gasolina<br/>+ diesel", paste0(porc_gasolina_diesel_l, '%'), "./img/gasolina.png"), "</div><div class='column-4'>", get_indicator2("Eléctricos", paste0(porc_electrico_l, '%'), "./img/electrico.png"), "</div>"))
+}
+```
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="row">
+  `r get_indicator_mod(
+        "",
+        ""
+        )`
+
+<div class="column-modulo-right">
+<div class="highlight-modulo">
+<div class="row">
+<div class="column-3">
+  <div class="indicator-map">
+  <div class="image map-canarias">
+```{r}
+mapa_Canarias_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_canarias`º </span>en Canarias</p>
+  <p class="label2">de `r num_mun_canarias` municipios (`r percent_canarias`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_isla_plot
+```
+  </div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_isla`º </span>en `r municipio_actual$isla`</p>
+  <p class="label2">de `r num_mun_isla` municipios (`r percent_isla`%)</p>
+  </div>
+</div>
+</div>
+<div class="column-3">
+<div class="indicator-map">
+  <div class="image">
+```{r}
+mapa_comarca_plot
+```
+</div>
+  <div class="indicator-content">
+  <p class="label"><span class="value">`r rk_comarca`º </span>en la comarca</p>
+  <p class="label2">de `r num_mun_comarca` municipios (`r percent_comarca`%)</p>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="row">
+```{r Enlaces Otros indicadores, results='asis'}
+df_links_otros <- df_links %>%
+  filter(Indicador %in% c("O", "Otros indicadores") & !is.na(Enlace)) %>%
+  distinct(Enlace, .keep_all = TRUE)
+
+if (nrow(df_links_otros) == 1) {
+  cat(paste0(
+    get_indicator_mod(
+      df_links_otros$Enlace[1],
+      df_links_otros$Titulo[1])
+    ))
+  } else {
+    cat(paste0(
+      get_indicator_mod_first(
+        df_links_otros$Enlace[1],
+        df_links_otros$Titulo[1])
+      ))
+    if (nrow(df_links_otros) > 2) {
+      if (nrow(df_links_otros) == 3) {
+        cat(paste0(
+          get_indicator_mod_inter(
+            df_links_otros$Enlace[2],
+            df_links_otros$Titulo[2])
+          ))
+        } else {
+          for (i in c(2:(nrow(df_links_otros)-1))) {
+            cat(paste0(
+              get_indicator_mod_inter(
+                df_links_otros$Enlace[i],
+                df_links_otros$Titulo[i])
+              ))
+            } 
+        }
+    }
+    cat(paste0(
+      get_indicator_mod_last(
+        df_links_otros$Enlace[nrow(df_links_otros)],
+        df_links_otros$Titulo[nrow(df_links_otros)])
+      ))
+  }
+```
+
+<div class="column-modulo-right">
+<div class="highlight-modulo" style="padding-bottom: 20px;">
+<div class="indicator-title-row" style="margin-top: 4px;">
+  <h3>Tipos de vehículo</h3>
+</div>
+
+<div class="row">
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Parque</h3>
+</div>
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Matriculaciones</h3>
+</div>
+</div>
+
+<div class="row">
+<div class="column highlight" style="padding-top: 40px; padding-bottom: 26px;">
+<div class="piramide" style="height: 300px;">
+  `r g_vehiculos`
+</div>
+
+<div class="progressbar-legend-container" style="margin: 37px 0;">
+  <div class="progressbar-legend">
+  <div class="progress-bar-C-a">|</div><div class="sp-content">Canarias</div></div>
+</div>
+</div>
+
+<div class="column highlight">
+<div class="piramide" style="height: 390px;">
+  `r g_matr_tipos`
+</div>
+
+<div class="progressbar-legend-container" style="margin: 20px 0;">
+<div class="progressbar-legend">
+<div class="progress-bar-C-a">|</div><div class="sp-content">Canarias</div></div>
+</div>
+
+</div>
+</div>
+
+<div class="indicator-title-row">
+  <h3>Tipos de combustible</h3>
+</div>
+
+<div class="row">
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Total</h3>
+</div>
+<div class="column indicator-title" style="margin-top: 0px;">
+  <h3>Resto de tipos</h3>
+</div>
+</div>
+
+<div class="row">
+
+```{r Tamaño de los recuadros}
+altura_total <- 200
+for(i in 1:3) {
+  if(df_combustibles_mun[i,]$valor == 0){
+    altura_total <- altura_total - 20
+  }
+}
+if(porc_otros == 0){
+  altura_total <- altura_total - 20
+}
+
+altura_resto <- 220
+for(i in 1:5) {
+  if(is.na(valor_l[i])){
+    altura_resto <- altura_resto - 20
+  }
+}
+
+altura <- max(altura_total, altura_resto)
+```
+
+<div class="column highlight" style="height: `r paste0(altura, 'px')`; padding: 10px;">
+<div class="progress-bar-container">
+
+```{r, results='asis'}
+if(valor_diesel_l == 0 & valor_electrico_l == 0 & valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progress-bar-blue-0' style='width:", porc_gasolina, "%'>"))
+}else if(valor_electrico_l == 0 & valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue6' style='width:", porc_diesel, "%'>"))
+}else if(valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue3' style='width:", porc_diesel, "%'></div><div class='progress-bar-blue6' style='width:", porc_electrico, "%'>"))
+}else if(valor_electrico_l == 0){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue3' style='width:", porc_diesel, "%'></div><div class='progress-bar-blue6' style='width:", porc_otros, "%'>"))
+}else{
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc_gasolina, "%'></div><div class='progress-bar-blue3' style='width:", porc_diesel, "%'></div><div class='progress-bar-blue4' style='width:", porc_electrico, "%'></div><div class='progress-bar-blue6' style='width:", porc_otros, "%'>"))
+}
+```
+  </div>
+</div>
+
+<div class="legend-vertical-container" style="margin-top: 60px;">
+```{r, results='asis'}
+if(valor_diesel_l == 0 & valor_electrico_l == 0 & valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>Gasolina (", valor_gasolina_l))
+}else if(valor_electrico_l == 0 & valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Diésel (", valor_diesel_l))
+}else if(valor_otros_l == 0){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Eléctrico (", valor_electrico_l))
+}else if(valor_electrico_l == 0){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", valor_otros_l))
+}else{
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>Gasolina (", valor_gasolina_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>Diésel (", valor_diesel_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>Eléctrico (", valor_electrico_l, "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>Resto de tipos de combustible (", valor_otros_l))
+}
+```
+  </div></div>
+</div>
+</div>
+
+<div class="column highlight" style="height: `r paste0(altura, 'px')`; padding: 10px;">
+<div class="progress-bar-container">
+
+```{r, results='asis'}
+if(length(tipo) == 1){
+  cat(paste0(
+    "<div class='progress-bar-blue-0' style='width:", porc[1], "%'>"))
+}else if(length(tipo) == 2){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue6' style='width:", porc[2], "%'>"))
+}else if(length(tipo) == 3){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue6' style='width:", porc[3], "%'>"))
+}else if(length(tipo) == 4){
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue4' style='width:", porc[3], "%'></div><div class='progress-bar-blue6' style='width:", porc[4], "%'>"))
+}else{
+  cat(paste0(
+    "<div class='progress-bar-blue1' style='width:", porc[1], "%'></div><div class='progress-bar-blue3' style='width:", porc[2], "%'></div><div class='progress-bar-blue4' style='width:", porc[3], "%'></div><div class='progress-bar-blue5' style='width:", porc[4], "%'></div><div class='progress-bar-blue6' style='width:", porc[5], "%'>"))
+}
+```
+  </div>
+</div>
+
+<div class="legend-vertical-container" style="margin-top: 60px;">
+```{r, results='asis'}
+if(length(tipo) == 1){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue-0'></div><div class='sp-content'>", tipo[1], " (", valor_l[1]))
+}else if(length(tipo) == 2){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[2], " (", valor_l[2]))
+}else if(length(tipo) == 3){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[3], " (", valor_l[3]))
+}else if(length(tipo) == 4){
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo[3], " (", valor_l[3], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[4], " (", valor_l[4]))
+}else{
+  cat(paste0(
+    "<div class='progressbar-legend'><div class='progress-bar-blue1'></div><div class='sp-content'>", tipo[1], " (", valor_l[1], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue3'></div><div class='sp-content'>", tipo[2], " (", valor_l[2], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue4'></div><div class='sp-content'>", tipo[3], " (", valor_l[3], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue5'></div><div class='sp-content'>", tipo[4], " (", valor_l[4], "</div></div><div class='progressbar-legend'><div class='progress-bar-blue6'></div><div class='sp-content'>", tipo[5], " (", valor_l[5], ")"))
+}
+```
+  </div></div>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="row" style="margin-top: 10px;">
+</div>
+<div class="logo-fecam">
+  <img src="img/fecam.jpeg" />
+</div>
+<div class="logo-istac"> 
+  <img src="img/logo_istac.png" />
+</div>
+
