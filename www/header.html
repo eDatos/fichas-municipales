@@ -578,7 +578,7 @@
     }
     
     function activeCss(active) {
-      var elements = ["ver_fichas", "ver_glosario", "ver_enlaces", "ver_ayuda"]
+      var elements = ["ver_fichas", "ver_glosario", "ver_enlaces", "ver_descarga", "ver_ayuda"]
       
       for(let i = 0; i < elements.length; i++) {
         var element = elements[i];
@@ -654,6 +654,12 @@
                       <button id="ver_enlaces" type="button" class="action-button shiny-bound-input btn-nav" onclick="activeCss('ver_enlaces')">
                         <i class="fa fa-database" role="presentation" aria-label="database icon"></i>
                         Datos
+                      </button>
+                    </li>
+                    <li>
+                      <button id="ver_descarga" type="button" class="action-button shiny-bound-input btn-nav" onclick="activeCss('ver_descarga')">
+                        <i class="fa fa-download" role="presentation" aria-label="download icon"></i>
+                        Descarga
                       </button>
                     </li>
                     <li>

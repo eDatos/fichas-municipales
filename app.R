@@ -13,6 +13,7 @@ library(xml2)
 library(tidyverse)
 library(bslib)
 library(RCurl)
+library(qpdf)
 
 addResourcePath("frames", getwd())
 directory.data <- "data/"
@@ -48,9 +49,13 @@ loadMunicipios <- function() {
     select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, code = parent, id_isla = code, isla = value) %>% 
     left_join(df_CL_AREA, by="code") %>% 
     select(id, municipio, id_comarca, comarca, id_gran_comarca, gran_comarca, id_isla, isla, provincia = value) %>%
+    left_join(data.frame(
+      isla = c("Lanzarote", "Fuerteventura", "Gran Canaria", "Tenerife", "La Gomera", "La Palma", "El Hierro"), 
+      order = c(1:7)
+    ), by="isla") %>%
     arrange(id) %>%
-    arrange(id_isla) %>%
-    arrange(provincia)
+    arrange(order) #%>%
+    #arrange(provincia)
   
   return(df_CL_AREA_mun %>% select(id, municipio, id_isla, isla))
 }
@@ -209,7 +214,7 @@ server <- function(input, output) {
   
   option_mun <- reactive({
     shiny::validate(
-      need(input$id_ficha != "", "")
+      need(input$id_ficha != "" , "")
       #need(input$id_isla != "", "Seleccionar isla...")
     )
    result <- list()
@@ -238,6 +243,23 @@ server <- function(input, output) {
     for(island in unique(municipios$isla)) {
       mun_list <- periods %>% 
         filter(id_ficha == input$id_ficha_2) %>% 
+        select(id = id_municipio) %>%
+        unique %>%
+        left_join(municipios, by = "id") %>% 
+        filter(isla %in% island) %>% 
+        select(municipio, id) %>% 
+        arrange(municipio) %>%
+        deframe
+      result[[island]] <- mun_list
+    }
+    result
+  })
+  
+  option_mun_download <- reactive({
+    result <- list()
+    for(island in unique(municipios$isla)) {
+      mun_list <- periods %>% 
+        filter(id_ficha == input$id_ficha) %>% 
         select(id = id_municipio) %>%
         unique %>%
         left_join(municipios, by = "id") %>% 
@@ -387,29 +409,32 @@ server <- function(input, output) {
   output$glosario <- renderUI({
     shiny::validate(need(input$id_ficha != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha)
-    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/")
+                            , frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeGlosarioIframe(this)")
+    #test_ckan <- url("https://pre-datos.canarias.es/catalogos/estadisticas/dataset/1eac8b18-0c9d-4bb0-9ca2-0fae54d20f02/resource/d503342d-58f3-48ab-a2b5-0a5245acdde9/download/demografia_35003.knit.html")
+    #includeHTML(test_ckan)
   })
   
   output$glosario_2 <- renderUI({
     shiny::validate(need(input$id_ficha_2 != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha_2)
-    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeGlosarioIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$glosario, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeGlosarioIframe(this)")
   })
   
   output$enlaces <- renderUI({
     shiny::validate(need(input$id_ficha != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha)
-    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeEnlacesIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeEnlacesIframe(this)")
   })
 
   output$enlaces_2 <- renderUI({
     shiny::validate(need(input$id_ficha_2 != "", ""))
     ficha <- df_fichas %>% filter(code == input$id_ficha_2)
-    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeEnlacesIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", "output", ficha$code, ficha$enlace, sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeEnlacesIframe(this)")
   })  
   
   output$ayuda <- renderUI({
-    iframe <- tags$iframe(src=paste("frames", "output", "MODULO_AYUDA.html", sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 100%; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888;", onload="resizeAyudaIframe(this)")
+    iframe <- tags$iframe(src=paste("frames", "output", "MODULO_AYUDA.html", sep= "/"), frameborder="0", scrolling="no", class = "paper", style = "width: 940px; border: 0; margin: 0 auto; display: block; box-border: 5px 10px 18px #888888; transform-origin: left top;", onload="resizeAyudaIframe(this)")
   })
   
   option_year <- reactive({
@@ -635,6 +660,7 @@ server <- function(input, output) {
   output$header_mun <- renderUI({ h3("Municipio") })
   output$select_mun <- renderUI({ selectizeInput("id_municipio", "", choices = option_mun()) })
   output$select_mun_2 <- renderUI({ selectizeInput("id_municipio_2", "", choices = option_mun_2(), selected = 1) })
+  output$select_mun_download <- renderUI({ selectizeInput("id_municipio_download", "", choices = option_mun_download(), selected = 1) })
   
   output$header_ficha <- renderUI({ h3('Ficha') })
   output$select_ficha <- renderUI({ selectInput('id_ficha', "", choices= option_ficha(), selected = 1) })
@@ -685,6 +711,8 @@ server <- function(input, output) {
                  }
   )
   observeEvent(eventExpr = input$ver_ayuda, handlerExpr = { output$tab <- renderText ({"ayuda"}); output$fichas <- getLayout5(); })
+  observeEvent(eventExpr = input$ver_descarga, handlerExpr = { output$tab <- renderText ({"descarga"}); output$fichas <- getLayout8(); })
+  
   observeEvent(eventExpr = input$mes_2, handlerExpr = { if(periodicidad2() == "M" && input$mes_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$trimestre_2, handlerExpr = { if(periodicidad2() == "Q" && input$trimestre_2 != "") output$fichas <- getLayout2() })
   observeEvent(eventExpr = input$period_2, handlerExpr = { if(periodicidad2() == "O" && input$period_2 != "") output$fichas <- getLayout2() })
@@ -831,6 +859,29 @@ server <- function(input, output) {
     contentType = "application/PDF"
   )
   
+  output$header_multiple_download <- renderUI({ h3("Seleccione el municipio para descargar la ficha del último periodo disponible de todas las temáticas") })
+  output$multiple_download <- downloadHandler(
+    filename = function() {
+      return(paste0("fichas-", input$id_municipio_download, ".pdf"))
+    },
+    content = function(file) {
+      #temp_directory <- file.path(tempdir(), as.integer(Sys.time()))
+      #dir.create(temp_directory)
+      files <- periods %>% 
+                         filter(id_municipio == input$id_municipio_download) %>% 
+                         group_by(id_ficha) %>% 
+                         filter(is.na(A) | as.numeric(A) == max(as.numeric(A))) %>%
+                         mutate(path = sub("html", "pdf", path), code = id_ficha) %>%
+                         filter((is.na(period)) | (as.numeric(period) == max(as.numeric(period))) | (is.na(as.numeric(period)) & period == max(period))) %>%
+                         left_join(df_fichas, by="code") %>% 
+                         arrange(topic, code)
+      
+      #system2("zip", args=(paste("-j", file, files, sep=" ")))
+      pdf_combine(input = as.list(files$path), output = file)
+    },
+    contentType = "application/pdf"
+  )
+  
   output$ficha_params <- renderUI (
     fluidRow(class = "params-row",
       #column(3, uiOutput("header_ficha")),
@@ -875,6 +926,15 @@ server <- function(input, output) {
              column(12, conditionalPanel(condition = 'output.need_layout_2_fichas != "TRUE"', downloadButton("pdf_5", "PDF"))),
              column(6, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_3", "PDF"))),
              column(6, conditionalPanel(condition = 'output.need_layout_2_fichas == "TRUE"', downloadButton("pdf_4", "PDF")))
+    )
+  )
+  
+  output$download_params <- renderUI (
+    #fluidRow(column(12, uiOutput("header_multiple_download"))),
+    fluidRow(class = "params-row",
+             column(12, uiOutput("header_multiple_download")),
+             column(6, uiOutput("select_mun_download")),
+             column(3, downloadButton("multiple_download", "Descargar"))
     )
   )
   
@@ -937,10 +997,19 @@ server <- function(input, output) {
     ) 
   }
   
+  getLayout8 <- function() {
+    renderUI (
+      fluidRow(style = "margin-top: 20px;",
+      #         column(12, htmlOutput('ayuda'))
+      )
+    ) 
+  }
+  
   output$menu <- renderUI(
     fluidRow(
       column(12, conditionalPanel(condition = 'output.tab == "fichas"', uiOutput("ficha_params"))),
-      column(12, conditionalPanel(condition = 'output.tab == "glosario"', uiOutput("glosario_params")))
+      column(12, conditionalPanel(condition = 'output.tab == "glosario"', uiOutput("glosario_params"))),
+      column(12, conditionalPanel(condition = 'output.tab == "descarga"', uiOutput("download_params")))
     )
   )
   outputOptions(output, "menu", suspendWhenHidden = FALSE)

@@ -88,3 +88,19 @@
 .selectize-dropdown .option[data-selectable] {
     margin-left: 10px;
 }
+/*.column-modulo-right img,*/
+.column-modulo-right p,
+.column-modulo-right span,
+.column-modulo-right h1,
+.column-modulo-right h2,
+.column-modulo-right h3,
+.column-modulo-right h4,
+.column-modulo-right h5,
+.column-modulo-right h6,
+.column-modulo-right .image,
+.column-modulo-right .column-3 .indicator3,
+.column-modulo-right .progressbar-legend-container
+{
+    transform: scale(0.79);
+    transform-origin: left;
+}
